@@ -12,6 +12,7 @@ ipywidgets = "*"
 stim = "*"
 qiskit-aer = "*"
 pymatching = "*"
+qiskit-qec = {file = "qiskit-qec", editable = true}
 
 [dev-packages]
 ipykernel = "*"

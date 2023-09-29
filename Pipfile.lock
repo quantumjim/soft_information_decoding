@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "03432de6de703073cb2f391286cdbebebce181b806b5e273c754bcb60b1b8898"
+            "sha256": "359617e126acb21561c978e16ced058d17846362006236f19bc7c597ec94e9fa"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -756,6 +756,14 @@
             ],
             "version": "==0.2.2"
         },
+        "pybind11": {
+            "hashes": [
+                "sha256:40f8e57af6fcaa7eb5d727707125f90f8daa0993f28a9981a232d40c85dbbcb0",
+                "sha256:b570d17ed34b0f8ff43f5647833db87353be9afca0c7d1d69e92706b10a9c961"
+            ],
+            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4'",
+            "version": "==2.9.1"
+        },
         "pycparser": {
             "hashes": [
                 "sha256:8ee45429555515e1f6b185e78100aea234072576aa43ab53aefcae078162fca9",
@@ -896,6 +904,10 @@
             "index": "pypi",
             "markers": "python_version >= '3.8'",
             "version": "==0.7.0"
+        },
+        "qiskit-qec": {
+            "editable": true,
+            "file": "qiskit-qec"
         },
         "qiskit-terra": {
             "hashes": [
