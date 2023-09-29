@@ -7,6 +7,11 @@ name = "pypi"
 numpy = "*"
 qiskit = "*"
 matplotlib = "*"
+qiskit-ibm-provider = "*"
+ipywidgets = "*"
+stim = "*"
+qiskit-aer = "*"
+pymatching = "*"
 
 [dev-packages]
 ipykernel = "*"
