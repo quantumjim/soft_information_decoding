@@ -1,0 +1,3 @@
+[submodule "qiskit-qec"]
+	path = qiskit-qec
+	url = https://github.com/MauriceDHanisch/qiskit-qec.git
