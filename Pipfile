@@ -13,6 +13,8 @@ stim = "*"
 qiskit-aer = "*"
 pymatching = "*"
 qiskit-qec = {file = "qiskit-qec", editable = true}
+qiskit-ibm-runtime = "*"
+qiskit-experiments = "*"
 
 [dev-packages]
 ipykernel = "*"
