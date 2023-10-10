@@ -1,4 +1,5 @@
 # Checking multiple qubits with MockIQBackend
+import numpy as np
 from qiskit_experiments.test import MockIQBackend, MockIQExperimentHelper
 from qiskit_experiments.test.mock_iq_helpers import MockIQRabiHelper
 from qiskit import QuantumCircuit
@@ -24,11 +25,11 @@ class MyHelper(MockIQExperimentHelper):
 
 backend = MockIQBackend(
     experiment_helper=MyHelper(
-        iq_cluster_centers=[((-1.0, -1.0), (1.0, 1.0)) for _ in range(circ.num_qubits)]
+        iq_cluster_centers=[((-1.0, -1.0), (1.0, 1.0))
+                            for _ in range(circ.num_qubits)]
     )
 )
 job = backend.run([circ])
 
-import numpy as np
 
 print(np.array(job.result().results[0].data.memory).shape)
