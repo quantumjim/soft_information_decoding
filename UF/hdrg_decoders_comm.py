@@ -343,32 +343,35 @@ class UnionFindDecoder(ClusteringDecoder):
             self.cluster(atypical_nodes)
 
             # determine the net logical z
-            net_z_logicals = {
-                tuple(z_logical): 0 for z_logical in self.measured_logicals}  # makes a dict with a tuple of 
-            # the qubit the logical acts on as the key and the value is the times it is crossed initialized at 0
+            logical_count = {
+                tuple(z_logical): 0 for z_logical in self.measured_logicals}  # makes a dict with a tuple of
+            # the qubits the logical acts on as the key and the value is the times it is crossed initialized at 0
             # for ex: [[0]] -> {(0,): 0}
             for cluster_nodes, _ in self._clusters4peeling:  # cluster4peeling also has the atypical nodes
                 # make a subgraph out of the cluster nodes
                 erasure = self.decoding_graph.subgraph(cluster_nodes)
                 # list of qubit indices with pauli errors
+                # find the errors in the cluster
                 flipped_qubits = self.peeling(erasure)
                 for qubit_to_be_corrected in flipped_qubits:
-                    for z_logical in net_z_logicals:
+                    for z_logical in logical_count:
                         if qubit_to_be_corrected in z_logical:
-                            net_z_logicals[z_logical] += 1
-            for z_logical, num in net_z_logicals.items():
+                            logical_count[z_logical] += 1
+            for z_logical, num in logical_count.items(): # WE CAN DELETE THIS AS IT IS ALREADY DOING % 2 afterwards!
                 # do modulo 2 on the dictionary
-                net_z_logicals[z_logical] = num % 2
+                logical_count[z_logical] = num % 2
 
             # apply this to the raw readout
             corrected_z_logicals = []
+            # prints the eigenvalue for the Z and X logicals f.e ['1', '1']
             raw_logicals = self.code.string2raw_logicals(meas_string)
+            # gives the logical as interpreted from the finald meas. results (it ignores the syndrome strings)
             for j, z_logical in enumerate(self.measured_logicals):
                 raw_logical = int(raw_logicals[j])
                 corrected_logical = (
-                    raw_logical + net_z_logicals[tuple(z_logical)]) % 2
+                    raw_logical + logical_count[tuple(z_logical)]) % 2  # update the logical outcome modulo 2 if there is a count
                 corrected_z_logicals.append(corrected_logical)
-            return corrected_z_logicals
+            return corrected_z_logicals # list of the corrected logical eigenvalue
 
         else:  # No use_peeling
             # turn string into nodes and cluster
