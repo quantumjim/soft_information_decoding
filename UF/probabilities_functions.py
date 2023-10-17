@@ -24,7 +24,7 @@ def estimate_outcome(IQ_point, distr_0, distr_1):
     else:
         return 1
 
-def llh_ratio(IQ_point, est_outcome, distr_0, distr_1):
+def llh_ratio(IQ_point, est_outcome, distr_0, distr_1): # est_outcome left because will compute it already for the graph
     """Compute the log-likelihood ratio for a given mu and mu_hat. According to arXiv:2107.13589.
 
     Args:
