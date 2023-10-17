@@ -12,6 +12,7 @@ def get_distr(device, qubit):
         device
     
     """
+    # TODO implement this
     distr_0 = None
     distr_1 = None
 
@@ -23,8 +24,21 @@ def estimate_outcome(IQ_point, distr_0, distr_1):
         return 0
     else:
         return 1
+    
+def get_counts(IQ_data):
+    """Convert the IQ data to counts.
+    
+    Args:
+        IQ_data (dict): The IQ data for multiple shots.
 
-def llh_ratio(IQ_point, est_outcome, distr_0, distr_1): # est_outcome left because will compute it already for the graph
+    Returns:
+        count dict (qiskit.result.counts.Counts): The counts for the experiments.
+    """
+    # TODO implement this
+    return 0
+
+
+def llh_ratio(IQ_point, distr_0, distr_1): # NOT est_outcome left because will compute it already for the graph
     """Compute the log-likelihood ratio for a given mu and mu_hat. According to arXiv:2107.13589.
 
     Args:
@@ -37,7 +51,8 @@ def llh_ratio(IQ_point, est_outcome, distr_0, distr_1): # est_outcome left becau
         float: The log-likelihood ratio.
     """
     log_dists = {0: np.log(distr_0(IQ_point)), 1: np.log(distr_1(IQ_point))}
-    
+
+    est_outcome = estimate_outcome(IQ_point, distr_0, distr_1)
     if est_outcome in [0, 1]:
         return log_dists[1 - est_outcome] - log_dists[est_outcome]
     else:
