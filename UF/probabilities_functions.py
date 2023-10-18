@@ -58,7 +58,7 @@ def get_counts(IQ_data, distr_0=None, distr_1=None):
 
 # NOT est_outcome left because will compute it already for the graph
 def llh_ratio(IQ_point, distr_0, distr_1):
-    """Compute the log-likelihood ratio for a given mu and mu_hat. According to arXiv:2107.13589.
+    """Compute the likelihood ratio for a given mu and mu_hat. According to arXiv:2107.13589.
 
     Args:
         mu (float): The IQ datapoint.
@@ -69,10 +69,9 @@ def llh_ratio(IQ_point, distr_0, distr_1):
     Returns:
         float: The log-likelihood ratio.
     """
-    log_dists = {0: np.log(distr_0(IQ_point)), 1: np.log(distr_1(IQ_point))}
-
+    probabilities = {0: distr_0(IQ_point), 1: distr_1(IQ_point)}
     est_outcome = estimate_outcome(IQ_point, distr_0, distr_1)
     if est_outcome in [0, 1]:
-        return log_dists[1 - est_outcome] - log_dists[est_outcome]
+        return probabilities[1 - est_outcome] / probabilities[est_outcome]
     else:
         raise ValueError("The estimated outcome must be either 0 or 1.")
