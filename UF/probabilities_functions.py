@@ -2,6 +2,9 @@
 # Created 2023-10-17
 
 import numpy as np
+from collections import defaultdict
+
+from qiskit.result import Counts
 
 
 # TODO sample + fitting procedure to get the distributions
@@ -10,35 +13,51 @@ def get_distr(device, qubit):
 
     Args:
         device
-    
+
     """
     # TODO implement this
     distr_0 = None
     distr_1 = None
 
-    return distr_0, distr_1 
+    return distr_0, distr_1
 
-def estimate_outcome(IQ_point, distr_0, distr_1):
-    """Estimate the outcome for a given IQ datapoint."""
+
+def estimate_outcome(IQ_point, distr_0=None, distr_1=None):
+    """Estimate the outcome for a given IQ datapoint. If 
+    no distribution given uses the real part of the IQ point."""
+    if distr_0 is None or distr_1 is None:
+        if np.real(IQ_point) > 0:
+            return 1
+        else: # more probable to get a 0 if it is in the middle
+            return 0
+        
     if distr_0(IQ_point) > distr_1(IQ_point):
         return 0
     else:
         return 1
-    
-def get_counts(IQ_data):
+
+
+def get_counts(IQ_data, distr_0=None, distr_1=None):
     """Convert the IQ data to counts.
-    
+
     Args:
         IQ_data (dict): The IQ data for multiple shots.
 
     Returns:
         count dict (qiskit.result.counts.Counts): The counts for the experiments.
     """
-    # TODO implement this
-    return 0
+    count_dict = defaultdict(int)
+    for shot in IQ_data:
+        outcome_str = ""
+        for IQ_point in shot:
+            outcome_str += str(estimate_outcome(IQ_point, distr_0, distr_1))
+        count_dict[outcome_str] += 1
+
+    return Counts(count_dict)
 
 
-def llh_ratio(IQ_point, distr_0, distr_1): # NOT est_outcome left because will compute it already for the graph
+# NOT est_outcome left because will compute it already for the graph
+def llh_ratio(IQ_point, distr_0, distr_1):
     """Compute the log-likelihood ratio for a given mu and mu_hat. According to arXiv:2107.13589.
 
     Args:
@@ -57,6 +76,3 @@ def llh_ratio(IQ_point, distr_0, distr_1): # NOT est_outcome left because will c
         return log_dists[1 - est_outcome] - log_dists[est_outcome]
     else:
         raise ValueError("The estimated outcome must be either 0 or 1.")
-    
-
-
