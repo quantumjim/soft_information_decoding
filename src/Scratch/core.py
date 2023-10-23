@@ -50,7 +50,7 @@ def make_serializable(obj):
         return obj
 
 
-def update_metadata(root_dir, year_str, month_str, day_str, time_str, json_path, job_id, notebook_name, 
+def update_metadata(root_dir, year_str, month_str, day_str, time_str, json_path, job_id, notebook_name,
                     memory_shape, memory_type, _is_complex, time_taken, additional_dict=None):
     '''Updates the metadata file with possible additional dicts.'''
     print("Updating metadata...")
@@ -97,6 +97,7 @@ def get_job_data(job_id, provider, additional_dict=None):
     Parameters:
     - job_id (str): The ID of the job for which data should be fetched.
     - provider (obj): The provider object responsible for job execution.
+    - additional_dict (dict): Additional metadata to be saved.
 
     Returns:
     memory (list/dict): The memory or counts dict of the job.
@@ -133,8 +134,9 @@ def get_job_data(job_id, provider, additional_dict=None):
         for filename in filenames:
             if job_id in filename:
                 print(
-                    f"A file with the job_id '{job_id}' already exists in {os.path.relpath(dirpath, start=root_dir)}/{filename}. Aborting.")
-                return
+                    f"A file with the job_id '{job_id}' already exists in: \n\n'{os.path.relpath(dirpath, start=root_dir)}/{filename}' \n\nLoading the corresponding data...")
+                memory = load_memory_from_json(job_id)
+                return memory
 
     # Create month and day directories if they do not exist
     for dir_path in [root_dir, year_dir, month_dir, day_dir]:
@@ -169,6 +171,9 @@ def get_job_data(job_id, provider, additional_dict=None):
 
         device_name = job.backend().name
         memory_shape = np.shape(memory)
+        memory_shape_sci = tuple(format(dim, ".0e").replace(
+            '+', '') if dim > 9000 else dim for dim in memory_shape)
+
         time_taken = job.result().time_taken
 
         # Prepare data and metadata for JSON file
@@ -182,7 +187,7 @@ def get_job_data(job_id, provider, additional_dict=None):
         }
 
         # Create the JSON file name
-        json_filename = f"{time_str}{notebook_name}-{device_name.replace('ibmq_', '').replace('ibm_', '')[:3]}-{memory_shape}-{job_id}.json"
+        json_filename = f"{time_str}-{notebook_name}-{device_name.replace('ibmq_', '').replace('ibm_', '')[:3]}-{memory_shape_sci}-{job_id}.json"
         json_filename = create_unique_filename(json_filename, day_dir)
 
         json_path = f"{day_dir}/{json_filename}"
@@ -214,12 +219,14 @@ def to_complex(obj):
     return obj
 
 
-def load_memory_from_json(included_str):
+def load_memory_from_json(input=-1):
     """
     Load memory data from a JSON file given a specific date and time.
 
     Parameters:
-    - included_str (str): String used to identify the correct JSON file.
+    - input (str/int): String used to identify the correct JSON file, or, 
+    if an integer is given, the index of the file in the list of matching files.
+    Defaults to the most recent file.
 
     Returns:
     - memory: Loaded memory data if a uniquely matching file is found.
@@ -227,6 +234,13 @@ def load_memory_from_json(included_str):
     - None: If no matching file is found.
     """
     root_dir = find_and_create_scratch()
+
+    if isinstance(input, str):
+        print("Looking for a file matching the string: ", input)
+        included_str = input
+    elif isinstance(input, int):
+        print("Looking for the memory with index: ", input)
+        included_str = ''
 
     # Search for matching files
     search_pattern = f"{root_dir}/**/*{included_str}*.json"
@@ -243,11 +257,22 @@ def load_memory_from_json(included_str):
                 f"Data loaded from {os.path.relpath(matching_files[0], start=root_dir)}.")
             return memory
     elif len(matching_files) > 1:
-        print(
-            f"Multiple files match the string: '{included_str}'. Please refine your query.")
-        for filepath in matching_files:
-            rel_path = os.path.relpath(filepath, start=root_dir)
-            print(f"  - {rel_path}")
+        if isinstance(input, int):
+            matching_files.sort(reverse=False)
+            with open(matching_files[input], 'r') as f:
+                data = json.load(f)
+                memory = data.get("memory", None)
+                if memory is not None and isinstance(memory, list):
+                    memory = to_complex(memory)
+                print(
+                    f"Data loaded from {os.path.relpath(matching_files[input], start=root_dir)}.")
+            return memory
+        elif isinstance(input, str):
+            print(
+                f"Multiple files match the string: '{included_str}'. Please refine your query.")
+            for filepath in matching_files:
+                rel_path = os.path.relpath(filepath, start=root_dir)
+                print(f"  - {rel_path}")
     else:
         print(f"No files match the string: '{included_str}'.")
 
