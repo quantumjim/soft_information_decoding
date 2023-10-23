@@ -2,6 +2,6 @@
 __pycache__
 .DS_Store
 
-.Scratch/
+# .Scratch/ left for backup, will be changed if the files is too big
 
 .vscode/
