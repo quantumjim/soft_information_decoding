@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "b7e76f4cc22f667b980a70c21d59a85bf38d06b4a8d407aeffeeba558f84d74a"
+            "sha256": "b34cf1a4262072ac7d44cf55151085ad4ea03dda03465671c2921acb6c5a7476"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -409,6 +409,14 @@
             ],
             "markers": "python_version >= '3.5'",
             "version": "==3.4"
+        },
+        "importlib-metadata": {
+            "hashes": [
+                "sha256:3ebb78df84a805d7698245025b975d9d67053cd94c79245ba4b3eb694abe68bb",
+                "sha256:dbace7892d8c0c4ac1ad096662232f831d4e64f4c4545bd53016a3e9d4654743"
+            ],
+            "markers": "python_version >= '3.8'",
+            "version": "==6.8.0"
         },
         "ipython": {
             "hashes": [
@@ -1103,7 +1111,7 @@
         },
         "qiskit-qec": {
             "editable": true,
-            "file": "qiskit-qec"
+            "file": "libs/qiskit-qec"
         },
         "qiskit-terra": {
             "hashes": [
@@ -1137,6 +1145,10 @@
             ],
             "markers": "python_version >= '3.7'",
             "version": "==1.2.0"
+        },
+        "result-saver": {
+            "editable": true,
+            "file": "libs/ResultsSaver"
         },
         "retworkx": {
             "hashes": [
@@ -1376,6 +1388,15 @@
             "markers": "python_version >= '3.8'",
             "version": "==1.12"
         },
+        "tqdm": {
+            "hashes": [
+                "sha256:d302b3c5b53d47bce91fea46679d9c3c6508cf6332229aa1e7d8653723793386",
+                "sha256:d88e651f9db8d8551a62556d3cff9e3034274ca5d66e93197cf2490e2dcb69c7"
+            ],
+            "index": "pypi",
+            "markers": "python_version >= '3.7'",
+            "version": "==4.66.1"
+        },
         "traitlets": {
             "hashes": [
                 "sha256:7564b5bf8d38c40fa45498072bf4dc5e8346eb087bbf1e2ae2d8774f6a0f078e",
@@ -1515,6 +1536,14 @@
             ],
             "markers": "python_version >= '3.7'",
             "version": "==4.0.9"
+        },
+        "zipp": {
+            "hashes": [
+                "sha256:0e923e726174922dce09c53c59ad483ff7bbb8e572e00c7f7c46b88556409f31",
+                "sha256:84e64a1c28cf7e91ed2078bb8cc8c259cb19b76942096c8d7b84947690cabaf0"
+            ],
+            "markers": "python_version >= '3.8'",
+            "version": "==3.17.0"
         }
     },
     "develop": {

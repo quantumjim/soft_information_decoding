@@ -12,11 +12,13 @@ ipywidgets = "*"
 stim = "*"
 qiskit-aer = "*"
 pymatching = "*"
-qiskit-qec = {file = "qiskit-qec", editable = true}
 qiskit-ibm-runtime = "*"
 qiskit-experiments = "*"
 setuptools-scm = "*"
 soft-information = {file = ".", editable = true}
+tqdm = "*"
+qiskit-qec = {file = "libs/qiskit-qec", editable = true}
+result-saver = {file = "libs/ResultsSaver", editable = true}
 
 [dev-packages]
 ipykernel = "*"

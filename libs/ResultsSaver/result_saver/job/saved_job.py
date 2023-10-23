@@ -42,7 +42,6 @@ class SavedJob(JobV1):
             creation_date = job.creation_date()
         else:
             creation_date = None
-        if hasattr(job,)
         new_job: "SavedJob"
         new_job = cls(
             job.backend(),
@@ -50,7 +49,6 @@ class SavedJob(JobV1):
             tags=tags,
             name=name,
             creation_date=creation_date,
-            time_per_step=
             **job.metadata,
         )
         new_job.set_result(job.result())
