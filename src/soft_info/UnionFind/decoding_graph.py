@@ -2,7 +2,7 @@
 # Created 2023-10-17
 
 import numpy as np
-from probabilities import llh_ratio
+from .probabilities import llh_ratio
 
 import retworkx as rx
 import networkx as nx
