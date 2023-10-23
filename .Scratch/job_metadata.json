@@ -1,0 +1,142 @@
+[
+    {
+        "notebook_name": "not_defined_",
+        "job_id": "cmva878fwrrg008859n0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [],
+        "creation_date": "2023-10-23 18:49:33.139925+02:00",
+        "day_str": "23.10.23",
+        "time_str": "18:49"
+    },
+    {
+        "notebook_name": "ResSaver_testing",
+        "job_id": "cmva9rf421n00081q6hg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [],
+        "creation_date": "2023-10-23 18:52:49.801549+02:00",
+        "day_str": "23.10.23",
+        "time_str": "18:52"
+    },
+    {
+        "notebook_name": "ResSaver_testing",
+        "job_id": "cmvaap2vpdgg008ge530",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [],
+        "creation_date": "2023-10-23 18:54:48.223339+02:00",
+        "day_str": "23.10.23",
+        "time_str": "18:54"
+    },
+    {
+        "notebook_name": "ResSaver_testing",
+        "job_id": "cmvab34fwrrg008859tg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [],
+        "creation_date": "2023-10-23 18:55:40.849527+02:00",
+        "day_str": "23.10.23",
+        "time_str": "18:55"
+    },
+    {
+        "notebook_name": "ResSaver_testing",
+        "job_id": "cmvabj6605a0008f2t30",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [],
+        "creation_date": "2023-10-23 18:56:40.188131+02:00",
+        "day_str": "23.10.23",
+        "time_str": "18:56"
+    },
+    {
+        "notebook_name": "ResSaver_testing",
+        "job_id": "cmvabqp605a0008f2t40",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [],
+        "creation_date": "2023-10-23 18:57:02.401090+02:00",
+        "day_str": "23.10.23",
+        "time_str": "18:57"
+    },
+    {
+        "notebook_name": "ResSaver_testing",
+        "job_id": "cmvafpyfwrrg00885a3g",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [],
+        "creation_date": "2023-10-23 19:05:31.295558+02:00",
+        "day_str": "23.10.23",
+        "time_str": "19:05"
+    },
+    {
+        "notebook_name": "ResSaver_testing",
+        "job_id": "cmvafxzvpdgg008ge5dg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [],
+        "creation_date": "2023-10-23 19:05:59.640142+02:00",
+        "day_str": "23.10.23",
+        "time_str": "19:06"
+    },
+    {
+        "notebook_name": "ResSaver_testing",
+        "job_id": "cmvag9sjad30008eb790",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [],
+        "creation_date": "2023-10-23 19:06:47.535204+02:00",
+        "day_str": "23.10.23",
+        "time_str": "19:06"
+    },
+    {
+        "notebook_name": "ResSaver_testing",
+        "job_id": "cmvaha5605a0008f2teg",
+        "backend_name": "ibmq_jakarta",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [],
+        "creation_date": "2023-10-23 19:08:56.353396+02:00",
+        "day_str": "23.10.23",
+        "time_str": "19:08"
+    },
+    {
+        "notebook_name": "ResSaver_testing",
+        "job_id": "cmvaq34vpdgg008ge65g",
+        "backend_name": "ibmq_jakarta",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [],
+        "creation_date": "2023-10-23 19:21:16.183702+02:00",
+        "day_str": "23.10.23",
+        "time_str": "19:21",
+        "n_shots": 1,
+        "meas_level": 2
+    },
+    {
+        "notebook_name": "ResSaver_testing",
+        "job_id": "cmvaqrq605a0008f2ty0",
+        "backend_name": "ibmq_jakarta",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [],
+        "creation_date": "2023-10-23 19:22:42.943377+02:00",
+        "day_str": "23.10.23",
+        "time_str": "19:22",
+        "n_shots": 1,
+        "meas_level": 2
+    },
+    {
+        "notebook_name": "ResSaver_testing",
+        "job_id": "cmvb1k6605a0008f2vc0",
+        "backend_name": "ibmq_jakarta",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [],
+        "creation_date": "2023-10-23 19:43:40.790222+02:00",
+        "day_str": "23.10.23",
+        "time_str": "19:43",
+        "n_shots": 1,
+        "meas_level": 2
+    }
+]
