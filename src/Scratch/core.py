@@ -5,9 +5,24 @@ import json
 import os
 import glob
 import inspect
+import subprocess
+
 from datetime import datetime
+
 import numpy as np
+
 from qiskit.providers import JobStatus
+
+
+def spawn_subprocess(job_id, provider, additional_dict_str, root_dir):
+    lock_file = f'{root_dir}/tmp/{job_id}.lock'
+    if os.path.exists(lock_file):
+        print(f'Subprocess for job {job_id} already exists.')
+        return
+    # Create a lock file
+    open(lock_file, 'a').close()
+    subprocess.Popen(['python', 'monitor_job.py', job_id, provider, additional_dict_str], preexec_fn=lambda: os.remove(lock_file))
+
 
 
 def find_and_create_scratch():
@@ -90,7 +105,7 @@ def update_metadata(root_dir, year_str, month_str, day_str, time_str, json_path,
     pass
 
 
-def get_job_data(job_id, provider, additional_dict=None):
+def get_job_data(job_id, provider, additional_dict=None, checker_subprocess=False):
     """
     Fetches and returns job data and saves it in a structured directory.
 
@@ -149,7 +164,13 @@ def get_job_data(job_id, provider, additional_dict=None):
     # Check job status
     if job.status() in [JobStatus.RUNNING, JobStatus.QUEUED]:
         print(f"Job is {job.status()}. Waiting for job to finish...")
+
+        if checker_subprocess:
+            additional_dict_str = json.dumps(additional_dict)
+            spawn_subprocess(job_id, provider, additional_dict_str, root_dir)
+
         return None
+    
     elif job.status() == JobStatus.DONE:
         # Get the job result
         try:

@@ -1,0 +1,55 @@
+# file pyproject.toml
+
+[project]
+name = "result_saver"
+dynamic = ["version"]
+readme = "README.md"
+requires-python = ">=3.8"
+license = { file = "LICENSE.txt" }
+description = "Repository for a quantum prototype"
+authors = [{ name = "My Name", email = "my.email@email.net" }]
+
+dependencies = [
+    "certifi>=2021.5.30",
+    "importlib_metadata>=4.8.1",
+    "qiskit-aer>=0.10.3",
+    "qiskit>=0.44.1",
+    "qiskit-experiments",
+    "qiskit-ibm-provider",
+]
+
+[project.optional-dependencies]
+# Dev dependencies.
+dev = [
+    "coverage>=5.5",
+    "pylint>=2.9.5",
+    "nbqa>=1.1.1",
+    "treon>=0.1.3",
+    "pytest>=6.2.5",
+    "pytest-randomly>=1.2.0",
+    "mypy>=0.780",
+    "mypy-extensions>=0.4.3",
+    "jupyter-sphinx>=0.3.2",
+    "nbsphinx>=0.8.8",
+    "sphinx-autodoc-typehints>=1.17.0",
+    "qiskit-sphinx-theme~=1.16.0",
+    "reno>=3.5.0",
+    # Black's formatting rules can change between major versions, so we use
+    # the ~= specifier for it.
+    "black[jupyter]~=22.1",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/conradhaupt/ResultSaver"
+"Bug Tracker" = "https://github.com/conradhaupt/ResultSaver/issues"
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel", "toml", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+py-modules = []
+
+[tool.setuptools.packages.find]
+include = ['result_saver*']
+exclude = ['result_saver*tests']
