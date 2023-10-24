@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "b34cf1a4262072ac7d44cf55151085ad4ea03dda03465671c2921acb6c5a7476"
+            "sha256": "158e882a09dc51447ad6da2ea1e876ecf4d0be93c836f51ca6dff13105387dd8"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -1148,7 +1148,7 @@
         },
         "result-saver": {
             "editable": true,
-            "file": "libs/ResultsSaver"
+            "file": "libs/qiskit-saver-provider"
         },
         "retworkx": {
             "hashes": [

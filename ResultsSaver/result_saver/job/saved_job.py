@@ -28,6 +28,7 @@ class SavedJob(JobV1):
     def result(self, *args, **kwargs):
         return self._result
 
+
     @classmethod
     def from_job(cls, job: JobV1) -> "SavedJob":
         if hasattr(job, "tags"):

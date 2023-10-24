@@ -18,7 +18,7 @@ setuptools-scm = "*"
 soft-information = {file = ".", editable = true}
 tqdm = "*"
 qiskit-qec = {file = "libs/qiskit-qec", editable = true}
-result-saver = {file = "libs/ResultsSaver", editable = true}
+result-saver = {file = "libs/qiskit-saver-provider", editable = true}
 
 [dev-packages]
 ipykernel = "*"

@@ -138,5 +138,61 @@
         "time_str": "19:43",
         "n_shots": 1,
         "meas_level": 2
+    },
+    {
+        "notebook_name": "KDE_Jak",
+        "job_id": "cmvp9f5421n00081qnng",
+        "backend_name": "ibmq_jakarta",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [],
+        "creation_date": "2023-10-24 08:31:24.993846+02:00",
+        "day_str": "24.10.23",
+        "time_str": "08:31",
+        "n_shots": 1000000.0,
+        "meas_level": 1,
+        "sampled_state": 1,
+        "num_qubits": 1
+    },
+    {
+        "notebook_name": "KDE_Jak",
+        "job_id": "cmvpdvzeskrg008xzwx0",
+        "backend_name": "ibmq_jakarta",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [],
+        "creation_date": "2023-10-24 08:40:47.227437+02:00",
+        "day_str": "24.10.23",
+        "time_str": "08:40",
+        "n_shots": 1000000.0,
+        "meas_level": 1,
+        "sampled_state": 0,
+        "num_qubits": 1
+    },
+    {
+        "notebook_name": "ResSaver_testing",
+        "job_id": "cmvpqrqjad30008ebptg",
+        "backend_name": "ibmq_jakarta",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [],
+        "creation_date": "2023-10-24 09:01:54.850572+02:00",
+        "day_str": "24.10.23",
+        "time_str": "09:01",
+        "n_shots": 1,
+        "meas_level": 2
+    },
+    {
+        "notebook_name": "ResSaver_testing",
+        "job_id": "cmvpqy7vpdgg008genr0",
+        "backend_name": "ibmq_jakarta",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [],
+        "creation_date": "2023-10-24 09:02:16.502482+02:00",
+        "day_str": "24.10.23",
+        "time_str": "09:02",
+        "n_shots": 1,
+        "meas_level": 2
     }
 ]

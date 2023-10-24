@@ -6,6 +6,7 @@
         "/Users/mha/My Drive/Desktop/Studium/Physik/Master/Semester 3/IBM/IBM GIT/Soft-Info/libs/ResultsSaver/result_saver",
         "/Users/mha/My Drive/Desktop/Studium/Physik/Master/Semester 3/IBM/IBM GIT/Soft-Info/libs/qiskit-qec",
         "./libs/ResultsSaver",
-        "./libs/qiskit-qec/src"
+        "./libs/qiskit-qec/src",
+        "./ResultsSaver"
     ]
 }
