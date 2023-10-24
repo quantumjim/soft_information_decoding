@@ -1,9 +1,14 @@
 # Maurice Hanisch mhanisc@ethz.ch
 # Created 2023-10-23
 
+from typing import Optional, Any, Union
+import pandas as pd
+
 from qiskit_ibm_provider import IBMProvider
 from qiskit.providers.backend import BackendV1 as Backend
-from typing import Optional, Any, Union
+
+from .saver_provider import find_and_create_scratch
+
 
 def metadata_helper(n_shots: Union[int, float], meas_level: Union[1, 2], *args, **kwargs):
     """
@@ -33,13 +38,22 @@ def metadata_helper(n_shots: Union[int, float], meas_level: Union[1, 2], *args, 
 
     return metadata
 
+
+def metadata_loader():
+    """A function to find the metadata and load it into a pandas DataFrame."""
+    root_dir = find_and_create_scratch()
+    metadata_path = f"{root_dir}/job_metadata.csv"
+    metadata = pd.read_csv(metadata_path)
+    return metadata
+
+
 class MetadataProvider(IBMProvider):
 
-    def get_backend( self,
-        name: str = None,
-        instance: Optional[str] = None,
-        **kwargs: Any,
-    ) -> Backend:
+    def get_backend(self,
+                    name: str = None,
+                    instance: Optional[str] = None,
+                    **kwargs: Any,
+                    ) -> Backend:
         """Return a monkey patched backend."""
         backend = super().get_backend(name, **kwargs)
         self.patch_backend(backend)
