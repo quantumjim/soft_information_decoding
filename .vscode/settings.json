@@ -7,6 +7,7 @@
         "/Users/mha/My Drive/Desktop/Studium/Physik/Master/Semester 3/IBM/IBM GIT/Soft-Info/libs/qiskit-qec",
         "./libs/ResultsSaver",
         "./libs/qiskit-qec/src",
-        "./ResultsSaver"
+        "./ResultsSaver",
+        "./libs/qiskit-saver-provider"
     ]
 }
