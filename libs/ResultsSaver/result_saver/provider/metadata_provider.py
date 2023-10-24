@@ -42,8 +42,8 @@ def metadata_helper(n_shots: Union[int, float], meas_level: Union[1, 2], *args, 
 def metadata_loader():
     """A function to find the metadata and load it into a pandas DataFrame."""
     root_dir = find_and_create_scratch()
-    metadata_path = f"{root_dir}/job_metadata.csv"
-    metadata = pd.read_csv(metadata_path)
+    metadata_path = f"{root_dir}/job_metadata.json"
+    metadata = pd.read_json(metadata_path)
     return metadata
 
 

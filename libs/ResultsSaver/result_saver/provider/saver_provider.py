@@ -78,7 +78,7 @@ def update_metadata(job, backend_name, additional_dict: dict):
 
     # Save updated metadata
     with open(metadata_file_path, 'w') as f:
-        json.dump(metadata_list, f)
+        json.dump(metadata_list, f, indent=4)
     pass
 
 
