@@ -37,60 +37,10 @@
             "memory":false
         },
         "additional_metadata":{
-            "sampled_state":1,
-            "num_qubits":1
-        },
-        "job_id":"cmvy9sf23ve0008zm1bg",
-        "job_name":null,
-        "job_metadata":{
-
-        },
-        "tags":[
-
-        ]
-    },
-    {
-        "creation_date":"2023-10-24 17:10:24.109707+02:00",
-        "notebook_name":"KDE_Jak",
-        "backend_name":"ibmq_jakarta",
-        "backend_options":{
-            "shots":1000000,
-            "memory":false,
-            "meas_level":1,
-            "init_qubits":true,
-            "meas_return":"single",
-            "skip_transpilation":true
-        },
-        "additional_metadata":{
             "sampled_state":0,
             "num_qubits":1
         },
-        "job_id":"cmvxwr3tjjb00081ccp0",
-        "job_name":null,
-        "job_metadata":{
-
-        },
-        "tags":[
-
-        ]
-    },
-    {
-        "creation_date":"2023-10-24 16:55:47.613514+02:00",
-        "notebook_name":"KDE_Jak",
-        "backend_name":"ibmq_jakarta",
-        "backend_options":{
-            "memory":false,
-            "meas_level":1,
-            "init_qubits":true,
-            "meas_return":"single",
-            "skip_transpilation":true,
-            "shots":1000000
-        },
-        "additional_metadata":{
-            "sampled_state":1,
-            "num_qubits":1
-        },
-        "job_id":"cmvxnwzk20pg008epb80",
+        "job_id":"cmvy9sf23ve0008zm1bg",
         "job_name":null,
         "job_metadata":{
 
@@ -110,8 +60,12 @@
             "skip_transpilation":true,
             "shots":1000000,
             "memory":false
+        },        
+        "additional_metadata":{
+            "sampled_state":"11",
+            "num_qubits":2,
+            "extra": "20 CXs"
         },
-        "additional_metadata":null,
         "job_id":"cmvwkbnjad30008ec01g",
         "job_name":null,
         "job_metadata":{
@@ -133,7 +87,11 @@
             "meas_return":"single",
             "skip_transpilation":true
         },
-        "additional_metadata":null,
+        "additional_metadata":{
+            "sampled_state":"11",
+            "num_qubits":2,
+            "extra": "3 CXs"
+        },
         "job_id":"cmvvycsvpdgg008geya0",
         "job_name":null,
         "job_metadata":{
