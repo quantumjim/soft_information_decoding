@@ -1,381 +1,341 @@
 [
     {
-        "creation_date":"2023-10-24 17:40:45.994179+02:00",
-        "notebook_name":"KDE_Jak",
-        "backend_name":"ibmq_manila",
-        "backend_options":{
-            "meas_level":1,
-            "init_qubits":true,
-            "meas_return":"single",
-            "skip_transpilation":true,
-            "shots":1000000,
-            "memory":false
+        "creation_date": "2023-10-24 17:40:45.994179+02:00",
+        "notebook_name": "KDE_Jak",
+        "backend_name": "ibmq_manila",
+        "backend_options": {
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 1000000,
+            "memory": false
         },
-        "additional_metadata":{
-            "sampled_state":1,
-            "num_qubits":1
+        "additional_metadata": {
+            "sampled_state": 1,
+            "num_qubits": 1
         },
-        "job_id":"cmvyazbk20pg008epbzg",
-        "job_name":null,
-        "job_metadata":{
-
-        },
-        "tags":[
-
-        ]
+        "job_id": "cmvyazbk20pg008epbzg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
     },
     {
-        "creation_date":"2023-10-24 17:38:13.246957+02:00",
-        "notebook_name":"KDE_Jak",
-        "backend_name":"ibmq_manila",
-        "backend_options":{
-            "meas_level":1,
-            "init_qubits":true,
-            "meas_return":"single",
-            "skip_transpilation":true,
-            "shots":1000000,
-            "memory":false
+        "creation_date": "2023-10-24 17:38:13.246957+02:00",
+        "notebook_name": "KDE_Jak",
+        "backend_name": "ibmq_manila",
+        "backend_options": {
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 1000000,
+            "memory": false
         },
-        "additional_metadata":{
-            "sampled_state":0,
-            "num_qubits":1
+        "additional_metadata": {
+            "sampled_state": 0,
+            "num_qubits": 1
         },
-        "job_id":"cmvy9sf23ve0008zm1bg",
-        "job_name":null,
-        "job_metadata":{
-
-        },
-        "tags":[
-
-        ]
+        "job_id": "cmvy9sf23ve0008zm1bg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
     },
     {
-        "creation_date":"2023-10-24 15:42:07.022802+02:00",
-        "notebook_name":"plot_IQ_2",
-        "backend_name":"ibmq_manila",
-        "backend_options":{
-            "meas_level":1,
-            "init_qubits":true,
-            "meas_return":"single",
-            "skip_transpilation":true,
-            "shots":1000000,
-            "memory":false
-        },        
-        "additional_metadata":{
-            "sampled_state":"11",
-            "num_qubits":2,
+        "creation_date": "2023-10-24 15:42:07.022802+02:00",
+        "notebook_name": "plot_IQ_2",
+        "backend_name": "ibmq_manila",
+        "backend_options": {
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 1000000,
+            "memory": false
+        },
+        "additional_metadata": {
+            "sampled_state": "11",
+            "num_qubits": 2,
             "extra": "20 CXs"
         },
-        "job_id":"cmvwkbnjad30008ec01g",
-        "job_name":null,
-        "job_metadata":{
-
-        },
-        "tags":[
-
-        ]
+        "job_id": "cmvwkbnjad30008ec01g",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
     },
     {
-        "creation_date":"2023-10-24 14:57:23.519080+02:00",
-        "notebook_name":"KDE_Jak",
-        "backend_name":"ibmq_jakarta",
-        "backend_options":{
-            "shots":1000000,
-            "memory":false,
-            "meas_level":1,
-            "init_qubits":true,
-            "meas_return":"single",
-            "skip_transpilation":true
+        "creation_date": "2023-10-24 14:57:23.519080+02:00",
+        "notebook_name": "KDE_Jak",
+        "backend_name": "ibmq_jakarta",
+        "backend_options": {
+            "shots": 1000000,
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true
         },
-        "additional_metadata":{
-            "sampled_state":"11",
-            "num_qubits":2,
+        "additional_metadata": {
+            "sampled_state": "11",
+            "num_qubits": 2,
             "extra": "3 CXs"
         },
-        "job_id":"cmvvycsvpdgg008geya0",
-        "job_name":null,
-        "job_metadata":{
-
-        },
-        "tags":[
-
-        ]
+        "job_id": "cmvvycsvpdgg008geya0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
     },
     {
-        "creation_date":"2023-10-24 14:02:03.924148+02:00",
-        "notebook_name":"plot_IQ_2",
-        "backend_name":"ibmq_jakarta",
-        "backend_options":{
-            "shots":10,
-            "memory":false,
-            "meas_level":1,
-            "init_qubits":true,
-            "meas_return":"single",
-            "skip_transpilation":true
+        "creation_date": "2023-10-24 14:02:03.924148+02:00",
+        "notebook_name": "plot_IQ_2",
+        "backend_name": "ibmq_jakarta",
+        "backend_options": {
+            "shots": 10,
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true
         },
-        "additional_metadata":null,
-        "job_id":"cmvv4eseskrg008pnnyg",
-        "job_name":null,
-        "job_metadata":{
-
-        },
-        "tags":[
-
-        ]
+        "additional_metadata": null,
+        "job_id": "cmvv4eseskrg008pnnyg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
     },
     {
-        "creation_date":"2023-10-24 09:02:16.502482+02:00",
-        "notebook_name":"ResSaver_testing",
-        "backend_name":"ibmq_jakarta",
-        "backend_options":null,
-        "additional_metadata":null,
-        "job_id":"cmvpqy7vpdgg008genr0",
-        "job_name":null,
-        "job_metadata":{
-
-        },
-        "tags":[
-
-        ]
+        "creation_date": "2023-10-24 09:02:16.502482+02:00",
+        "notebook_name": "ResSaver_testing",
+        "backend_name": "ibmq_jakarta",
+        "backend_options": null,
+        "additional_metadata": null,
+        "job_id": "cmvpqy7vpdgg008genr0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
     },
     {
-        "creation_date":"2023-10-24 09:01:54.850572+02:00",
-        "notebook_name":"ResSaver_testing",
-        "backend_name":"ibmq_jakarta",
-        "backend_options":null,
-        "additional_metadata":null,
-        "job_id":"cmvpqrqjad30008ebptg",
-        "job_name":null,
-        "job_metadata":{
-
-        },
-        "tags":[
-
-        ]
+        "creation_date": "2023-10-24 09:01:54.850572+02:00",
+        "notebook_name": "ResSaver_testing",
+        "backend_name": "ibmq_jakarta",
+        "backend_options": null,
+        "additional_metadata": null,
+        "job_id": "cmvpqrqjad30008ebptg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
     },
     {
-        "creation_date":"2023-10-24 08:40:47.227437+02:00",
-        "notebook_name":"KDE_Jak",
-        "backend_name":"ibmq_jakarta",
-        "backend_options":null,
-        "additional_metadata":null,
-        "job_id":"cmvpdvzeskrg008xzwx0",
-        "job_name":null,
-        "job_metadata":{
-
-        },
-        "tags":[
-
-        ]
+        "creation_date": "2023-10-24 08:40:47.227437+02:00",
+        "notebook_name": "KDE_Jak",
+        "backend_name": "ibmq_jakarta",
+        "backend_options": null,
+        "additional_metadata": null,
+        "job_id": "cmvpdvzeskrg008xzwx0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
     },
     {
-        "creation_date":"2023-10-24 08:31:24.993846+02:00",
-        "notebook_name":"KDE_Jak",
-        "backend_name":"ibmq_jakarta",
-        "backend_options":null,
-        "additional_metadata":null,
-        "job_id":"cmvp9f5421n00081qnng",
-        "job_name":null,
-        "job_metadata":{
-
-        },
-        "tags":[
-
-        ]
+        "creation_date": "2023-10-24 08:31:24.993846+02:00",
+        "notebook_name": "KDE_Jak",
+        "backend_name": "ibmq_jakarta",
+        "backend_options": null,
+        "additional_metadata": null,
+        "job_id": "cmvp9f5421n00081qnng",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
     },
     {
-        "creation_date":"2023-10-23 19:43:40.790222+02:00",
-        "notebook_name":"ResSaver_testing",
-        "backend_name":"ibmq_jakarta",
-        "backend_options":null,
-        "additional_metadata":null,
-        "job_id":"cmvb1k6605a0008f2vc0",
-        "job_name":null,
-        "job_metadata":{
-
-        },
-        "tags":[
-
-        ]
+        "creation_date": "2023-10-23 19:43:40.790222+02:00",
+        "notebook_name": "ResSaver_testing",
+        "backend_name": "ibmq_jakarta",
+        "backend_options": null,
+        "additional_metadata": null,
+        "job_id": "cmvb1k6605a0008f2vc0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
     },
     {
-        "creation_date":"2023-10-23 19:22:42.943377+02:00",
-        "notebook_name":"ResSaver_testing",
-        "backend_name":"ibmq_jakarta",
-        "backend_options":null,
-        "additional_metadata":null,
-        "job_id":"cmvaqrq605a0008f2ty0",
-        "job_name":null,
-        "job_metadata":{
-
-        },
-        "tags":[
-
-        ]
+        "creation_date": "2023-10-23 19:22:42.943377+02:00",
+        "notebook_name": "ResSaver_testing",
+        "backend_name": "ibmq_jakarta",
+        "backend_options": null,
+        "additional_metadata": null,
+        "job_id": "cmvaqrq605a0008f2ty0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
     },
     {
-        "creation_date":"2023-10-23 19:21:16.183702+02:00",
-        "notebook_name":"ResSaver_testing",
-        "backend_name":"ibmq_jakarta",
-        "backend_options":null,
-        "additional_metadata":null,
-        "job_id":"cmvaq34vpdgg008ge65g",
-        "job_name":null,
-        "job_metadata":{
-
-        },
-        "tags":[
-
-        ]
+        "creation_date": "2023-10-23 19:21:16.183702+02:00",
+        "notebook_name": "ResSaver_testing",
+        "backend_name": "ibmq_jakarta",
+        "backend_options": null,
+        "additional_metadata": null,
+        "job_id": "cmvaq34vpdgg008ge65g",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
     },
     {
-        "creation_date":"2023-10-23 19:08:56.353396+02:00",
-        "notebook_name":"ResSaver_testing",
-        "backend_name":"ibmq_jakarta",
-        "backend_options":null,
-        "additional_metadata":null,
-        "job_id":"cmvaha5605a0008f2teg",
-        "job_name":null,
-        "job_metadata":{
-
-        },
-        "tags":[
-
-        ]
+        "creation_date": "2023-10-23 19:08:56.353396+02:00",
+        "notebook_name": "ResSaver_testing",
+        "backend_name": "ibmq_jakarta",
+        "backend_options": null,
+        "additional_metadata": null,
+        "job_id": "cmvaha5605a0008f2teg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
     },
     {
-        "creation_date":"2023-10-23 19:06:47.535204+02:00",
-        "notebook_name":"ResSaver_testing",
-        "backend_name":null,
-        "backend_options":null,
-        "additional_metadata":null,
-        "job_id":"cmvag9sjad30008eb790",
-        "job_name":null,
-        "job_metadata":{
-
-        },
-        "tags":[
-
-        ]
+        "creation_date": "2023-10-23 19:06:47.535204+02:00",
+        "notebook_name": "ResSaver_testing",
+        "backend_name": null,
+        "backend_options": null,
+        "additional_metadata": null,
+        "job_id": "cmvag9sjad30008eb790",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
     },
     {
-        "creation_date":"2023-10-23 19:05:59.640142+02:00",
-        "notebook_name":"ResSaver_testing",
-        "backend_name":null,
-        "backend_options":null,
-        "additional_metadata":null,
-        "job_id":"cmvafxzvpdgg008ge5dg",
-        "job_name":null,
-        "job_metadata":{
-
-        },
-        "tags":[
-
-        ]
+        "creation_date": "2023-10-23 19:05:59.640142+02:00",
+        "notebook_name": "ResSaver_testing",
+        "backend_name": null,
+        "backend_options": null,
+        "additional_metadata": null,
+        "job_id": "cmvafxzvpdgg008ge5dg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
     },
     {
-        "creation_date":"2023-10-23 19:05:31.295558+02:00",
-        "notebook_name":"ResSaver_testing",
-        "backend_name":null,
-        "backend_options":null,
-        "additional_metadata":null,
-        "job_id":"cmvafpyfwrrg00885a3g",
-        "job_name":null,
-        "job_metadata":{
-
-        },
-        "tags":[
-
-        ]
+        "creation_date": "2023-10-23 19:05:31.295558+02:00",
+        "notebook_name": "ResSaver_testing",
+        "backend_name": null,
+        "backend_options": null,
+        "additional_metadata": null,
+        "job_id": "cmvafpyfwrrg00885a3g",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
     },
     {
-        "creation_date":"2023-10-23 18:57:02.401090+02:00",
-        "notebook_name":"ResSaver_testing",
-        "backend_name":null,
-        "backend_options":null,
-        "additional_metadata":null,
-        "job_id":"cmvabqp605a0008f2t40",
-        "job_name":null,
-        "job_metadata":{
-
-        },
-        "tags":[
-
-        ]
+        "creation_date": "2023-10-23 18:57:02.401090+02:00",
+        "notebook_name": "ResSaver_testing",
+        "backend_name": null,
+        "backend_options": null,
+        "additional_metadata": null,
+        "job_id": "cmvabqp605a0008f2t40",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
     },
     {
-        "creation_date":"2023-10-23 18:56:40.188131+02:00",
-        "notebook_name":"ResSaver_testing",
-        "backend_name":null,
-        "backend_options":null,
-        "additional_metadata":null,
-        "job_id":"cmvabj6605a0008f2t30",
-        "job_name":null,
-        "job_metadata":{
-
-        },
-        "tags":[
-
-        ]
+        "creation_date": "2023-10-23 18:56:40.188131+02:00",
+        "notebook_name": "ResSaver_testing",
+        "backend_name": null,
+        "backend_options": null,
+        "additional_metadata": null,
+        "job_id": "cmvabj6605a0008f2t30",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
     },
     {
-        "creation_date":"2023-10-23 18:55:40.849527+02:00",
-        "notebook_name":"ResSaver_testing",
-        "backend_name":null,
-        "backend_options":null,
-        "additional_metadata":null,
-        "job_id":"cmvab34fwrrg008859tg",
-        "job_name":null,
-        "job_metadata":{
-
-        },
-        "tags":[
-
-        ]
+        "creation_date": "2023-10-23 18:55:40.849527+02:00",
+        "notebook_name": "ResSaver_testing",
+        "backend_name": null,
+        "backend_options": null,
+        "additional_metadata": null,
+        "job_id": "cmvab34fwrrg008859tg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
     },
     {
-        "creation_date":"2023-10-23 18:54:48.223339+02:00",
-        "notebook_name":"ResSaver_testing",
-        "backend_name":null,
-        "backend_options":null,
-        "additional_metadata":null,
-        "job_id":"cmvaap2vpdgg008ge530",
-        "job_name":null,
-        "job_metadata":{
-
-        },
-        "tags":[
-
-        ]
+        "creation_date": "2023-10-23 18:54:48.223339+02:00",
+        "notebook_name": "ResSaver_testing",
+        "backend_name": null,
+        "backend_options": null,
+        "additional_metadata": null,
+        "job_id": "cmvaap2vpdgg008ge530",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
     },
     {
-        "creation_date":"2023-10-23 18:52:49.801549+02:00",
-        "notebook_name":"ResSaver_testing",
-        "backend_name":null,
-        "backend_options":null,
-        "additional_metadata":null,
-        "job_id":"cmva9rf421n00081q6hg",
-        "job_name":null,
-        "job_metadata":{
-
-        },
-        "tags":[
-
-        ]
+        "creation_date": "2023-10-23 18:52:49.801549+02:00",
+        "notebook_name": "ResSaver_testing",
+        "backend_name": null,
+        "backend_options": null,
+        "additional_metadata": null,
+        "job_id": "cmva9rf421n00081q6hg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
     },
     {
-        "creation_date":"2023-10-23 18:49:33.139925+02:00",
-        "notebook_name":"not_defined_",
-        "backend_name":null,
-        "backend_options":null,
-        "additional_metadata":null,
-        "job_id":"cmva878fwrrg008859n0",
-        "job_name":null,
-        "job_metadata":{
-
+        "creation_date": "2023-10-23 18:49:33.139925+02:00",
+        "notebook_name": "not_defined_",
+        "backend_name": null,
+        "backend_options": null,
+        "additional_metadata": null,
+        "job_id": "cmva878fwrrg008859n0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-10-25 13:30:25.116473+02:00",
+        "notebook_name": "get_IQ_calibration_data",
+        "backend_name": "ibm_nazca",
+        "backend_options": {
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 1000000,
+            "memory": false,
+            "job_name": "IQ_calibration_data"
         },
-        "tags":[
-
+        "additional_metadata": {
+            "num_qubits": 127,
+            "sampled_state": "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111"
+        },
+        "job_id": "cmwfrmak20pg008eq7d0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-10-25 13:36:34.379856+02:00",
+        "notebook_name": "get_IQ_calibration_data",
+        "backend_name": "ibm_nazca",
+        "backend_options": {
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "job_metadata": {
+                "test": "test"
+            },
+            "skip_transpilation": true,
+            "shots": 1000000
+        },
+        "additional_metadata": {
+            "num_qubits": 127,
+            "sampled_state": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+        },
+        "job_id": "cmwfvgpk20pg008eq7jg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "Calibration"
         ]
     }
 ]
