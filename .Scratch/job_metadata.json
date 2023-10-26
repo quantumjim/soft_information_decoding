@@ -304,6 +304,7 @@
             "job_name": "IQ_calibration_data"
         },
         "additional_metadata": {
+            "status": "Failed",
             "num_qubits": 127,
             "sampled_state": "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111"
         },
@@ -328,6 +329,7 @@
             "shots": 1000000
         },
         "additional_metadata": {
+            "status": "Failed",
             "num_qubits": 127,
             "sampled_state": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
         },
@@ -351,6 +353,7 @@
             "shots": 100000
         },
         "additional_metadata": {
+            "status": "Failed",
             "num_qubits": 127,
             "sampled_state": "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111"
         },
@@ -374,6 +377,7 @@
             "skip_transpilation": true
         },
         "additional_metadata": {
+            "status": "Failed",
             "num_qubits": 127,
             "sampled_state": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
         },
@@ -424,6 +428,52 @@
             "sampled_state": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
         },
         "job_id": "cmx5g8h7xy7g0089rwc0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "Calibration"
+        ]
+    },
+    {
+        "creation_date": "2023-10-26 14:55:45.382683+02:00",
+        "notebook_name": "get_IQ_calibration_data_Nazca",
+        "backend_name": "ibm_nazca",
+        "backend_options": {
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 50000,
+            "memory": false
+        },
+        "additional_metadata": {
+            "num_qubits": 127,
+            "sampled_state": "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111"
+        },
+        "job_id": "cmx63mewjay0008cn5s0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "Calibration"
+        ]
+    },
+    {
+        "creation_date": "2023-10-26 14:55:50.676692+02:00",
+        "notebook_name": "get_IQ_calibration_data_Nazca",
+        "backend_name": "ibm_nazca",
+        "backend_options": {
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 50000,
+            "memory": false
+        },
+        "additional_metadata": {
+            "num_qubits": 127,
+            "sampled_state": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+        },
+        "job_id": "cmx63npatcpg0084rx7g",
         "job_name": null,
         "job_metadata": {},
         "tags": [

@@ -2,7 +2,7 @@
 # Created 2023-10-26
 
 import json
-from result_saver import find_and_create_scratch
+from .core import find_and_create_scratch
 
 
 def get_qubit_coordinates(n_qubits, rotated=True):
