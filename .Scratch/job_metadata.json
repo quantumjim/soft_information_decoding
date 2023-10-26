@@ -97,7 +97,9 @@
             "meas_return": "single",
             "skip_transpilation": true
         },
-        "additional_metadata": null,
+        "additional_metadata": {
+            "job_status": "JobStatus.DONE"
+        },
         "job_id": "cmvv4eseskrg008pnnyg",
         "job_name": null,
         "job_metadata": {},
@@ -108,7 +110,9 @@
         "notebook_name": "ResSaver_testing",
         "backend_name": "ibmq_jakarta",
         "backend_options": null,
-        "additional_metadata": null,
+        "additional_metadata": {
+            "job_status": "JobStatus.DONE"
+        },
         "job_id": "cmvpqy7vpdgg008genr0",
         "job_name": null,
         "job_metadata": {},
@@ -119,7 +123,9 @@
         "notebook_name": "ResSaver_testing",
         "backend_name": "ibmq_jakarta",
         "backend_options": null,
-        "additional_metadata": null,
+        "additional_metadata": {
+            "job_status": "JobStatus.DONE"
+        },
         "job_id": "cmvpqrqjad30008ebptg",
         "job_name": null,
         "job_metadata": {},
@@ -152,7 +158,9 @@
         "notebook_name": "ResSaver_testing",
         "backend_name": "ibmq_jakarta",
         "backend_options": null,
-        "additional_metadata": null,
+        "additional_metadata": {
+            "job_status": "JobStatus.DONE"
+        },
         "job_id": "cmvb1k6605a0008f2vc0",
         "job_name": null,
         "job_metadata": {},
@@ -163,7 +171,9 @@
         "notebook_name": "ResSaver_testing",
         "backend_name": "ibmq_jakarta",
         "backend_options": null,
-        "additional_metadata": null,
+        "additional_metadata": {
+            "job_status": "JobStatus.DONE"
+        },
         "job_id": "cmvaqrq605a0008f2ty0",
         "job_name": null,
         "job_metadata": {},
@@ -174,7 +184,9 @@
         "notebook_name": "ResSaver_testing",
         "backend_name": "ibmq_jakarta",
         "backend_options": null,
-        "additional_metadata": null,
+        "additional_metadata": {
+            "job_status": "JobStatus.DONE"
+        },
         "job_id": "cmvaq34vpdgg008ge65g",
         "job_name": null,
         "job_metadata": {},
@@ -185,7 +197,9 @@
         "notebook_name": "ResSaver_testing",
         "backend_name": "ibmq_jakarta",
         "backend_options": null,
-        "additional_metadata": null,
+        "additional_metadata": {
+            "job_status": "JobStatus.DONE"
+        },
         "job_id": "cmvaha5605a0008f2teg",
         "job_name": null,
         "job_metadata": {},
@@ -196,7 +210,9 @@
         "notebook_name": "ResSaver_testing",
         "backend_name": null,
         "backend_options": null,
-        "additional_metadata": null,
+        "additional_metadata": {
+            "job_status": "JobStatus.DONE"
+        },
         "job_id": "cmvag9sjad30008eb790",
         "job_name": null,
         "job_metadata": {},
@@ -207,7 +223,9 @@
         "notebook_name": "ResSaver_testing",
         "backend_name": null,
         "backend_options": null,
-        "additional_metadata": null,
+        "additional_metadata": {
+            "job_status": "JobStatus.DONE"
+        },
         "job_id": "cmvafxzvpdgg008ge5dg",
         "job_name": null,
         "job_metadata": {},
@@ -218,7 +236,9 @@
         "notebook_name": "ResSaver_testing",
         "backend_name": null,
         "backend_options": null,
-        "additional_metadata": null,
+        "additional_metadata": {
+            "job_status": "JobStatus.DONE"
+        },
         "job_id": "cmvafpyfwrrg00885a3g",
         "job_name": null,
         "job_metadata": {},
@@ -229,7 +249,9 @@
         "notebook_name": "ResSaver_testing",
         "backend_name": null,
         "backend_options": null,
-        "additional_metadata": null,
+        "additional_metadata": {
+            "job_status": "JobStatus.DONE"
+        },
         "job_id": "cmvabqp605a0008f2t40",
         "job_name": null,
         "job_metadata": {},
@@ -240,7 +262,9 @@
         "notebook_name": "ResSaver_testing",
         "backend_name": null,
         "backend_options": null,
-        "additional_metadata": null,
+        "additional_metadata": {
+            "job_status": "JobStatus.DONE"
+        },
         "job_id": "cmvabj6605a0008f2t30",
         "job_name": null,
         "job_metadata": {},
@@ -251,7 +275,9 @@
         "notebook_name": "ResSaver_testing",
         "backend_name": null,
         "backend_options": null,
-        "additional_metadata": null,
+        "additional_metadata": {
+            "job_status": "JobStatus.DONE"
+        },
         "job_id": "cmvab34fwrrg008859tg",
         "job_name": null,
         "job_metadata": {},
@@ -262,7 +288,9 @@
         "notebook_name": "ResSaver_testing",
         "backend_name": null,
         "backend_options": null,
-        "additional_metadata": null,
+        "additional_metadata": {
+            "job_status": "JobStatus.DONE"
+        },
         "job_id": "cmvaap2vpdgg008ge530",
         "job_name": null,
         "job_metadata": {},
@@ -273,7 +301,9 @@
         "notebook_name": "ResSaver_testing",
         "backend_name": null,
         "backend_options": null,
-        "additional_metadata": null,
+        "additional_metadata": {
+            "job_status": "JobStatus.DONE"
+        },
         "job_id": "cmva9rf421n00081q6hg",
         "job_name": null,
         "job_metadata": {},
@@ -284,7 +314,9 @@
         "notebook_name": "not_defined_",
         "backend_name": null,
         "backend_options": null,
-        "additional_metadata": null,
+        "additional_metadata": {
+            "job_status": "JobStatus.DONE"
+        },
         "job_id": "cmva878fwrrg008859n0",
         "job_name": null,
         "job_metadata": {},
@@ -304,9 +336,9 @@
             "job_name": "IQ_calibration_data"
         },
         "additional_metadata": {
-            "status": "Failed",
             "num_qubits": 127,
-            "sampled_state": "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111"
+            "sampled_state": "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
+            "job_status": "JobStatus.ERROR"
         },
         "job_id": "cmwfrmak20pg008eq7d0",
         "job_name": null,
@@ -329,9 +361,9 @@
             "shots": 1000000
         },
         "additional_metadata": {
-            "status": "Failed",
             "num_qubits": 127,
-            "sampled_state": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+            "sampled_state": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+            "job_status": "JobStatus.ERROR"
         },
         "job_id": "cmwfvgpk20pg008eq7jg",
         "job_name": null,
@@ -353,9 +385,9 @@
             "shots": 100000
         },
         "additional_metadata": {
-            "status": "Failed",
             "num_qubits": 127,
-            "sampled_state": "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111"
+            "sampled_state": "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
+            "job_status": "JobStatus.ERROR"
         },
         "job_id": "cmx5dxqd31100080b240",
         "job_name": null,
@@ -377,9 +409,9 @@
             "skip_transpilation": true
         },
         "additional_metadata": {
-            "status": "Failed",
             "num_qubits": 127,
-            "sampled_state": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+            "sampled_state": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+            "job_status": "JobStatus.ERROR"
         },
         "job_id": "cmx5e1gapzf0008zvvgg",
         "job_name": null,
@@ -402,7 +434,8 @@
         },
         "additional_metadata": {
             "num_qubits": 127,
-            "sampled_state": "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111"
+            "sampled_state": "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
+            "job_status": "JobStatus.QUEUED"
         },
         "job_id": "cmx5g7rapzf0008zvvq0",
         "job_name": null,
@@ -425,7 +458,8 @@
         },
         "additional_metadata": {
             "num_qubits": 127,
-            "sampled_state": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+            "sampled_state": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+            "job_status": "JobStatus.QUEUED"
         },
         "job_id": "cmx5g8h7xy7g0089rwc0",
         "job_name": null,
@@ -448,7 +482,8 @@
         },
         "additional_metadata": {
             "num_qubits": 127,
-            "sampled_state": "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111"
+            "sampled_state": "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
+            "job_status": "JobStatus.QUEUED"
         },
         "job_id": "cmx63mewjay0008cn5s0",
         "job_name": null,
@@ -471,7 +506,8 @@
         },
         "additional_metadata": {
             "num_qubits": 127,
-            "sampled_state": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+            "sampled_state": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+            "job_status": "JobStatus.QUEUED"
         },
         "job_id": "cmx63npatcpg0084rx7g",
         "job_name": null,
@@ -494,7 +530,8 @@
         },
         "additional_metadata": {
             "num_qubits": 27,
-            "sampled_state": "111111111111111111111111111"
+            "sampled_state": "111111111111111111111111111",
+            "job_status": "JobStatus.ERROR"
         },
         "job_id": "cmx8bzqwjay0008cnb90",
         "job_name": null,
@@ -517,9 +554,58 @@
         },
         "additional_metadata": {
             "num_qubits": 27,
-            "sampled_state": "000000000000000000000000000"
+            "sampled_state": "000000000000000000000000000",
+            "job_status": "JobStatus.ERROR"
         },
         "job_id": "cmx8c08atcpg0084s300",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "Calibration"
+        ]
+    },
+    {
+        "creation_date": "2023-10-26 18:14:41.547859+02:00",
+        "notebook_name": "get_IQ_calibration_data_Mumbai",
+        "backend_name": "ibmq_mumbai",
+        "backend_options": {
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 100000,
+            "memory": false
+        },
+        "additional_metadata": {
+            "num_qubits": 27,
+            "sampled_state": "111111111111111111111111111",
+            "job_status": "JobStatus.DONE"
+        },
+        "job_id": "cmx90wbwjay0008cnc3g",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "Calibration"
+        ]
+    },
+    {
+        "creation_date": "2023-10-26 18:15:17.781046+02:00",
+        "notebook_name": "get_IQ_calibration_data_Mumbai",
+        "backend_name": "ibmq_mumbai",
+        "backend_options": {
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 100000,
+            "memory": false,
+            "meas_level": 1
+        },
+        "additional_metadata": {
+            "num_qubits": 27,
+            "sampled_state": "000000000000000000000000000",
+            "job_status": "JobStatus.DONE"
+        },
+        "job_id": "cmx915cwjay0008cnc40",
         "job_name": null,
         "job_metadata": {},
         "tags": [
