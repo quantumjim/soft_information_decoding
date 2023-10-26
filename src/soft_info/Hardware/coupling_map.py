@@ -42,8 +42,7 @@ def highlight_path(G, path):
     pos = nx.get_node_attributes(G, 'pos')
     if not pos:
         warnings.warn("No positions found for the nodes of the input graph.")
-
-    nx.draw(G, pos, with_labels=True)
+    nx.draw(G, pos, with_labels=True, edge_color='white')
     path_edges = [(path[i], path[i+1]) for i in range(len(path) - 1)]
 
     nx.draw_networkx_edges(G, pos, edgelist=path_edges,
@@ -81,10 +80,7 @@ def find_longest_path_general(backend, plot=False):
         tuple: (path, length, start_qubit)
         A tuple containing the longest path as a list of qubits, the length of the longest path, and the starting qubit.
     """
-    coupling_map = backend.configuration().coupling_map
-    G = nx.Graph()
-    for edge in coupling_map:
-        G.add_edge(edge[0], edge[1])
+    G = create_coupling_graph_with_positions(backend)
 
     # Length of longest path, longest path, starting qubit
     longest_path_info = [0, [], None]
@@ -114,10 +110,7 @@ def find_longest_path_in_hex(backend, plot=False):
         A tuple containing the longest path as a list of qubits, the length of the longest path, and the starting qubit.
         If the graph is not a valid heavy hex map, returns a string describing the issue.
     """
-    coupling_map = backend.configuration().coupling_map
-    G = nx.Graph()
-    for edge in coupling_map:
-        G.add_edge(edge[0], edge[1])
+    G = create_coupling_graph_with_positions(backend)
 
     corner_nodes = [node for node in G.nodes() if G.degree(node) == 1]
 
