@@ -479,5 +479,51 @@
         "tags": [
             "Calibration"
         ]
+    },
+    {
+        "creation_date": "2023-10-26 17:30:06.350304+02:00",
+        "notebook_name": "get_IQ_calibration_data_Mumbai",
+        "backend_name": "ibmq_mumbai",
+        "backend_options": {
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 1000000,
+            "memory": false
+        },
+        "additional_metadata": {
+            "num_qubits": 27,
+            "sampled_state": "111111111111111111111111111"
+        },
+        "job_id": "cmx8bzqwjay0008cnb90",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "Calibration"
+        ]
+    },
+    {
+        "creation_date": "2023-10-26 17:30:09.762972+02:00",
+        "notebook_name": "get_IQ_calibration_data_Mumbai",
+        "backend_name": "ibmq_mumbai",
+        "backend_options": {
+            "shots": 1000000,
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "num_qubits": 27,
+            "sampled_state": "000000000000000000000000000"
+        },
+        "job_id": "cmx8c08atcpg0084s300",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "Calibration"
+        ]
     }
 ]
