@@ -431,7 +431,7 @@
         "additional_metadata": {
             "num_qubits": 127,
             "sampled_state": "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
-            "job_status": "JobStatus.QUEUED"
+            "job_status": "JobStatus.ERROR"
         },
         "job_id": "cmx5g7rapzf0008zvvq0",
         "job_name": null,
@@ -455,7 +455,7 @@
         "additional_metadata": {
             "num_qubits": 127,
             "sampled_state": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-            "job_status": "JobStatus.QUEUED"
+            "job_status": "JobStatus.ERROR"
         },
         "job_id": "cmx5g8h7xy7g0089rwc0",
         "job_name": null,
@@ -479,7 +479,7 @@
         "additional_metadata": {
             "num_qubits": 127,
             "sampled_state": "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
-            "job_status": "JobStatus.QUEUED"
+            "job_status": "JobStatus.ERROR"
         },
         "job_id": "cmx63mewjay0008cn5s0",
         "job_name": null,
@@ -503,7 +503,7 @@
         "additional_metadata": {
             "num_qubits": 127,
             "sampled_state": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-            "job_status": "JobStatus.QUEUED"
+            "job_status": "JobStatus.ERROR"
         },
         "job_id": "cmx63npatcpg0084rx7g",
         "job_name": null,
@@ -673,7 +673,8 @@
         "additional_metadata": {
             "num_qubits": 127,
             "sampled_state": "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
-            "optimization_level": 0
+            "optimization_level": 0,
+            "job_status": "JobStatus.ERROR"
         },
         "job_id": "cmxpg895z3p0008dmqp0",
         "job_name": null,
@@ -697,7 +698,8 @@
         "additional_metadata": {
             "num_qubits": 127,
             "sampled_state": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-            "optimization_level": 0
+            "optimization_level": 0,
+            "job_status": "JobStatus.ERROR"
         },
         "job_id": "cmxpg91evjqg008aj6t0",
         "job_name": null,
@@ -721,7 +723,8 @@
         "additional_metadata": {
             "num_qubits": 127,
             "sampled_state": "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
-            "optimization_level": 0
+            "optimization_level": 0,
+            "job_status": "JobStatus.QUEUED"
         },
         "job_id": "cmxph0cevjqg008aj6vg",
         "job_name": null,
@@ -921,7 +924,7 @@
             "num_qubits": 127,
             "sampled_state": "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
             "optimization_level": 0,
-            "job_status": "JobStatus.QUEUED"
+            "job_status": "JobStatus.DONE"
         },
         "job_id": "cmxpnrf5z3p0008dmqyg",
         "job_name": null,
@@ -946,7 +949,7 @@
             "num_qubits": 127,
             "sampled_state": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
             "optimization_level": 0,
-            "job_status": "JobStatus.QUEUED"
+            "job_status": "JobStatus.DONE"
         },
         "job_id": "cmxpns7evjqg008aj740",
         "job_name": null,
