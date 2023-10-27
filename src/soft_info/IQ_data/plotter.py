@@ -5,11 +5,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def plot_IQ_data(data, n_bins=250, title=None):
+def plot_IQ_data(data, n_bins=250, figsize=(8,4), title=None):
     real_parts = np.real(data).flatten()
     imag_parts = np.imag(data).flatten()
 
-    fig = plt.figure(figsize=(8, 4))
+    fig = plt.figure(figsize=figsize)
 
     # Main scatter plot
     alpha = min(1, max(2e4 / len(data), 2e-3))

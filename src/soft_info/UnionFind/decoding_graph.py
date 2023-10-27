@@ -2,12 +2,10 @@
 # Created 2023-10-17
 
 import numpy as np
-from .probabilities import llh_ratio
-
-import retworkx as rx
 import networkx as nx
 import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
+
+from .probabilities import llh_ratio
 
 
 def soft_reweight(graph, IQ_data, distr_0, distr_1, p_data=None, p_meas=None):
@@ -32,7 +30,7 @@ def soft_reweight(graph, IQ_data, distr_0, distr_1, p_data=None, p_meas=None):
                         for node in graph.node_indexes()) + 1
 
     for i, edge in enumerate(graph.edges()):
-        if edge['qubits'] != None:
+        if edge['qubits'] is not None:
             edge['weight'] = p_data/(1-p_data)
         else:
             edge['weight'] = p_meas/(1-p_meas)

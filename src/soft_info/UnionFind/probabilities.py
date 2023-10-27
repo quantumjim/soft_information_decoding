@@ -6,15 +6,21 @@ from collections import defaultdict
 
 from qiskit.result import Counts
 
+from Scratch import metadata_loader
+
 
 # TODO sample + fitting procedure to get the distributions
 def get_distr(device, qubit):
     """Fit the IQ Distribution for a given qubit in a given device.
 
     Args:
-        device
-
+        device (str): The name of the device. Example: 'ibmq_jakarta'.
+        qubit (int): The index of the qubit. Example: 0.
     """
+    md = metadata_loader(extract=True)
+
+
+
     # TODO implement this
     distr_0 = None
     distr_1 = None
