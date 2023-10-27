@@ -1,7 +1,7 @@
 # Maurice Hanisch mhanisc@ethz.ch
 # Created 2023-10-27
 
-from typing import Union
+from typing import Union, List, Dict
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -13,6 +13,7 @@ from Scratch import load_calibration_memory
 
 
 def plot_KDE(data, kde, scaler):
+    '''Plots the KDE and the original data in a contour plot.'''
     fig, axs = plt.subplots(1, 2, figsize=(6, 3))
 
     # Contour plot of original data
@@ -42,7 +43,8 @@ def plot_KDE(data, kde, scaler):
     plt.show()
 
 
-def fit_KDE(IQ_data, bandwidth=0.1, plot=False, num_samples=1e5, scaler=None):
+def fit_KDE(IQ_data, bandwidth=0.1, plot=False, qubit_index='', num_samples=1e5, scaler=None):
+    '''Fits a KDE to the IQ data and returns the KDE and the scaler used for normalization.'''
     data = IQ_data.flatten()
     combined_data = np.column_stack((data.real, data.imag))
 
@@ -56,29 +58,51 @@ def fit_KDE(IQ_data, bandwidth=0.1, plot=False, num_samples=1e5, scaler=None):
 
     if plot:
         plot_IQ_data(IQ_data, figsize=(6, 4),
-                     title=f"IQ data: {len(data):.0e} samples")
+                     title=f"IQ data: {len(data):.0e} samples for qubit {qubit_index}")
         kde_samples = kde.sample(int(num_samples))
         kde_samples = scaler.inverse_transform(kde_samples)
         kde_complex_samples = kde_samples[:, 0] + 1j * kde_samples[:, 1]
 
         plot_IQ_data(kde_complex_samples, figsize=(
-            6, 4), title=f"{num_samples:.0e} KDE samples for bandwidth = {bandwidth}")
+            6, 4), title=f"{num_samples:.0e} KDE samples for bandwidth = {bandwidth} for qubit {qubit_index}")
         plot_KDE(combined_data, kde, scaler)
 
     return kde, scaler
 
 
-def get_KDEs(provider, device, qubit, bandwidths: Union[float, list] = 0.2,
-             plot: Union[bool, list] = False, num_samples=1e5):
+def get_KDEs(provider, device, qubits: List[int], bandwidths: Union[float, list] = 0.2,
+             plot: Union[bool, list] = False, num_samples=1e5) -> Dict[int, List]:
+    """
+    Retrieves kernel density estimations (KDEs) for given qubits on a specific device.
+
+    Args:
+    - provider: The quantum computing service provider.
+    - device (str): The device to be used for computation.
+    - qubits (List[int]): List of qubit indices for which KDEs should be retrieved.
+    - bandwidths (Union[float, list], optional): Bandwidth parameter for KDEs. Can either be a single float or a list of two floats. Defaults to 0.2.
+    - plot (Union[bool, list], optional): Whether or not to plot the KDE. Can be a single boolean or a list of two booleans. Defaults to False.
+    - num_samples (int, optional): Number of samples for KDE fitting. Defaults to 1e5.
+
+    Returns:
+    - Dict[int, List]: A dictionary where keys are the qubit indices and values are lists containing the KDE and corresponding scaler for each qubit. i.e. all_kdes[qubit] = [kde_0, kde_1], all_scalers[qubit] = [scaler_0, scaler_1]
+    """
     bw0, bw1 = (bandwidths, bandwidths) if not isinstance(
         bandwidths, list) else bandwidths
     plot0, plot1 = (plot, plot) if not isinstance(plot, list) else plot
 
-    memories = load_calibration_memory(provider, device, qubit)
+    all_memories = load_calibration_memory(provider, device, qubits)
+    all_kdes = {}
+    all_scalers = {}
 
-    kde_0, scaler_0 = fit_KDE(
-        memories["mmr_0"], bandwidth=bw0, plot=plot0, num_samples=num_samples)
-    kde_1, scaler_1 = fit_KDE(
-        memories["mmr_1"], bandwidth=bw1, plot=plot1, num_samples=num_samples)
+    for qubit in qubits:
+        memories = all_memories[qubit]
 
-    return [kde_0, kde_1], [scaler_0, scaler_1]
+        kde_0, scaler_0 = fit_KDE(
+            memories.get("mmr_0", []), bandwidth=bw0, plot=plot0, qubit_index=qubit, num_samples=num_samples)
+        kde_1, scaler_1 = fit_KDE(
+            memories.get("mmr_1", []), bandwidth=bw1, plot=plot1, qubit_index=qubit, num_samples=num_samples)
+
+        all_kdes[qubit] = [kde_0, kde_1]
+        all_scalers[qubit] = [scaler_0, scaler_1]
+
+    return all_kdes, all_scalers
