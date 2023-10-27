@@ -705,5 +705,254 @@
         "tags": [
             "Calibration"
         ]
+    },
+    {
+        "creation_date": "2023-10-27 09:36:33.738553+02:00",
+        "notebook_name": "get_IQ_calibration_data_Nazca",
+        "backend_name": "ibm_nazca",
+        "backend_options": {
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 50000,
+            "memory": false
+        },
+        "additional_metadata": {
+            "num_qubits": 127,
+            "sampled_state": "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
+            "optimization_level": 0
+        },
+        "job_id": "cmxph0cevjqg008aj6vg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "Calibration"
+        ]
+    },
+    {
+        "creation_date": "2023-10-27 09:36:41.081053+02:00",
+        "notebook_name": "get_IQ_calibration_data_Nazca",
+        "backend_name": "ibm_nazca",
+        "backend_options": {
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 50000,
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true
+        },
+        "additional_metadata": {
+            "num_qubits": 127,
+            "sampled_state": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+            "optimization_level": 0,
+            "job_status": "JobStatus.QUEUED"
+        },
+        "job_id": "cmxph2cbgfs0008763xg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "Calibration"
+        ]
+    },
+    {
+        "creation_date": "2023-10-27 09:37:59.670165+02:00",
+        "notebook_name": "get_IQ_calibration_data_Brisbane",
+        "backend_name": "ibm_brisbane",
+        "backend_options": {
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 50000
+        },
+        "additional_metadata": {
+            "num_qubits": 127,
+            "sampled_state": "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
+            "optimization_level": 0,
+            "job_status": "JobStatus.QUEUED"
+        },
+        "job_id": "cmxphny5z3p0008dmqsg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "Calibration"
+        ]
+    },
+    {
+        "creation_date": "2023-10-27 09:38:02.259153+02:00",
+        "notebook_name": "get_IQ_calibration_data_Brisbane",
+        "backend_name": "ibm_brisbane",
+        "backend_options": {
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 50000,
+            "memory": false
+        },
+        "additional_metadata": {
+            "num_qubits": 127,
+            "sampled_state": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+            "optimization_level": 0,
+            "job_status": "JobStatus.QUEUED"
+        },
+        "job_id": "cmxphppbgfs0008763yg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "Calibration"
+        ]
+    },
+    {
+        "creation_date": "2023-10-27 09:46:24.671322+02:00",
+        "notebook_name": "get_IQ_calibration_data_Brisbane",
+        "backend_name": "ibm_brisbane",
+        "backend_options": {
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 50000,
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true
+        },
+        "additional_metadata": {
+            "num_qubits": 127,
+            "sampled_state": "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
+            "optimization_level": 0,
+            "job_status": "JobStatus.QUEUED"
+        },
+        "job_id": "cmxpnm6pbeb00088n6c0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "Calibration"
+        ]
+    },
+    {
+        "creation_date": "2023-10-27 09:46:27.106767+02:00",
+        "notebook_name": "get_IQ_calibration_data_Brisbane",
+        "backend_name": "ibm_brisbane",
+        "backend_options": {
+            "skip_transpilation": true,
+            "shots": 50000,
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single"
+        },
+        "additional_metadata": {
+            "num_qubits": 127,
+            "sampled_state": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+            "optimization_level": 0,
+            "job_status": "JobStatus.QUEUED"
+        },
+        "job_id": "cmxpnmypbeb00088n6cg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "Calibration"
+        ]
+    },
+    {
+        "creation_date": "2023-10-27 09:46:33.502824+02:00",
+        "notebook_name": "get_IQ_calibration_data_Nazca",
+        "backend_name": "ibm_nazca",
+        "backend_options": {
+            "shots": 50000,
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "num_qubits": 127,
+            "sampled_state": "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
+            "optimization_level": 0,
+            "job_status": "JobStatus.QUEUED"
+        },
+        "job_id": "cmxpnpepbeb00088n6d0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "Calibration"
+        ]
+    },
+    {
+        "creation_date": "2023-10-27 09:46:36.271581+02:00",
+        "notebook_name": "get_IQ_calibration_data_Nazca",
+        "backend_name": "ibm_nazca",
+        "backend_options": {
+            "shots": 50000,
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "num_qubits": 127,
+            "sampled_state": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+            "optimization_level": 0,
+            "job_status": "JobStatus.QUEUED"
+        },
+        "job_id": "cmxpnq65z3p0008dmqy0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "Calibration"
+        ]
+    },
+    {
+        "creation_date": "2023-10-27 09:46:41.326236+02:00",
+        "notebook_name": "get_IQ_calibration_data_Sherbrooke",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 10000,
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "num_qubits": 127,
+            "sampled_state": "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
+            "optimization_level": 0,
+            "job_status": "JobStatus.QUEUED"
+        },
+        "job_id": "cmxpnrf5z3p0008dmqyg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "Calibration"
+        ]
+    },
+    {
+        "creation_date": "2023-10-27 09:46:44.189709+02:00",
+        "notebook_name": "get_IQ_calibration_data_Sherbrooke",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 10000,
+            "memory": false,
+            "meas_level": 1
+        },
+        "additional_metadata": {
+            "num_qubits": 127,
+            "sampled_state": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+            "optimization_level": 0,
+            "job_status": "JobStatus.QUEUED"
+        },
+        "job_id": "cmxpns7evjqg008aj740",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "Calibration"
+        ]
     }
 ]
