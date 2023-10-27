@@ -1,7 +1,5 @@
 .ipynb_checkpoints
 __pycache__
 .DS_Store
-
-# .Scratch/ left for backup, will be changed if the files is too big
-
 .vscode/
+src/soft_information.egg-info/
