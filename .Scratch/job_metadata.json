@@ -332,8 +332,7 @@
             "meas_return": "single",
             "skip_transpilation": true,
             "shots": 1000000,
-            "memory": false,
-            "job_name": "IQ_calibration_data"
+            "memory": false
         },
         "additional_metadata": {
             "num_qubits": 127,
@@ -354,9 +353,6 @@
             "meas_level": 1,
             "init_qubits": true,
             "meas_return": "single",
-            "job_metadata": {
-                "test": "test"
-            },
             "skip_transpilation": true,
             "shots": 1000000
         },
@@ -606,6 +602,104 @@
             "job_status": "JobStatus.DONE"
         },
         "job_id": "cmx915cwjay0008cnc40",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "Calibration"
+        ]
+    },
+    {
+        "creation_date": "2023-10-27 08:58:45.999205+02:00",
+        "notebook_name": "get_IQ_calibration_data_Mumbai",
+        "backend_name": "ibmq_mumbai",
+        "backend_options": {
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 100000
+        },
+        "additional_metadata": {
+            "num_qubits": 27,
+            "sampled_state": "111111111111111111111111111",
+            "optimization_level": 0,
+            "job_status": "JobStatus.DONE"
+        },
+        "job_id": "cmxnz9dwjay0008cnwc0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "Calibration"
+        ]
+    },
+    {
+        "creation_date": "2023-10-27 08:58:57.304082+02:00",
+        "notebook_name": "get_IQ_calibration_data_Mumbai",
+        "backend_name": "ibmq_mumbai",
+        "backend_options": {
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 100000,
+            "memory": false
+        },
+        "additional_metadata": {
+            "num_qubits": 27,
+            "sampled_state": "000000000000000000000000000",
+            "optimization_level": 0,
+            "job_status": "JobStatus.DONE"
+        },
+        "job_id": "cmxnzcdd31100080btqg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "Calibration"
+        ]
+    },
+    {
+        "creation_date": "2023-10-27 09:34:57.180420+02:00",
+        "notebook_name": "get_IQ_calibration_data_Sherbrooke",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 50000,
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true
+        },
+        "additional_metadata": {
+            "num_qubits": 127,
+            "sampled_state": "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
+            "optimization_level": 0
+        },
+        "job_id": "cmxpg895z3p0008dmqp0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "Calibration"
+        ]
+    },
+    {
+        "creation_date": "2023-10-27 09:35:00.118110+02:00",
+        "notebook_name": "get_IQ_calibration_data_Sherbrooke",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 50000,
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "num_qubits": 127,
+            "sampled_state": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+            "optimization_level": 0
+        },
+        "job_id": "cmxpg91evjqg008aj6t0",
         "job_name": null,
         "job_metadata": {},
         "tags": [

@@ -68,7 +68,7 @@ def plot_IQ_data(data, n_bins=250, title=None):
     plt.show()
 
 
-def plot_multiple_IQ_data(datasets, figsize = None, alpha = None, n_bins=250, title=None):
+def plot_multiple_IQ_data(datasets, legend_labels=None, figsize = None, alpha = None, n_bins=250, title=None):
     if figsize:
         fig = plt.figure(figsize=figsize)
     else:
@@ -85,13 +85,16 @@ def plot_multiple_IQ_data(datasets, figsize = None, alpha = None, n_bins=250, ti
         real_parts = np.real(data).flatten()
         imag_parts = np.imag(data).flatten()
 
+        # Set the label 
+        label = legend_labels[i] if legend_labels else f'Dataset {i+1}'
+
         # Main scatter plot
         if not alpha:
             alpha = min(1, max(2e4 / len(data), 2e-3))
         ax_scatter.scatter(real_parts, imag_parts, alpha=alpha, marker='.', s=0.1, color=color)
 
         # Histogram for the real parts
-        ax_hist_x.hist(real_parts, bins=n_bins, align='mid', color=color, alpha=0.3, label=f'Dataset {i+1}')
+        ax_hist_x.hist(real_parts, bins=n_bins, align='mid', color=color, alpha=0.3, label=label)
 
         # Histogram for the imaginary parts
         ax_hist_y.hist(imag_parts, bins=n_bins, orientation='horizontal', align='mid', color=color, alpha=0.3)
@@ -104,7 +107,7 @@ def plot_multiple_IQ_data(datasets, figsize = None, alpha = None, n_bins=250, ti
     ax_hist_x.xaxis.set_ticklabels([])  # Remove x tick labels
     ax_hist_x.grid(True)
     ax_hist_x.set_title(title if title else "Scatter Plot")
-    ax_hist_x.legend(loc="upper right", bbox_to_anchor=(1.5,1), fontsize='small')
+    ax_hist_x.legend(loc="upper right", bbox_to_anchor=(1.5,1.2), fontsize='small')
 
     ax_hist_y.set_xlabel("Counts")
     ax_hist_y.yaxis.set_ticklabels([])  # Remove y tick labels
