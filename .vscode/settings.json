@@ -1,10 +1,6 @@
 {
     "github-enterprise.uri": "https://github.ibm.com",
     "python.analysis.extraPaths": [
-        "/Users/mha/My Drive/Desktop/Studium/Physik/Master/Semester 3/IBM/IBM GIT/Soft-Info/libs",
-        "/Users/mha/My Drive/Desktop/Studium/Physik/Master/Semester 3/IBM/IBM GIT/Soft-Info/src",
-        "/Users/mha/My Drive/Desktop/Studium/Physik/Master/Semester 3/IBM/IBM GIT/Soft-Info/libs/ResultsSaver/result_saver",
-        "/Users/mha/My Drive/Desktop/Studium/Physik/Master/Semester 3/IBM/IBM GIT/Soft-Info/libs/qiskit-qec",
         "./libs/ResultsSaver",
         "./libs/qiskit-qec/src",
         "./ResultsSaver",
