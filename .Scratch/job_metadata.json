@@ -13,7 +13,8 @@
         },
         "additional_metadata": {
             "sampled_state": 1,
-            "num_qubits": 1
+            "num_qubits": 1,
+            "job_status": "JobStatus.DONE"
         },
         "job_id": "cmvyazbk20pg008epbzg",
         "job_name": null,
@@ -34,7 +35,8 @@
         },
         "additional_metadata": {
             "sampled_state": 0,
-            "num_qubits": 1
+            "num_qubits": 1,
+            "job_status": "JobStatus.DONE"
         },
         "job_id": "cmvy9sf23ve0008zm1bg",
         "job_name": null,
@@ -56,7 +58,8 @@
         "additional_metadata": {
             "sampled_state": "11",
             "num_qubits": 2,
-            "extra": "20 CXs"
+            "extra": "20 CXs",
+            "job_status": "JobStatus.DONE"
         },
         "job_id": "cmvwkbnjad30008ec01g",
         "job_name": null,
@@ -78,7 +81,8 @@
         "additional_metadata": {
             "sampled_state": "11",
             "num_qubits": 2,
-            "extra": "3 CXs"
+            "extra": "3 CXs",
+            "job_status": "JobStatus.DONE"
         },
         "job_id": "cmvvycsvpdgg008geya0",
         "job_name": null,
@@ -136,7 +140,9 @@
         "notebook_name": "KDE_Jak",
         "backend_name": "ibmq_jakarta",
         "backend_options": null,
-        "additional_metadata": null,
+        "additional_metadata": {
+            "job_status": "JobStatus.DONE"
+        },
         "job_id": "cmvpdvzeskrg008xzwx0",
         "job_name": null,
         "job_metadata": {},
@@ -147,7 +153,9 @@
         "notebook_name": "KDE_Jak",
         "backend_name": "ibmq_jakarta",
         "backend_options": null,
-        "additional_metadata": null,
+        "additional_metadata": {
+            "job_status": "JobStatus.DONE"
+        },
         "job_id": "cmvp9f5421n00081qnng",
         "job_name": null,
         "job_metadata": {},
@@ -774,7 +782,7 @@
             "num_qubits": 127,
             "sampled_state": "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
             "optimization_level": 0,
-            "job_status": "JobStatus.QUEUED"
+            "job_status": "JobStatus.ERROR"
         },
         "job_id": "cmxphny5z3p0008dmqsg",
         "job_name": null,
@@ -799,7 +807,7 @@
             "num_qubits": 127,
             "sampled_state": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
             "optimization_level": 0,
-            "job_status": "JobStatus.QUEUED"
+            "job_status": "JobStatus.ERROR"
         },
         "job_id": "cmxphppbgfs0008763yg",
         "job_name": null,
@@ -824,7 +832,7 @@
             "num_qubits": 127,
             "sampled_state": "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
             "optimization_level": 0,
-            "job_status": "JobStatus.QUEUED"
+            "job_status": "JobStatus.ERROR"
         },
         "job_id": "cmxpnm6pbeb00088n6c0",
         "job_name": null,
@@ -849,7 +857,7 @@
             "num_qubits": 127,
             "sampled_state": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
             "optimization_level": 0,
-            "job_status": "JobStatus.QUEUED"
+            "job_status": "JobStatus.ERROR"
         },
         "job_id": "cmxpnmypbeb00088n6cg",
         "job_name": null,
