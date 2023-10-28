@@ -1,83 +1,99 @@
 # Maurice Hanisch mhanisc@ethz.ch
 # Created 2023-10-17
 
-import numpy as np
+import warnings
 from collections import defaultdict
+from math import exp
 
+import numpy as np
 from qiskit.result import Counts
 
 from Scratch import metadata_loader
+from soft_info import get_repcode_IQ_map
 
 
-# TODO sample + fitting procedure to get the distributions
-def get_distr(device, qubit):
-    """Fit the IQ Distribution for a given qubit in a given device.
+def estimate_outcome(IQ_point, kernel_0=None, kernel_1=None):
+    """Estimate the outcome for a given IQ datapoint.
 
-    Args:
-        device (str): The name of the device. Example: 'ibmq_jakarta'.
-        qubit (int): The index of the qubit. Example: 0.
+    Parameters:
+    - IQ_point: The IQ datapoint for which the outcome should be estimated.
+    - kernel_0: KDE model for state 0.
+    - kernel_1: KDE model for state 1.
+
+    Returns:
+    - int: The estimated outcome (0 or 1).
     """
-    md = metadata_loader(extract=True)
-
-
-
-    # TODO implement this
-    distr_0 = None
-    distr_1 = None
-
-    return distr_0, distr_1
-
-
-def estimate_outcome(IQ_point, distr_0=None, distr_1=None):
-    """Estimate the outcome for a given IQ datapoint. If 
-    no distribution given uses the real part of the IQ point."""
-    if distr_0 is None or distr_1 is None:
+    if kernel_0 is None or kernel_1 is None:
+        warnings.warn(
+            "Not enough kernels provided. Using the magnitude of the real part for estimation..")
         if np.real(IQ_point) > 0:
             return 1
-        else: # more probable to get a 0 if it is in the middle
+        else:
             return 0
-        
-    if distr_0(IQ_point) > distr_1(IQ_point):
+
+    if kernel_0.score_samples([IQ_point]) > kernel_1.score_samples([IQ_point]):
         return 0
     else:
         return 1
 
 
-def get_counts(IQ_data, distr_0=None, distr_1=None):
-    """Convert the IQ data to counts.
+def get_counts(IQ_data, kde_dict=None, layout=None, synd_rounds=None):
+    """Convert the IQ data to counts using corresponding KDEs for each qubit.
 
     Args:
-        IQ_data (dict): The IQ data for multiple shots.
+        IQ_data (list of list of floats): The IQ data for multiple shots. 
+            Each inner list contains IQ data for a single shot.
+        kde_dict (dict, optional): Dictionary mapping qubit index to a tuple containing its KDEs for state 0 and 1.
+        layout (list of int, optional): List specifying the layout of qubits.
+        synd_rounds (int, optional): Number of syndrome rounds.
 
     Returns:
-        count dict (qiskit.result.counts.Counts): The counts for the experiments.
+        count_dict (qiskit.result.counts.Counts): The counts for the experiments.
     """
     count_dict = defaultdict(int)
+
+    qubit_mapping = None
+    if layout is not None and synd_rounds is not None:
+        qubit_mapping = get_repcode_IQ_map(layout, synd_rounds)
+
+    if qubit_mapping is None:
+        warnings.warn(
+            "Missing layout or synd_rounds, estimating outcomes without KDEs.")
+
     for shot in IQ_data:
         outcome_str = ""
-        for IQ_point in shot:
-            outcome_str += str(estimate_outcome(IQ_point, distr_0, distr_1))
+        for idx, IQ_point in enumerate(shot):
+            if qubit_mapping is not None:
+                qubit_idx = qubit_mapping[idx]
+                kde_0, kde_1 = kde_dict.get(qubit_idx, (None, None))
+                # returns None if qubit_idx not in dict => normal outcome estimation
+                outcome_str += str(estimate_outcome(IQ_point, kde_0, kde_1))
+            else:
+                outcome_str += str(estimate_outcome(IQ_point))
         count_dict[outcome_str] += 1
 
     return Counts(count_dict)
 
 
 # NOT est_outcome left because will compute it already for the graph
-def llh_ratio(IQ_point, distr_0, distr_1):
-    """Compute the likelihood ratio for a given mu and mu_hat. According to arXiv:2107.13589.
+def llh_ratio(IQ_point, kernel_0, kernel_1):
+    """Compute the likelihood ratio for a given IQ_point according to arXiv:2107.13589.
 
     Args:
-        mu (float): The IQ datapoint.
-        mu_hat (float): The estimated outcome.
-        dist_0 (scipy.stats distribution): The IQ distribution for outcome = 0.
-        dist_1 (scipy.stats distribution): The IQ distribution for outcome = 1.
+        IQ_point (float): The IQ datapoint.
+        kernel_0: KDE model for state 0.
+        kernel_1: KDE model for state 1.
 
     Returns:
-        float: The log-likelihood ratio.
+        float: The likelihood ratio.
     """
-    probabilities = {0: distr_0(IQ_point), 1: distr_1(IQ_point)}
-    est_outcome = estimate_outcome(IQ_point, distr_0, distr_1)
+
+    prob_0 = exp(kernel_0.score_samples([IQ_point])[0])
+    prob_1 = exp(kernel_1.score_samples([IQ_point])[0])
+
+    est_outcome = estimate_outcome(IQ_point, kernel_0, kernel_1)
+
     if est_outcome in [0, 1]:
-        return probabilities[1 - est_outcome] / probabilities[est_outcome]
+        return prob_1 / prob_0 if est_outcome == 0 else prob_0 / prob_1
     else:
         raise ValueError("The estimated outcome must be either 0 or 1.")

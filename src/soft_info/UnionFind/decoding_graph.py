@@ -48,7 +48,7 @@ def soft_reweight(graph, IQ_data, distr_0, distr_1, p_data=None, p_meas=None):
             weight = llh_ratio(IQ_point, distr_0, distr_1)
             edge['weight'] += weight  # sum for diagonal edges
 
-        edge['weight'] = np.log(edge['weight'])
+        edge['weight'] = -np.log(edge['weight'])
 
     return graph
 
