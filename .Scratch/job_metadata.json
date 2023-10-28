@@ -1039,7 +1039,7 @@
             "rounds": 3,
             "logical": "0",
             "layout": "_is_hex=True",
-            "job_status": "JobStatus.QUEUED"
+            "job_status": "JobStatus.DONE"
         },
         "job_id": "cmyk2vbrmwhg008bs57g",
         "job_name": null,
