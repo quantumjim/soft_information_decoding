@@ -43,7 +43,7 @@ def get_repcode_IQ_map(layout, synd_rounds):
         dict: A dictionary mapping the index of IQ data to the corresponding physical qubit. i. e. {IQ_idx: qubit_idx}.
     """
     iq_map = {}
-    n_link_qubits = (len(layout) - 1) / 2
+    n_link_qubits = len(layout) // 2
     
     for t in range(synd_rounds):
         for idx, layout_link_qubit in enumerate(layout[:n_link_qubits]):
