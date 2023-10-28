@@ -965,5 +965,30 @@
         "tags": [
             "Calibration"
         ]
+    },
+    {
+        "creation_date": "2023-10-28 16:08:34.167027+02:00",
+        "notebook_name": "test_get_counts_2",
+        "backend_name": "ibmq_mumbai",
+        "backend_options": {
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 1000,
+            "memory": false,
+            "meas_level": 1
+        },
+        "additional_metadata": {
+            "code": "RepetitionCodeCircuit",
+            "distance": 3,
+            "rounds": 3,
+            "logical": "0",
+            "layout": "_is_hex=True",
+            "job_status": "JobStatus.DONE"
+        },
+        "job_id": "cmyhbrqrmwhg008bs4h0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
     }
 ]
