@@ -50,8 +50,9 @@ def fit_KDE(IQ_data, bandwidth=0.1, plot=False, qubit_index='', num_samples=1e5,
 
     if not scaler:
         scaler = StandardScaler()
-
-    normalized_data = scaler.fit_transform(combined_data)
+        normalized_data = scaler.fit_transform(combined_data)
+    else:
+        normalized_data = scaler.transform(combined_data)
 
     kde = KernelDensity(kernel='gaussian', bandwidth=bandwidth)
     kde.fit(normalized_data)
@@ -96,13 +97,19 @@ def get_KDEs(provider, device, qubits: List[int], bandwidths: Union[float, list]
 
     for qubit in qubits:
         memories = all_memories[qubit]
+        # Combine both 0 and 1 state data
+        combined_data = np.concatenate([memories.get("mmr_0", []), memories.get("mmr_1", [])])
 
-        kde_0, scaler_0 = fit_KDE(
-            memories.get("mmr_0", []), bandwidth=bw0, plot=plot0, qubit_index=qubit, num_samples=num_samples)
-        kde_1, scaler_1 = fit_KDE(
-            memories.get("mmr_1", []), bandwidth=bw1, plot=plot1, qubit_index=qubit, num_samples=num_samples)
+        # Fit the scaler on combined_data
+        scaler = StandardScaler()
+        scaler.fit(np.column_stack((combined_data.real, combined_data.imag)))
+
+        kde_0, _ = fit_KDE(
+            memories.get("mmr_0", []), bandwidth=bw0, plot=plot0, qubit_index=qubit, num_samples=num_samples, scaler=scaler)
+        kde_1, _ = fit_KDE(
+            memories.get("mmr_1", []), bandwidth=bw1, plot=plot1, qubit_index=qubit, num_samples=num_samples, scaler=scaler)
 
         all_kdes[qubit] = [kde_0, kde_1]
-        all_scalers[qubit] = [scaler_0, scaler_1]
+        all_scalers[qubit] = scaler  # single scaler for both states
 
     return all_kdes, all_scalers

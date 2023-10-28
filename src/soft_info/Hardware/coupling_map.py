@@ -85,7 +85,7 @@ def find_longest_path_general(backend, plot=False):
     # Length of longest path, longest path, starting qubit
     longest_path_info = [0, [], None]
 
-    for start_qubit in tqdm(G.nodes(), desc="Finding the longest path"):
+    for start_qubit in tqdm(G.nodes(), desc=f"Finding the longest path starting from {len(G.nodes())} qubits"):
         visited = set()
         find_longest_path_dfs(G, start_qubit, visited, [], longest_path_info)
 
@@ -118,7 +118,7 @@ def find_longest_path_in_hex(backend, plot=False):
         warnings.warn(
             (f"Not a valid heavy hex map, found {len(corner_nodes)} corner" 
              +"nodes instead of 2. Looking for longest path starting with the"
-             +"last corner node."))
+             +" last corner node."))
 
     visited = set()
     longest_path_info = [0, [], None]
