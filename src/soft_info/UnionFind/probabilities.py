@@ -8,8 +8,7 @@ from math import exp
 import numpy as np
 from qiskit.result import Counts
 
-from Scratch import metadata_loader
-from soft_info import get_repcode_IQ_map
+from ..Hardware.transpile_rep_code import get_repcode_IQ_map
 
 
 def estimate_outcome(IQ_point, kernel_0=None, kernel_1=None):

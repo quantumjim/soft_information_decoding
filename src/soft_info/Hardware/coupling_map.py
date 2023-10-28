@@ -115,11 +115,14 @@ def find_longest_path_in_hex(backend, plot=False):
     corner_nodes = [node for node in G.nodes() if G.degree(node) == 1]
 
     if len(corner_nodes) != 2:
-        return f"Not a valid heavy hex map, found {len(corner_nodes)} corner nodes instead of 2."
+        warnings.warn(
+            (f"Not a valid heavy hex map, found {len(corner_nodes)} corner" 
+             +"nodes instead of 2. Looking for longest path starting with the"
+             +"last corner node."))
 
     visited = set()
     longest_path_info = [0, [], None]
-    find_longest_path_dfs(G, corner_nodes[0], visited, [], longest_path_info)
+    find_longest_path_dfs(G, corner_nodes[-1], visited, [], longest_path_info)
 
     length, path, start_qubit = longest_path_info
 
