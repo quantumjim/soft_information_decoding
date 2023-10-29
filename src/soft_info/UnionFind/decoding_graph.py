@@ -118,15 +118,15 @@ def rx_draw_2D(graph):
         tgt_index = graph.nodes()[tgt_node].index
 
         edge_color = 'm'
-        edge_label = f"{qubits} w:{weight}"
+        edge_label = f"{qubits} w:{weight:.2f}"
 
         if not qubits:  # Time edges
             edge_color = 'green'
-            edge_label = f"w:{weight}"
+            edge_label = f"w:{weight:.2f}"
 
         if src_time != tgt_time and src_index != tgt_index:  # Mixed edges
             edge_color = 'grey'
-            edge_label = f"{qubits} w:{weight}"
+            edge_label = f"{qubits} w:{weight:.2f}"
 
         ax.plot([src_time, tgt_time], [src_index, tgt_index],
                 color=edge_color, linestyle='--')
