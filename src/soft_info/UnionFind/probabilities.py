@@ -41,7 +41,7 @@ def estimate_outcome(IQ_point, kde_0=None, kde_1=None, scaler=None):
         return 1
 
 
-def get_counts(IQ_data, kde_dict=None, scaler_dict=None, layout=None, synd_rounds=None):
+def get_counts(IQ_data, kde_dict=None, scaler_dict=None, layout=None, synd_rounds=None, verbose=False):
     """Convert the IQ data to counts using corresponding KDEs for each qubit.
 
     Args:
@@ -64,8 +64,10 @@ def get_counts(IQ_data, kde_dict=None, scaler_dict=None, layout=None, synd_round
     if qubit_mapping is None:
         warnings.warn(
             "Missing layout or synd_rounds, estimating outcomes without KDEs.")
+        
+    iterable = tqdm(IQ_data, desc=f"Processing {len(IQ_data)} shots") if verbose else IQ_data
 
-    for shot in tqdm(IQ_data, desc=f"Processing {len(IQ_data)} shots"):
+    for shot in iterable:
         outcome_str = ""
         for idx, IQ_point in enumerate(shot):
             if qubit_mapping is not None:
