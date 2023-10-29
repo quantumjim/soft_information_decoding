@@ -1,6 +1,8 @@
 # Maurice Hanisch mhanisc@ethz.ch
 # Created 2023-10-17
 
+from copy import deepcopy
+
 import numpy as np
 import networkx as nx
 import matplotlib.pyplot as plt
@@ -53,6 +55,91 @@ def soft_reweight(graph, IQ_data, distr_0, distr_1, p_data=None, p_meas=None):
     return graph
 
 
+def rx_draw_2D(graph):
+    graph = deepcopy(graph) # deepopy the graph to not change it during plotting
+    fig, ax = plt.subplots()   
+
+    # First pass to find t_max and index_max
+    t_max = float('-inf')
+    index_max = float('-inf')
+    for node in graph.nodes():
+        time = node.time
+        index = node.index
+
+        if time is not None:
+            t_max = max(t_max, time)
+        index_max = max(index_max, index)
+
+    # Second pass for plotting nodes
+    for node_idx, node in enumerate(graph.nodes()):
+        is_boundary = node.is_boundary
+        time = node.time
+        index = node.index
+        if time is None:
+            time = t_max / 2
+            index = -0.5 if index == 0 else index_max + 0.5
+            node.time = time
+            node.index = index
+
+        color = 'r' if is_boundary else 'b'
+        ax.scatter(time, index, c=color)
+
+    # Plot edges
+    for i, edge in enumerate(graph.edge_list()):
+        src, tgt = edge
+        edge_data = graph.edges()[i]
+        weight = edge_data.weight
+        qubits = edge_data.qubits
+
+        src_time = graph.nodes()[src].time
+        tgt_time = graph.nodes()[tgt].time
+        src_index = graph.nodes()[src].index
+        tgt_index = graph.nodes()[tgt].index
+
+        edge_color = 'm'
+        edge_label = f"{qubits} w:{weight}"
+
+        if not qubits:  # Time edges
+            edge_color = 'green'
+            edge_label = f"w:{weight}"
+
+        if src_time != tgt_time and src_index != tgt_index:  # Mixed edges
+            edge_color = 'grey'
+            edge_label = f"{qubits} w:{weight}"
+
+        ax.plot([src_time, tgt_time], [src_index, tgt_index],
+                color=edge_color, linestyle='--')
+
+        mid_time = (src_time + tgt_time) / 2
+        ax.text(mid_time, (src_index + tgt_index) / 2, edge_label)
+
+    # Add legend in the top right corner, ensuring no overlap
+    ax.legend(handles=[plt.Line2D([0], [0], marker='o', color='w', label='Boundary Qubits', markersize=10, markerfacecolor='red'),
+                       plt.Line2D([0], [0], marker='o', color='w',
+                                  label='Check Nodes', markersize=10, markerfacecolor='blue'),
+                       plt.Line2D([0], [0], color='g',
+                                  linestyle='--', label='Time edges'),
+                       plt.Line2D([0], [0], color='grey',
+                                  linestyle='--', label='Mixed edges'),
+                       plt.Line2D([0], [0], color='m', linestyle='--', label='Qubit edges')],
+              loc='upper left', bbox_to_anchor=(1, 1))
+
+    # Adjust layout to ensure the legend does not overlap
+    plt.tight_layout(rect=[0, 0, 2, 1])
+
+    # Set y-axis ticks to half-integers and label them to represent qubit numbers
+    y_ticks = [i - 0.5 for i in range(index_max + 2)]
+    ax.set_yticks(y_ticks)
+    ax.set_yticklabels([str(i) for i in range(index_max + 2)])
+
+    ax.set_ylabel('Qubit Index')
+    ax.set_xlabel('Syndrome Round')
+    plt.grid(True, linestyle='--', alpha=0.3)
+
+    plt.show()
+
+
+# NOT NEEDED
 def rx_draw(graph):
     G_nx = nx.Graph()
 
@@ -95,93 +182,5 @@ def rx_draw(graph):
                          xytext=(0, 10),
                          ha='center',
                          color='red')
-
-    plt.show()
-
-
-def rx_draw_2D(graph):
-    fig, ax = plt.subplots()
-
-    node_info_dict = {}
-    t_max = float('-inf')
-    index_max = float('-inf')
-
-    # First pass to find t_max and index_max
-    for node in graph.node_indexes():
-        time = graph.nodes()[node]['time']
-        index = graph.nodes()[node]['index']
-        if time is not None:
-            t_max = max(t_max, time)
-        index_max = max(index_max, index)
-
-    # Second pass for plotting nodes
-    for node in graph.node_indexes():
-        is_boundary = graph.nodes()[node]['is_boundary']
-        time = graph.nodes()[node]['time']
-        index = graph.nodes()[node]['index']
-
-        if time is None:
-            time = t_max / 2
-            index = -0.5 if index == 0 else index_max + 0.5
-
-        node_info_dict[node] = {
-            'is_boundary': is_boundary, 'time': time, 'index': index}
-        color = 'r' if is_boundary else 'b'
-
-        ax.scatter(time, index, c=color)
-
-    # ... (rest of the code remains the same up to the edge plotting section)
-
-    # Plot edges
-    for i, edge in enumerate(graph.edge_list()):
-        src, tgt = edge
-        edge_data = graph.edges()[i]
-        weight = edge_data.get('weight', 1)
-        qubits = edge_data['qubits']
-
-        src_time = node_info_dict[src]['time']
-        tgt_time = node_info_dict[tgt]['time']
-        src_index = node_info_dict[src]['index']
-        tgt_index = node_info_dict[tgt]['index']
-
-        edge_color = 'm'
-        edge_label = f"{qubits} w:{weight}"
-
-        if not qubits:  # Time edges
-            edge_color = 'green'
-            edge_label = f"w:{weight}"
-
-        if src_time != tgt_time and src_index != tgt_index:  # Mixed edges
-            edge_color = 'grey'  # 'm' stands for magenta, change as you like
-            edge_label = f"{qubits} w:{weight}"
-
-        ax.plot([src_time, tgt_time], [src_index, tgt_index],
-                color=edge_color, linestyle='--')
-
-        mid_time = (src_time + tgt_time) / 2
-        ax.text(mid_time, (src_index + tgt_index) / 2, edge_label)
-
-    # Add legend in the top right corner, ensuring no overlap
-    ax.legend(handles=[plt.Line2D([0], [0], marker='o', color='w', label='Boundary Qubits', markersize=10, markerfacecolor='red'),
-                       plt.Line2D([0], [0], marker='o', color='w',
-                                  label='Check Nodes', markersize=10, markerfacecolor='blue'),
-                       plt.Line2D([0], [0], color='g',
-                                  linestyle='--', label='Time edges'),
-                       plt.Line2D([0], [0], color='grey',
-                                  linestyle='--', label='Mixed edges'),
-                       plt.Line2D([0], [0], color='m', linestyle='--', label='Qubit edges')],
-              loc='upper left', bbox_to_anchor=(1, 1))
-
-    # Adjust layout to ensure the legend does not overlap
-    plt.tight_layout(rect=[0, 0, 2, 1])
-
-    # Set y-axis ticks to half-integers and label them to represent qubit numbers
-    y_ticks = [i - 0.5 for i in range(index_max + 2)]
-    ax.set_yticks(y_ticks)
-    ax.set_yticklabels([str(i) for i in range(index_max + 2)])
-
-    ax.set_ylabel('Qubit Index')
-    ax.set_xlabel('Syndrome Round')
-    plt.grid(True, linestyle='--', alpha=0.3)
 
     plt.show()
