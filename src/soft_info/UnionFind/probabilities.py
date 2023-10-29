@@ -12,28 +12,30 @@ from qiskit.result import Counts
 from ..Hardware.transpile_rep_code import get_repcode_IQ_map
 
 
-def estimate_outcome(IQ_point, kernel_0=None, kernel_1=None, scaler=None):
+def estimate_outcome(IQ_point, kde_0=None, kde_1=None, scaler=None):
     """Estimate the outcome for a given IQ datapoint.
 
     Parameters:
     - IQ_point: The IQ datapoint for which the outcome should be estimated.
-    - kernel_0: KDE model for state 0.
-    - kernel_1: KDE model for state 1.
-
+    - kde_0: KDE model for state 0.
+    - kde_1: KDE model for state 1.
+    - scaler (StandardScaler, optional): Scaler object. Defaults to None.
+    
     Returns:
     - int: The estimated outcome (0 or 1).
     """
-    if kernel_0 is None or kernel_1 is None or scaler is None:
+    if kde_0 is None or kde_1 is None or scaler is None:
         warnings.warn(
             "Not enough kernels or no scaler provided. Using the magnitude of the real part for estimation..")
         if np.real(IQ_point) > 0:
             return 1
         else:
             return 0
-    
-    scaled_plane_point = scaler.transform([[np.real(IQ_point), np.imag(IQ_point)]])
 
-    if kernel_0.score_samples(scaled_plane_point) > kernel_1.score_samples(scaled_plane_point):
+    scaled_plane_point = scaler.transform(
+        [[np.real(IQ_point), np.imag(IQ_point)]])
+
+    if kde_0.score_samples(scaled_plane_point) > kde_1.score_samples(scaled_plane_point):
         return 0
     else:
         return 1
@@ -71,35 +73,46 @@ def get_counts(IQ_data, kde_dict=None, scaler_dict=None, layout=None, synd_round
                 kde_0, kde_1 = kde_dict.get(qubit_idx, (None, None))
                 scaler = scaler_dict.get(qubit_idx, None)
                 # returns None if qubit_idx not in dict => normal outcome estimation
-                outcome_str += str(estimate_outcome(IQ_point, kde_0, kde_1, scaler))
+                outcome_str += str(estimate_outcome(IQ_point,
+                                   kde_0, kde_1, scaler))
             else:
                 outcome_str += str(estimate_outcome(IQ_point))
         count_dict[outcome_str] += 1
 
-    count_dict = dict(sorted(count_dict.items(), key=lambda item: item[1], reverse=True))
+    count_dict = dict(
+        sorted(count_dict.items(), key=lambda item: item[1], reverse=True))
 
     return Counts(count_dict)
 
 
-# NOT est_outcome left because will compute it already for the graph
-def llh_ratio(IQ_point, kernel_0, kernel_1):
-    """Compute the likelihood ratio for a given IQ_point according to arXiv:2107.13589.
+def llh_ratio(IQ_point, kde_0=None, kde_1=None, scaler=None):
+    """Compute the log likelihood ratio for a given IQ_point.
 
     Args:
-        IQ_point (float): The IQ datapoint.
-        kernel_0: KDE model for state 0.
-        kernel_1: KDE model for state 1.
+        -IQ_point (float): The IQ datapoint.
+        - kde_0: KDE model for state 0.
+        - kde_1: KDE model for state 1.
+        -scaler (StandardScaler, optional): Scaler object. Defaults to None.
 
     Returns:
-        float: The likelihood ratio.
+        float: The log likelihood ratio.
     """
+    if kde_0 is None or kde_1 is None or scaler is None:
+        warnings.warn(
+            "Not enough kernels or no scaler provided. Cannot compute likelihood ratio.")
+        return None
 
-    prob_0 = exp(kernel_0.score_samples([IQ_point])[0])
-    prob_1 = exp(kernel_1.score_samples([IQ_point])[0])
+    scaled_plane_point = scaler.transform(
+        [[np.real(IQ_point), np.imag(IQ_point)]])
 
-    est_outcome = estimate_outcome(IQ_point, kernel_0, kernel_1)
+    log_prob_0 = kde_0.score_samples(scaled_plane_point)[0]
+    log_prob_1 = kde_1.score_samples(scaled_plane_point)[0]
+
+    est_outcome = estimate_outcome(IQ_point, kde_0, kde_1, scaler)
 
     if est_outcome in [0, 1]:
-        return prob_1 / prob_0 if est_outcome == 0 else prob_0 / prob_1
+        return -(log_prob_1 - log_prob_0) if est_outcome == 0 else -(log_prob_0 - log_prob_1)
     else:
         raise ValueError("The estimated outcome must be either 0 or 1.")
+
+

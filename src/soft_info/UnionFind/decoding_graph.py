@@ -2,62 +2,83 @@
 # Created 2023-10-17
 
 from copy import deepcopy
+import warnings
+from typing import List, Dict
 
 import numpy as np
 import networkx as nx
 import matplotlib.pyplot as plt
 
 from .probabilities import llh_ratio
+from ..Hardware.transpile_rep_code import get_repcode_IQ_map
 
 
-def soft_reweight(graph, IQ_data, distr_0, distr_1, p_data=None, p_meas=None):
-    """Reweight the edges of a graph according to the log-likelihood ratio of the IQ datapoints.
+# TODO add correct a priori error rates to the graph
+# TODO implement a hard flip edge
+def soft_reweight(decoder, IQ_data, kde_dict: Dict, scaler_dict : Dict, layout : List[int], p_data : float = None, p_meas : float =None):
+    """Reweight the edges of a graph according to the log-likelihood ratio of the IQ datapoints & the a priori error rates.
 
     Args:
-        graph (DecodingGraph: PyGraph): The graph to reweight.
-        sorted_IQ_data (dict): The IQ data for multiple shots.
-        distr_0 (scipy.stats distribution): The IQ distribution for outcome = 0.
-        distr_1 (scipy.stats distribution): The IQ distribution for outcome = 1.
+        decoder: The decoder object containing the decoding graph.
+        IQ_data (list): The IQ data for multiple shots.
+        kde_dict (dict): Dictionary mapping qubit index to a tuple containing its KDEs for state 0 and 1.
+        scaler_dict (dict): Dictionary mapping qubit index to its scaler for normalization.
+        p_data (float, optional): A priori error rate for data qubits.
+        p_meas (float, optional): A priori error rate for measurement qubits.
 
     Returns:
         DecodingGraph: The reweighted PyGraph.
     """
-    # TODO: reweight the diagonal edges & the data edges
-    # TODO: take the coupling map and update the weights accordingly
+
+    graph = deepcopy(decoder.decoding_graph.graph)
 
     p_data = p_data if p_data is not None else 6.836e-3  # Sherbrooke median
     p_meas = p_meas if p_meas is not None else 0
 
-    tot_nb_checks = max(graph.nodes()[node]['index']
-                        for node in graph.node_indexes()) + 1
+    tot_nb_checks = decoder.code.d - 1  # hardcoded for RepetitionCode
 
-    for i, edge in enumerate(graph.edges()):
-        if edge['qubits'] is not None:
-            edge['weight'] = p_data/(1-p_data)
+    if layout is not None:
+        qubit_mapping = get_repcode_IQ_map(layout, decoder.code.T)
+
+    for edge_idx, edge in enumerate(graph.edges()):
+
+        if edge.qubits is not None:
+            edge.weight = -np.log(p_data/(1-p_data))
         else:
-            edge['weight'] = p_meas/(1-p_meas)
+            edge.weight = 0  # -np.log(p_meas/(1-p_meas))
 
-        node_1, node_2 = graph.nodes()[graph.edge_list(i)[0]], graph.nodes()[
-            graph.edge_list(i)[0]]
-        time_1, time_2 = node_1['time'], node_2['time']
-        if time_1 > time_2:
-            node_1, node_2 = node_2, node_1
-            time_1, time_2 = time_2, time_1
-        if time_1 != time_2:
-            link_qubit_number = node_1['index']
-            IQ_point = IQ_data[time_1 *
-                               tot_nb_checks + link_qubit_number]
-            weight = llh_ratio(IQ_point, distr_0, distr_1)
-            edge['weight'] += weight  # sum for diagonal edges
+        src_node_idx, tgt_node_idx = graph.edge_list()[edge_idx]
+        src_node, tgt_node = graph.nodes()[src_node_idx], graph.nodes()[
+            tgt_node_idx]
+        time_source, time_tgt = src_node['time'], tgt_node['time']
 
-        edge['weight'] = -np.log(edge['weight'])
+        if time_source is None or time_tgt is None:
+            continue
+
+        if time_source > time_tgt:
+            src_node, tgt_node = tgt_node, src_node
+            time_source, time_tgt = time_tgt, time_source
+            src_node_idx, tgt_node_idx = tgt_node_idx, src_node_idx
+            warnings.warn("time_source > time_tgt. Reordering them...") # For debugging purposes.
+
+        if time_source != time_tgt:
+            link_qubit_number = src_node.index
+            IQ_point = IQ_data[time_source * tot_nb_checks + link_qubit_number]
+            layout_qubit_idx = qubit_mapping[src_node_idx]
+            kde_0, kde_1 = kde_dict.get(layout_qubit_idx, (None, None))
+            scaler = scaler_dict.get(layout_qubit_idx, None)
+
+            weight = llh_ratio(IQ_point, kde_0, kde_1, scaler)
+
+            edge.weight += weight
 
     return graph
 
 
 def rx_draw_2D(graph):
-    graph = deepcopy(graph) # deepopy the graph to not change it during plotting
-    fig, ax = plt.subplots()   
+    # deepopy the graph to not change it during plotting
+    graph = deepcopy(graph)
+    fig, ax = plt.subplots()
 
     # First pass to find t_max and index_max
     t_max = float('-inf')
@@ -86,15 +107,15 @@ def rx_draw_2D(graph):
 
     # Plot edges
     for i, edge in enumerate(graph.edge_list()):
-        src, tgt = edge
+        src_node, tgt_node = edge
         edge_data = graph.edges()[i]
         weight = edge_data.weight
         qubits = edge_data.qubits
 
-        src_time = graph.nodes()[src].time
-        tgt_time = graph.nodes()[tgt].time
-        src_index = graph.nodes()[src].index
-        tgt_index = graph.nodes()[tgt].index
+        src_time = graph.nodes()[src_node].time
+        tgt_time = graph.nodes()[tgt_node].time
+        src_index = graph.nodes()[src_node].index
+        tgt_index = graph.nodes()[tgt_node].index
 
         edge_color = 'm'
         edge_label = f"{qubits} w:{weight}"
