@@ -1045,5 +1045,255 @@
         "job_name": null,
         "job_metadata": {},
         "tags": []
+    },
+    {
+        "creation_date": "2023-10-29 14:43:41.752908+01:00",
+        "notebook_name": "bigger_rep_codes",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 10000
+        },
+        "additional_metadata": {
+            "descr": "Run bigger Repetition codes",
+            "code": "RepetitionCodeCircuit",
+            "distance": 10,
+            "rounds": 10,
+            "logical": "0",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cmz633cvayrg008sp2a0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-10-29 14:43:49.136614+01:00",
+        "notebook_name": "bigger_rep_codes",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 10000
+        },
+        "additional_metadata": {
+            "descr": "Run bigger Repetition codes",
+            "code": "RepetitionCodeCircuit",
+            "distance": 10,
+            "rounds": 10,
+            "logical": "1",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cmz635cvayrg008sp2ag",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-10-29 14:43:57.562872+01:00",
+        "notebook_name": "bigger_rep_codes",
+        "backend_name": "ibm_brisbane",
+        "backend_options": {
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 10000,
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true
+        },
+        "additional_metadata": {
+            "descr": "Run bigger Repetition codes",
+            "code": "RepetitionCodeCircuit",
+            "distance": 10,
+            "rounds": 10,
+            "logical": "0",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cmz637crmwhg008bsws0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-10-29 14:44:04.941916+01:00",
+        "notebook_name": "bigger_rep_codes",
+        "backend_name": "ibm_brisbane",
+        "backend_options": {
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 10000,
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true
+        },
+        "additional_metadata": {
+            "descr": "Run bigger Repetition codes",
+            "code": "RepetitionCodeCircuit",
+            "distance": 10,
+            "rounds": 10,
+            "logical": "1",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cmz6395rmwhg008bswt0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-10-29 14:44:13.303112+01:00",
+        "notebook_name": "bigger_rep_codes",
+        "backend_name": "ibm_nazca",
+        "backend_options": {
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 10000,
+            "memory": false,
+            "meas_level": 1
+        },
+        "additional_metadata": {
+            "descr": "Run bigger Repetition codes",
+            "code": "RepetitionCodeCircuit",
+            "distance": 10,
+            "rounds": 10,
+            "logical": "0",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cmz63bdvayrg008sp2b0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-10-29 14:44:20.790250+01:00",
+        "notebook_name": "bigger_rep_codes",
+        "backend_name": "ibm_nazca",
+        "backend_options": {
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 10000,
+            "memory": false
+        },
+        "additional_metadata": {
+            "descr": "Run bigger Repetition codes",
+            "code": "RepetitionCodeCircuit",
+            "distance": 10,
+            "rounds": 10,
+            "logical": "1",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cmz63d5vayrg008sp2bg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-10-29 14:44:29.265179+01:00",
+        "notebook_name": "bigger_rep_codes",
+        "backend_name": "ibm_cusco",
+        "backend_options": {
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 10000
+        },
+        "additional_metadata": {
+            "descr": "Run bigger Repetition codes",
+            "code": "RepetitionCodeCircuit",
+            "distance": 10,
+            "rounds": 10,
+            "logical": "0",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cmz63fdp1am0008q1f6g",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-10-29 14:44:37.002683+01:00",
+        "notebook_name": "bigger_rep_codes",
+        "backend_name": "ibm_cusco",
+        "backend_options": {
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 10000,
+            "memory": false,
+            "meas_level": 1
+        },
+        "additional_metadata": {
+            "descr": "Run bigger Repetition codes",
+            "code": "RepetitionCodeCircuit",
+            "distance": 10,
+            "rounds": 10,
+            "logical": "1",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cmz63h63r3vg008wf9a0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-10-29 14:45:05.329232+01:00",
+        "notebook_name": "bigger_rep_codes",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "skip_transpilation": true,
+            "shots": 10000,
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single"
+        },
+        "additional_metadata": {
+            "descr": "Run bigger Repetition codes",
+            "code": "RepetitionCodeCircuit",
+            "distance": 10,
+            "rounds": 10,
+            "logical": "0",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cmz63rfdaqbg008shr20",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-10-29 14:45:12.608294+01:00",
+        "notebook_name": "bigger_rep_codes",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 10000
+        },
+        "additional_metadata": {
+            "descr": "Run bigger Repetition codes",
+            "code": "RepetitionCodeCircuit",
+            "distance": 10,
+            "rounds": 10,
+            "logical": "1",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cmz63t7daqbg008shr2g",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
     }
 ]
