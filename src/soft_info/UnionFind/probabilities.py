@@ -75,8 +75,15 @@ def get_counts(IQ_data, kde_dict=None, scaler_dict=None, layout=None, synd_round
                 # returns None if qubit_idx not in dict => normal outcome estimation
                 outcome_str += str(estimate_outcome(IQ_point,
                                    kde_0, kde_1, scaler))
+                
+                # Insert a space for decoder formatting
+                if (idx + 1) % (len(layout) // 2) == 0 and (idx + 1) // (len(layout) // 2) <= synd_rounds:
+                    outcome_str += " "
+            
             else:
                 outcome_str += str(estimate_outcome(IQ_point))
+
+        outcome_str = outcome_str[::-1] # Reverse string to match qiskit format
         count_dict[outcome_str] += 1
 
     count_dict = dict(
