@@ -1,6 +1,3 @@
-[submodule "qiskit-qec"]
-	path = libs/qiskit-qec
-	url = https://github.com/MauriceDHanisch/qiskit-qec.git
 [submodule "libs/qiskit-saver-provider"]
 	path = libs/qiskit-saver-provider
 	url = https://github.ibm.com/Maurice-Hanisch/qiskit-saver-provider.git
