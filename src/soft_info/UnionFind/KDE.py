@@ -22,8 +22,8 @@ def plot_KDE(data, kde, scaler):
     axs[0].contour(xedges[:-1], yedges[:-1], hist.T, cmap='viridis')
     axs[0].grid()
     axs[0].set_title('Original Data - Contour Plot')
-    axs[0].set_xlabel('X')
-    axs[0].set_ylabel('Y')
+    axs[0].set_xlabel("In-Phase [arb.]")
+    axs[0].set_ylabel("Quadrature [arb.]")
 
     # Contour plot of KDE
     x_grid = np.linspace(min(data[:, 0]) - 1, max(data[:, 0]) + 1, 100)
@@ -36,10 +36,38 @@ def plot_KDE(data, kde, scaler):
     axs[1].contour(x_grid, y_grid, dens, cmap='viridis')
     axs[1].grid()
     axs[1].set_title(f'KDE - Contour Plot (bw = {kde.bandwidth})')
-    axs[1].set_xlabel('X')
-    axs[1].set_ylabel('Y')
+    axs[1].set_xlabel("In-Phase [arb.]")
+    axs[1].set_ylabel("Quadrature [arb.]")
 
     plt.tight_layout()
+    plt.show()
+
+
+def plot_decision_boundary(data, kde_0, kde_1, scaler):
+    '''Plots the decision boundary between two KDEs.'''
+    # Generate 2D grid of points
+    # Contour plot of KDE
+    x_grid = np.linspace(min(data[:, 0]) - 1, max(data[:, 0]) + 1, 100)
+    y_grid = np.linspace(min(data[:, 1]) - 1, max(data[:, 1]) + 1, 100)
+    xv, yv = np.meshgrid(x_grid, y_grid)
+    gridpoints = np.array([xv.ravel(), yv.ravel()]).T
+    scaled_gridpoints = scaler.transform(gridpoints)
+
+    kde_0_vals = np.exp(kde_0.score_samples(
+        scaled_gridpoints)).reshape(xv.shape)
+    kde_1_vals = np.exp(kde_1.score_samples(
+        scaled_gridpoints)).reshape(xv.shape)
+
+    diff = kde_0_vals - kde_1_vals
+
+    plt.contourf(
+        xv, yv, diff, levels=[-np.inf, 0, np.inf], colors=['red', 'blue'], alpha=0.7)
+
+    plt.contour(xv, yv, diff, levels=[0], colors=['black'])
+
+    plt.title("Decision Boundary")
+    plt.xlabel("In-Phase [arb.]")
+    plt.ylabel("Quadrature [arb.]")
     plt.show()
 
 
@@ -72,7 +100,7 @@ def fit_KDE(IQ_data, bandwidth=0.1, plot=False, qubit_index='', num_samples=1e5,
 
 
 def get_KDEs(provider, device, qubits: List[int], bandwidths: Union[float, list] = 0.2,
-             plot: Union[bool, list] = False, num_samples=1e5) -> Dict[int, List]:
+             plot: Union[bool, list] = False, plot_db=False, num_samples=1e5) -> Dict[int, List]:
     """
     Retrieves kernel density estimations (KDEs) for given qubits on a specific device.
 
@@ -98,11 +126,14 @@ def get_KDEs(provider, device, qubits: List[int], bandwidths: Union[float, list]
     for qubit in qubits:
         memories = all_memories[qubit]
         # Combine both 0 and 1 state data
-        combined_data = np.concatenate([memories.get("mmr_0", []), memories.get("mmr_1", [])])
+        combined_data = np.concatenate(
+            [memories.get("mmr_0", []), memories.get("mmr_1", [])])
+        stacked_data = np.column_stack(
+            (combined_data.real, combined_data.imag))
 
         # Fit the scaler on combined_data
         scaler = StandardScaler()
-        scaler.fit(np.column_stack((combined_data.real, combined_data.imag)))
+        scaler.fit(stacked_data)
 
         kde_0, _ = fit_KDE(
             memories.get("mmr_0", []), bandwidth=bw0, plot=plot0, qubit_index=qubit, num_samples=num_samples, scaler=scaler)
@@ -111,5 +142,9 @@ def get_KDEs(provider, device, qubits: List[int], bandwidths: Union[float, list]
 
         all_kdes[qubit] = [kde_0, kde_1]
         all_scalers[qubit] = scaler  # single scaler for both states
+
+        if plot_db:
+            plot_decision_boundary(
+                stacked_data, kde_0, kde_1, scaler=scaler)
 
     return all_kdes, all_scalers
