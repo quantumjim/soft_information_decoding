@@ -319,13 +319,13 @@ class UnionFindDecoder(ClusteringDecoder):
         self.use_peeling = use_peeling
         self._clusters4peeling = []
 
-    def process(self, meas_string: str):
+    def process(self, meas_string: str, _return_err_str = False):
         """
         Process an output string and return corrected final outcomes.
 
         Args:
             string (str): Output string of the code. Indicating measurement errors, for example {'11111 0000 0000 0000 0000 0000': 1024}.
-
+            _return_err_str (bool): If True, return the error string as well as the corrected logicals.
         Returns:
             corrected_z_logicals (list): A list of integers that are 0 or 1.
         These are the corrected values of the final transversal
@@ -357,7 +357,7 @@ class UnionFindDecoder(ClusteringDecoder):
                     for z_logical in logical_count:
                         if qubit_to_be_corrected in z_logical:
                             logical_count[z_logical] += 1
-            for z_logical, num in logical_count.items(): # WE CAN DELETE THIS AS IT IS ALREADY DOING % 2 afterwards!
+            for z_logical, num in logical_count.items(): #TODO WE CAN DELETE THIS AS IT IS ALREADY DOING % 2 afterwards!
                 # do modulo 2 on the dictionary
                 logical_count[z_logical] = num % 2
 
@@ -371,6 +371,9 @@ class UnionFindDecoder(ClusteringDecoder):
                 corrected_logical = (
                     raw_logical + logical_count[tuple(z_logical)]) % 2  # update the logical outcome modulo 2 if there is a count
                 corrected_z_logicals.append(corrected_logical)
+            
+            if _return_err_str:
+                return corrected_z_logicals, flipped_qubits
             return corrected_z_logicals # list of the corrected logical eigenvalue
 
         else:  # No use_peeling

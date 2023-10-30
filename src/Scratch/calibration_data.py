@@ -18,7 +18,7 @@ def load_calibration_memory(provider, device, qubits: List[int], _take_newest=Tr
     Returns:
         A dictionary with the calibration memory for each qubit
     """
-    md = metadata_loader(extract=True).dropna(subset=["num_qubits"])
+    md = metadata_loader(_extract=True).dropna(subset=["num_qubits"])
 
     mask = (
         (md["backend_name"] == device) &

@@ -37,7 +37,7 @@ def metadata_helper(*args, **kwargs):
     return metadata
 
 
-def metadata_loader(extract: bool = False):
+def metadata_loader(_extract: bool = False, _drop_inutile : bool = False):
     """
     Loads metadata related to job submissions in order of creation date.
 
@@ -77,11 +77,13 @@ def metadata_loader(extract: bool = False):
     root_dir = find_and_create_scratch()
     metadata_path = f"{root_dir}/job_metadata.json"
     metadata = pd.read_json(metadata_path)
-    if extract:
+    if _extract:
         metadata = metadata.join(metadata.backend_options.apply(
             pd.Series), rsuffix='_xp').join(metadata.additional_metadata.apply(pd.Series))
         metadata = metadata.drop(
             columns=['backend_options', 'additional_metadata'])
+    if _drop_inutile:
+        metadata = metadata.drop(columns=["meas_level", "init_qubits", "job_metadata", "job_name", "meas_return", "skip_transpilation", "memory"])
     return metadata.sort_values(by='creation_date', ascending=False)
 
 
