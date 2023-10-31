@@ -10,12 +10,12 @@ import networkx as nx
 import matplotlib.pyplot as plt
 
 from .probabilities import llh_ratio
-from ..Hardware.transpile_rep_code import get_repcode_IQ_map
+from ..Hardware.transpile_rep_code import get_repcode_IQ_map 
 
 
 # TODO add correct a priori error rates to the graph
 # TODO implement a hard flip edge
-def soft_reweight(decoder, IQ_data, kde_dict: Dict, scaler_dict : Dict, layout : List[int], p_data : float = None, p_meas : float =None):
+def soft_reweight(decoder, IQ_data, kde_dict: Dict, scaler_dict : Dict, layout : List[int], p_data : float = None, p_meas : float = None, common_measure = None):
     """Reweight the edges of a graph according to the log-likelihood ratio of the IQ datapoints & the a priori error rates.
 
     Args:
@@ -64,6 +64,8 @@ def soft_reweight(decoder, IQ_data, kde_dict: Dict, scaler_dict : Dict, layout :
         if time_source != time_tgt:
             link_qubit_number = src_node.index
             IQ_point = IQ_data[time_source * tot_nb_checks + link_qubit_number]
+
+            #TODO Wrong qubit into qubit_mapping?
             layout_qubit_idx = qubit_mapping[src_node_idx]
             kde_0, kde_1 = kde_dict.get(layout_qubit_idx, (None, None))
             scaler = scaler_dict.get(layout_qubit_idx, None)
@@ -71,6 +73,10 @@ def soft_reweight(decoder, IQ_data, kde_dict: Dict, scaler_dict : Dict, layout :
             weight = llh_ratio(IQ_point, kde_0, kde_1, scaler)
 
             edge.weight += weight
+
+        #Round the weights to common measure
+        if common_measure is not None:
+            edge.weight = round( edge.weight/ common_measure) * common_measure
 
     return graph
 
