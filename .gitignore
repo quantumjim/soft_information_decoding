@@ -4,3 +4,4 @@ __pycache__
 .vscode/
 src/soft_information.egg-info/
 .vscode/settings.json
+.Scratch/jobs/
