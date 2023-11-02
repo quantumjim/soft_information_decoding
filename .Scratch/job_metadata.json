@@ -5797,7 +5797,7 @@
             "rounds": 10,
             "logical": "0",
             "layout": "_is_hex=True",
-            "job_status": "JobStatus.QUEUED"
+            "job_status": "JobStatus.DONE"
         },
         "job_id": "cmzppjavayrg008cpk0g",
         "job_name": null,
@@ -5823,7 +5823,7 @@
             "rounds": 10,
             "logical": "0",
             "layout": "_is_hex=True",
-            "job_status": "JobStatus.QUEUED"
+            "job_status": "JobStatus.DONE"
         },
         "job_id": "cmzprwvvcq70008qf12g",
         "job_name": null,
@@ -5849,7 +5849,7 @@
             "rounds": 10,
             "logical": "1",
             "layout": "_is_hex=True",
-            "job_status": "JobStatus.QUEUED"
+            "job_status": "JobStatus.DONE"
         },
         "job_id": "cmzprxv3r3vg008wg7w0",
         "job_name": null,
@@ -6031,7 +6031,7 @@
             "rounds": 10,
             "logical": "0",
             "layout": "_is_hex=True",
-            "job_status": "JobStatus.QUEUED"
+            "job_status": "JobStatus.DONE"
         },
         "job_id": "cmzpsa5vayrg008cpk30",
         "job_name": null,
@@ -6057,7 +6057,7 @@
             "rounds": 10,
             "logical": "1",
             "layout": "_is_hex=True",
-            "job_status": "JobStatus.QUEUED"
+            "job_status": "JobStatus.DONE"
         },
         "job_id": "cmzpsb5daqbg008sjvb0",
         "job_name": null,
@@ -6239,7 +6239,7 @@
             "rounds": 20,
             "logical": "0",
             "layout": "_is_hex=True",
-            "job_status": "JobStatus.QUEUED"
+            "job_status": "JobStatus.DONE"
         },
         "job_id": "cmzpsmyrmwhg008btx3g",
         "job_name": null,
@@ -6265,7 +6265,7 @@
             "rounds": 20,
             "logical": "1",
             "layout": "_is_hex=True",
-            "job_status": "JobStatus.QUEUED"
+            "job_status": "JobStatus.DONE"
         },
         "job_id": "cmzpspe3r3vg008wg7yg",
         "job_name": null,
@@ -6447,7 +6447,7 @@
             "rounds": 30,
             "logical": "0",
             "layout": "_is_hex=True",
-            "job_status": "JobStatus.QUEUED"
+            "job_status": "JobStatus.DONE"
         },
         "job_id": "cmzpt78vcq70008qf1ag",
         "job_name": null,
@@ -6473,7 +6473,7 @@
             "rounds": 30,
             "logical": "1",
             "layout": "_is_hex=True",
-            "job_status": "JobStatus.QUEUED"
+            "job_status": "JobStatus.ERROR"
         },
         "job_id": "cmzpta1vcq70008qf1b0",
         "job_name": null,
@@ -6655,7 +6655,7 @@
             "rounds": 40,
             "logical": "0",
             "layout": "_is_hex=True",
-            "job_status": "JobStatus.QUEUED"
+            "job_status": "JobStatus.ERROR"
         },
         "job_id": "cmzpv44vcq70008qf1bg",
         "job_name": null,
@@ -6681,7 +6681,7 @@
             "rounds": 40,
             "logical": "1",
             "layout": "_is_hex=True",
-            "job_status": "JobStatus.QUEUED"
+            "job_status": "JobStatus.ERROR"
         },
         "job_id": "cmzpv8nvcq70008qf1c0",
         "job_name": null,
@@ -6863,7 +6863,7 @@
             "rounds": 45,
             "logical": "0",
             "layout": "_is_hex=True",
-            "job_status": "JobStatus.QUEUED"
+            "job_status": "JobStatus.ERROR"
         },
         "job_id": "cmzpwj2daqbg008sjvgg",
         "job_name": null,
@@ -6889,7 +6889,7 @@
             "rounds": 45,
             "logical": "1",
             "layout": "_is_hex=True",
-            "job_status": "JobStatus.QUEUED"
+            "job_status": "JobStatus.ERROR"
         },
         "job_id": "cmzpwqjdaqbg008sjvh0",
         "job_name": null,
@@ -7071,7 +7071,7 @@
             "rounds": 50,
             "logical": "0",
             "layout": "_is_hex=True",
-            "job_status": "JobStatus.QUEUED"
+            "job_status": "JobStatus.ERROR"
         },
         "job_id": "cmzpy913r3vg008wg83g",
         "job_name": null,
@@ -7097,7 +7097,7 @@
             "rounds": 50,
             "logical": "1",
             "layout": "_is_hex=True",
-            "job_status": "JobStatus.QUEUED"
+            "job_status": "JobStatus.ERROR"
         },
         "job_id": "cmzpygavayrg008cpk9g",
         "job_name": null,
@@ -7279,7 +7279,7 @@
             "rounds": 55,
             "logical": "0",
             "layout": "_is_hex=True",
-            "job_status": "JobStatus.QUEUED"
+            "job_status": "JobStatus.ERROR"
         },
         "job_id": "cmzq0d1vcq70008qf1h0",
         "job_name": null,
@@ -7305,7 +7305,7 @@
             "rounds": 55,
             "logical": "1",
             "layout": "_is_hex=True",
-            "job_status": "JobStatus.QUEUED"
+            "job_status": "JobStatus.ERROR"
         },
         "job_id": "cmzq0s3vayrg008cpkd0",
         "job_name": null,
@@ -7486,7 +7486,7 @@
             "distance": 40,
             "logical": "0",
             "layout": "_is_hex=True",
-            "job_status": "JobStatus.QUEUED"
+            "job_status": "JobStatus.DONE"
         },
         "job_id": "cmzypqj3r3vg008wgm60",
         "job_name": null,
@@ -7511,7 +7511,7 @@
             "distance": 40,
             "logical": "1",
             "layout": "_is_hex=True",
-            "job_status": "JobStatus.QUEUED"
+            "job_status": "JobStatus.DONE"
         },
         "job_id": "cmzyptbp1am0008q2r90",
         "job_name": null,
@@ -7536,7 +7536,7 @@
             "distance": 55,
             "logical": "0",
             "layout": "_is_hex=True",
-            "job_status": "JobStatus.QUEUED"
+            "job_status": "JobStatus.DONE"
         },
         "job_id": "cmzypyk3r3vg008wgm8g",
         "job_name": null,
@@ -7614,7 +7614,7 @@
             "rounds": "20",
             "logical": "0",
             "layout": "_is_hex=True",
-            "job_status": "JobStatus.QUEUED"
+            "job_status": "JobStatus.DONE"
         },
         "job_id": "cmzyr00rmwhg008fdzm0",
         "job_name": null,
@@ -7640,7 +7640,7 @@
             "rounds": "20",
             "logical": "1",
             "layout": "_is_hex=True",
-            "job_status": "JobStatus.QUEUED"
+            "job_status": "JobStatus.DONE"
         },
         "job_id": "cmzyr2rvayrg008cpzdg",
         "job_name": null,
@@ -7718,7 +7718,7 @@
             "rounds": "20",
             "logical": "0",
             "layout": "_is_hex=True",
-            "job_status": "JobStatus.QUEUED"
+            "job_status": "JobStatus.DONE"
         },
         "job_id": "cmzyrh2vcq70008qfeq0",
         "job_name": null,
@@ -7744,7 +7744,7 @@
             "rounds": "20",
             "logical": "1",
             "layout": "_is_hex=True",
-            "job_status": "JobStatus.QUEUED"
+            "job_status": "JobStatus.DONE"
         },
         "job_id": "cmzyrmjvayrg008cpzj0",
         "job_name": null,
@@ -7822,7 +7822,7 @@
             "rounds": "22",
             "logical": "0",
             "layout": "_is_hex=True",
-            "job_status": "JobStatus.QUEUED"
+            "job_status": "JobStatus.DONE"
         },
         "job_id": "cmzys0c3r3vg008wgmgg",
         "job_name": null,
@@ -7848,7 +7848,7 @@
             "rounds": "22",
             "logical": "1",
             "layout": "_is_hex=True",
-            "job_status": "JobStatus.QUEUED"
+            "job_status": "JobStatus.DONE"
         },
         "job_id": "cmzys3cvcq70008qfetg",
         "job_name": null,
@@ -7926,7 +7926,7 @@
             "rounds": "22",
             "logical": "0",
             "layout": "_is_hex=True",
-            "job_status": "JobStatus.QUEUED"
+            "job_status": "JobStatus.DONE"
         },
         "job_id": "cmzyshprmwhg008fdzxg",
         "job_name": null,
@@ -7952,7 +7952,7 @@
             "rounds": "22",
             "logical": "1",
             "layout": "_is_hex=True",
-            "job_status": "JobStatus.QUEUED"
+            "job_status": "JobStatus.DONE"
         },
         "job_id": "cmzysnp3r3vg008wgmmg",
         "job_name": null,
@@ -8030,7 +8030,7 @@
             "rounds": "24",
             "logical": "0",
             "layout": "_is_hex=True",
-            "job_status": "JobStatus.QUEUED"
+            "job_status": "JobStatus.DONE"
         },
         "job_id": "cmzyt20vayrg008cpzw0",
         "job_name": null,
@@ -8056,7 +8056,7 @@
             "rounds": "24",
             "logical": "1",
             "layout": "_is_hex=True",
-            "job_status": "JobStatus.QUEUED"
+            "job_status": "JobStatus.DONE"
         },
         "job_id": "cmzyt58vcq70008qff3g",
         "job_name": null,
@@ -8134,7 +8134,7 @@
             "rounds": "24",
             "logical": "0",
             "layout": "_is_hex=True",
-            "job_status": "JobStatus.QUEUED"
+            "job_status": "JobStatus.DONE"
         },
         "job_id": "cmzytmt3r3vg008wgmvg",
         "job_name": null,
@@ -8160,7 +8160,7 @@
             "rounds": "24",
             "logical": "1",
             "layout": "_is_hex=True",
-            "job_status": "JobStatus.QUEUED"
+            "job_status": "JobStatus.DONE"
         },
         "job_id": "cmzyts3p1am0008q2rxg",
         "job_name": null,
@@ -8238,7 +8238,7 @@
             "rounds": "26",
             "logical": "0",
             "layout": "_is_hex=True",
-            "job_status": "JobStatus.QUEUED"
+            "job_status": "JobStatus.DONE"
         },
         "job_id": "cmzyv64p1am0008q2s20",
         "job_name": null,
@@ -8264,7 +8264,7 @@
             "rounds": "26",
             "logical": "1",
             "layout": "_is_hex=True",
-            "job_status": "JobStatus.QUEUED"
+            "job_status": "JobStatus.DONE"
         },
         "job_id": "cmzyv9np1am0008q2s30",
         "job_name": null,
@@ -8342,7 +8342,7 @@
             "rounds": "26",
             "logical": "0",
             "layout": "_is_hex=True",
-            "job_status": "JobStatus.QUEUED"
+            "job_status": "JobStatus.DONE"
         },
         "job_id": "cmzyvtfdaqbg008sk9b0",
         "job_name": null,
@@ -8368,7 +8368,7 @@
             "rounds": "26",
             "logical": "1",
             "layout": "_is_hex=True",
-            "job_status": "JobStatus.QUEUED"
+            "job_status": "JobStatus.DONE"
         },
         "job_id": "cmzyvz7vcq70008qffd0",
         "job_name": null,
@@ -8446,7 +8446,7 @@
             "rounds": "28",
             "logical": "0",
             "layout": "_is_hex=True",
-            "job_status": "JobStatus.QUEUED"
+            "job_status": "JobStatus.DONE"
         },
         "job_id": "cmzywdhdaqbg008sk9fg",
         "job_name": null,
@@ -8472,7 +8472,7 @@
             "rounds": "28",
             "logical": "1",
             "layout": "_is_hex=True",
-            "job_status": "JobStatus.QUEUED"
+            "job_status": "JobStatus.DONE"
         },
         "job_id": "cmzywhavcq70008qffg0",
         "job_name": null,
@@ -8550,7 +8550,7 @@
             "rounds": "28",
             "logical": "0",
             "layout": "_is_hex=True",
-            "job_status": "JobStatus.QUEUED"
+            "job_status": "JobStatus.DONE"
         },
         "job_id": "cmzyx3c3r3vg008wgna0",
         "job_name": null,
@@ -8576,7 +8576,7 @@
             "rounds": "28",
             "logical": "1",
             "layout": "_is_hex=True",
-            "job_status": "JobStatus.QUEUED"
+            "job_status": "JobStatus.DONE"
         },
         "job_id": "cmzyx8nvcq70008qffhg",
         "job_name": null,
@@ -8654,7 +8654,7 @@
             "rounds": "30",
             "logical": "0",
             "layout": "_is_hex=True",
-            "job_status": "JobStatus.QUEUED"
+            "job_status": "JobStatus.DONE"
         },
         "job_id": "cmzyxqpp1am0008q2sf0",
         "job_name": null,
@@ -8680,7 +8680,7 @@
             "rounds": "30",
             "logical": "1",
             "layout": "_is_hex=True",
-            "job_status": "JobStatus.QUEUED"
+            "job_status": "JobStatus.DONE"
         },
         "job_id": "cmzyxvfdaqbg008sk9kg",
         "job_name": null,
@@ -8758,7 +8758,7 @@
             "rounds": "30",
             "logical": "0",
             "layout": "_is_hex=True",
-            "job_status": "JobStatus.QUEUED"
+            "job_status": "JobStatus.DONE"
         },
         "job_id": "cmzyye1rmwhg008fe0hg",
         "job_name": null,
@@ -8784,7 +8784,7 @@
             "rounds": "30",
             "logical": "1",
             "layout": "_is_hex=True",
-            "job_status": "JobStatus.QUEUED"
+            "job_status": "JobStatus.DONE"
         },
         "job_id": "cmzyykjrmwhg008fe0k0",
         "job_name": null,
@@ -8862,7 +8862,7 @@
             "rounds": "32",
             "logical": "0",
             "layout": "_is_hex=True",
-            "job_status": "JobStatus.QUEUED"
+            "job_status": "JobStatus.DONE"
         },
         "job_id": "cmzyz3cdaqbg008sk9t0",
         "job_name": null,
@@ -11023,6 +11023,156 @@
             "job_status": "JobStatus.ERROR"
         },
         "job_id": "cn0084rrmwhg008fe4ng",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:49:10.278288+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_nazca",
+        "backend_options": {
+            "shots": 1111,
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 30,
+            "rounds": "5",
+            "logical": "0",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1x61g3r3vg008f4dk0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:49:14.821200+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_nazca",
+        "backend_options": {
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 1111
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 30,
+            "rounds": "5",
+            "logical": "1",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1x62grmwhg008jwve0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:49:22.469256+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "skip_transpilation": true,
+            "shots": 1111,
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single"
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 30,
+            "rounds": "5",
+            "logical": "0",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1x64gp1am0008q6k00",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:49:26.130706+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 1111,
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 30,
+            "rounds": "5",
+            "logical": "1",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1x65g3r3vg008f4dkg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:49:33.580004+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_brisbane",
+        "backend_options": {
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 1111,
+            "memory": false
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 30,
+            "rounds": "5",
+            "logical": "0",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1x678vcq70008qkbzg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:49:37.389814+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_brisbane",
+        "backend_options": {
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 1111,
+            "memory": false
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 30,
+            "rounds": "5",
+            "logical": "1",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1x689vcq70008qkc0g",
         "job_name": null,
         "job_metadata": {},
         "tags": []
