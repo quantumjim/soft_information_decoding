@@ -11176,5 +11176,2404 @@
         "job_name": null,
         "job_metadata": {},
         "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:49:44.755201+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_cusco",
+        "backend_options": {
+            "shots": 1111,
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 30,
+            "rounds": "5",
+            "logical": "0",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1x6a1p1am0008q6k0g",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:51:29.872268+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_cusco",
+        "backend_options": {
+            "shots": 1111,
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 30,
+            "rounds": "5",
+            "logical": "1",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1x74c3r3vg008f4dmg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:51:37.338838+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_nazca",
+        "backend_options": {
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 625
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 40,
+            "rounds": "5",
+            "logical": "0",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1x76cdaqbg008sq2p0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:51:42.896686+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_nazca",
+        "backend_options": {
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 625
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 40,
+            "rounds": "5",
+            "logical": "1",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1x77mvayrg008efz30",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:51:50.174215+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 625,
+            "memory": false
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 40,
+            "rounds": "5",
+            "logical": "0",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1x79nrmwhg008jwveg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:51:54.535425+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 625,
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 40,
+            "rounds": "5",
+            "logical": "1",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1x7andaqbg008sq2pg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:52:01.959471+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_brisbane",
+        "backend_options": {
+            "shots": 625,
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 40,
+            "rounds": "5",
+            "logical": "0",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1x7cddaqbg008sq2q0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:52:07.570220+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_brisbane",
+        "backend_options": {
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 625
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 40,
+            "rounds": "5",
+            "logical": "1",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1x7dxvcq70008qkc10",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:52:16.012606+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_cusco",
+        "backend_options": {
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 625,
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 40,
+            "rounds": "5",
+            "logical": "0",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1x7fxp1am0008q6k10",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:52:20.710923+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_cusco",
+        "backend_options": {
+            "shots": 625,
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 40,
+            "rounds": "5",
+            "logical": "1",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1x7h6vayrg008efz4g",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:52:29.416959+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_nazca",
+        "backend_options": {
+            "skip_transpilation": true,
+            "shots": 330,
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single"
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 55,
+            "rounds": "5",
+            "logical": "0",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1x7kep1am0008q6k1g",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:52:36.300376+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_nazca",
+        "backend_options": {
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 330,
+            "memory": false,
+            "meas_level": 1
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 55,
+            "rounds": "5",
+            "logical": "1",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1x7n6daqbg008sq2qg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:52:44.676709+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 330,
+            "memory": false,
+            "meas_level": 1
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 55,
+            "rounds": "5",
+            "logical": "0",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1x7q6vayrg008efz50",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:52:50.157160+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 330,
+            "memory": false
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 55,
+            "rounds": "5",
+            "logical": "1",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1x7rqp1am0008q6k20",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:52:58.639364+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_brisbane",
+        "backend_options": {
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 330,
+            "memory": false
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 55,
+            "rounds": "5",
+            "logical": "0",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1x7tqvcq70008qkc1g",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:53:04.429503+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_brisbane",
+        "backend_options": {
+            "shots": 330,
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 55,
+            "rounds": "5",
+            "logical": "1",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1x7w7vcq70008qkc20",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:53:12.828503+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_cusco",
+        "backend_options": {
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 330,
+            "memory": false
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 55,
+            "rounds": "5",
+            "logical": "0",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1x7y7vayrg008efz5g",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:53:19.068967+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_cusco",
+        "backend_options": {
+            "shots": 330,
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 55,
+            "rounds": "5",
+            "logical": "1",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1x7zzrmwhg008jwvf0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:53:27.691581+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_nazca",
+        "backend_options": {
+            "shots": 1111,
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 30,
+            "rounds": "7",
+            "logical": "0",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1x81r3r3vg008f4dn0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:54:50.675824+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_nazca",
+        "backend_options": {
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 1111,
+            "memory": false
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 30,
+            "rounds": "7",
+            "logical": "0",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1x8pjrmwhg008jwvg0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:54:55.960000+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_nazca",
+        "backend_options": {
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 1111,
+            "memory": false
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 30,
+            "rounds": "7",
+            "logical": "1",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1x8qtvcq70008qkc2g",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:55:05.534107+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 1111
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 30,
+            "rounds": "7",
+            "logical": "0",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1x8tb3r3vg008f4dp0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:55:07.348634+01:00",
+        "notebook_name": "diff_rounds_fixed_dist_copy",
+        "backend_name": "ibm_nazca",
+        "backend_options": {
+            "skip_transpilation": true,
+            "shots": 1111,
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single"
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 30,
+            "rounds": "25",
+            "logical": "1",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1x8tvp1am0008q6k30",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:55:11.125828+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 1111,
+            "memory": false
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 30,
+            "rounds": "7",
+            "logical": "1",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1x8vvvayrg008efz6g",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:55:19.689804+01:00",
+        "notebook_name": "diff_rounds_fixed_dist_copy",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 1111,
+            "memory": false,
+            "meas_level": 1
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 30,
+            "rounds": "25",
+            "logical": "0",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1x8xvvcq70008qkc3g",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:55:23.267693+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_brisbane",
+        "backend_options": {
+            "shots": 1111,
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 30,
+            "rounds": "7",
+            "logical": "1",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1x8yvrmwhg008jwvhg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:55:29.180525+01:00",
+        "notebook_name": "diff_rounds_fixed_dist_copy",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 1111,
+            "memory": false
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 30,
+            "rounds": "25",
+            "logical": "1",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1x90c3r3vg008f4dpg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:55:31.331752+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_cusco",
+        "backend_options": {
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 1111,
+            "memory": false,
+            "meas_level": 1
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 30,
+            "rounds": "7",
+            "logical": "0",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1x90w3r3vg008f4dq0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:55:35.868026+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_cusco",
+        "backend_options": {
+            "shots": 1111,
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 30,
+            "rounds": "7",
+            "logical": "1",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1x91wvayrg008efz70",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:55:44.349036+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_nazca",
+        "backend_options": {
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 625,
+            "memory": false
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 40,
+            "rounds": "7",
+            "logical": "0",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1x944vcq70008qkc40",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:55:50.483980+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_nazca",
+        "backend_options": {
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 625
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 40,
+            "rounds": "7",
+            "logical": "1",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1x95mrmwhg008jwvj0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:56:00.080247+01:00",
+        "notebook_name": "diff_rounds_fixed_dist_copy",
+        "backend_name": "ibm_brisbane",
+        "backend_options": {
+            "skip_transpilation": true,
+            "shots": 1111,
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single"
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 30,
+            "rounds": "25",
+            "logical": "1",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1x985vcq70008qkc4g",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:56:03.616023+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 625,
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 40,
+            "rounds": "7",
+            "logical": "0",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1x98xrmwhg008jwvjg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:56:09.243599+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 625,
+            "memory": false
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 40,
+            "rounds": "7",
+            "logical": "1",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1x9ad3r3vg008f4dqg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:56:13.336671+01:00",
+        "notebook_name": "diff_rounds_fixed_dist_copy",
+        "backend_name": "ibm_cusco",
+        "backend_options": {
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 1111,
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 30,
+            "rounds": "25",
+            "logical": "0",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1x9bdvcq70008qkc50",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:56:18.198431+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_brisbane",
+        "backend_options": {
+            "shots": 625,
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 40,
+            "rounds": "7",
+            "logical": "0",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1x9cnvcq70008qkc60",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:56:24.502356+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_brisbane",
+        "backend_options": {
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 625,
+            "memory": false
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 40,
+            "rounds": "7",
+            "logical": "1",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1x9e5p1am0008q6k4g",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:56:33.489253+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_cusco",
+        "backend_options": {
+            "skip_transpilation": true,
+            "shots": 625,
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single"
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 40,
+            "rounds": "7",
+            "logical": "0",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1x9gedaqbg008sq2tg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:56:38.807810+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_cusco",
+        "backend_options": {
+            "shots": 625,
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 40,
+            "rounds": "7",
+            "logical": "1",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1x9hprmwhg008jwvk0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:56:40.923668+01:00",
+        "notebook_name": "diff_rounds_fixed_dist_copy",
+        "backend_name": "ibm_nazca",
+        "backend_options": {
+            "skip_transpilation": true,
+            "shots": 625,
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single"
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 40,
+            "rounds": "25",
+            "logical": "0",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1x9j6daqbg008sq2v0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:56:48.638392+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_nazca",
+        "backend_options": {
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 330,
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 55,
+            "rounds": "7",
+            "logical": "0",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1x9m6rmwhg008jwvkg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:56:55.756970+01:00",
+        "notebook_name": "diff_rounds_fixed_dist_copy",
+        "backend_name": "ibm_nazca",
+        "backend_options": {
+            "skip_transpilation": true,
+            "shots": 625,
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single"
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 40,
+            "rounds": "25",
+            "logical": "1",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1x9nydaqbg008sq2vg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:57:11.303912+01:00",
+        "notebook_name": "diff_rounds_fixed_dist_copy",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 625
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 40,
+            "rounds": "25",
+            "logical": "0",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1x9szvcq70008qkc7g",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:57:17.201884+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 330,
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 55,
+            "rounds": "7",
+            "logical": "1",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1x9vfvcq70008qkc80",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:57:23.711828+01:00",
+        "notebook_name": "diff_rounds_fixed_dist_copy",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 625,
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 40,
+            "rounds": "25",
+            "logical": "1",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1x9wzdaqbg008sq2w0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:57:27.093798+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_brisbane",
+        "backend_options": {
+            "skip_transpilation": true,
+            "shots": 330,
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single"
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 55,
+            "rounds": "7",
+            "logical": "0",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1x9xzp1am0008q6k50",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:57:34.447720+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_brisbane",
+        "backend_options": {
+            "shots": 330,
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 55,
+            "rounds": "7",
+            "logical": "1",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1x9zqvayrg008efz80",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:57:45.378959+01:00",
+        "notebook_name": "diff_rounds_fixed_dist_copy",
+        "backend_name": "ibm_brisbane",
+        "backend_options": {
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 625,
+            "memory": false
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 40,
+            "rounds": "25",
+            "logical": "0",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1xa283r3vg008f4drg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:57:51.917733+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_cusco",
+        "backend_options": {
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 330,
+            "memory": false
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 55,
+            "rounds": "7",
+            "logical": "1",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1xa3rvayrg008efz8g",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:58:00.480453+01:00",
+        "notebook_name": "diff_rounds_fixed_dist_copy",
+        "backend_name": "ibm_brisbane",
+        "backend_options": {
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 625,
+            "memory": false
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 40,
+            "rounds": "25",
+            "logical": "1",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1xa60vayrg008efz90",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:58:06.612038+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_nazca",
+        "backend_options": {
+            "shots": 1111,
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 30,
+            "rounds": "9",
+            "logical": "1",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1xa7gdaqbg008sq2x0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:58:17.253016+01:00",
+        "notebook_name": "diff_rounds_fixed_dist_copy",
+        "backend_name": "ibm_cusco",
+        "backend_options": {
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 625
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 40,
+            "rounds": "25",
+            "logical": "0",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1xaa9vcq70008qkc9g",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:58:21.782751+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 1111,
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 30,
+            "rounds": "9",
+            "logical": "1",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1xab9vcq70008qkca0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:58:29.809286+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_brisbane",
+        "backend_options": {
+            "skip_transpilation": true,
+            "shots": 1111,
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single"
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 30,
+            "rounds": "9",
+            "logical": "0",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1xad9vayrg008efz9g",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:58:31.072809+01:00",
+        "notebook_name": "diff_rounds_fixed_dist_copy",
+        "backend_name": "ibm_cusco",
+        "backend_options": {
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 625,
+            "memory": false
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 40,
+            "rounds": "25",
+            "logical": "1",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1xadsdaqbg008sq2yg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:58:35.256197+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_brisbane",
+        "backend_options": {
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 1111,
+            "memory": false
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 30,
+            "rounds": "9",
+            "logical": "1",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1xaesdaqbg008sq2z0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:58:43.624544+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_cusco",
+        "backend_options": {
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 1111,
+            "memory": false
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 30,
+            "rounds": "9",
+            "logical": "0",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1xagtp1am0008q6k5g",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:58:48.853680+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_cusco",
+        "backend_options": {
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 1111,
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 30,
+            "rounds": "9",
+            "logical": "1",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1xaj2p1am0008q6k60",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:58:54.247439+01:00",
+        "notebook_name": "diff_rounds_fixed_dist_copy",
+        "backend_name": "ibm_nazca",
+        "backend_options": {
+            "skip_transpilation": true,
+            "shots": 330,
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single"
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 55,
+            "rounds": "25",
+            "logical": "0",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1xakj3r3vg008f4dsg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:59:00.234252+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_nazca",
+        "backend_options": {
+            "shots": 625,
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 40,
+            "rounds": "9",
+            "logical": "0",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1xan23r3vg008f4dt0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:59:06.929020+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_nazca",
+        "backend_options": {
+            "shots": 625,
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 40,
+            "rounds": "9",
+            "logical": "1",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1xapjp1am0008q6k6g",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:59:13.806802+01:00",
+        "notebook_name": "diff_rounds_fixed_dist_copy",
+        "backend_name": "ibm_nazca",
+        "backend_options": {
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 330,
+            "memory": false
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 55,
+            "rounds": "25",
+            "logical": "1",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1xarbp1am0008q6k70",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:59:20.557423+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 625,
+            "memory": false,
+            "meas_level": 1
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 40,
+            "rounds": "9",
+            "logical": "0",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1xat3daqbg008sq310",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:59:26.666295+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 625,
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 40,
+            "rounds": "9",
+            "logical": "1",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1xavk3r3vg008f4dtg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:59:35.946272+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_brisbane",
+        "backend_options": {
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 625,
+            "memory": false
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 40,
+            "rounds": "9",
+            "logical": "0",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1xaxvdaqbg008sq31g",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:59:42.779838+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_brisbane",
+        "backend_options": {
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 625,
+            "memory": false
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 40,
+            "rounds": "9",
+            "logical": "1",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1xazkp1am0008q6k80",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 17:59:52.168435+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_cusco",
+        "backend_options": {
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 625,
+            "memory": false,
+            "meas_level": 1
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 40,
+            "rounds": "9",
+            "logical": "0",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1xb24vcq70008qkcb0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 18:00:00.530943+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_cusco",
+        "backend_options": {
+            "shots": 625,
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 40,
+            "rounds": "9",
+            "logical": "1",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1xb44vayrg008efzb0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 18:00:11.655298+01:00",
+        "notebook_name": "diff_rounds_fixed_dist_copy",
+        "backend_name": "ibm_brisbane",
+        "backend_options": {
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 330,
+            "memory": false
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 55,
+            "rounds": "25",
+            "logical": "0",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1xb6wvayrg008efzbg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 18:00:21.449069+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_nazca",
+        "backend_options": {
+            "skip_transpilation": true,
+            "shots": 330,
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single"
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 55,
+            "rounds": "9",
+            "logical": "1",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1xb9ddaqbg008sq330",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 18:00:31.795328+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 330,
+            "memory": false,
+            "meas_level": 1
+        },
+        "additional_metadata": {
+            "descr": "dist_55 INTERNAL ERROR TEST",
+            "code": "RepetitionCodeCircuit",
+            "distance": 55,
+            "rounds": "9",
+            "logical": "0",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1xbbxp1am0008q6k90",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 18:09:26.624594+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_nazca",
+        "backend_options": {
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 1111,
+            "memory": false
+        },
+        "additional_metadata": {
+            "code": "RepetitionCodeCircuit",
+            "distance": 30,
+            "rounds": "8",
+            "logical": "0",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1xfhp3r3vg008f4dx0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 18:09:33.318308+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_nazca",
+        "backend_options": {
+            "shots": 1111,
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "code": "RepetitionCodeCircuit",
+            "distance": 30,
+            "rounds": "8",
+            "logical": "1",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1xfkermwhg008jwvq0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 18:09:41.674708+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 1111,
+            "memory": false
+        },
+        "additional_metadata": {
+            "code": "RepetitionCodeCircuit",
+            "distance": 30,
+            "rounds": "8",
+            "logical": "0",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1xfnevayrg008efzhg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 18:09:46.595091+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 1111,
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "code": "RepetitionCodeCircuit",
+            "distance": 30,
+            "rounds": "8",
+            "logical": "1",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1xfpp3r3vg008f4dxg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 18:09:54.403306+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_brisbane",
+        "backend_options": {
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 1111,
+            "memory": false,
+            "meas_level": 1
+        },
+        "additional_metadata": {
+            "code": "RepetitionCodeCircuit",
+            "distance": 30,
+            "rounds": "8",
+            "logical": "0",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1xfrqvayrg008efzj0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 18:09:59.309721+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_brisbane",
+        "backend_options": {
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 1111,
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true
+        },
+        "additional_metadata": {
+            "code": "RepetitionCodeCircuit",
+            "distance": 30,
+            "rounds": "8",
+            "logical": "1",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1xfsz3r3vg008f4dy0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 18:10:07.521290+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_cusco",
+        "backend_options": {
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 1111,
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true
+        },
+        "additional_metadata": {
+            "code": "RepetitionCodeCircuit",
+            "distance": 30,
+            "rounds": "8",
+            "logical": "0",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1xfvzdaqbg008sq36g",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 18:10:12.350763+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_cusco",
+        "backend_options": {
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 1111,
+            "memory": false,
+            "meas_level": 1
+        },
+        "additional_metadata": {
+            "code": "RepetitionCodeCircuit",
+            "distance": 30,
+            "rounds": "8",
+            "logical": "1",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1xfx73r3vg008f4dz0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 18:10:21.301193+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_nazca",
+        "backend_options": {
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 625,
+            "memory": false,
+            "meas_level": 1
+        },
+        "additional_metadata": {
+            "code": "RepetitionCodeCircuit",
+            "distance": 40,
+            "rounds": "8",
+            "logical": "0",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1xfzfvayrg008efzjg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 18:10:27.507345+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_nazca",
+        "backend_options": {
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 625
+        },
+        "additional_metadata": {
+            "code": "RepetitionCodeCircuit",
+            "distance": 40,
+            "rounds": "8",
+            "logical": "1",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1xg0rrmwhg008jwvrg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 18:10:35.974947+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 625,
+            "memory": false,
+            "meas_level": 1
+        },
+        "additional_metadata": {
+            "code": "RepetitionCodeCircuit",
+            "distance": 40,
+            "rounds": "8",
+            "logical": "0",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1xg2rp1am0008q6kd0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 18:10:41.733691+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 625,
+            "memory": false
+        },
+        "additional_metadata": {
+            "code": "RepetitionCodeCircuit",
+            "distance": 40,
+            "rounds": "8",
+            "logical": "1",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1xg483r3vg008f4e1g",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 18:10:50.380584+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_brisbane",
+        "backend_options": {
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 625,
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true
+        },
+        "additional_metadata": {
+            "code": "RepetitionCodeCircuit",
+            "distance": 40,
+            "rounds": "8",
+            "logical": "0",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1xg6gdaqbg008sq370",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 18:11:00.786097+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_brisbane",
+        "backend_options": {
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 625,
+            "memory": false
+        },
+        "additional_metadata": {
+            "code": "RepetitionCodeCircuit",
+            "distance": 40,
+            "rounds": "8",
+            "logical": "1",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1xg91vayrg008efzk0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 18:11:09.572662+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_cusco",
+        "backend_options": {
+            "shots": 625,
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "code": "RepetitionCodeCircuit",
+            "distance": 40,
+            "rounds": "8",
+            "logical": "0",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1xgb9vayrg008efzkg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 18:11:15.825845+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_cusco",
+        "backend_options": {
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 625
+        },
+        "additional_metadata": {
+            "code": "RepetitionCodeCircuit",
+            "distance": 40,
+            "rounds": "8",
+            "logical": "1",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1xgcs3r3vg008f4e20",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 18:11:26.256262+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_nazca",
+        "backend_options": {
+            "skip_transpilation": true,
+            "shots": 330,
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single"
+        },
+        "additional_metadata": {
+            "code": "RepetitionCodeCircuit",
+            "distance": 55,
+            "rounds": "8",
+            "logical": "0",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1xgfhp1am0008q6kdg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 18:11:33.669935+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_nazca",
+        "backend_options": {
+            "skip_transpilation": true,
+            "shots": 330,
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single"
+        },
+        "additional_metadata": {
+            "code": "RepetitionCodeCircuit",
+            "distance": 55,
+            "rounds": "8",
+            "logical": "1",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1xghavayrg008efzmg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 18:11:43.326331+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 330,
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "code": "RepetitionCodeCircuit",
+            "distance": 55,
+            "rounds": "8",
+            "logical": "0",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1xgktvayrg008efzn0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 18:11:51.706725+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 330,
+            "memory": false
+        },
+        "additional_metadata": {
+            "code": "RepetitionCodeCircuit",
+            "distance": 55,
+            "rounds": "8",
+            "logical": "1",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1xgntvayrg008efzng",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 18:12:02.577049+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_brisbane",
+        "backend_options": {
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 330
+        },
+        "additional_metadata": {
+            "code": "RepetitionCodeCircuit",
+            "distance": 55,
+            "rounds": "8",
+            "logical": "0",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1xgrkvcq70008qkcgg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 18:12:10.155152+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_brisbane",
+        "backend_options": {
+            "shots": 330,
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "code": "RepetitionCodeCircuit",
+            "distance": 55,
+            "rounds": "8",
+            "logical": "1",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1xgtkvayrg008efzpg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 18:12:19.863913+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_cusco",
+        "backend_options": {
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 330,
+            "memory": false
+        },
+        "additional_metadata": {
+            "code": "RepetitionCodeCircuit",
+            "distance": 55,
+            "rounds": "8",
+            "logical": "0",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1xgwvvayrg008efzq0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 18:12:27.889270+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_cusco",
+        "backend_options": {
+            "skip_transpilation": true,
+            "shots": 330,
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single"
+        },
+        "additional_metadata": {
+            "code": "RepetitionCodeCircuit",
+            "distance": 55,
+            "rounds": "8",
+            "logical": "1",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1xgyvvayrg008efzr0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 18:12:36.896181+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_nazca",
+        "backend_options": {
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 1111,
+            "memory": false
+        },
+        "additional_metadata": {
+            "code": "RepetitionCodeCircuit",
+            "distance": 30,
+            "rounds": "10",
+            "logical": "0",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1xh143r3vg008f4e30",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
+    },
+    {
+        "creation_date": "2023-11-02 18:12:43.515443+01:00",
+        "notebook_name": "diff_rounds_fixed_dist",
+        "backend_name": "ibm_nazca",
+        "backend_options": {
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 1111,
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true
+        },
+        "additional_metadata": {
+            "code": "RepetitionCodeCircuit",
+            "distance": 30,
+            "rounds": "10",
+            "logical": "1",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cn1xh2wp1am0008q6kfg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": []
     }
 ]
