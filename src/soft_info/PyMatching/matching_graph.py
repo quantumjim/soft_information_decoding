@@ -44,6 +44,7 @@ def soft_reweight_pymatching(matching: pymatching.Matching,  d: int, T: int, IQ_
 
             _has_time_component = False
             continue
+
         elif tgt_node == src_node + 1:  # always first pos the smaller
             # Data edge
             new_weight = -np.log(p_data / (1 - p_data))
@@ -52,6 +53,7 @@ def soft_reweight_pymatching(matching: pymatching.Matching,  d: int, T: int, IQ_
                     new_weight / common_measure) * common_measure
             if verbose:
                 print("Data edge weight: ", new_weight)
+
         elif tgt_node == src_node + (d-1):
             # Time edge
             # TODO implement adding a new edge for hard meas flip
@@ -59,12 +61,14 @@ def soft_reweight_pymatching(matching: pymatching.Matching,  d: int, T: int, IQ_
             _has_time_component = True
             if verbose:
                 print("Time edge weight: ", new_weight)
+
         elif tgt_node == src_node + (d-1) + 1:
             # mixed edge
-            # TODO implement adding a new DIAG edge for hard meas flip
-            # - np.log(p_meas / (1 - p_meas))
             new_weight = -np.log(p_data / (1 - p_data))
-            _has_time_component = True
+            _has_time_component = False # JRW: Diag are like data errors
+            if common_measure is not None:
+                new_weight = round(
+                    new_weight / common_measure) * common_measure
             if verbose:
                 print("Mixed edge weight: ", new_weight)
 
