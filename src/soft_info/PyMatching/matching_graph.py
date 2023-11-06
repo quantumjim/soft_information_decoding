@@ -46,6 +46,7 @@ def soft_reweight_pymatching(matching: pymatching.Matching,  d: int, T: int, IQ_
             _has_time_component = False
             continue
 
+
         elif tgt_node == src_node + 1:  # always first pos the smaller
             # Data edge
             new_weight = -np.log(p_data / (1 - p_data))
@@ -55,6 +56,7 @@ def soft_reweight_pymatching(matching: pymatching.Matching,  d: int, T: int, IQ_
             if verbose:
                 print("Data edge weight: ", new_weight)
 
+
         elif tgt_node == src_node + (d-1):
             # Time edge
             # TODO implement adding a new edge for hard meas flip
@@ -62,6 +64,7 @@ def soft_reweight_pymatching(matching: pymatching.Matching,  d: int, T: int, IQ_
             _has_time_component = True
             if verbose:
                 print("Time edge weight: ", new_weight)
+
 
         elif tgt_node == src_node + (d-1) + 1:
             # mixed edge
