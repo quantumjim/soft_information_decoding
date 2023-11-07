@@ -68,7 +68,7 @@ def soft_reweight_pymatching(matching: pymatching.Matching,  d: int, T: int, IQ_
 
         elif tgt_node == src_node + (d-1) + 1:
             # mixed edge
-            p_mixed = p_data  #TODO find a better ratio 
+            p_mixed = p_data/50  #TODO find a better ratio 
             #p_mixed = 1e-10
             new_weight = -np.log(p_mixed / (1 - p_mixed))
             _has_time_component = False # JRW: Diag are like data errors

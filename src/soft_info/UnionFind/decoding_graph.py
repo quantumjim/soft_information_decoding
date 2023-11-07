@@ -81,9 +81,10 @@ def soft_reweight(decoder, IQ_data, kde_dict: Dict, scaler_dict : Dict, layout :
     return graph
 
 
-def rx_draw_2D(graph):
+def rx_draw_2D(graph, atypical_nodes=None):
     # deepopy the graph to not change it during plotting
     graph = deepcopy(graph)
+    atypical_nodes_set = {(node['time'], node['index']) for node in atypical_nodes} if atypical_nodes is not None else set()
     fig, ax = plt.subplots()
 
     # First pass to find t_max and index_max
@@ -107,9 +108,12 @@ def rx_draw_2D(graph):
             index = -0.5 if index == 0 else index_max + 0.5
             node.time = time
             node.index = index
-
-        color = 'r' if is_boundary else 'b'
-        ax.scatter(time, index, c=color)
+        is_atypical = (node.time, node.index) in atypical_nodes_set
+        if is_atypical:
+            color = 'r'
+        else:
+            color = 'k' if is_boundary else 'b'
+        ax.scatter(time, index, c=color, s=500 )
 
     # Plot edges
     for i, edge in enumerate(graph.edge_list()):
@@ -141,9 +145,11 @@ def rx_draw_2D(graph):
         ax.text(mid_time, (src_index + tgt_index) / 2, edge_label)
 
     # Add legend in the top right corner, ensuring no overlap
-    ax.legend(handles=[plt.Line2D([0], [0], marker='o', color='w', label='Boundary Qubits', markersize=10, markerfacecolor='red'),
+    ax.legend(handles=[plt.Line2D([0], [0], marker='o', color='w', label='Boundary Qubits', markersize=10, markerfacecolor='black'),
                        plt.Line2D([0], [0], marker='o', color='w',
                                   label='Check Nodes', markersize=10, markerfacecolor='blue'),
+                        plt.Line2D([0], [0], marker='o', color='w',
+                                  label='Atypical nodes', markersize=10, markerfacecolor='orange'),          
                        plt.Line2D([0], [0], color='g',
                                   linestyle='--', label='Time edges'),
                        plt.Line2D([0], [0], color='grey',
