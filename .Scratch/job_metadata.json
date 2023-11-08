@@ -25669,7 +25669,8 @@
         "additional_metadata": {
             "num_qubits": 127,
             "sampled_state": "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
-            "optimization_level": 0
+            "optimization_level": 0,
+            "job_status": "JobStatus.QUEUED"
         },
         "job_id": "cn5n9vfvcq70008qtveg",
         "job_name": null,
@@ -25693,7 +25694,8 @@
         "additional_metadata": {
             "num_qubits": 127,
             "sampled_state": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-            "optimization_level": 0
+            "optimization_level": 0,
+            "job_status": "JobStatus.QUEUED"
         },
         "job_id": "cn5nahap1am0008qe05g",
         "job_name": null,
@@ -25717,7 +25719,8 @@
         "additional_metadata": {
             "num_qubits": 127,
             "sampled_state": "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
-            "optimization_level": 0
+            "optimization_level": 0,
+            "job_status": "JobStatus.DONE"
         },
         "job_id": "cn5nar3vcq70008qtvgg",
         "job_name": null,
@@ -25741,7 +25744,8 @@
         "additional_metadata": {
             "num_qubits": 127,
             "sampled_state": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-            "optimization_level": 0
+            "optimization_level": 0,
+            "job_status": "JobStatus.DONE"
         },
         "job_id": "cn5narv3r3vg008fbyyg",
         "job_name": null,
@@ -25765,7 +25769,8 @@
         "additional_metadata": {
             "num_qubits": 127,
             "sampled_state": "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
-            "optimization_level": 0
+            "optimization_level": 0,
+            "job_status": "JobStatus.DONE"
         },
         "job_id": "cn5nayvp1am0008qe060",
         "job_name": null,
@@ -25789,7 +25794,8 @@
         "additional_metadata": {
             "num_qubits": 127,
             "sampled_state": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-            "optimization_level": 0
+            "optimization_level": 0,
+            "job_status": "JobStatus.DONE"
         },
         "job_id": "cn5nazkvcq70008qtvjg",
         "job_name": null,
