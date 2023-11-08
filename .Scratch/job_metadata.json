@@ -25803,5 +25803,53 @@
         "tags": [
             "Calibration"
         ]
+    },
+    {
+        "creation_date": "2023-11-08 11:35:43.771186+01:00",
+        "notebook_name": "get_IQ_calibration_data_Brisbane",
+        "backend_name": "ibm_brisbane",
+        "backend_options": {
+            "shots": 10000,
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "num_qubits": 127,
+            "sampled_state": "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
+            "optimization_level": 0
+        },
+        "job_id": "cn5p8zvrmwhg008k3x8g",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "Calibration"
+        ]
+    },
+    {
+        "creation_date": "2023-11-08 11:35:46.374484+01:00",
+        "notebook_name": "get_IQ_calibration_data_Brisbane",
+        "backend_name": "ibm_brisbane",
+        "backend_options": {
+            "meas_return": "single",
+            "skip_transpilation": true,
+            "shots": 10000,
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true
+        },
+        "additional_metadata": {
+            "num_qubits": 127,
+            "sampled_state": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+            "optimization_level": 0
+        },
+        "job_id": "cn5p90mvcq70008qtwk0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "Calibration"
+        ]
     }
 ]
