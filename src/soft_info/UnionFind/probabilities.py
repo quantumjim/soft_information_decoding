@@ -39,6 +39,8 @@ def estimate_outcome(IQ_point, kde_0=None, kde_1=None, scaler=None):
         return 0
     else:
         return 1
+    
+
 
 
 def get_counts(IQ_data, kde_dict=None, scaler_dict=None, layout=None, synd_rounds=None, verbose=False):
@@ -71,7 +73,7 @@ def get_counts(IQ_data, kde_dict=None, scaler_dict=None, layout=None, synd_round
         outcome_str = ""
         for idx, IQ_point in enumerate(shot):
             if qubit_mapping is not None:
-                qubit_idx = qubit_mapping[idx]
+                qubit_idx = qubit_mapping[idx] # Harcoded for repetition code 
                 kde_0, kde_1 = kde_dict.get(qubit_idx, (None, None))
                 scaler = scaler_dict.get(qubit_idx, None)
                 # returns None if qubit_idx not in dict => normal outcome estimation
