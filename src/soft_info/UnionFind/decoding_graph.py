@@ -42,41 +42,45 @@ def soft_reweight(decoder, IQ_data, kde_dict: Dict, scaler_dict : Dict, layout :
 
     for edge_idx, edge in enumerate(graph.edges()):
 
-        if edge.qubits is not None:
+        if edge.qubits is not None: # data edges
             edge.weight = -np.log(p_data/(1-p_data))
-        else:
-            edge.weight = 0  # -np.log(p_meas/(1-p_meas))
+        else: # time edges
+            edge.weight = 0  #TODO -np.log(p_meas/(1-p_meas))
 
-        src_node_idx, tgt_node_idx = graph.edge_list()[edge_idx]
-        src_node, tgt_node = graph.nodes()[src_node_idx], graph.nodes()[
-            tgt_node_idx]
-        time_source, time_tgt = src_node['time'], tgt_node['time']
+            src_node_idx, tgt_node_idx = graph.edge_list()[edge_idx]
+            src_node, tgt_node = graph.nodes()[src_node_idx], graph.nodes()[
+                tgt_node_idx]
+            time_source, time_tgt = src_node['time'], tgt_node['time']
 
-        if time_source is None or time_tgt is None:
-            continue
+            # if time_source is None or time_tgt is None:
+            #     continue # skip boundary edges
 
-        if time_source > time_tgt:
-            src_node, tgt_node = tgt_node, src_node
-            time_source, time_tgt = time_tgt, time_source
-            src_node_idx, tgt_node_idx = tgt_node_idx, src_node_idx
-            warnings.warn("time_source > time_tgt. Reordering them...") # For debugging purposes.
+            if time_source > time_tgt: #TODO check if needed 
+                src_node, tgt_node = tgt_node, src_node
+                time_source, time_tgt = time_tgt, time_source
+                src_node_idx, tgt_node_idx = tgt_node_idx, src_node_idx
+                warnings.warn("time_source > time_tgt. Reordering them...") # For debugging purposes.
 
-        if time_source != time_tgt:
-            link_qubit_number = src_node.index
-            IQ_point = IQ_data[time_source * tot_nb_checks + link_qubit_number]
+            if time_source != time_tgt: # only time edges but sanity check
+                link_qubit_number = src_node.index # gives the index of the stabilizer measurement => the link qubit number
+                IQ_point = IQ_data[src_node_idx]
+                # IQ_point = IQ_data[time_source * tot_nb_checks + link_qubit_number]
 
-            #TODO Wrong qubit into qubit_mapping?
-            layout_qubit_idx = qubit_mapping[src_node_idx]
-            kde_0, kde_1 = kde_dict.get(layout_qubit_idx, (None, None))
-            scaler = scaler_dict.get(layout_qubit_idx, None)
+                #TODO Wrong qubit into qubit_mapping?
+                # layout_qubit_idx = qubit_mapping[src_node_idx] #TODO does src_node_idx start at 0 and goes to the end of the iq data?
 
-            weight = llh_ratio(IQ_point, kde_0, kde_1, scaler)
 
-            edge.weight += weight
+                layout_qubit_idx = layout[link_qubit_number] #TODO clean up not needed parts!
+                kde_0, kde_1 = kde_dict.get(layout_qubit_idx, (None, None))
+                scaler = scaler_dict.get(layout_qubit_idx, None)
 
-        #Round the weights to common measure
+                weight = llh_ratio(IQ_point, kde_0, kde_1, scaler)
+
+                edge.weight += weight
+
+        # Round the weights to common measure
         if common_measure is not None:
-            edge.weight = round( edge.weight/ common_measure) * common_measure
+            edge.weight = round(edge.weight/ common_measure) * common_measure
 
     return graph
 
