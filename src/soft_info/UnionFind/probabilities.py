@@ -61,7 +61,7 @@ def get_counts(IQ_data, kde_dict=None, scaler_dict=None, layout=None, synd_round
 
     qubit_mapping = None
     if layout is not None and synd_rounds is not None:
-        qubit_mapping = get_repcode_IQ_map(layout, synd_rounds)
+        qubit_mapping = get_repcode_IQ_map(layout, synd_rounds) #Hardcoded for repetition codes
 
     if qubit_mapping is None:
         warnings.warn(
