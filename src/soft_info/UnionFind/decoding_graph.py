@@ -37,20 +37,26 @@ def soft_reweight(decoder, IQ_data, kde_dict: Dict, scaler_dict : Dict, layout :
 
     tot_nb_checks = decoder.code.d - 1  # hardcoded for RepetitionCode
 
-    if layout is not None:
-        qubit_mapping = get_repcode_IQ_map(layout, decoder.code.T)
+    #if layout is not None:
+        #qubit_mapping = get_repcode_IQ_map(layout, decoder.code.T)
 
     for edge_idx, edge in enumerate(graph.edges()):
+        src_node_idx, tgt_node_idx = graph.edge_list()[edge_idx]
+        src_node, tgt_node = graph.nodes()[src_node_idx], graph.nodes()[
+            tgt_node_idx]
+        time_source, time_tgt = src_node['time'], tgt_node['time']
 
-        if edge.qubits is not None: # data edges
-            edge.weight = -np.log(p_data/(1-p_data))
+        if edge.qubits is not None: # data edges & mixed edges
+            if time_source != time_tgt: # mixed edges
+                p_mixed = p_data # find a better ratio! /5, /50 is worse for dist 10
+                edge.weight = -np.log(p_mixed/(1-p_mixed))
+            else: # data edges
+                edge.weight = -np.log(p_data/(1-p_data))
+
         else: # time edges
             edge.weight = 0  #TODO -np.log(p_meas/(1-p_meas))
 
-            src_node_idx, tgt_node_idx = graph.edge_list()[edge_idx]
-            src_node, tgt_node = graph.nodes()[src_node_idx], graph.nodes()[
-                tgt_node_idx]
-            time_source, time_tgt = src_node['time'], tgt_node['time']
+            
 
             # if time_source is None or time_tgt is None:
             #     continue # skip boundary edges

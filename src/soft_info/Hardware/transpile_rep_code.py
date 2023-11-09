@@ -16,7 +16,7 @@ def get_repcode_layout(distance, backend, _is_hex=True, plot=False):
         plot (bool): If True, the longest path is plotted.
 
     Returns:
-        list: The layout consisting of link qubits followed by code qubits.
+        list: The layout of physical qubit indices consisting of link qubits followed by code qubits.
     """
     find_path = find_longest_path_in_hex if _is_hex else find_longest_path_general
     path, _, _ = find_path(backend, plot=plot)
