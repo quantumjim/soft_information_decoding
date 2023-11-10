@@ -21,6 +21,8 @@ qiskit-qec = {file = "libs/qiskit-qec", editable = true}
 result-saver = {file = "libs/qiskit-saver-provider", editable = true}
 scikit-learn = "*"
 networkx = "*"
+pytest = "*"
+coverage = "*"
 
 [dev-packages]
 ipykernel = "*"

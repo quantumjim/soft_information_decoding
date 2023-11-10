@@ -76,6 +76,10 @@ def metadata_loader(_extract: bool = False, _drop_inutile : bool = False):
     """
     root_dir = find_and_create_scratch()
     metadata_path = f"{root_dir}/job_metadata.json"
+    
+    if not os.path.exists(metadata_path):
+        raise FileNotFoundError("job_metadata.json file not found.")
+    
     metadata = pd.read_json(metadata_path)
     if _extract:
         metadata = metadata.join(metadata.backend_options.apply(
