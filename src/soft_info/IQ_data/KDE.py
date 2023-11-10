@@ -71,7 +71,7 @@ def plot_decision_boundary(data, kde_0, kde_1, scaler):
     plt.show()
 
 
-def fit_KDE(IQ_data, bandwidth=0.1, plot=False, qubit_index='', num_samples=1e5, scaler=None):
+def fit_KDE(IQ_data, bandwidth=0.2, plot=False, qubit_index='', num_samples=1e5, scaler=None):
     '''Fits a KDE to the IQ data and returns the KDE and the scaler used for normalization.'''
     data = IQ_data.flatten()
     combined_data = np.column_stack((data.real, data.imag))

@@ -57,7 +57,9 @@ def find_longest_path_dfs(G, start, visited, path, longest_path_info):
     if len(path) > longest_path_info[0]:
         longest_path_info[0] = len(path)
         longest_path_info[1] = path.copy()
-        longest_path_info[2] = start
+        # Record the start of this new longest path
+        if longest_path_info[2] is None or len(path) > longest_path_info[0]:
+            longest_path_info[2] = path[0]
 
     for neighbor in G.neighbors(start):
         if neighbor not in visited:
@@ -66,6 +68,7 @@ def find_longest_path_dfs(G, start, visited, path, longest_path_info):
 
     visited.remove(start)
     path.pop()
+
 
 
 def find_longest_path_general(backend, plot=False):

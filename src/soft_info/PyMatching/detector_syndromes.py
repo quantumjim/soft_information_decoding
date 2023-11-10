@@ -18,6 +18,10 @@ def counts_to_det_syndr(input_str, _resets = False, verbose=False):
     # The number of measurement rounds T is the number of parts in the check_str
     T = len(check_str)
     
+    # Check if the count string is one bit longer than the following strings
+    if not all(len(count_str) == len(check_part) + 1 for check_part in check_str):
+        raise ValueError("Count string must be one bit longer than each check string.")
+    
     if verbose:
         print("Count str:", count_str)
         print("Check str:", check_str)
