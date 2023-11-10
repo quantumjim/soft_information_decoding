@@ -5,6 +5,7 @@ from .IQ_data import *
 from .UnionFind import *
 from .Hardware import *
 from .PyMatching import *
+from .Probabilities import *
 
 
 def custom_showwarning(message, category, filename, lineno, file=None, line=None):

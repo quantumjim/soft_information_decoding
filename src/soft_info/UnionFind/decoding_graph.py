@@ -9,7 +9,7 @@ import numpy as np
 import networkx as nx
 import matplotlib.pyplot as plt
 
-from .probabilities import llh_ratio
+from ..Probabilities.probabilities import llh_ratio
 from ..Hardware.transpile_rep_code import get_repcode_IQ_map 
 
 

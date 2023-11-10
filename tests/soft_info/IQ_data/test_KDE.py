@@ -4,7 +4,7 @@ import numpy as np
 from numpy.random import default_rng
 from sklearn.neighbors import KernelDensity
 from sklearn.preprocessing import StandardScaler
-from src.soft_info.IQ_data.KDE import fit_KDE, get_KDEs
+from soft_info.Probabilities.KDE import fit_KDE, get_KDEs
 
 
 def generate_mock_IQ_data(seed=42, size=(1000, 2), mean=0, std=1):
