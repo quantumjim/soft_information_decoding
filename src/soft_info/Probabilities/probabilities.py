@@ -15,7 +15,7 @@ from ..Hardware.transpile_rep_code import get_repcode_IQ_map
 def estimate_outcome(IQ_point, kde_0=None, kde_1=None, scaler=None):
     """Estimate the outcome for a given IQ datapoint.
 
-    Parameters:
+    Parameters:s
     - IQ_point: The IQ datapoint for which the outcome should be estimated.
     - kde_0: KDE model for state 0.
     - kde_1: KDE model for state 1.
