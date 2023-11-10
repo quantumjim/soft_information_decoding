@@ -4,7 +4,8 @@
         "./libs/ResultsSaver",
         "./libs/qiskit-qec/src",
         "./ResultsSaver",
-        "./libs/qiskit-saver-provider"
+        "./libs/qiskit-saver-provider",
+        "./build"
     ],
     "files.associations": {
         "__bit_reference": "cpp",
@@ -73,5 +74,5 @@
         "vector": "cpp",
         "algorithm": "cpp"
     },
-    "cmake.sourceDirectory": "/Users/mha/My Drive/Desktop/Studium/Physik/MSc/Semester 3/IBM/IBM GIT/Soft-Info/libs/qiskit-qec"
+    "cmake.sourceDirectory": "${workspaceFolder}"
 }
