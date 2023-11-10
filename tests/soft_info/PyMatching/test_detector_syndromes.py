@@ -33,7 +33,4 @@ def test_counts_to_det_syndr():
         # Check if the result matches the expected output
         assert np.array_equal(result, expected), f"Failed for input: {input_str} with resets={resets}"
 
-# Run the test
 
-# Run the test
-test_counts_to_det_syndr()

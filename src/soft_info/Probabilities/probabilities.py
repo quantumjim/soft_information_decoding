@@ -74,8 +74,8 @@ def get_counts(IQ_data, kde_dict=None, scaler_dict=None, layout=None, synd_round
         for idx, IQ_point in enumerate(shot):
             if qubit_mapping is not None:
                 qubit_idx = qubit_mapping[idx] # Harcoded for repetition code 
-                kde_0, kde_1 = kde_dict.get(qubit_idx, (None, None))
-                scaler = scaler_dict.get(qubit_idx, None)
+                kde_0, kde_1 = kde_dict.get(qubit_idx, (None, None)) if kde_dict is not None else (None, None)
+                scaler = scaler_dict.get(qubit_idx, None) if scaler_dict is not None else None
                 # returns None if qubit_idx not in dict => normal outcome estimation
                 outcome_str += str(estimate_outcome(IQ_point,
                                    kde_0, kde_1, scaler))
@@ -83,11 +83,17 @@ def get_counts(IQ_data, kde_dict=None, scaler_dict=None, layout=None, synd_round
                 # Insert a space for decoder formatting
                 if (idx + 1) % (len(layout) // 2) == 0 and (idx + 1) // (len(layout) // 2) <= synd_rounds:
                     outcome_str += " "
-            
+                
+                
             else:
                 outcome_str += str(estimate_outcome(IQ_point))
 
+        if qubit_mapping is not None:
+            assert len(outcome_str) == (len(layout)//2 + 1) + synd_rounds*(len(layout)//2) + synd_rounds, f"Outcome string {outcome_str} does not have correct length"
+            
+
         outcome_str = outcome_str[::-1] # Reverse string to match qiskit format
+
         count_dict[outcome_str] += 1
 
     count_dict = dict(
