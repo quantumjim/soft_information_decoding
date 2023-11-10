@@ -15,7 +15,9 @@ from ..Hardware.transpile_rep_code import get_repcode_IQ_map
 
 # TODO add correct a priori error rates to the graph
 # TODO implement a hard flip edge
-def soft_reweight(decoder, IQ_data, kde_dict: Dict, scaler_dict : Dict, layout : List[int], p_data : float = None, p_meas : float = None, common_measure = None):
+def soft_reweight(decoder, IQ_data, kde_dict: Dict, scaler_dict : Dict,
+                  layout : List[int], p_data : float = None, p_meas : float = None,
+                  common_measure = None):
     """Reweight the edges of a graph according to the log-likelihood ratio of the IQ datapoints & the a priori error rates.
 
     Args:
@@ -29,13 +31,14 @@ def soft_reweight(decoder, IQ_data, kde_dict: Dict, scaler_dict : Dict, layout :
     Returns:
         DecodingGraph: The reweighted PyGraph.
     """
+    #print("soft_reweight")
 
     graph = deepcopy(decoder.decoding_graph.graph)
 
     p_data = p_data if p_data is not None else 6.836e-3  # Sherbrooke median
     p_meas = p_meas if p_meas is not None else 0
 
-    tot_nb_checks = decoder.code.d - 1  # hardcoded for RepetitionCode
+    #tot_nb_checks = decoder.code.d - 1  # hardcoded for RepetitionCode
 
     #if layout is not None:
         #qubit_mapping = get_repcode_IQ_map(layout, decoder.code.T)
@@ -46,14 +49,17 @@ def soft_reweight(decoder, IQ_data, kde_dict: Dict, scaler_dict : Dict, layout :
             tgt_node_idx]
         time_source, time_tgt = src_node['time'], tgt_node['time']
 
-        if edge.qubits is not None: # data edges & mixed edges
+        
+        
+        if edge.qubits != []: # data edges & mixed edges
             if time_source != time_tgt: # mixed edges
                 p_mixed = p_data # find a better ratio! /5, /50 is worse for dist 10
                 edge.weight = -np.log(p_mixed/(1-p_mixed))
             else: # data edges
                 edge.weight = -np.log(p_data/(1-p_data))
 
-        else: # time edges
+        if edge.qubits == []: # time edges
+            #print("time edge, reweighting...")
             edge.weight = 0  #TODO -np.log(p_meas/(1-p_meas))
 
             
@@ -68,12 +74,16 @@ def soft_reweight(decoder, IQ_data, kde_dict: Dict, scaler_dict : Dict, layout :
                 warnings.warn("time_source > time_tgt. Reordering them...") # For debugging purposes.
 
             if time_source != time_tgt: # only time edges but sanity check
+                #print("time_source != time_tgt. This should happen! Reweighting time edges...")
                 link_qubit_number = src_node.index # gives the index of the stabilizer measurement => the link qubit number
+                # Structure of IQ data = [link_0, link_1, link_3, link_0, link_1, .., code_qubit_1, ...]
+                # equivalent to       = [node_0, node_1, node_3, node_4, node_5, .. ]
+                # =>
                 IQ_point = IQ_data[src_node_idx]
                 # IQ_point = IQ_data[time_source * tot_nb_checks + link_qubit_number]
 
                 #TODO Wrong qubit into qubit_mapping?
-                # layout_qubit_idx = qubit_mapping[src_node_idx] #TODO does src_node_idx start at 0 and goes to the end of the iq data?
+                # layout_qubit_idx = qubit_mapping[src_node_idx] #TODO does src_node_fidx start at 0 and goes to the end of the iq data?
 
 
                 layout_qubit_idx = layout[link_qubit_number] #TODO clean up not needed parts!

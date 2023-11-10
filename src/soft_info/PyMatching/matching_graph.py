@@ -16,14 +16,15 @@ def soft_reweight_pymatching(matching: pymatching.Matching,  d: int, T: int, IQ_
                              kde_dict: dict, layout: list, scaler_dict: dict,
                              p_data: float = None, p_meas: float = None, common_measure=None,
                              verbose: bool = False):
-
+    
     p_data = p_data if p_data is not None else 6.836e-3  # Sherbrooke median
     p_meas = p_meas if p_meas is not None else 0
 
     if layout is not None:
-        qubit_mapping = get_repcode_IQ_map(layout, T)
+        qubit_mapping = get_repcode_IQ_map(layout, T) #Hardcoded for repetition code
 
     for edge in matching.edges():
+        _has_time_component = False
         src_node, tgt_node, edge_data = edge
         if verbose:
             print("\nEdge:", (src_node, tgt_node))
@@ -43,13 +44,14 @@ def soft_reweight_pymatching(matching: pymatching.Matching,  d: int, T: int, IQ_
             if verbose:
                 print("Boundary edge weight: ", new_weight)
 
-            _has_time_component = False
+            #_has_time_component = False
             continue
 
 
         elif tgt_node == src_node + 1:  # always first pos the smaller
             # Data edge
             new_weight = -np.log(p_data / (1 - p_data))
+            #_has_time_component = False
             if common_measure is not None:
                 new_weight = round(
                     new_weight / common_measure) * common_measure
@@ -71,7 +73,7 @@ def soft_reweight_pymatching(matching: pymatching.Matching,  d: int, T: int, IQ_
             p_mixed = p_data/50  #TODO find a better ratio 
             #p_mixed = 1e-10
             new_weight = -np.log(p_mixed / (1 - p_mixed))
-            _has_time_component = False # JRW: Diag are like data errors
+            #_has_time_component = False # JRW: Diag are like data errors
             if common_measure is not None:
                 new_weight = round(
                     new_weight / common_measure) * common_measure
