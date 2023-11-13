@@ -1,6 +1,9 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
+#include <pybind11/eigen.h>  // Add this include for Eigen support with NumPy
+
 #include <iostream>
+#include <stdexcept>
 #include <vector>
 #include <map>
 #include <Eigen/Dense>  // Assuming we are using Eigen for matrix operations
@@ -10,7 +13,11 @@ struct GridData {
     Eigen::MatrixXd grid_y;
     Eigen::MatrixXd grid_density_0;
     Eigen::MatrixXd grid_density_1;
+    // Constructor, if needed
+    GridData(Eigen::MatrixXd gx, Eigen::MatrixXd gy, Eigen::MatrixXd gd0, Eigen::MatrixXd gd1)
+        : grid_x(gx), grid_y(gy), grid_density_0(gd0), grid_density_1(gd1) {}
 };
+
 
 
 // Forward declaration of grid_lookup
@@ -25,7 +32,11 @@ std::map<std::string, int> get_counts(const Eigen::MatrixXd& scaled_IQ_data,
 
     std::map<std::string, int> counts;
 
-    int distance = (scaled_IQ_data.cols() + synd_rounds) / (synd_rounds + 1); // Hardcoded for RepCodes
+    int distance = (scaled_IQ_data.cols()/2 + synd_rounds) / (synd_rounds + 1); // Hardcoded for RepCodes
+
+    if (scaled_IQ_data.cols()/2 != (distance - 1) * synd_rounds + distance) {
+        throw std::runtime_error("Number of columns in IQ data does not match the expected value");
+    }
 
     for (int shot = 0; shot < scaled_IQ_data.rows(); ++shot) { 
         std::string outcome_str;
@@ -81,7 +92,22 @@ int grid_lookup(const Eigen::Vector2d& point, const GridData& grid_data) {
 }
 
 
+// Helper function to convert NumPy array to Eigen::MatrixXd
+Eigen::MatrixXd numpy_to_eigen(pybind11::array_t<double> np_array) {
+    pybind11::buffer_info info = np_array.request();
+    Eigen::MatrixXd mat = Eigen::Map<Eigen::MatrixXd>(static_cast<double *>(info.ptr), info.shape[0], info.shape[1]);
+    return mat;
+}
+
+
 PYBIND11_MODULE(cpp_probabilities, m) {
     m.doc() = "Probabilities module"; // optional module docstring
     m.def("get_counts", &get_counts, "Soft_info get_counts function");
+    m.def("numpy_to_eigen", &numpy_to_eigen, "Convert NumPy array to Eigen::MatrixXd");
+    pybind11::class_<GridData>(m, "GridData")
+        .def(pybind11::init<Eigen::MatrixXd, Eigen::MatrixXd, Eigen::MatrixXd, Eigen::MatrixXd>())
+        .def_readwrite("grid_x", &GridData::grid_x)
+        .def_readwrite("grid_y", &GridData::grid_y)
+        .def_readwrite("grid_density_0", &GridData::grid_density_0)
+        .def_readwrite("grid_density_1", &GridData::grid_density_1);
 }
