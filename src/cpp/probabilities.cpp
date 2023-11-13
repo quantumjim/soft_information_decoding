@@ -6,6 +6,8 @@
 #include <stdexcept>
 #include <vector>
 #include <map>
+
+#include <indicators/progress_bar.hpp>
 #include <Eigen/Dense>  // Assuming we are using Eigen for matrix operations
 
 struct GridData {
@@ -38,6 +40,7 @@ std::map<std::string, int> get_counts(const Eigen::MatrixXd& scaled_IQ_data,
         throw std::runtime_error("Number of columns in IQ data does not match the expected value");
     }
 
+
     for (int shot = 0; shot < scaled_IQ_data.rows(); ++shot) { 
         std::string outcome_str;
         for (int msmt = 0; msmt < scaled_IQ_data.cols(); msmt += 2) { 
@@ -52,8 +55,7 @@ std::map<std::string, int> get_counts(const Eigen::MatrixXd& scaled_IQ_data,
                 outcome_str += std::to_string(outcome);
             }
             catch (const std::out_of_range& e) {
-                std::cerr << "Error: Qubit index not found in mapping or grid data: " << e.what() << '\n';
-                outcome_str += "?";  
+                throw std::runtime_error("Qubit index " + std::to_string(msmt/2) + " not found in qubit mapping (qubit_mapping)");
             }
 
             if ((msmt/2 + 1) % (distance - 1) == 0 && (msmt/2 + 1) / (distance - 1) <= synd_rounds) {
@@ -102,8 +104,17 @@ Eigen::MatrixXd numpy_to_eigen(pybind11::array_t<double> np_array) {
 
 PYBIND11_MODULE(cpp_probabilities, m) {
     m.doc() = "Probabilities module"; // optional module docstring
-    m.def("get_counts", &get_counts, "Soft_info get_counts function");
+
+    m.def("get_counts", &get_counts, 
+          pybind11::arg("scaled_IQ_data"), 
+          pybind11::arg("qubit_mapping"), 
+          pybind11::arg("kde_grid_dict"), 
+          pybind11::arg("synd_rounds"), 
+        //   pybind11::arg("show_progress") = false,
+          "Get counts from IQ data");
+
     m.def("numpy_to_eigen", &numpy_to_eigen, "Convert NumPy array to Eigen::MatrixXd");
+
     pybind11::class_<GridData>(m, "GridData")
         .def(pybind11::init<Eigen::MatrixXd, Eigen::MatrixXd, Eigen::MatrixXd, Eigen::MatrixXd>())
         .def_readwrite("grid_x", &GridData::grid_x)
