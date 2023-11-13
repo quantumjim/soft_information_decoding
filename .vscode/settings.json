@@ -72,7 +72,10 @@
         "valarray": "cpp",
         "variant": "cpp",
         "vector": "cpp",
-        "algorithm": "cpp"
+        "algorithm": "cpp",
+        "condition_variable": "cpp",
+        "future": "cpp",
+        "queue": "cpp"
     },
     "cmake.sourceDirectory": "${workspaceFolder}"
 }
