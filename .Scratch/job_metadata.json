@@ -58449,5 +58449,53 @@
         "job_name": null,
         "job_metadata": {},
         "tags": []
+    },
+    {
+        "creation_date": "2023-11-21 11:17:03.136000+01:00",
+        "notebook_name": "get_IQ_calibration_data_Mumbai",
+        "backend_name": "ibmq_mumbai",
+        "backend_options": {
+            "shots": 100000,
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "num_qubits": 27,
+            "sampled_state": "111111111111111111111111111",
+            "optimization_level": 0
+        },
+        "job_id": "cne877wjpbeg008cst20",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "Calibration"
+        ]
+    },
+    {
+        "creation_date": "2023-11-21 11:17:09.471000+01:00",
+        "notebook_name": "get_IQ_calibration_data_Mumbai",
+        "backend_name": "ibmq_mumbai",
+        "backend_options": {
+            "shots": 100000,
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "num_qubits": 27,
+            "sampled_state": "000000000000000000000000000",
+            "optimization_level": 0
+        },
+        "job_id": "cne879d72scg008df4j0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "Calibration"
+        ]
     }
 ]
