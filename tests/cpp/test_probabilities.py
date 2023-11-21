@@ -4,9 +4,20 @@ sys.path.insert(0, r'/Users/mha/My Drive/Desktop/Studium/Physik/MSc/Semester 3/I
 import random
 
 import numpy as np
+from sklearn.preprocessing import StandardScaler
+from scipy.stats import norm
 import pytest
 
 import cpp_probabilities
+
+
+def create_gaussian_grid_data(num_points, mean=0, std=1):
+    x = np.linspace(-3*std, 3*std, num_points)
+    y = norm.pdf(x, mean, std)
+    grid_x, grid_y = np.meshgrid(x, x)
+    grid_density_0 = norm.pdf(grid_x, mean, std) * norm.pdf(grid_y, mean, std)
+    grid_density_1 = np.max(grid_density_0) - grid_density_0
+    return grid_x, grid_y, grid_density_0, grid_density_1
 
 
 def create_your_grid_data(num_points):
@@ -43,6 +54,58 @@ def generate_random_qubit_mapping(num_keys):
     return qubit_mapping
 
 
+def process_scaler_dict(scaler_dict):
+    processed_dict = {}
+    for qubit_idx, scaler in scaler_dict.items():
+        # Assuming the scaler is fit on complex data with real and imaginary parts as separate features
+        # Hence, the mean_ and scale_ arrays should have two elements each
+        if len(scaler.mean_) != 2 or len(scaler.scale_) != 2:
+            raise ValueError(f"Scaler for qubit {qubit_idx} is not fit on complex data.")
+        
+        mean_real, mean_imag = scaler.mean_
+        std_real, std_imag = scaler.scale_
+        processed_dict[qubit_idx] = ((mean_real, std_real), (mean_imag, std_imag))
+
+    return processed_dict
+
+
+def test_get_counts_with_zero_scaling():
+    # Setup
+    num_IQ_points = 21
+    num_samples = 10
+    raw_IQ_data = np.full((num_samples, num_IQ_points), 3.4 + 1.3j)  # Simulated IQ data
+
+    # Create a scaler_dict that scales everything to zero
+    scaler_dict = {}
+    for qubit in [0, 1]:
+        scaler = StandardScaler()
+        scaler.mean_ = np.array([3.4, 1.3])
+        scaler.scale_ = np.array([1, 1])
+        scaler_dict[qubit] = scaler
+
+    processed_scaler_dict = process_scaler_dict(scaler_dict)
+
+    # Create specific grid data
+    kde_grid_dict = {}
+    for qubit_idx in [0, 1]:
+        grid_x, grid_y, grid_density_0, grid_density_1 = create_gaussian_grid_data(10)
+        kde_grid_dict[qubit_idx] = cpp_probabilities.GridData(grid_x, grid_y, grid_density_0, grid_density_1)
+
+    # Set synd_rounds (example value, adjust as needed)
+    synd_rounds = 1
+
+    qubit_mapping = generate_random_qubit_mapping(num_IQ_points)
+
+    # Call your get_counts function
+    counts = cpp_probabilities.get_counts(raw_IQ_data, qubit_mapping, kde_grid_dict, processed_scaler_dict, synd_rounds)
+
+    # Assertions
+    expected_count = "00000000000 0000000000"
+    for outcome in counts:
+        print(outcome)
+        assert outcome == expected_count, "Not all outcomes are 0s for ->zero scaling"
+
+
 def test_get_counts_assertion_synd_rounds():
 
     kde_grid_dict = {}
@@ -59,7 +122,7 @@ def test_get_counts_assertion_synd_rounds():
     synd_rounds_list = [-1, 2, 4, 5, 6, 19]
     for synd_rounds in synd_rounds_list:
         with pytest.raises(RuntimeError):
-            counts = cpp_probabilities.get_counts(scaled_IQ_data, qubit_mapping, kde_grid_dict, synd_rounds)
+            counts = cpp_probabilities.get_counts_old(scaled_IQ_data, qubit_mapping, kde_grid_dict, synd_rounds)
 
 
 def test_get_counts_all_same():
@@ -78,9 +141,9 @@ def test_get_counts_all_same():
 
     synd_rounds = 0
 
-    # Call the get_counts function
-    counts = cpp_probabilities.get_counts(scaled_IQ_data, qubit_mapping, kde_grid_dict, synd_rounds)
-    counts2 = cpp_probabilities.get_counts(scaled_IQ_data, qubit_mapping, kde_grid_dict2, synd_rounds)
+    # Call the get_counts_old function
+    counts = cpp_probabilities.get_counts_old(scaled_IQ_data, qubit_mapping, kde_grid_dict, synd_rounds)
+    counts2 = cpp_probabilities.get_counts_old(scaled_IQ_data, qubit_mapping, kde_grid_dict2, synd_rounds)
 
     # Check if all outcomes in counts are '1'
     for outcome in counts:
@@ -105,8 +168,8 @@ def test_get_counts_spacing():
 
     synd_rounds = 3
 
-    # Call the get_counts function
-    counts = cpp_probabilities.get_counts(scaled_IQ_data, qubit_mapping, kde_grid_dict, synd_rounds)
+    # Call the get_counts_old function
+    counts = cpp_probabilities.get_counts_old(scaled_IQ_data, qubit_mapping, kde_grid_dict, synd_rounds)
     
     for outcome in counts:
         sections = outcome.split(' ')
