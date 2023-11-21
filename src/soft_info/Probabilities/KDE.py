@@ -1,7 +1,7 @@
 # Maurice Hanisch mhanisc@ethz.ch
 # Created 2023-10-27
 
-from typing import Union, List, Dict
+from typing import Union, List, Dict, Optional
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -99,7 +99,7 @@ def fit_KDE(IQ_data, bandwidth=0.2, plot=False, qubit_index='', num_samples=1e5,
     return kde, scaler
 
 
-def get_KDEs(provider, device, qubits: List[int], bandwidths: Union[float, list] = 0.2,
+def get_KDEs(provider, device: Optional[str] = None, tobecalib_job: Optional[str] = None, qubits: Optional[List[int]] = None,  bandwidths: Union[float, list] = 0.2,
              plot: Union[bool, list] = False, plot_db=False, num_samples=1e5) -> Dict[int, List]:
     """
     Retrieves kernel density estimations (KDEs) for given qubits on a specific device.
@@ -119,7 +119,7 @@ def get_KDEs(provider, device, qubits: List[int], bandwidths: Union[float, list]
         bandwidths, list) else bandwidths
     plot0, plot1 = (plot, plot) if not isinstance(plot, list) else plot
 
-    all_memories = load_calibration_memory(provider, device, qubits)
+    all_memories = load_calibration_memory(provider, device=device, qubits=qubits, tobecalib_job=tobecalib_job, _take_newest=True)
     all_kdes = {}
     all_scalers = {}
 
