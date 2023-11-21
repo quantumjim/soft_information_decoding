@@ -19,8 +19,75 @@ def extract_backend_name(backend_str):
     else:
         # Return None or raise an error if the pattern is not found
         return None
+    
 
-def load_calibration_memory(provider, device: Optional[str] = None, qubits: Optional[List[int]] = None, tobecalib_job: Optional[str] = None, _take_newest=True):
+def find_closest_calib_jobs(tobecalib_job: str):
+    """Find the closest calibration jobs for the given job ID."""
+    root_dir = find_and_create_scratch()
+    metadata_path = f"{root_dir}/job_metadata.json"
+    with open(metadata_path, 'r') as file:
+        metadata = json.load(file)
+    specified_job_entry = next((item for item in metadata if item['job_id'] == tobecalib_job), None)
+    if not specified_job_entry:
+        raise ValueError(f"No job found in metadata with ID: {tobecalib_job}")
+
+    # Extract creation date and backend name
+    specified_job_creation_date = pd.to_datetime(specified_job_entry['creation_date'])
+    backend_name = specified_job_entry['backend_name']
+
+    md = metadata_loader(_extract=True, _drop_inutile=True).dropna(subset=["num_qubits"])
+    # Filter metadata
+    mask = (
+        (md["backend_name"] == backend_name) &
+        (md["job_status"] == "JobStatus.DONE") &
+        (md["optimization_level"] == 0)
+    )
+    md_filtered = md.loc[mask]
+    
+    job_ids = {}
+    for state in ['0', '1']:
+        state_mask = md_filtered["sampled_state"] == md_filtered["num_qubits"].apply(lambda x: state * int(x))
+        md_state_filtered = md_filtered[state_mask].copy()
+        md_state_filtered['creation_date'] = pd.to_datetime(md_state_filtered['creation_date'])
+        closest_job_id = md_state_filtered.iloc[(md_state_filtered['creation_date'] - specified_job_creation_date).abs().argsort()[:1]]['job_id'].values[0]
+        job_ids[state] = closest_job_id
+    
+    return job_ids
+
+
+def load_calibration_memory(provider, tobecalib_job: str, qubits: Optional[List[int]] = None): 
+    """Load the calibration memory for the closest calibration jobs for the given job ID."""
+    if not tobecalib_job:
+        raise NotImplementedError("Only loading calibration data for a specific job is currently supported.")
+    
+    closest_job_ids = find_closest_calib_jobs(tobecalib_job)
+
+    all_memories = {}
+    for state, job_id in closest_job_ids.items():
+        mmr_name = f"mmr_{state}"
+        job = provider.retrieve_job(job_id)
+        memory = job.result().get_memory()
+
+        if qubits is None:
+            qubits = range(memory.shape[1])  # Assuming all qubits are included
+
+        for qubit in qubits:
+            if qubit < memory.shape[1]:  # Check if qubit index is valid
+                if qubit not in all_memories:
+                    all_memories[qubit] = {}
+                all_memories[qubit][mmr_name] = memory[:, int(qubit)]
+
+    return all_memories
+
+
+
+
+
+
+
+
+
+def load_calibration_memory_old(provider, device: Optional[str] = None, qubits: Optional[List[int]] = None, tobecalib_job: Optional[str] = None, _take_newest=True):
     """
     Loads the calibration memory for the given device and qubits.
 
@@ -88,7 +155,7 @@ def load_calibration_memory(provider, device: Optional[str] = None, qubits: Opti
             job_ids = md_state_filtered["job_id"][:1]
         else:
             job_ids = md_state_filtered["job_id"]
-            warnings.warn(f"Loading multiple calibration jobs frecusively for state {state}.")
+            warnings.warn(f"Loading multiple calibration jobs recusively for state {state}.")
 
         for job_id in job_ids:
             mmr_name = f"mmr_{state}"

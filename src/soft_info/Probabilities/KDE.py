@@ -99,30 +99,37 @@ def fit_KDE(IQ_data, bandwidth=0.2, plot=False, qubit_index='', num_samples=1e5,
     return kde, scaler
 
 
-def get_KDEs(provider, device: Optional[str] = None, tobecalib_job: Optional[str] = None, qubits: Optional[List[int]] = None,  bandwidths: Union[float, list] = 0.2,
-             plot: Union[bool, list] = False, plot_db=False, num_samples=1e5) -> Dict[int, List]:
+def get_KDEs(provider, tobecalib_job: str, qubits: Optional[List[int]] = None,  
+             bandwidths: Union[float, list] = 0.2, plot: Union[bool, list] = False, 
+             plot_db=False, num_samples=1e5) -> Dict[int, List]:
     """
-    Retrieves kernel density estimations (KDEs) for given qubits on a specific device.
+    Retrieves Kernel Density Estimations (KDEs) for specified qubits using calibration data from a quantum computing service provider. This function is useful for analyzing the state distributions of qubits and understanding their behavior.
 
     Args:
-    - provider: The quantum computing service provider.
-    - device (str): The device to be used for computation.
-    - qubits (List[int]): List of qubit indices for which KDEs should be retrieved.
-    - bandwidths (Union[float, list], optional): Bandwidth parameter for KDEs. Can either be a single float or a list of two floats. Defaults to 0.2.
-    - plot (Union[bool, list], optional): Whether or not to plot the KDE. Can be a single boolean or a list of two booleans. Defaults to False.
-    - num_samples (int, optional): Number of samples for KDE fitting. Defaults to 1e5.
+    - provider: The quantum computing service provider, used to access calibration data.
+    - tobecalib_job (str): The job ID for which calibration data is to be retrieved. If provided, the function will use calibration data closest to this job's creation date.
+    - qubits (List[int], optional): A list of qubit indices for which KDEs should be retrieved. If not provided, KDEs for all available qubits will be generated.
+    - bandwidths (float or list, optional): The bandwidth parameter(s) for KDEs. Can either be a single float or a list of two floats for separate bandwidths for the '0' and '1' states. Defaults to 0.2.
+    - plot (bool or list, optional): Indicates whether to plot the KDEs. Can be a single boolean or a list of two booleans for separate plotting options for the '0' and '1' states. Defaults to False.
+    - plot_db (bool, optional): If True, plots the decision boundary between the '0' and '1' state distributions. Defaults to False.
+    - num_samples (int, optional): The number of samples to use for KDE sample plotting. Defaults to 100,000.
 
     Returns:
-    - Dict[int, List]: A dictionary where keys are the qubit indices and values are lists containing the KDE and corresponding scaler for each qubit. i.e. all_kdes[qubit] = [kde_0, kde_1], all_scalers[qubit] = [scaler_0, scaler_1]
+    - Dict[int, List]: A dictionary where keys are qubit indices, and values are lists containing the KDE objects for '0' and '1' states, along with the corresponding scaler for each qubit. For example, all_kdes[qubit] = [kde_0, kde_1], all_scalers[qubit] = scaler.
+
+    Example usage:
+    all_kdes, all_scalers = get_KDEs(provider, tobecalib_job='job_id', qubits=[1, 2, 3])
     """
     bw0, bw1 = (bandwidths, bandwidths) if not isinstance(
         bandwidths, list) else bandwidths
     plot0, plot1 = (plot, plot) if not isinstance(plot, list) else plot
 
+    
+    all_memories = load_calibration_memory(provider, tobecalib_job=tobecalib_job, qubits=qubits)
+
     if qubits is None:
-        all_memories, qubits = load_calibration_memory(provider, device=device, qubits=qubits, tobecalib_job=tobecalib_job, _take_newest=True)
-    else: #TODO: is there a better way to do this?
-        all_memories = load_calibration_memory(provider, device=device, qubits=qubits, tobecalib_job=tobecalib_job, _take_newest=True)
+        qubits = list(all_memories.keys())
+
     all_kdes = {}
     all_scalers = {}
 
