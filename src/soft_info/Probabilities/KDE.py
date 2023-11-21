@@ -119,7 +119,10 @@ def get_KDEs(provider, device: Optional[str] = None, tobecalib_job: Optional[str
         bandwidths, list) else bandwidths
     plot0, plot1 = (plot, plot) if not isinstance(plot, list) else plot
 
-    all_memories = load_calibration_memory(provider, device=device, qubits=qubits, tobecalib_job=tobecalib_job, _take_newest=True)
+    if qubits is None:
+        all_memories, qubits = load_calibration_memory(provider, device=device, qubits=qubits, tobecalib_job=tobecalib_job, _take_newest=True)
+    else: #TODO: is there a better way to do this?
+        all_memories = load_calibration_memory(provider, device=device, qubits=qubits, tobecalib_job=tobecalib_job, _take_newest=True)
     all_kdes = {}
     all_scalers = {}
 

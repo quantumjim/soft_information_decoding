@@ -6,8 +6,9 @@ import re
 from typing import List, Optional
 
 import pandas as pd
+import json
 
-from .metadata import metadata_loader
+from .metadata import metadata_loader, find_and_create_scratch
 
 
 def extract_backend_name(backend_str):
@@ -36,20 +37,24 @@ def load_calibration_memory(provider, device: Optional[str] = None, qubits: Opti
     if not device and not tobecalib_job:
         raise ValueError("Either 'device' or 'to_be_calibrated_job_id' must be provided.")
     
-    if not qubits:
-        qubits = list(range(127)) # Hardcoded for biggest device TODO: retrieve the num qubits from the device
-        warnings.warn("No qubits specified, loading calibration data for all qubits.")
-        
     specified_job_creation_date = None
     if tobecalib_job:
-        specified_job = provider.retrieve_job(tobecalib_job)
-        specified_job_creation_date = pd.to_datetime(specified_job.creation_date())
-        backend_name = extract_backend_name(specified_job.backend())
+        root_dir = find_and_create_scratch()
+        metadata_path = f"{root_dir}/job_metadata.json"
+        with open(metadata_path, 'r') as file:
+            metadata = json.load(file)
 
+        specified_job_entry = next((item for item in metadata if item['job_id'] == tobecalib_job), None)
+
+        if not specified_job_entry:
+            raise ValueError(f"No job found in metadata with ID: {tobecalib_job}")
+
+        # Extract creation date and backend name
+        specified_job_creation_date = pd.to_datetime(specified_job_entry['creation_date'])
+        backend_name = specified_job_entry['backend_name']
         if device and device != backend_name:
-            raise ValueError(f"The specified job's backend: {specified_job.backend()} does not match the provided backend name: {device}.")
+            raise ValueError(f"The specified job's backend: {backend_name} does not match the provided backend name: {device}.")
         device = backend_name
-        # print(device)
    
     md = metadata_loader(_extract=True, _drop_inutile=True).dropna(subset=["num_qubits"])
     # Filter metadata
@@ -59,6 +64,15 @@ def load_calibration_memory(provider, device: Optional[str] = None, qubits: Opti
         (md["optimization_level"] == 0)
     )
     md_filtered = md.loc[mask]
+
+    _return_qubits = False
+    if qubits is None:
+        _return_qubits = True
+        num_qubits = md_filtered["num_qubits"].unique()
+        if len(num_qubits) != 1:
+            raise ValueError(f"Multiple number of qubits found: {num_qubits}")
+        qubits = list(range(int(num_qubits[0])))
+
 
     all_memories = {qubit: {} for qubit in qubits}
 
@@ -89,6 +103,9 @@ def load_calibration_memory(provider, device: Optional[str] = None, qubits: Opti
         if len(memories) != 2:
             warnings.warn(f"Loaded {len(memories)} memories with keys {list(memories.keys())}, expected 2 for qubit {qubit}.")
 
+    if _return_qubits:
+        return (all_memories, qubits) # TODO: is there a better way to do this?
+    
     return all_memories
 
 
