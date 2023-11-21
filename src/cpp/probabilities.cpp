@@ -3,8 +3,10 @@
 #include <pybind11/eigen.h>  // Add this include for Eigen support with NumPy
 
 #include <iostream>
+#include <sstream>
 #include <stdexcept>
 #include <vector>
+#include <complex>
 #include <map>
 
 #include <indicators/progress_bar.hpp>
@@ -27,7 +29,7 @@ int grid_lookup(const Eigen::Vector2d& point, const GridData& grid_data);
 
 
 
-std::map<std::string, int> get_counts(const Eigen::MatrixXd& scaled_IQ_data,
+std::map<std::string, int> get_counts_old(const Eigen::MatrixXd& scaled_IQ_data,
                        const std::map<int, int>& qubit_mapping,
                        const std::map<int, GridData>& kde_grid_dict,
                        int synd_rounds) {
@@ -72,6 +74,58 @@ std::map<std::string, int> get_counts(const Eigen::MatrixXd& scaled_IQ_data,
     return counts;
 }
 
+std::map<std::string, int> get_counts(
+    const Eigen::MatrixXcd& not_scaled_IQ_data,
+    const std::map<int, int>& qubit_mapping,
+    const std::map<int, GridData>& kde_grid_dict,
+    const std::map<int, std::pair<std::pair<double, double>, std::pair<double, double>>>& scaler_params_dict, // Adjusted to hold pairs of pairs
+    int synd_rounds) {
+
+    std::map<std::string, int> counts;
+
+    int distance = (not_scaled_IQ_data.cols() + synd_rounds) / (synd_rounds + 1); // Hardcoded for RepCodes
+
+    if (not_scaled_IQ_data.cols() != (distance - 1) * synd_rounds + distance) {
+        std::ostringstream error_message;
+        error_message << "Number of columns in IQ data (" << not_scaled_IQ_data.cols() 
+                    << ") does not match the expected value (" 
+                    << ((distance - 1) * synd_rounds + distance) << ").";
+        throw std::runtime_error(error_message.str());
+    }
+
+    for (int shot = 0; shot < not_scaled_IQ_data.rows(); ++shot) { 
+        std::string outcome_str;
+        for (int msmt = 0; msmt < not_scaled_IQ_data.cols(); ++msmt) { 
+
+            try {
+                int qubit_idx = qubit_mapping.at(msmt);
+                const auto& grid_data = kde_grid_dict.at(qubit_idx);
+
+                std::complex<double> iq_point = not_scaled_IQ_data(shot, msmt);
+                const auto& [real_params, imag_params] = scaler_params_dict.at(qubit_idx);
+                double real_scaled = (std::real(iq_point) - real_params.first) / real_params.second;
+                double imag_scaled = (std::imag(iq_point) - imag_params.first) / imag_params.second;
+                Eigen::Vector2d scaled_point = {real_scaled, imag_scaled};
+
+                int outcome = grid_lookup(scaled_point, grid_data);
+                outcome_str += std::to_string(outcome);
+            }
+            catch (const std::out_of_range& e) {
+                throw std::runtime_error("Qubit index " + std::to_string(msmt) + " not found in qubit mapping (qubit_mapping)");
+            }
+
+            if ((msmt + 1) % (distance - 1) == 0 && (msmt + 1) / (distance - 1) <= synd_rounds) {
+                outcome_str += " ";
+            }
+        }
+
+        std::reverse(outcome_str.begin(), outcome_str.end()); // Reverse string
+        counts[outcome_str]++;
+    }
+
+    return counts;
+}
+
 int grid_lookup(const Eigen::Vector2d& point, const GridData& grid_data) {
     // Calculate grid spacing
     double dx = grid_data.grid_x(0, 1) - grid_data.grid_x(0, 0);
@@ -105,13 +159,21 @@ Eigen::MatrixXd numpy_to_eigen(pybind11::array_t<double> np_array) {
 PYBIND11_MODULE(cpp_probabilities, m) {
     m.doc() = "Probabilities module"; // optional module docstring
 
-    m.def("get_counts", &get_counts, 
+    m.def("get_counts_old", &get_counts_old, 
           pybind11::arg("scaled_IQ_data"), 
           pybind11::arg("qubit_mapping"), 
           pybind11::arg("kde_grid_dict"), 
           pybind11::arg("synd_rounds"), 
         //   pybind11::arg("show_progress") = false,
           "Get counts from IQ data");
+    
+    m.def("get_counts", &get_counts, 
+          pybind11::arg("not_scaled_IQ_data"), 
+          pybind11::arg("qubit_mapping"), 
+          pybind11::arg("kde_grid_dict"), 
+          pybind11::arg("scaler_params_dict"),
+          pybind11::arg("synd_rounds"), 
+          "Get counts from not scaled IQ data");
 
     m.def("numpy_to_eigen", &numpy_to_eigen, "Convert NumPy array to Eigen::MatrixXd");
 
