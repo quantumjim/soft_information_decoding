@@ -9,6 +9,7 @@ from scipy.stats import norm
 import pytest
 
 import cpp_probabilities
+from cpp import process_scaler_dict
 
 
 def create_gaussian_grid_data(num_points, mean=0, std=1):
@@ -52,21 +53,6 @@ def generate_random_qubit_mapping(num_keys):
     for i in range(num_keys):
         qubit_mapping[i] = random.randint(0, 1)
     return qubit_mapping
-
-
-def process_scaler_dict(scaler_dict):
-    processed_dict = {}
-    for qubit_idx, scaler in scaler_dict.items():
-        # Assuming the scaler is fit on complex data with real and imaginary parts as separate features
-        # Hence, the mean_ and scale_ arrays should have two elements each
-        if len(scaler.mean_) != 2 or len(scaler.scale_) != 2:
-            raise ValueError(f"Scaler for qubit {qubit_idx} is not fit on complex data.")
-        
-        mean_real, mean_imag = scaler.mean_
-        std_real, std_imag = scaler.scale_
-        processed_dict[qubit_idx] = ((mean_real, std_real), (mean_imag, std_imag))
-
-    return processed_dict
 
 
 def test_get_counts_with_zero_scaling():

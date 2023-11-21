@@ -1,3 +1,6 @@
+// Maurice Hanisch mhanisc@ethz.ch
+// Created 21.11.23
+
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 #include <pybind11/eigen.h>  // Add this include for Eigen support with NumPy
