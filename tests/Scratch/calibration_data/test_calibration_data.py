@@ -1,6 +1,6 @@
 import pytest
 from unittest import mock
-from src.Scratch.calibration_data import load_calibration_memory
+from Scratch.calibration.calibration_data import load_calibration_memory
 import pandas as pd
 import numpy as np
 

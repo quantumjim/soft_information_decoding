@@ -8,8 +8,7 @@ import matplotlib.pyplot as plt
 from sklearn.neighbors import KernelDensity
 from sklearn.preprocessing import StandardScaler
 
-from soft_info import plot_IQ_data
-from Scratch import load_calibration_memory
+from ..IQ_data.plotter import plot_IQ_data
 
 
 def plot_KDE(data, kde, scaler):
@@ -124,7 +123,7 @@ def get_KDEs(provider, tobecalib_job: str, qubits: Optional[List[int]] = None,
         bandwidths, list) else bandwidths
     plot0, plot1 = (plot, plot) if not isinstance(plot, list) else plot
 
-    
+    from Scratch import load_calibration_memory # lazy import to avoid circular import
     all_memories = load_calibration_memory(provider, tobecalib_job=tobecalib_job, qubits=qubits)
 
     if qubits is None:

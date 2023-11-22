@@ -4,7 +4,7 @@ import datetime
 from .core import *
 from .qubit_coordinates import *
 from .metadata import *
-from .calibration_data import *
+from .calibration import *
 
 
 def custom_showwarning(message, category, filename, lineno, file=None, line=None):
