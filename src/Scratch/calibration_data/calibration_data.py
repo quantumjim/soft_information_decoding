@@ -8,7 +8,7 @@ from typing import List, Optional
 import pandas as pd
 import json
 
-from .metadata import metadata_loader, find_and_create_scratch
+from ..metadata import metadata_loader, find_and_create_scratch
 
 
 def extract_backend_name(backend_str):
