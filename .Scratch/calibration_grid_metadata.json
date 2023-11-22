@@ -34,6 +34,29 @@
                 "0": "cmxnzcdd31100080btqg",
                 "1": "cmxnz9dwjay0008cnwc0"
             }
+        },
+        "23.11.21_10h17_11pts_0.3std": {
+            "grid_file_path": "/Users/mha/My Drive/Desktop/Studium/Physik/MSc/Semester 3/IBM/IBM GIT/Soft-Info/.Scratch/calibration_grids/23.11.21_10h17_11pts_0.3std_grid.json",
+            "job_ids": {
+                "0": "cne879d72scg008df4j0",
+                "1": "cne877wjpbeg008cst20"
+            }
+        }
+    },
+    "ibm_sherbrooke": {
+        "23.11.09_16h47_10pts_3std": {
+            "grid_file_path": "/Users/mha/My Drive/Desktop/Studium/Physik/MSc/Semester 3/IBM/IBM GIT/Soft-Info/.Scratch/calibration_grids/23.11.09_16h47_10pts_3std_grid.json",
+            "job_ids": {
+                "0": "cn6gt4g64yf0008g82rg",
+                "1": "cn6gt3r9recg008x0grg"
+            }
+        },
+        "23.10.27_07h46_10pts_3std": {
+            "grid_file_path": "/Users/mha/My Drive/Desktop/Studium/Physik/MSc/Semester 3/IBM/IBM GIT/Soft-Info/.Scratch/calibration_grids/23.10.27_07h46_10pts_3std_grid.json",
+            "job_ids": {
+                "0": "cmxpns7evjqg008aj740",
+                "1": "cmxpnrf5z3p0008dmqyg"
+            }
         }
     }
 }

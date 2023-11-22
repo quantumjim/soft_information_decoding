@@ -200,7 +200,7 @@ def create_or_load_kde_grid(provider, tobecalib_job: str, num_grid_points: int, 
 
     # Find the closest calibration jobs
     closest_job_ids, backend, creation_time = find_closest_calib_jobs(tobecalib_job, other_date=other_date)
-    print(f"Found jobs for backend {backend} with closest creation date {creation_time}. Retrieving kde grid...")
+    # print(f"Found jobs for backend {backend} with closest creation date {creation_time}. Retrieving kde grid...")
 
     # Format the creation date and construct the key for metadata
     formatted_key = f"{creation_time.strftime('%y.%m.%d_%Hh%M')}_{num_grid_points}pts_{num_std_dev}std"
