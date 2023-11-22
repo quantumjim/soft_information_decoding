@@ -58465,7 +58465,8 @@
         "additional_metadata": {
             "num_qubits": 27,
             "sampled_state": "111111111111111111111111111",
-            "optimization_level": 0
+            "optimization_level": 0,
+            "job_status": "JobStatus.DONE"
         },
         "job_id": "cne877wjpbeg008cst20",
         "job_name": null,
@@ -58489,7 +58490,8 @@
         "additional_metadata": {
             "num_qubits": 27,
             "sampled_state": "000000000000000000000000000",
-            "optimization_level": 0
+            "optimization_level": 0,
+            "job_status": "JobStatus.DONE"
         },
         "job_id": "cne879d72scg008df4j0",
         "job_name": null,
