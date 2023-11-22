@@ -6,6 +6,7 @@ sys.path.insert(0, r'/Users/mha/My Drive/Desktop/Studium/Physik/MSc/Semester 3/I
 
 import os
 import json
+import warnings
 from datetime import datetime
 from typing import Dict, List, Optional, Union
 
@@ -170,7 +171,7 @@ def load_grid(filename):
 
 
 
-def create_or_load_kde_grid(provider, tobecalib_job: str, num_grid_points: int, num_std_dev: int=3):
+def create_or_load_kde_grid(provider, tobecalib_job: str, num_grid_points: int, num_std_dev: int=3, other_date = None):
     """
     Create or load a Kernel Density Estimation (KDE) grid for a specified calibration job.
     If the grid already exists in the metadata, it loads the grid and scaler dictionaries. 
@@ -198,7 +199,8 @@ def create_or_load_kde_grid(provider, tobecalib_job: str, num_grid_points: int, 
         grid_metadata = {}
 
     # Find the closest calibration jobs
-    closest_job_ids, backend, creation_time = find_closest_calib_jobs(tobecalib_job)
+    closest_job_ids, backend, creation_time = find_closest_calib_jobs(tobecalib_job, other_date=other_date)
+    print(f"Found jobs for backend {backend} with closest creation date {creation_time}. Retrieving kde grid...")
 
     # Format the creation date and construct the key for metadata
     formatted_key = f"{creation_time.strftime('%y.%m.%d_%Hh%M')}_{num_grid_points}pts_{num_std_dev}std"
@@ -214,7 +216,7 @@ def create_or_load_kde_grid(provider, tobecalib_job: str, num_grid_points: int, 
     else:
         from soft_info import get_KDEs # Lazy import to avoid circular imports
         # Retrieve KDEs and scaler data
-        kde_dict, scaler_dict = get_KDEs(provider, tobecalib_job=tobecalib_job)
+        kde_dict, scaler_dict = get_KDEs(provider, tobecalib_job=tobecalib_job, other_date=other_date)
         processed_scaler_dict = process_scaler_dict(scaler_dict)
 
         # Generate a new grid and save it

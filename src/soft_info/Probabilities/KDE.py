@@ -100,7 +100,7 @@ def fit_KDE(IQ_data, bandwidth=0.2, plot=False, qubit_index='', num_samples=1e5,
 
 def get_KDEs(provider, tobecalib_job: str, qubits: Optional[List[int]] = None,  
              bandwidths: Union[float, list] = 0.2, plot: Union[bool, list] = False, 
-             plot_db=False, num_samples=1e5) -> Dict[int, List]:
+             plot_db=False, num_samples=1e5, other_date = None) -> Dict[int, List]:
     """
     Retrieves Kernel Density Estimations (KDEs) for specified qubits using calibration data from a quantum computing service provider. This function is useful for analyzing the state distributions of qubits and understanding their behavior.
 
@@ -124,7 +124,7 @@ def get_KDEs(provider, tobecalib_job: str, qubits: Optional[List[int]] = None,
     plot0, plot1 = (plot, plot) if not isinstance(plot, list) else plot
 
     from Scratch import load_calibration_memory # lazy import to avoid circular import
-    all_memories = load_calibration_memory(provider, tobecalib_job=tobecalib_job, qubits=qubits)
+    all_memories = load_calibration_memory(provider, tobecalib_job=tobecalib_job, qubits=qubits, other_date=other_date)
 
     if qubits is None:
         qubits = list(all_memories.keys())

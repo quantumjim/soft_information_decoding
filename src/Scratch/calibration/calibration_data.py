@@ -21,7 +21,7 @@ def extract_backend_name(backend_str):
         return None
     
 
-def find_closest_calib_jobs(tobecalib_job: str):
+def find_closest_calib_jobs(tobecalib_job: str, other_date = None):
     """Find the closest calibration jobs for the given job ID."""
     # Find attributes of the tobecalib_job
     root_dir = find_and_create_scratch()
@@ -34,6 +34,9 @@ def find_closest_calib_jobs(tobecalib_job: str):
 
     specified_job_creation_date = pd.to_datetime(specified_job_entry['creation_date'])
     specified_job_creation_date = specified_job_creation_date.tz_convert('UTC') if specified_job_creation_date.tzinfo else specified_job_creation_date
+    if other_date is not None: # if specified, use other date as closest date
+        specified_job_creation_date = pd.to_datetime(other_date, utc=True)
+
     backend_name = specified_job_entry['backend_name']
 
     # Find the calibration job ID using the metadata
@@ -70,12 +73,12 @@ def find_closest_calib_jobs(tobecalib_job: str):
 
 
 
-def load_calibration_memory(provider, tobecalib_job: str, qubits: Optional[List[int]] = None): 
+def load_calibration_memory(provider, tobecalib_job: str, qubits: Optional[List[int]] = None, other_date = None): 
     """Load the calibration memory for the closest calibration jobs for the given job ID."""
     if not tobecalib_job:
         raise NotImplementedError("Only loading calibration data for a specific job is currently supported.")
     
-    closest_job_ids, _, _ = find_closest_calib_jobs(tobecalib_job)
+    closest_job_ids, _, _ = find_closest_calib_jobs(tobecalib_job, other_date=other_date)
 
     all_memories = {}
     for state, job_id in closest_job_ids.items():
