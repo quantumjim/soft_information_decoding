@@ -14,14 +14,5 @@
                 "1": "cmxnz9dwjay0008cnwc0"
             }
         }
-    },
-    "ibm_cusco": {
-        "23.11.09_16h47_3pts_3std": {
-            "grid_file_path": "/Users/mha/My Drive/Desktop/Studium/Physik/MSc/Semester 3/IBM/IBM GIT/Soft-Info/.Scratch/calibration_grids/23.11.09_16h47_3pts_3std_grid.json",
-            "job_ids": {
-                "0": "cn6gt1gss5h00087jzeg",
-                "1": "cn6gt0r9recg008x0gr0"
-            }
-        }
     }
 }

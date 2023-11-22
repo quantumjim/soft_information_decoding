@@ -150,19 +150,24 @@ def load_grid(filename):
 
     grid_dict = {}
     for qubit_idx, grid_data in data_loaded['grid_data'].items():
-        grid_x = np.array(grid_data['grid_x'])
-        grid_y = np.array(grid_data['grid_y'])
-        grid_density_0 = np.array(grid_data['grid_density_0'])
-        grid_density_1 = np.array(grid_data['grid_density_1'])
+        grid_x = np.array(grid_data['grid_x'], dtype=np.double)
+        grid_y = np.array(grid_data['grid_y'], dtype=np.double)
+        grid_density_0 = np.array(grid_data['grid_density_0'], dtype=np.double)
+        grid_density_1 = np.array(grid_data['grid_density_1'], dtype=np.double)
 
         # Create GridData objects
         grid_dict[int(qubit_idx)] = cpp_probabilities.GridData(
             grid_x, grid_y, grid_density_0, grid_density_1
         )
 
-    scaler_dict = data_loaded['scaler_data']
+    scaler_dict = {}
+    for qubit_idx, scaler_data in data_loaded['scaler_data'].items():
+        mean_real, std_real = scaler_data[0]
+        mean_imag, std_imag = scaler_data[1]
+        scaler_dict[int(qubit_idx)] = ((float(mean_real), float(std_real)), (float(mean_imag), float(std_imag)))
 
     return grid_dict, scaler_dict
+
 
 
 def create_or_load_kde_grid(provider, tobecalib_job: str, num_grid_points: int, num_std_dev: int=3):
@@ -219,5 +224,7 @@ def create_or_load_kde_grid(provider, tobecalib_job: str, num_grid_points: int, 
 
         # Update metadata
         update_grid_metadata(metadata_file, creation_date=creation_time, backend_name=backend, job_ids=closest_job_ids, grid_file_path=grid_file_path, num_grid_points=num_grid_points, num_std_dev=num_std_dev)
-
-    return grid_dict, processed_scaler_dict
+        
+        # TODO: Change this to not load (Hacky fix because of some bug when cpp with created scaler dict)
+        loaded_grid_dict, loaded_scaler_dict = load_grid(grid_file_path)
+        return loaded_grid_dict, loaded_scaler_dict
