@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.8)
 project(Soft_Info)
 
 # Set the C++ standard to C++17
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 find_package(Python3 3.11 REQUIRED Interpreter Development)
@@ -10,9 +10,17 @@ add_subdirectory(libs/pybind11)
 include_directories(libs/cpp/eigen-3.4.0)
 include_directories(libs/cpp/indicators-master/include)
 include_directories(libs/PyMatching/src)
-
+include_directories(libs/PyMatching/Stim/src) # Add this line
+include_directories(src/cpp/Probabilities)
 
 pybind11_add_module(example_module src/cpp/example.cpp)
-pybind11_add_module(cpp_soft_info src/cpp/Probabilities/probabilities.cpp) #src/cpp/PyMatching/matching_graph.cpp)
 
-#something somethin
+# Pybind11 module for the cpp_soft_info
+pybind11_add_module(cpp_soft_info src/cpp/bindings.cpp src/cpp/Probabilities/probabilities.cpp src/cpp/PyMatching/matching_graph.cpp)
+
+# Link the PyMatching library
+# Replace this with the correct path to the built PyMatching library
+set(PYMATCHING_LIB "/Users/mha/My_Drive/Desktop/Studium/Physik/MSc/Semester_3/IBM/IBM_GIT/Soft-Info/libs/PyMatching/bazel-bin")
+
+# # Link the library to your modules as needed
+target_link_libraries(cpp_soft_info PRIVATE ${PYMATCHING_LIB}/liblibpymatching.a)

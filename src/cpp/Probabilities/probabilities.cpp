@@ -1,34 +1,17 @@
 // Maurice Hanisch mhanisc@ethz.ch
 // Created 21.11.23
 
-#include <pybind11/pybind11.h>
-#include <pybind11/stl.h>
-#include <pybind11/eigen.h>  // Add this include for Eigen support with NumPy
-
+#include "probabilities.h"
+#include <indicators/progress_bar.hpp>
 #include <iostream>
 #include <sstream>
 #include <stdexcept>
-#include <vector>
 #include <complex>
-#include <map>
-
-#include <indicators/progress_bar.hpp>
-#include <Eigen/Dense>  // Assuming we are using Eigen for matrix operations
-
-struct GridData {
-    Eigen::MatrixXd grid_x;
-    Eigen::MatrixXd grid_y;
-    Eigen::MatrixXd grid_density_0;
-    Eigen::MatrixXd grid_density_1;
-    // Constructor, if needed
-    GridData(Eigen::MatrixXd gx, Eigen::MatrixXd gy, Eigen::MatrixXd gd0, Eigen::MatrixXd gd1)
-        : grid_x(gx), grid_y(gy), grid_density_0(gd0), grid_density_1(gd1) {}
-};
 
 
-
-// Forward declaration of grid_lookup
-std::tuple<int, double, double> grid_lookup(const Eigen::Vector2d& scaled_point, const GridData& grid_data);
+// Constructor for GridData
+GridData::GridData(Eigen::MatrixXd gx, Eigen::MatrixXd gy, Eigen::MatrixXd gd0, Eigen::MatrixXd gd1)
+    : grid_x(gx), grid_y(gy), grid_density_0(gd0), grid_density_1(gd1) {}
 
 
 std::map<std::string, int> get_counts(
@@ -134,40 +117,40 @@ Eigen::MatrixXd numpy_to_eigen(pybind11::array_t<double> np_array) {
 }
 
 
-PYBIND11_MODULE(cpp_soft_info, m) {
-    m.doc() = "Probabilities module"; // optional module docstring
+// PYBIND11_MODULE(cpp_soft_info, m) {
+//     m.doc() = "Probabilities module"; // optional module docstring
     
-    m.def("get_counts", &get_counts, 
-          pybind11::arg("not_scaled_IQ_data"), 
-          pybind11::arg("qubit_mapping"), 
-          pybind11::arg("kde_grid_dict"), 
-          pybind11::arg("scaler_params_dict"),
-          pybind11::arg("synd_rounds"), 
-          "Get counts from not scaled IQ data");
+//     m.def("get_counts", &get_counts, 
+//           pybind11::arg("not_scaled_IQ_data"), 
+//           pybind11::arg("qubit_mapping"), 
+//           pybind11::arg("kde_grid_dict"), 
+//           pybind11::arg("scaler_params_dict"),
+//           pybind11::arg("synd_rounds"), 
+//           "Get counts from not scaled IQ data");
 
-    m.def("numpy_to_eigen", &numpy_to_eigen, "Convert NumPy array to Eigen::MatrixXd");
+//     m.def("numpy_to_eigen", &numpy_to_eigen, "Convert NumPy array to Eigen::MatrixXd");
 
-    m.def("llh_ratio", &llh_ratio, 
-          pybind11::arg("scaled_point"), 
-          pybind11::arg("grid_data"), 
-          "Calculate the log-likelihood ratio for a given point and grid data");
+//     m.def("llh_ratio", &llh_ratio, 
+//           pybind11::arg("scaled_point"), 
+//           pybind11::arg("grid_data"), 
+//           "Calculate the log-likelihood ratio for a given point and grid data");
 
-    pybind11::class_<GridData>(m, "GridData")
-        .def(pybind11::init<Eigen::MatrixXd, Eigen::MatrixXd, Eigen::MatrixXd, Eigen::MatrixXd>())
-        .def_readwrite("grid_x", &GridData::grid_x)
-        .def_readwrite("grid_y", &GridData::grid_y)
-        .def_readwrite("grid_density_0", &GridData::grid_density_0)
-        .def_readwrite("grid_density_1", &GridData::grid_density_1);
+//     pybind11::class_<GridData>(m, "GridData")
+//         .def(pybind11::init<Eigen::MatrixXd, Eigen::MatrixXd, Eigen::MatrixXd, Eigen::MatrixXd>())
+//         .def_readwrite("grid_x", &GridData::grid_x)
+//         .def_readwrite("grid_y", &GridData::grid_y)
+//         .def_readwrite("grid_density_0", &GridData::grid_density_0)
+//         .def_readwrite("grid_density_1", &GridData::grid_density_1);
 
 
-    // m.def("get_counts_old", &get_counts_old, 
-    //       pybind11::arg("scaled_IQ_data"), 
-    //       pybind11::arg("qubit_mapping"), 
-    //       pybind11::arg("kde_grid_dict"), 
-    //       pybind11::arg("synd_rounds"), 
-    //     //   pybind11::arg("show_progress") = false,
-    //       "Get counts from IQ data");
-}
+//     // m.def("get_counts_old", &get_counts_old, 
+//     //       pybind11::arg("scaled_IQ_data"), 
+//     //       pybind11::arg("qubit_mapping"), 
+//     //       pybind11::arg("kde_grid_dict"), 
+//     //       pybind11::arg("synd_rounds"), 
+//     //     //   pybind11::arg("show_progress") = false,
+//     //       "Get counts from IQ data");
+// }
 
 
 // std::map<std::string, int> get_counts_old(const Eigen::MatrixXd& scaled_IQ_data,
