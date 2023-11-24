@@ -9,6 +9,8 @@ find_package(Python3 3.11 REQUIRED Interpreter Development)
 add_subdirectory(libs/pybind11)
 include_directories(libs/cpp/eigen-3.4.0)
 include_directories(libs/cpp/indicators-master/include)
+include_directories(libs/PyMatching/src)
+
 
 pybind11_add_module(example_module src/cpp/example.cpp)
 pybind11_add_module(cpp_soft_info src/cpp/Probabilities/probabilities.cpp) #src/cpp/PyMatching/matching_graph.cpp)
