@@ -14,3 +14,5 @@ include_directories(libs/PyMatching/src)
 
 pybind11_add_module(example_module src/cpp/example.cpp)
 pybind11_add_module(cpp_soft_info src/cpp/Probabilities/probabilities.cpp) #src/cpp/PyMatching/matching_graph.cpp)
+
+#something somethin
