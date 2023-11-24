@@ -221,7 +221,8 @@ def create_or_load_kde_grid(provider, tobecalib_job: str, num_grid_points: int, 
 
         # Generate a new grid and save it
         grid_dict = generate_kde_grid(kde_dict, num_grid_points, num_std_dev)
-        grid_file_path = os.path.join(grid_folder, f"{formatted_key}_grid.json")
+        file_name = f"{formatted_key}_{str(closest_job_ids)}_grid.json"
+        grid_file_path = os.path.join(grid_folder, file_name)
         save_grid(grid_dict, processed_scaler_dict, grid_file_path)
 
         # Update metadata
