@@ -13,14 +13,22 @@ jobs:
           submodules: 'recursive' # Checkout submodules recursively
           token: ${{ secrets.MY_GITHUB_TOKEN_FOR_PRIVATE_REPOS }}
   
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+           python-version: '3.11.4'
+    
+      - name: Export Python path
+        run: echo "PYTHON_PATH=$(which python)" >> $GITHUB_ENV
+
       - name: Install CMake
         run: sudo apt-get install -y cmake
-  
+
       - name: Build C++ package
         run: |
-          cmake .
-          make
-  
+           cmake -DPython3_EXECUTABLE=$PYTHON_PATH . 
+           make
+
       - name: Install local qiskit_qec package
         run: pip install ./libs/qiskit-qec
         
