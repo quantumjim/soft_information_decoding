@@ -1,5 +1,5 @@
 import sys
-sys.path.insert(0, r'/Users/mha/My Drive/Desktop/Studium/Physik/MSc/Semester 3/IBM/IBM GIT/Soft-Info/build')
+sys.path.insert(0, r'/Users/mha/My_Drive/Desktop/Studium/Physik/MSc/Semester_3/IBM/IBM_GIT/Soft-Info/build')
 
 import random
 
