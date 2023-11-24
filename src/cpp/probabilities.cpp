@@ -28,7 +28,7 @@ struct GridData {
 
 
 // Forward declaration of grid_lookup
-std::tuple<int, double, double> grid_lookup(const Eigen::Vector2d& point, const GridData& grid_data);
+std::tuple<int, double, double> grid_lookup(const Eigen::Vector2d& scaled_point, const GridData& grid_data);
 
 
 std::map<std::string, int> get_counts(
@@ -83,14 +83,14 @@ std::map<std::string, int> get_counts(
     return counts;
 }
 
-std::tuple<int, double, double> grid_lookup(const Eigen::Vector2d& point, const GridData& grid_data) {
+std::tuple<int, double, double> grid_lookup(const Eigen::Vector2d& scaled_point, const GridData& grid_data) {
     // Calculate grid spacing
     double dx = grid_data.grid_x(0, 1) - grid_data.grid_x(0, 0);
     double dy = grid_data.grid_y(1, 0) - grid_data.grid_y(0, 0);
 
     // Calculate indices
-    int x_index = std::round((point(0) - grid_data.grid_x(0, 0)) / dx);
-    int y_index = std::round((point(1) - grid_data.grid_y(0, 0)) / dy);
+    int x_index = std::round((scaled_point(0) - grid_data.grid_x(0, 0)) / dx);
+    int y_index = std::round((scaled_point(1) - grid_data.grid_y(0, 0)) / dy);
 
     // Clip indices to grid bounds
     x_index = std::clamp(x_index, 0, static_cast<int>(grid_data.grid_x.cols() - 1));
@@ -107,6 +107,24 @@ std::tuple<int, double, double> grid_lookup(const Eigen::Vector2d& point, const 
     return std::make_tuple(outcome, density_0, density_1);
 }
 
+
+double llh_ratio(const Eigen::Vector2d& scaled_point, const GridData& grid_data) {
+
+    auto [outcome, density0, density1] = grid_lookup(scaled_point, grid_data);
+
+
+    // Implement the logic as per the Python code
+    if (outcome == 0) {
+        return -(density1 - density0);
+    } else if (outcome == 1) {
+        return -(density0 - density1);
+    }  else {
+        std::ostringstream error_message;
+        error_message << "Invalid estimated outcome: " << outcome 
+                      << ". The estimated outcome must be either 0 or 1.";
+        throw std::runtime_error(error_message.str());
+    }
+}
 
 // Helper function to convert NumPy array to Eigen::MatrixXd
 Eigen::MatrixXd numpy_to_eigen(pybind11::array_t<double> np_array) {
@@ -128,6 +146,11 @@ PYBIND11_MODULE(cpp_probabilities, m) {
           "Get counts from not scaled IQ data");
 
     m.def("numpy_to_eigen", &numpy_to_eigen, "Convert NumPy array to Eigen::MatrixXd");
+
+    m.def("llh_ratio", &llh_ratio, 
+          pybind11::arg("scaled_point"), 
+          pybind11::arg("grid_data"), 
+          "Calculate the log-likelihood ratio for a given point and grid data");
 
     pybind11::class_<GridData>(m, "GridData")
         .def(pybind11::init<Eigen::MatrixXd, Eigen::MatrixXd, Eigen::MatrixXd, Eigen::MatrixXd>())
