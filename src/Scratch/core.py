@@ -20,7 +20,8 @@ def find_and_create_scratch():
                 break
             else:
                 os.chdir('..')
-                if os.getcwd() == '/':  # Stop if we reach the root directory
+                # Check if we reach the root directory in a platform-independent way
+                if os.getcwd() == os.path.abspath(os.sep):
                     raise FileNotFoundError("Soft-Info folder not found.")
                     break
     except Exception as e:
@@ -31,6 +32,33 @@ def find_and_create_scratch():
         os.chdir(original_path)
 
     return scratch_path
+
+
+# def find_and_create_scratch():
+#     original_path = os.getcwd()
+#     scratch_path = None
+
+#     try:
+#         while True:
+#             current_folder = os.path.basename(os.getcwd())
+#             if current_folder == 'Soft-Info':
+#                 scratch_path = os.path.join(os.getcwd(), '.Scratch')
+#                 if not os.path.exists('.Scratch'):
+#                     os.mkdir('.Scratch')
+#                 break
+#             else:
+#                 os.chdir('..')
+#                 if os.getcwd() == '/':  # Stop if we reach the root directory
+#                     raise FileNotFoundError("Soft-Info folder not found.")
+#                     break
+#     except Exception as e:
+#         print(f"Error encountered: {e}")
+#         scratch_path = None  # or handle the exception as needed
+#     finally:
+#         # Ensure we navigate back to the original directory
+#         os.chdir(original_path)
+
+#     return scratch_path
 
 
 def get_notebook_name():
