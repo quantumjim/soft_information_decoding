@@ -5,33 +5,37 @@ import os
 import inspect
 import warnings
 
-
-def find_and_create_scratch():
+def find_and_create_scratch(max_traversal_depth=20):
     original_path = os.getcwd()
     scratch_path = None
+    traversal_count = 0  # Counter to limit the number of upward traversals
 
     try:
         while True:
-            current_folder = os.path.basename(os.getcwd())
-            if current_folder == 'Soft-Info':
+            # Check if all specified directories and files exist in the current directory
+            if all(os.path.exists(item) for item in ['.git', 'README.md', 'src', 'libs']):
                 scratch_path = os.path.join(os.getcwd(), '.Scratch')
                 if not os.path.exists('.Scratch'):
                     os.mkdir('.Scratch')
                 break
-            else:
-                os.chdir('..')
-                # Check if we reach the root directory in a platform-independent way
-                if os.getcwd() == os.path.abspath(os.sep):
-                    raise FileNotFoundError("Soft-Info folder not found.")
-                    break
+
+            # Move up a directory level
+            os.chdir('..')
+            traversal_count += 1
+
+            # Check if we reach the root directory or maximum traversal depth
+            if os.getcwd() == os.path.abspath(os.sep) or traversal_count >= max_traversal_depth:
+                raise FileNotFoundError("Project root with .git, README.md, src, and libs not found.")
+                break
     except Exception as e:
         print(f"Error encountered: {e}")
-        scratch_path = None  # or handle the exception as needed
+        scratch_path = None
     finally:
         # Ensure we navigate back to the original directory
         os.chdir(original_path)
 
     return scratch_path
+
 
 
 # def find_and_create_scratch():
