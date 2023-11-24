@@ -31,52 +31,6 @@ struct GridData {
 std::tuple<int, double, double> grid_lookup(const Eigen::Vector2d& point, const GridData& grid_data);
 
 
-
-std::map<std::string, int> get_counts_old(const Eigen::MatrixXd& scaled_IQ_data,
-                       const std::map<int, int>& qubit_mapping,
-                       const std::map<int, GridData>& kde_grid_dict,
-                       int synd_rounds) {
-
-    std::map<std::string, int> counts;
-
-    int distance = (scaled_IQ_data.cols()/2 + synd_rounds) / (synd_rounds + 1); // Hardcoded for RepCodes
-
-    if (scaled_IQ_data.cols()/2 != (distance - 1) * synd_rounds + distance) {
-        throw std::runtime_error("Number of columns in IQ data does not match the expected value");
-    }
-
-
-    for (int shot = 0; shot < scaled_IQ_data.rows(); ++shot) { 
-        std::string outcome_str;
-        for (int msmt = 0; msmt < scaled_IQ_data.cols(); msmt += 2) { 
-
-            try {
-                int qubit_idx = qubit_mapping.at(msmt / 2);
-                const auto& grid_data = kde_grid_dict.at(qubit_idx);
-
-                Eigen::Vector2d scaled_point = {scaled_IQ_data(shot, msmt), scaled_IQ_data(shot, msmt + 1)};
-                auto [outcome, density0, density1] = grid_lookup(scaled_point, grid_data);
-
-                outcome_str += std::to_string(outcome);
-            }
-            catch (const std::out_of_range& e) {
-                throw std::runtime_error("Qubit index " + std::to_string(msmt/2) + " not found in qubit mapping (qubit_mapping)");
-            }
-
-            if ((msmt/2 + 1) % (distance - 1) == 0 && (msmt/2 + 1) / (distance - 1) <= synd_rounds) {
-                outcome_str += " ";
-            }
-        }
-
-        std::reverse(outcome_str.begin(), outcome_str.end()); // Reverse string
-        // Increment the count for the outcome string
-        counts[outcome_str]++;
-    }
-
-    // Sort and return the result (if necessary)
-    return counts;
-}
-
 std::map<std::string, int> get_counts(
     const Eigen::MatrixXcd& not_scaled_IQ_data,
     const std::map<int, int>& qubit_mapping,
@@ -164,14 +118,6 @@ Eigen::MatrixXd numpy_to_eigen(pybind11::array_t<double> np_array) {
 
 PYBIND11_MODULE(cpp_probabilities, m) {
     m.doc() = "Probabilities module"; // optional module docstring
-
-    m.def("get_counts_old", &get_counts_old, 
-          pybind11::arg("scaled_IQ_data"), 
-          pybind11::arg("qubit_mapping"), 
-          pybind11::arg("kde_grid_dict"), 
-          pybind11::arg("synd_rounds"), 
-        //   pybind11::arg("show_progress") = false,
-          "Get counts from IQ data");
     
     m.def("get_counts", &get_counts, 
           pybind11::arg("not_scaled_IQ_data"), 
@@ -189,4 +135,59 @@ PYBIND11_MODULE(cpp_probabilities, m) {
         .def_readwrite("grid_y", &GridData::grid_y)
         .def_readwrite("grid_density_0", &GridData::grid_density_0)
         .def_readwrite("grid_density_1", &GridData::grid_density_1);
+
+
+    // m.def("get_counts_old", &get_counts_old, 
+    //       pybind11::arg("scaled_IQ_data"), 
+    //       pybind11::arg("qubit_mapping"), 
+    //       pybind11::arg("kde_grid_dict"), 
+    //       pybind11::arg("synd_rounds"), 
+    //     //   pybind11::arg("show_progress") = false,
+    //       "Get counts from IQ data");
 }
+
+
+// std::map<std::string, int> get_counts_old(const Eigen::MatrixXd& scaled_IQ_data,
+//                        const std::map<int, int>& qubit_mapping,
+//                        const std::map<int, GridData>& kde_grid_dict,
+//                        int synd_rounds) {
+
+//     std::map<std::string, int> counts;
+
+//     int distance = (scaled_IQ_data.cols()/2 + synd_rounds) / (synd_rounds + 1); // Hardcoded for RepCodes
+
+//     if (scaled_IQ_data.cols()/2 != (distance - 1) * synd_rounds + distance) {
+//         throw std::runtime_error("Number of columns in IQ data does not match the expected value");
+//     }
+
+
+//     for (int shot = 0; shot < scaled_IQ_data.rows(); ++shot) { 
+//         std::string outcome_str;
+//         for (int msmt = 0; msmt < scaled_IQ_data.cols(); msmt += 2) { 
+
+//             try {
+//                 int qubit_idx = qubit_mapping.at(msmt / 2);
+//                 const auto& grid_data = kde_grid_dict.at(qubit_idx);
+
+//                 Eigen::Vector2d scaled_point = {scaled_IQ_data(shot, msmt), scaled_IQ_data(shot, msmt + 1)};
+//                 auto [outcome, density0, density1] = grid_lookup(scaled_point, grid_data);
+
+//                 outcome_str += std::to_string(outcome);
+//             }
+//             catch (const std::out_of_range& e) {
+//                 throw std::runtime_error("Qubit index " + std::to_string(msmt/2) + " not found in qubit mapping (qubit_mapping)");
+//             }
+
+//             if ((msmt/2 + 1) % (distance - 1) == 0 && (msmt/2 + 1) / (distance - 1) <= synd_rounds) {
+//                 outcome_str += " ";
+//             }
+//         }
+
+//         std::reverse(outcome_str.begin(), outcome_str.end()); // Reverse string
+//         // Increment the count for the outcome string
+//         counts[outcome_str]++;
+//     }
+
+//     // Sort and return the result (if necessary)
+//     return counts;
+// }
