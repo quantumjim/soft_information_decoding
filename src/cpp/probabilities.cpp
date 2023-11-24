@@ -28,7 +28,7 @@ struct GridData {
 
 
 // Forward declaration of grid_lookup
-int grid_lookup(const Eigen::Vector2d& point, const GridData& grid_data);
+std::tuple<int, double, double> grid_lookup(const Eigen::Vector2d& point, const GridData& grid_data);
 
 
 
@@ -55,7 +55,7 @@ std::map<std::string, int> get_counts_old(const Eigen::MatrixXd& scaled_IQ_data,
                 const auto& grid_data = kde_grid_dict.at(qubit_idx);
 
                 Eigen::Vector2d scaled_point = {scaled_IQ_data(shot, msmt), scaled_IQ_data(shot, msmt + 1)};
-                int outcome = grid_lookup(scaled_point, grid_data);
+                auto [outcome, density0, density1] = grid_lookup(scaled_point, grid_data);
 
                 outcome_str += std::to_string(outcome);
             }
@@ -110,7 +110,7 @@ std::map<std::string, int> get_counts(
                 double imag_scaled = (std::imag(iq_point) - imag_params.first) / imag_params.second;
                 Eigen::Vector2d scaled_point = {real_scaled, imag_scaled};
 
-                int outcome = grid_lookup(scaled_point, grid_data);
+                auto [outcome, density0, density1] = grid_lookup(scaled_point, grid_data);
                 outcome_str += std::to_string(outcome);
             }
             catch (const std::out_of_range& e) {
@@ -129,7 +129,7 @@ std::map<std::string, int> get_counts(
     return counts;
 }
 
-int grid_lookup(const Eigen::Vector2d& point, const GridData& grid_data) {
+std::tuple<int, double, double> grid_lookup(const Eigen::Vector2d& point, const GridData& grid_data) {
     // Calculate grid spacing
     double dx = grid_data.grid_x(0, 1) - grid_data.grid_x(0, 0);
     double dy = grid_data.grid_y(1, 0) - grid_data.grid_y(0, 0);
@@ -147,7 +147,10 @@ int grid_lookup(const Eigen::Vector2d& point, const GridData& grid_data) {
     double density_1 = grid_data.grid_density_1(y_index, x_index);
 
     // Determine outcome
-    return (density_0 > density_1) ? 0 : 1;
+    int outcome = (density_0 > density_1) ? 0 : 1;
+
+    // Return the outcome, density_0, and density_1
+    return std::make_tuple(outcome, density_0, density_1);
 }
 
 
