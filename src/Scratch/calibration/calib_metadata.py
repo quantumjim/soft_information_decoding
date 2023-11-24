@@ -14,8 +14,8 @@ import numpy as np
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
 
-from cpp import process_scaler_dict
-import cpp_probabilities
+from cpp.Probabilities import process_scaler_dict
+import cpp_soft_info
 
 from ..core import find_and_create_scratch
 from .calibration_data import find_closest_calib_jobs
@@ -157,7 +157,7 @@ def load_grid(filename):
         grid_density_1 = np.array(grid_data['grid_density_1'], dtype=np.double)
 
         # Create GridData objects
-        grid_dict[int(qubit_idx)] = cpp_probabilities.GridData(
+        grid_dict[int(qubit_idx)] = cpp_soft_info.GridData(
             grid_x, grid_y, grid_density_0, grid_density_1
         )
 

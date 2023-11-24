@@ -8,8 +8,8 @@ from sklearn.preprocessing import StandardScaler
 from scipy.stats import norm
 import pytest
 
-import cpp_probabilities
-from cpp import process_scaler_dict
+import cpp_soft_info
+from cpp.Probabilities import process_scaler_dict
 
 
 def create_gaussian_grid_data(num_points, mean=0, std=1):
@@ -75,7 +75,7 @@ def test_get_counts_with_zero_scaling():
     kde_grid_dict = {}
     for qubit_idx in [0, 1]:
         grid_x, grid_y, grid_density_0, grid_density_1 = create_gaussian_grid_data(10)
-        kde_grid_dict[qubit_idx] = cpp_probabilities.GridData(grid_x, grid_y, grid_density_0, grid_density_1)
+        kde_grid_dict[qubit_idx] = cpp_soft_info.GridData(grid_x, grid_y, grid_density_0, grid_density_1)
 
     # Set synd_rounds (example value, adjust as needed)
     synd_rounds = 1
@@ -83,7 +83,7 @@ def test_get_counts_with_zero_scaling():
     qubit_mapping = generate_random_qubit_mapping(num_IQ_points)
 
     # Call your get_counts function
-    counts = cpp_probabilities.get_counts(raw_IQ_data, qubit_mapping, kde_grid_dict, processed_scaler_dict, synd_rounds)
+    counts = cpp_soft_info.get_counts(raw_IQ_data, qubit_mapping, kde_grid_dict, processed_scaler_dict, synd_rounds)
 
     # Assertions
     expected_count = "00000000000 0000000000"
@@ -97,18 +97,18 @@ def test_get_counts_with_zero_scaling():
 #     kde_grid_dict = {}
 #     for qubit_idx in range(2):  # Assuming two qubits
 #         grid_x, grid_y, grid_density_0, grid_density_1 = create_your_grid_data(100)
-#         kde_grid_dict[qubit_idx] = cpp_probabilities.GridData(grid_x, grid_y, grid_density_0, grid_density_1)
+#         kde_grid_dict[qubit_idx] = cpp_soft_info.GridData(grid_x, grid_y, grid_density_0, grid_density_1)
     
 #     len_IQ = 9   # Number of keys in the mapping
 #     qubit_mapping = generate_random_qubit_mapping(len_IQ)
 
 #     scaled_IQ_data_np = np.random.rand(int(1e1), len_IQ*2)
-#     scaled_IQ_data = cpp_probabilities.numpy_to_eigen(scaled_IQ_data_np)
+#     scaled_IQ_data = cpp_soft_info.numpy_to_eigen(scaled_IQ_data_np)
 
 #     synd_rounds_list = [-1, 2, 4, 5, 6, 19]
 #     for synd_rounds in synd_rounds_list:
 #         with pytest.raises(RuntimeError):
-#             counts = cpp_probabilities.get_counts_old(scaled_IQ_data, qubit_mapping, kde_grid_dict, synd_rounds)
+#             counts = cpp_soft_info.get_counts_old(scaled_IQ_data, qubit_mapping, kde_grid_dict, synd_rounds)
 
 
 # def test_get_counts_all_same():
@@ -117,19 +117,19 @@ def test_get_counts_with_zero_scaling():
 #     kde_grid_dict2 = {}
 #     for qubit_idx in range(2):  # Assuming two qubits
 #         grid_x, grid_y, grid_density_0, grid_density_1 = create_specific_grid_data(10)
-#         kde_grid_dict[qubit_idx] = cpp_probabilities.GridData(grid_x, grid_y, grid_density_0, grid_density_1)
-#         kde_grid_dict2[qubit_idx] = cpp_probabilities.GridData(grid_x, grid_y, grid_density_1, grid_density_0)
+#         kde_grid_dict[qubit_idx] = cpp_soft_info.GridData(grid_x, grid_y, grid_density_0, grid_density_1)
+#         kde_grid_dict2[qubit_idx] = cpp_soft_info.GridData(grid_x, grid_y, grid_density_1, grid_density_0)
     
 #     # Create a random qubit mapping and scaled IQ data
 #     qubit_mapping = {i: i % 2 for i in range(20)}  # Example mapping
 #     scaled_IQ_data_np = np.random.rand(10, 20)  # 10 shots, 20 columns (10 measurements)
-#     scaled_IQ_data = cpp_probabilities.numpy_to_eigen(scaled_IQ_data_np)
+#     scaled_IQ_data = cpp_soft_info.numpy_to_eigen(scaled_IQ_data_np)
 
 #     synd_rounds = 0
 
 #     # Call the get_counts_old function
-#     counts = cpp_probabilities.get_counts_old(scaled_IQ_data, qubit_mapping, kde_grid_dict, synd_rounds)
-#     counts2 = cpp_probabilities.get_counts_old(scaled_IQ_data, qubit_mapping, kde_grid_dict2, synd_rounds)
+#     counts = cpp_soft_info.get_counts_old(scaled_IQ_data, qubit_mapping, kde_grid_dict, synd_rounds)
+#     counts2 = cpp_soft_info.get_counts_old(scaled_IQ_data, qubit_mapping, kde_grid_dict2, synd_rounds)
 
 #     # Check if all outcomes in counts are '1'
 #     for outcome in counts:
@@ -144,18 +144,18 @@ def test_get_counts_with_zero_scaling():
 #     kde_grid_dict2 = {}
 #     for qubit_idx in range(2):  # Assuming two qubits
 #         grid_x, grid_y, grid_density_0, grid_density_1 = create_specific_grid_data(10)
-#         kde_grid_dict[qubit_idx] = cpp_probabilities.GridData(grid_x, grid_y, grid_density_0, grid_density_1)
-#         kde_grid_dict2[qubit_idx] = cpp_probabilities.GridData(grid_x, grid_y, grid_density_1, grid_density_0)
+#         kde_grid_dict[qubit_idx] = cpp_soft_info.GridData(grid_x, grid_y, grid_density_0, grid_density_1)
+#         kde_grid_dict2[qubit_idx] = cpp_soft_info.GridData(grid_x, grid_y, grid_density_1, grid_density_0)
     
 #     # Create a random qubit mapping and scaled IQ data
 #     qubit_mapping = {i: i % 2 for i in range(9)}  
 #     scaled_IQ_data_np = np.random.rand(10, 18)  
-#     scaled_IQ_data = cpp_probabilities.numpy_to_eigen(scaled_IQ_data_np)
+#     scaled_IQ_data = cpp_soft_info.numpy_to_eigen(scaled_IQ_data_np)
 
 #     synd_rounds = 3
 
 #     # Call the get_counts_old function
-#     counts = cpp_probabilities.get_counts_old(scaled_IQ_data, qubit_mapping, kde_grid_dict, synd_rounds)
+#     counts = cpp_soft_info.get_counts_old(scaled_IQ_data, qubit_mapping, kde_grid_dict, synd_rounds)
     
 #     for outcome in counts:
 #         sections = outcome.split(' ')

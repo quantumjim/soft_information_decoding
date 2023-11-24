@@ -134,7 +134,7 @@ Eigen::MatrixXd numpy_to_eigen(pybind11::array_t<double> np_array) {
 }
 
 
-PYBIND11_MODULE(cpp_probabilities, m) {
+PYBIND11_MODULE(cpp_soft_info, m) {
     m.doc() = "Probabilities module"; // optional module docstring
     
     m.def("get_counts", &get_counts, 
