@@ -19,7 +19,6 @@ jobs:
 
     - name: Build C++ package
       run: |
-        cd src/cpp
         cmake .
         make
 
