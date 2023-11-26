@@ -1,2 +1,2 @@
 from .Probabilities import *
-from .Pymatching import *
+from .PyMatching import *
