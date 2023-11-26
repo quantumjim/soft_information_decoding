@@ -3,7 +3,7 @@
 #include <pybind11/eigen.h>
 
 #include "Probabilities/probabilities.h"  // Include your probabilities header
-#include "Pymatching/matching_graph.h"  // Include your matching header
+#include "PyMatching/matching_graph.h"  // Include your matching header
 
 namespace py = pybind11;
 
