@@ -9,18 +9,18 @@ find_package(Python3 3.11 REQUIRED Interpreter Development)
 add_subdirectory(libs/pybind11)
 include_directories(libs/cpp/eigen-3.4.0)
 include_directories(libs/cpp/indicators-master/include)
-include_directories(libs/PyMatching/src)
-include_directories(libs/PyMatching/Stim/src) # Add this line
-include_directories(src/cpp/Probabilities)
+include_directories(${CMAKE_SOURCE_DIR}/libs/PyMatching/src)
+include_directories(${CMAKE_SOURCE_DIR}/libs/PyMatching/Stim/src) # Add this line
+include_directories(${CMAKE_SOURCE_DIR}/src/cpp/Probabilities)
 
-pybind11_add_module(example_module src/cpp/example.cpp)
+pybind11_add_module(example_module ${CMAKE_SOURCE_DIR}/src/cpp/example.cpp)
 
 # Pybind11 module for the cpp_soft_info
-pybind11_add_module(cpp_soft_info src/cpp/bindings.cpp src/cpp/Probabilities/probabilities.cpp src/cpp/PyMatching/matching_graph.cpp)
+pybind11_add_module(cpp_soft_info ${CMAKE_SOURCE_DIR}/src/cpp/bindings.cpp ${CMAKE_SOURCE_DIR}/src/cpp/Probabilities/probabilities.cpp ${CMAKE_SOURCE_DIR}/src/cpp/PyMatching/matching_graph.cpp)
 
 # Link the PyMatching library
 # Replace this with the correct path to the built PyMatching library
-set(PYMATCHING_LIB "/Users/mha/My_Drive/Desktop/Studium/Physik/MSc/Semester_3/IBM/IBM_GIT/Soft-Info/libs/PyMatching/bazel-bin")
+set(PYMATCHING_LIB "${CMAKE_SOURCE_DIR}/libs/PyMatching/bazel-bin")
 
-# # Link the library to your modules as needed
+# Link the library to your modules as needed
 target_link_libraries(cpp_soft_info PRIVATE ${PYMATCHING_LIB}/liblibpymatching.a)
