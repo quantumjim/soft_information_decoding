@@ -16,7 +16,9 @@ def test_processGraph_test():
     model = circuit.detector_error_model(decompose_errors=True)
     matching = pymatching.Matching.from_detector_error_model(model)
 
-    try: 
-        cpp_soft_info.processGraph_test(matching._matching_graph)
-    except TypeError:
-        raise AssertionError("processGraph_test() raised TypeError, check compatibility with PyMatching")
+    # try: 
+    #     cpp_soft_info.processGraph_test(matching._matching_graph)
+    # except TypeError:
+    #     raise AssertionError("processGraph_test() raised TypeError, check compatibility with PyMatching")
+    
+    cpp_soft_info.processGraph_test(matching._matching_graph)
