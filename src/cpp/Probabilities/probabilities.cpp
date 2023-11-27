@@ -2,7 +2,6 @@
 // Created 21.11.23
 
 #include "probabilities.h"
-#include <indicators/progress_bar.hpp>
 #include <iostream>
 #include <sstream>
 #include <stdexcept>
