@@ -25,7 +25,7 @@ PYBIND11_MODULE(cpp_soft_info, m) {
           py::arg("grid_data"), 
           "Calculate the log-likelihood ratio for a given point and grid data");
 
-    m.def("processGraph", &processGraph, "Function to process UserGraph");
+    m.def("processGraph_test", &processGraph_test, "Function to process UserGraph");
 
     py::class_<GridData>(m, "GridData")
         .def(py::init<Eigen::MatrixXd, Eigen::MatrixXd, Eigen::MatrixXd, Eigen::MatrixXd>())

@@ -2,7 +2,7 @@
 #include <iostream>
 
 
-void processGraph(pm::UserGraph& graph) {
+void processGraph_test(pm::UserGraph& graph) {
     std::cout << "Processing graph" << std::endl;
     // Implement the logic for processing the graph
 }
