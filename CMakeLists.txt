@@ -14,6 +14,17 @@ include_directories(${CMAKE_SOURCE_DIR}/libs/PyMatching/src)
 # include_directories(${CMAKE_SOURCE_DIR}/libs/PyMatching/Stim/src) # Add this line
 include_directories(${CMAKE_SOURCE_DIR}/src/cpp/Probabilities)
 
+# Check if stim.h is present in the expected directory
+set(STIM_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/libs/stim/src)
+find_path(STIM_HEADER stim.h PATHS ${STIM_INCLUDE_DIR} NO_DEFAULT_PATH)
+
+if(NOT STIM_HEADER)
+  message(FATAL_ERROR "stim.h not found in ${STIM_INCLUDE_DIR}")
+else()
+  message(STATUS "stim.h found in ${STIM_INCLUDE_DIR}")
+endif()
+
+
 pybind11_add_module(example_module ${CMAKE_SOURCE_DIR}/src/cpp/example.cpp)
 
 # Pybind11 module for the cpp_soft_info

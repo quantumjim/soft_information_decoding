@@ -12,7 +12,16 @@ jobs:
         with:
           submodules: 'recursive' # Checkout submodules recursively
           token: ${{ secrets.MY_GITHUB_TOKEN_FOR_PRIVATE_REPOS }}
-  
+      
+      - name: Check for stim.h
+        run: |
+          if [ -f "${{ github.workspace }}/libs/stim/src/stim.h" ]; then
+            echo "stim.h found in libs/stim/src/stim.h."
+          else
+            echo "stim.h not found in libs/stim/src/stim.h."
+            exit 1
+          fi
+    
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
