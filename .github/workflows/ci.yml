@@ -15,10 +15,10 @@ jobs:
       
       - name: Check for stim.h
         run: |
-          if [ -f "${{ github.workspace }}/libs/stim/src/stim.h" ]; then
-            echo "stim.h found in libs/stim/src/stim.h."
+          if [ -f "${{ github.workspace }}/libs/Stim/src/stim.h" ]; then
+            echo "stim.h found in libs/Stim/src/stim.h."
           else
-            echo "stim.h not found in libs/stim/src/stim.h."
+            echo "stim.h not found in libs/Stim/src/stim.h."
             exit 1
           fi
     

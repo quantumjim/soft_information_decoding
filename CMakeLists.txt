@@ -9,7 +9,7 @@ find_package(Python3 3.11 REQUIRED Interpreter Development)
 add_subdirectory(libs/pybind11)
 include_directories(libs/cpp/eigen-3.4.0)
 
-include_directories(${CMAKE_SOURCE_DIR}/libs/stim/src)
+include_directories(${CMAKE_SOURCE_DIR}/libs/Stim/src)
 include_directories(${CMAKE_SOURCE_DIR}/libs/PyMatching/src)
 # include_directories(${CMAKE_SOURCE_DIR}/libs/PyMatching/Stim/src) # Add this line
 include_directories(${CMAKE_SOURCE_DIR}/src/cpp/Probabilities)
