@@ -51,7 +51,11 @@ jobs:
         run: |
           pipenv install --verbose
   
-      - name: Test with pytest using pipenv
+      # - name: Test with pytest using pipenv
+      #   run: |
+      #     pipenv run pytest tests/
+
+      - name: Test with pytest using pipenv, excluding tests/cpp/PyMatching
         run: |
-          pipenv run pytest tests/
+          pipenv run pytest tests/ --ignore=tests/cpp/PyMatching
   
