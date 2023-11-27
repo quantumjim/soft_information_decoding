@@ -15,7 +15,6 @@ pymatching = "*"
 qiskit-ibm-runtime = "*"
 qiskit-experiments = "*"
 setuptools-scm = "*"
-soft-information = {file = ".", editable = true}
 tqdm = "*"
 qiskit-qec = {file = "libs/qiskit-qec", editable = true}
 result-saver = {file = "libs/qiskit-saver-provider", editable = true}
@@ -23,6 +22,7 @@ scikit-learn = "*"
 networkx = "*"
 pytest = "*"
 coverage = "*"
+soft-information-decoding = {file = ".", editable = true}
 
 [dev-packages]
 ipykernel = "*"

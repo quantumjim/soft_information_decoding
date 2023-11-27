@@ -1,0 +1,14 @@
+[build-system]
+requires = ["setuptools", "wheel", "cmake", "pybind11"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "soft_information_decoding"
+version = "0.1.0"
+description = "A short description of your project"
+authors = [{name = "Maurice D. Hanisch"}]
+readme = "README.md"
+requires-python = ">=3.11"
+
+[project.license]
+file = "LICENSE"

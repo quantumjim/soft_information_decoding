@@ -1,10 +1,7 @@
-import cpp_soft_info
 import pymatching
 import stim
-import sys
-sys.path.insert(
-    0, r'/Users/mha/My_Drive/Desktop/Studium/Physik/MSc/Semester_3/IBM/IBM_GIT/Soft-Info/build')
 
+import cpp_soft_info
 
 def get_matching():
     circuit = stim.Circuit.generated("repetition_code:memory",
