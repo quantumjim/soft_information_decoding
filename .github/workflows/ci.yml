@@ -35,7 +35,7 @@ jobs:
       - name: Build PyMatching with Bazel
         run: |
           cd libs/PyMatching
-          bazel build //:libpymatching
+          bazel build //:pymatching
           cd ../..
 
       - name: Find Python Include Path
