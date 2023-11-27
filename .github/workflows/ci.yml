@@ -38,10 +38,16 @@ jobs:
           bazel build //:libpymatching
           cd ../..
 
+      - name: Find Python Include Path
+        run: |
+          PYTHON_INCLUDE_PATH=$(python -c "from distutils.sysconfig import get_python_inc; print(get_python_inc())")
+          echo "PYTHON_INCLUDE_PATH=$PYTHON_INCLUDE_PATH" >> $GITHUB_ENV
+      
       - name: Build C++ package
         run: |
-           cmake -DPython3_EXECUTABLE=$PYTHON_PATH . 
-           make
+          cmake -DPYTHON_INCLUDE_DIR=$PYTHON_INCLUDE_PATH -DPYBIND11_INCLUDE_DIR=${{ github.workspace }}/libs/pybind11/include -DPython3_EXECUTABLE=$PYTHON_PATH . 
+          make
+      
 
       - name: Install local qiskit_qec package
         run: pip install ./libs/qiskit-qec
