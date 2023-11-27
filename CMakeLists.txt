@@ -16,11 +16,16 @@ include_directories(${CMAKE_SOURCE_DIR}/src/cpp/Probabilities)
 pybind11_add_module(example_module ${CMAKE_SOURCE_DIR}/src/cpp/example.cpp)
 
 # Pybind11 module for the cpp_soft_info
-pybind11_add_module(cpp_soft_info ${CMAKE_SOURCE_DIR}/src/cpp/bindings.cpp ${CMAKE_SOURCE_DIR}/src/cpp/Probabilities/probabilities.cpp ${CMAKE_SOURCE_DIR}/src/cpp/PyMatching/matching_graph.cpp)
+pybind11_add_module(cpp_soft_info
+    ${CMAKE_SOURCE_DIR}/src/cpp/bindings.cpp
+    ${CMAKE_SOURCE_DIR}/src/cpp/Probabilities/probabilities.cpp
+    ${CMAKE_SOURCE_DIR}/src/cpp/PyMatching/matching_graph.cpp
+    ${CMAKE_SOURCE_DIR}/src/cpp/PyMatching/user_graph_utils.cpp)  
 
 # Link the PyMatching library
-# Replace this with the correct path to the built PyMatching library
 set(PYMATCHING_LIB "${CMAKE_SOURCE_DIR}/libs/PyMatching/bazel-bin")
 
 # Link the library to your modules as needed
 target_link_libraries(cpp_soft_info PRIVATE ${PYMATCHING_LIB}/liblibpymatching.a)
+target_link_libraries(cpp_soft_info PRIVATE ${PYMATCHING_LIB}/external/stim/libstim_lib.a)
+

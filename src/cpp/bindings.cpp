@@ -2,8 +2,9 @@
 #include <pybind11/stl.h>
 #include <pybind11/eigen.h>
 
-#include "Probabilities/probabilities.h"  // Include your probabilities header
-#include "PyMatching/matching_graph.h"  // Include your matching header
+#include "Probabilities/probabilities.h"  // Include probabilities header
+#include "PyMatching/matching_graph.h"  // Include matching header
+#include "PyMatching/user_graph_utils.h"  // Include user graph utils header
 
 namespace py = pybind11;
 
@@ -25,12 +26,40 @@ PYBIND11_MODULE(cpp_soft_info, m) {
           py::arg("grid_data"), 
           "Calculate the log-likelihood ratio for a given point and grid data");
 
-    m.def("processGraph_test", &processGraph_test, "Function to process UserGraph");
+    // m.def("print_edges_of_graph", &print_edges_of_graph, "Print the edges of a matching graph");
+    m.def("processGraph_test", &processGraph_test, "Function to test process UserGraph");
 
     py::class_<GridData>(m, "GridData")
         .def(py::init<Eigen::MatrixXd, Eigen::MatrixXd, Eigen::MatrixXd, Eigen::MatrixXd>())
         .def_readwrite("grid_x", &GridData::grid_x)
         .def_readwrite("grid_y", &GridData::grid_y)
         .def_readwrite("grid_density_0", &GridData::grid_density_0)
-        .def_readwrite("grid_density_1", &GridData::grid_density_1);
+        .def_readwrite("grid_density_1", &GridData::grid_density_1);   
+    
+
+    // user_graph_utils.h bindings
+    m.def("get_edges", [](const pm::UserGraph& graph) {
+        auto edges = get_edges(graph);
+        py::list py_edges;
+        for (const auto& edge : edges) {
+            py::dict attrs;
+            attrs["fault_ids"] = py::cast(edge.attributes.fault_ids);
+            attrs["weight"] = edge.attributes.weight;
+            attrs["error_probability"] = edge.attributes.error_probability;
+
+            if (edge.node2 == SIZE_MAX) {
+                py_edges.append(py::make_tuple(edge.node1, py::none(), attrs));
+            } else {
+                py_edges.append(py::make_tuple(edge.node1, edge.node2, attrs));
+            }
+        }
+        return py_edges;
+    }, "Get edges of a matching graph");
+
+    m.def("add_edge", &pm::add_edge, 
+          "Add or merge an edge to the user graph",
+          py::arg("graph"), py::arg("node1"), py::arg("node2"), 
+          py::arg("observables"), py::arg("weight"), 
+          py::arg("error_probability"), py::arg("merge_strategy"));
+    
 }

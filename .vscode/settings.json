@@ -94,7 +94,9 @@
         "numericaldiff": "cpp",
         "openglsupport": "cpp",
         "specialfunctions": "cpp",
-        "splines": "cpp"
+        "splines": "cpp",
+        "any": "cpp",
+        "span": "cpp"
     },
     "cmake.sourceDirectory": "${workspaceFolder}"
 }
