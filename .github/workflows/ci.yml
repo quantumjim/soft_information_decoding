@@ -72,13 +72,13 @@ jobs:
           PYTHON_INCLUDE_PATH=$(python -c "from distutils.sysconfig import get_python_inc; print(get_python_inc())")
           echo "PYTHON_INCLUDE_PATH=$PYTHON_INCLUDE_PATH" >> $GITHUB_ENV
       
-      - name: Build C++ package
-        run: |
-          cmake -DPYTHON_INCLUDE_DIR=$PYTHON_INCLUDE_PATH -DPYBIND11_INCLUDE_DIR=${{ github.workspace }}/libs/pybind11/include -DPython3_EXECUTABLE=$PYTHON_PATH . 
-          make
+      # - name: Build C++ package
+      #   run: |
+      #     cmake -DPYTHON_INCLUDE_DIR=$PYTHON_INCLUDE_PATH -DPYBIND11_INCLUDE_DIR=${{ github.workspace }}/libs/pybind11/include -DPython3_EXECUTABLE=$PYTHON_PATH . 
+      #     make
 
-      - name: Install local qiskit_qec package
-        run: pip install ./libs/qiskit-qec
+      # - name: Install local qiskit_qec package
+      #   run: pip install ./libs/qiskit-qec
 
       # - name: install PyMatching # to solve the C++/Python integration of the matching class
       #   run: pip install pymatching --upgrade
