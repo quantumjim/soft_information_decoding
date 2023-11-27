@@ -1,9 +1,9 @@
 .ipynb_checkpoints
 __pycache__
 .DS_Store
-.vscode/
+# .vscode/ Lets not ignore the settings file
 src/soft_information.egg-info/
-.vscode/settings.json
+# .vscode/settings.json
 .Scratch/jobs/
 .Scratch/calibration_grids/
 .Scratch/.DS_Store
