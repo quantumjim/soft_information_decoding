@@ -13,12 +13,22 @@ class CMakeBuild(build_ext):
     def run(self):
         try:
             out = subprocess.check_output(['cmake', '--version'])
+            out = subprocess.check_output(['bazel', '--version'])
         except OSError:
-            raise RuntimeError("CMake must be installed to build the following extensions: " +
-                               ", ".join(e.name for e in self.extensions))
+            raise RuntimeError(
+                "CMake and Bazel must be installed to build the following extensions: " +
+                ", ".join(e.name for e in self.extensions)
+            )
+
+        # Build PyMatching with Bazel
+        self.build_pymatching_with_bazel()
 
         for ext in self.extensions:
             self.build_extension(ext)
+
+    def build_pymatching_with_bazel(self):
+        pymatching_dir = os.path.abspath('libs/PyMatching')
+        subprocess.check_call(['bazel', 'build', '//:pymatching', '//:libpymatching', '@stim//:stim_lib'], cwd=pymatching_dir)
 
     def build_extension(self, ext):
         extdir = os.path.abspath(os.path.dirname(self.get_ext_fullpath(ext.name)))

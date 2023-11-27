@@ -32,40 +32,40 @@ jobs:
           echo "deb [signed-by=/usr/share/keyrings/bazel-archive-keyring.gpg] https://storage.googleapis.com/bazel-apt stable jdk1.8" | sudo tee /etc/apt/sources.list.d/bazel.list
           sudo apt-get update && sudo apt-get install bazel
 
-      - name: Build PyMatching with Bazel
-        run: |
-          cd libs/PyMatching
-          bazel build //:pymatching //:libpymatching @stim//:stim_lib
+      # - name: Build PyMatching with Bazel
+      #   run: |
+      #     cd libs/PyMatching
+      #     bazel build //:pymatching //:libpymatching @stim//:stim_lib
 
-          # Echo the actual path of the bazel-bin directory
-          echo "Resolving bazel-bin symlink:"
-          realpath bazel-bin
+      #     # Echo the actual path of the bazel-bin directory
+      #     echo "Resolving bazel-bin symlink:"
+      #     realpath bazel-bin
 
-          # List the contents of the actual bazel-bin directory
-          echo "Listing contents of the actual bazel-bin directory:"
-          ls -al $(realpath bazel-bin)
+      #     # List the contents of the actual bazel-bin directory
+      #     echo "Listing contents of the actual bazel-bin directory:"
+      #     ls -al $(realpath bazel-bin)
 
-          echo "Listing contents of external in bazel-bin:"
-          ls -al bazel-bin/external
+      #     echo "Listing contents of external in bazel-bin:"
+      #     ls -al bazel-bin/external
 
-          echo "Listing contents of external/stim in bazel-bin:"
-          ls -al bazel-bin/external/stim
+      #     echo "Listing contents of external/stim in bazel-bin:"
+      #     ls -al bazel-bin/external/stim
         
-          # Check if the expected output files are present
-          if [ -f "$(realpath bazel-bin)/external/stim/libstim_lib.a" ]; then
-            echo "pymatching / stim build successful."
-          else
-            echo "Error: libstim_lib.a not found in the expected location."
-            exit 1
-          fi
+      #     # Check if the expected output files are present
+      #     if [ -f "$(realpath bazel-bin)/external/stim/libstim_lib.a" ]; then
+      #       echo "pymatching / stim build successful."
+      #     else
+      #       echo "Error: libstim_lib.a not found in the expected location."
+      #       exit 1
+      #     fi
 
-          if [ -f "$(realpath bazel-bin)/liblibpymatching.a" ]; then
-            echo "liblibpymatching.a build successful."
-          else
-            echo "Error: liblibpymatching.a not found in the expected location."
-            exit 1
-          fi
-          cd ../..
+      #     if [ -f "$(realpath bazel-bin)/liblibpymatching.a" ]; then
+      #       echo "liblibpymatching.a build successful."
+      #     else
+      #       echo "Error: liblibpymatching.a not found in the expected location."
+      #       exit 1
+      #     fi
+      #     cd ../..
 
       - name: Find Python Include Path
         run: |

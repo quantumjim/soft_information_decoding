@@ -13,7 +13,7 @@ git clone --recursive https://github.ibm.com/Maurice-Hanisch/Soft-Info.git
 ```
 
 ### Install Python Dependencies
-After cloning the repository, navigate to the project directory and install the required Python packages using Pipenv:
+After cloning the repository, navigate to the project directory and install the required Python packages using Pipenv: (WARNING THIS MAY TAKE A WHILE BECAUSE C++ PARTS ARE COMPILED)
 ```bash
 pipenv install
 ```

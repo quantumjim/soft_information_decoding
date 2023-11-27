@@ -11,3 +11,6 @@ src/soft_information.egg-info/
 src/soft_information_decoding.egg-info
 src/cpp_soft_info.cpython-311-darwin.so
 src/example_module.cpython-311-darwin.so
+.pytest_cache/
+.coverage
+__pycache__/

@@ -9,9 +9,7 @@ qiskit = "*"
 matplotlib = "*"
 qiskit-ibm-provider = "*"
 ipywidgets = "*"
-stim = "*"
 qiskit-aer = "*"
-pymatching = "*"
 qiskit-ibm-runtime = "*"
 qiskit-experiments = "*"
 setuptools-scm = "*"
@@ -22,7 +20,9 @@ scikit-learn = "*"
 networkx = "*"
 pytest = "*"
 coverage = "*"
+pymatching = {file = "libs/PyMatching"}
 soft-information-decoding = {file = ".", editable = true}
+stim = "*"
 
 [dev-packages]
 ipykernel = "*"

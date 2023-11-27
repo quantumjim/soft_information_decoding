@@ -7,3 +7,9 @@
 [submodule "libs/pybind11"]
 	path = libs/pybind11
 	url = https://github.com/pybind/pybind11.git
+[submodule "libs/PyMatching"]
+	path = libs/PyMatching
+	url = https://github.com/oscarhiggott/PyMatching.git
+[submodule "libs/Stim"]
+	path = libs/Stim
+	url = https://github.com/quantumlib/Stim.git
