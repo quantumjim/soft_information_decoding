@@ -52,17 +52,17 @@ jobs:
           ls -al bazel-bin/external/stim
         
           # Check if the expected output files are present
-          if [ -f "bazel-bin/external/stim/libstim_lib.a" ]; then
+          if [ -f "$(realpath bazel-bin)/external/stim/libstim_lib.a" ]; then
             echo "pymatching / stim build successful."
           else
-            echo "Error: bazel-bin/external/stim/libstim_lib.a not found."
+            echo "Error: libstim_lib.a not found in the expected location."
             exit 1
           fi
-        
-          if [ -f "bazel-bin/liblibpymatching.a" ]; then
+
+          if [ -f "$(realpath bazel-bin)/liblibpymatching.a" ]; then
             echo "liblibpymatching.a build successful."
           else
-            echo "Error: liblibpymatching.a not found."
+            echo "Error: liblibpymatching.a not found in the expected location."
             exit 1
           fi
           cd ../..
