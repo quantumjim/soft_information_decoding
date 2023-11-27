@@ -38,3 +38,20 @@ def test_add_edge():
                        error_probability=error_probability, merge_strategy=merge_strategy)
 
     assert matching1.edges() == matching2.edges()
+
+
+def test_add_boundary_edge():
+    matching1, matching2 = get_matching(), get_matching()
+
+    node1 = 0
+    observables = {0, 1, 2}  # Replace with your set of observables
+    weight = 1.0
+    error_probability = 0.1
+    merge_strategy = "replace"  # Replace with your desired merge strategy
+
+    cpp_soft_info.add_boundary_edge(
+        matching1._matching_graph, node1, observables, weight, error_probability, merge_strategy)
+    matching2.add_boundary_edge(node=node1, fault_ids=observables, weight=weight,
+                                error_probability=error_probability, merge_strategy=merge_strategy)
+    
+    assert matching1.edges() == matching2.edges()

@@ -24,6 +24,10 @@ namespace pm {
     void add_edge(UserGraph &graph, int64_t node1, int64_t node2, 
                            const std::set<size_t> &observables, double weight, 
                            double error_probability, const std::string &merge_strategy);
+
+    void add_boundary_edge(UserGraph &graph, int64_t node, 
+                           const std::set<size_t> &observables, double weight, 
+                           double error_probability, const std::string &merge_strategy);
 }
 
 

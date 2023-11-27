@@ -62,4 +62,8 @@ PYBIND11_MODULE(cpp_soft_info, m) {
           py::arg("observables"), py::arg("weight"), 
           py::arg("error_probability"), py::arg("merge_strategy"));
     
+    m.def("add_boundary_edge", &pm::add_boundary_edge, 
+      "Add or merge a boundary edge to the user graph",
+      py::arg("graph"), py::arg("node"), py::arg("observables"), 
+      py::arg("weight"), py::arg("error_probability"), py::arg("merge_strategy"));
 }

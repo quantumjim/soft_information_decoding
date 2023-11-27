@@ -55,5 +55,23 @@ namespace pm {
         graph.add_or_merge_edge(node1, node2, observables_vec, weight, 
                                 error_probability, merge_strategy_from_string(merge_strategy));
     }
+
+    void add_boundary_edge(UserGraph &graph, int64_t node, 
+                           const std::set<size_t> &observables, double weight, 
+                           double error_probability, const std::string &merge_strategy) {
+        if (node < 0) {
+            throw std::invalid_argument("Node index must be non-negative.");
+        }
+
+        if (std::abs(weight) > MAX_USER_EDGE_WEIGHT) {
+            // Handle the warning or error as appropriate
+            return;
+        }
+
+        std::vector<size_t> observables_vec(observables.begin(), observables.end());
+        graph.add_or_merge_boundary_edge(node, observables_vec, weight, 
+                                         error_probability, merge_strategy_from_string(merge_strategy));
+    }
+
 }
 
