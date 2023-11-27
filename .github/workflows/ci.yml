@@ -35,8 +35,22 @@ jobs:
       - name: Build PyMatching with Bazel
         run: |
           cd libs/PyMatching
-          bazel build //:pymatching
-          bazel build //:libpymatching
+          bazel build //:pymatching //:libpymatching
+        
+          # Check if the expected output files are present
+          if [ -f "bazel-bin/pymatching.so" ]; then
+            echo "pymatching.so build successful."
+          else
+            echo "Error: pymatching.so not found."
+            exit 1
+          fi
+        
+          if [ -f "bazel-bin/liblibpymatching.a" ]; then
+            echo "liblibpymatching.a build successful."
+          else
+            echo "Error: liblibpymatching.a not found."
+            exit 1
+          fi
           cd ../..
 
       - name: Find Python Include Path
