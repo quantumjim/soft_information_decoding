@@ -80,8 +80,8 @@ jobs:
       - name: Install local qiskit_qec package
         run: pip install ./libs/qiskit-qec
 
-      - name: install PyMatching # to solve the C++/Python integration of the matching class
-        run: pip install pymatching --upgrade
+      # - name: install PyMatching # to solve the C++/Python integration of the matching class
+      #   run: pip install pymatching --upgrade
         
       - name: Cache pipenv virtual environment
         uses: actions/cache@v2
