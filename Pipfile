@@ -21,7 +21,6 @@ networkx = "*"
 pytest = "*"
 coverage = "*"
 pymatching = {file = "libs/PyMatching"}
-soft-information-decoding = {file = ".", editable = true}
 stim = "*"
 
 [dev-packages]

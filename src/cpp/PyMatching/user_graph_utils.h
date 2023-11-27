@@ -28,7 +28,8 @@ namespace pm {
     void add_boundary_edge(UserGraph &graph, int64_t node, 
                            const std::set<size_t> &observables, double weight, 
                            double error_probability, const std::string &merge_strategy);
+
+    std::vector<EdgeProperties> get_edges(const pm::UserGraph& graph);
 }
 
 
-std::vector<EdgeProperties> get_edges(const pm::UserGraph& graph);
