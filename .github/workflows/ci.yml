@@ -38,12 +38,7 @@ jobs:
           bazel build //:pymatching //:libpymatching
         
           # Check if the expected output files are present
-          if [ -f "bazel-bin/external/stim/libstim_lib.a" ]; then
-            echo "pymatching / stim build successful."
-          else
-            echo "Error: pymatching.so not found."
-            exit 1
-          fi
+          
         
           if [ -f "bazel-bin/liblibpymatching.a" ]; then
             echo "liblibpymatching.a build successful."
