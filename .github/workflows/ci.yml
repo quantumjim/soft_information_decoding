@@ -37,9 +37,19 @@ jobs:
           cd libs/PyMatching
           bazel build //:pymatching //:libpymatching
 
-          # Echo the contents of the bazel-bin directory
-          echo "Listing contents of bazel-bin:"
-          ls -al bazel-bin
+          # Echo the actual path of the bazel-bin directory
+          echo "Resolving bazel-bin symlink:"
+          realpath bazel-bin
+
+          # List the contents of the actual bazel-bin directory
+          echo "Listing contents of the actual bazel-bin directory:"
+          ls -al $(realpath bazel-bin)
+
+          echo "Listing contents of external in bazel-bin:"
+          ls -al bazel-bin/external
+
+          echo "Listing contents of external/stim in bazel-bin:"
+          ls -al bazel-bin/external/stim
         
           # Check if the expected output files are present
           if [ -f "bazel-bin/external/stim/libstim_lib.a" ]; then
