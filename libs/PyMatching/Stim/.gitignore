@@ -1,11 +1,11 @@
 .idea/*
-cmake-build-debug/*
+# cmake-build-debug/*
 a.out
 perf.data
 perf.data.old
 CMakeFiles/*
 CMakeCache.txt
-googletest-build/*
+# googletest-build/*
 googletest-download/*
 googletest-src
 cmake_install.cmake
@@ -16,7 +16,7 @@ stim.cbp
 data/*
 _deps/*
 bazel-*
-python_build_stim/*
+# python_build_stim/*
 *.egg-*
 stim.cpython*
 dist
@@ -38,7 +38,7 @@ cmake-build-debug-coverage/*
 # clangd generated files
 compile_commands.json
 .cache
-build.ninja
+# build.ninja
 .ninja_deps
 .ninja_log
 .pytest_cache
