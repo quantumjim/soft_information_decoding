@@ -35,7 +35,7 @@ jobs:
       - name: Build PyMatching with Bazel
         run: |
           cd libs/PyMatching
-          bazel build //:pymatching //:libpymatching
+          bazel build //:pymatching //:libpymatching @stim//:stim_lib
 
           # Echo the actual path of the bazel-bin directory
           echo "Resolving bazel-bin symlink:"
