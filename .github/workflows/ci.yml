@@ -12,15 +12,7 @@ jobs:
         with:
           submodules: 'recursive' # Checkout submodules recursively
           token: ${{ secrets.MY_GITHUB_TOKEN_FOR_PRIVATE_REPOS }}
-      
-      # - name: Check for stim.h
-      #   run: |
-      #     if [ -f "${{ github.workspace }}/libs/Stim/src/stim.h" ]; then
-      #       echo "stim.h found in libs/Stim/src/stim.h."
-      #     else
-      #       echo "stim.h not found in libs/Stim/src/stim.h."
-      #       exit 1
-      #     fi
+    
     
       - name: Set up Python
         uses: actions/setup-python@v2
@@ -41,56 +33,6 @@ jobs:
           echo "deb [signed-by=/usr/share/keyrings/bazel-archive-keyring.gpg] https://storage.googleapis.com/bazel-apt stable jdk1.8" | sudo tee /etc/apt/sources.list.d/bazel.list
           sudo apt-get update && sudo apt-get install bazel
 
-      # - name: Build PyMatching with Bazel
-      #   run: |
-      #     cd libs/PyMatching
-      #     bazel build //:pymatching //:libpymatching @stim//:stim_lib
-
-      #     # Echo the actual path of the bazel-bin directory
-      #     echo "Resolving bazel-bin symlink:"
-      #     realpath bazel-bin
-
-      #     # List the contents of the actual bazel-bin directory
-      #     echo "Listing contents of the actual bazel-bin directory:"
-      #     ls -al $(realpath bazel-bin)
-
-      #     echo "Listing contents of external in bazel-bin:"
-      #     ls -al bazel-bin/external
-
-      #     echo "Listing contents of external/stim in bazel-bin:"
-      #     ls -al bazel-bin/external/stim
-        
-      #     # Check if the expected output files are present
-      #     if [ -f "$(realpath bazel-bin)/external/stim/libstim_lib.a" ]; then
-      #       echo "pymatching / stim build successful."
-      #     else
-      #       echo "Error: libstim_lib.a not found in the expected location."
-      #       exit 1
-      #     fi
-
-      #     if [ -f "$(realpath bazel-bin)/liblibpymatching.a" ]; then
-      #       echo "liblibpymatching.a build successful."
-      #     else
-      #       echo "Error: liblibpymatching.a not found in the expected location."
-      #       exit 1
-      #     fi
-      #     cd ../..
-
-      # - name: Find Python Include Path
-      #   run: |
-      #     PYTHON_INCLUDE_PATH=$(python -c "from distutils.sysconfig import get_python_inc; print(get_python_inc())")
-      #     echo "PYTHON_INCLUDE_PATH=$PYTHON_INCLUDE_PATH" >> $GITHUB_ENV
-      
-      # - name: Build C++ package
-      #   run: |
-      #     cmake -DPYTHON_INCLUDE_DIR=$PYTHON_INCLUDE_PATH -DPYBIND11_INCLUDE_DIR=${{ github.workspace }}/libs/pybind11/include -DPython3_EXECUTABLE=$PYTHON_PATH . 
-      #     make
-
-      # - name: Install local qiskit_qec package
-      #   run: pip install ./libs/qiskit-qec
-
-      # - name: install PyMatching # to solve the C++/Python integration of the matching class
-      #   run: pip install pymatching --upgrade
         
       - name: Cache pipenv virtual environment
         uses: actions/cache@v2

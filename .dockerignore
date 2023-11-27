@@ -1,0 +1,16 @@
+.ipynb_checkpoints
+__pycache__
+.DS_Store
+# .vscode/ Lets not ignore the settings file
+src/soft_information.egg-info/
+# .vscode/settings.json
+.Scratch/jobs/
+.Scratch/calibration_grids/
+.Scratch/.DS_Store
+**/.DS_Store
+src/soft_information_decoding.egg-info
+src/cpp_soft_info.cpython-311-darwin.so
+src/example_module.cpython-311-darwin.so
+.pytest_cache/
+.coverage
+__pycache__/

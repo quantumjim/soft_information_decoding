@@ -1,39 +1,32 @@
-# Use the latest Ubuntu image as base
-FROM ubuntu:latest
+# Use Ubuntu as the base image with ARM architecture
+FROM --platform=linux/arm64 ubuntu:latest
 
-# Set non-interactive shell
-ENV DEBIAN_FRONTEND=noninteractive
+# Install necessary tools and libraries
+RUN apt-get update && \
+    apt-get install -y software-properties-common && \
+    add-apt-repository ppa:deadsnakes/ppa && \
+    apt-get update && \
+    apt-get install -y python3.11 python3.11-venv python3.11-dev python3-pip git cmake apt-transport-https curl gnupg && \
+    python3.11 -m ensurepip && \
+    rm -rf /var/lib/apt/lists/*
 
-# Update and install necessary packages
-RUN apt-get update && apt-get install -y \
-    git \
-    cmake \
-    curl \
-    gpg \
-    lsb-release \
-    software-properties-common \
-    python3.11 \
-    python3-pip
+# Install Bazelisk
+RUN python3 -m pip install --upgrade pip && \
+    python3 -m pip install bazelisk
 
-# Set up Bazel
-RUN curl -fsSL https://bazel.build/bazel-release.pub.gpg | gpg --dearmor >bazel-archive-keyring.gpg && \
-    mv bazel-archive-keyring.gpg /usr/share/keyrings && \
-    echo "deb [signed-by=/usr/share/keyrings/bazel-archive-keyring.gpg] https://storage.googleapis.com/bazel-apt stable jdk1.8" | tee /etc/apt/sources.list.d/bazel.list && \
-    apt-get update && apt-get install -y bazel
-
-# Set up Python 3.11.4
-RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.11 1
-
-# Install pipenv
-RUN python -m pip install --upgrade pip && \
+# Set up Python environment
+RUN python3.11 -m pip install --upgrade pip && \
     pip install pipenv
 
-# Set the working directory in the container
-WORKDIR /workspace
+# Set the working directory
+WORKDIR /app
 
-# Copy your project files into the container
-# Uncomment and adjust the path if needed
-# COPY . /workspace
+# Copy your code into the Docker image
+COPY . /app/
 
-# Set the entry point to bash
-ENTRYPOINT ["/bin/bash"]
+
+# Install your application's dependencies
+RUN pipenv install --verbose
+
+# The command to run tests
+CMD ["pipenv", "run", "pytest", "tests/"]
