@@ -36,9 +36,18 @@ jobs:
         run: |
           cd libs/PyMatching
           bazel build //:pymatching //:libpymatching
+
+          # Echo the contents of the bazel-bin directory
+          echo "Listing contents of bazel-bin:"
+          ls -al bazel-bin
         
           # Check if the expected output files are present
-          
+          if [ -f "bazel-bin/external/stim/libstim_lib.a" ]; then
+            echo "pymatching / stim build successful."
+          else
+            echo "Error: bazel-bin/external/stim/libstim_lib.a not found."
+            exit 1
+          fi
         
           if [ -f "bazel-bin/liblibpymatching.a" ]; then
             echo "liblibpymatching.a build successful."
