@@ -1,4 +1,4 @@
-name: Push workflow
+name: Push workflow MacOs Tests
 
 on: [push]
 
