@@ -16,6 +16,8 @@ namespace pm {
         const std::map<int, std::pair<std::pair<double, double>, std::pair<double, double>>>& scaler_params_dict, // Adjusted to hold pairs of pairs
         float p_data = -1, float p_mixed = -1, float common_measure = -1);
 
+    void reweight_edges_to_one(UserGraph &matching);
+
     int decode_IQ_shots(
         UserGraph &matching,
         const Eigen::MatrixXcd& not_scaled_IQ_data,

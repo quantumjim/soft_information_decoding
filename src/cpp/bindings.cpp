@@ -89,6 +89,10 @@ PYBIND11_MODULE(cpp_soft_info, m) {
       py::arg("kde_grid_dict"), py::arg("scaler_params_dict"), 
       py::arg("p_data"), py::arg("p_mixed"), py::arg("common_measure"));
     
+    m.def("reweight_edges_to_one", &pm::reweight_edges_to_one, 
+      "Reweight a matching graph to have edge weights of 1",
+      py::arg("matching"));
+    
     m.def("decode_IQ_shots", &pm::decode_IQ_shots, 
       "Decode a matching graph using IQ data",
       py::arg("matching"), py::arg("not_scaled_IQ_data"), 

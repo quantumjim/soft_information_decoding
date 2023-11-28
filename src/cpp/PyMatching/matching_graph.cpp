@@ -108,6 +108,32 @@ namespace pm {
         }
     }
 
+    void reweight_edges_to_one(UserGraph &matching) {
+        // Get edges
+        std::vector<EdgeProperties> edges = pm::get_edges(matching);
+
+        for (const auto& edge : edges) { 
+            bool _has_time_component = false;
+            int src_node = edge.node1;
+            int tgt_node = edge.node2;
+            auto& edge_data = edge.attributes;
+
+            double new_weight = 1.0; 
+
+            if (tgt_node == -1) {
+                // Boundary edge
+                pm::add_boundary_edge(matching, src_node, edge_data.fault_ids, new_weight,
+                                    edge_data.error_probability, "replace"); 
+                continue;
+            }else{
+                // Data/Time/Mixed edge
+                pm::add_edge(matching, src_node, tgt_node, edge_data.fault_ids, new_weight,
+                            edge_data.error_probability, "replace"); 
+                continue;
+            }
+        }
+    }
+
     int decode_IQ_shots(
         UserGraph &matching,
         const Eigen::MatrixXcd& not_scaled_IQ_data,
