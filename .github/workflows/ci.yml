@@ -24,10 +24,13 @@ jobs:
       - name: Install CMake
         run: brew install cmake  # Changed to brew for macOS
 
-      - name: Install Bazel
-        run: |
-          brew tap bazelbuild/tap
-          brew install bazelbuild/tap/bazel
+      # - name: Install Bazel
+      #   run: |
+      #     brew tap bazelbuild/tap
+      #     brew install bazelbuild/tap/bazel
+
+      - name: Install Bazelisk (if not installed)
+        run: brew install bazelisk
 
       - name: Cache pipenv virtual environment
         uses: actions/cache@v2
