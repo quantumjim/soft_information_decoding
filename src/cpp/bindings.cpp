@@ -73,6 +73,10 @@ PYBIND11_MODULE(cpp_soft_info, m) {
       "Convert counts to deterministic syndromes",
       py::arg("input_str"), py::arg("_resets") = false, 
       py::arg("verbose") = false);
+
+    m.def("syndromeArrayToDetectionEvents", &syndromeArrayToDetectionEvents, 
+      "Convert syndrome array to detection events",
+      py::arg("z"), py::arg("num_detectors"), py::arg("boundary_length"));
     
     m.def("soft_reweight_pymatching", &pm::soft_reweight_pymatching, 
       "Reweight a matching graph using soft information",

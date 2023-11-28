@@ -230,3 +230,30 @@ std::vector<int> counts_to_det_syndr(const std::string& input_str, bool _resets,
     return numpy_list;
 }
 
+
+std::vector<int> syndromeArrayToDetectionEvents(const std::vector<int>& z, int num_detectors, int boundary_length) {
+    
+    // num_detectors throug UserGraph.get_num_detectors() 
+    // boundary_length through UserGraph.get_boundary().size()
+    // Check if the input vector is empty
+    if (z.empty()) {
+        throw std::invalid_argument("Input vector is empty");
+    }
+
+    std::vector<int> detection_events;
+
+    // Handling 1D array case with the specified condition
+    if (num_detectors <= z.size() && z.size() <= num_detectors + boundary_length) {
+        for (size_t i = 0; i < z.size(); ++i) {
+            if (z[i] != 0) {
+                detection_events.push_back(i);
+            }
+        }
+    } else {
+        throw std::invalid_argument("Invalid size of the syndrome vector");
+    }
+
+    // TODO: Handling 2D array case (Hardcoded for RepCodes)
+
+    return detection_events;
+}

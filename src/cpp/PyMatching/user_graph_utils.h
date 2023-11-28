@@ -34,3 +34,4 @@ namespace pm {
 
 std::vector<int> counts_to_det_syndr(const std::string& input_str, bool _resets = false, bool verbose = false);
 
+std::vector<int> syndromeArrayToDetectionEvents(const std::vector<int>& z, int num_detectors, int boundary_length);

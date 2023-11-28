@@ -3,6 +3,7 @@
     "python.analysis.extraPaths": [
         "./libs/ResultsSaver",
         "./libs/qiskit-qec/src",
+        ".libs/PyMatching",
         "./ResultsSaver",
         "./libs/qiskit-saver-provider",
         "./build"

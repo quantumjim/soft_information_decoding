@@ -14,3 +14,7 @@ src/example_module.cpython-311-darwin.so
 .pytest_cache/
 .coverage
 __pycache__/
+build
+
+src/cpp_soft_info.cpython-311-darwin.so
+src/example_module.cpython-311-darwin.so
