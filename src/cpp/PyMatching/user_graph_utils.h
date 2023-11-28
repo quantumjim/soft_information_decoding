@@ -3,6 +3,7 @@
 #include <utility> // For std::pair
 #include <string>
 #include <unordered_map>
+#include <utility> 
 #include "pymatching/sparse_blossom/driver/user_graph.h" // Include necessary headers for declarations
 
 struct EdgeAttributes {
@@ -30,8 +31,10 @@ namespace pm {
                            double error_probability, const std::string &merge_strategy);
 
     std::vector<EdgeProperties> get_edges(const pm::UserGraph& graph);
+
+    std::pair<std::vector<uint8_t>, double> decode(UserGraph &self, const std::vector<uint64_t> &detection_events);
 }
 
 std::vector<int> counts_to_det_syndr(const std::string& input_str, bool _resets = false, bool verbose = false);
 
-std::vector<int> syndromeArrayToDetectionEvents(const std::vector<int>& z, int num_detectors, int boundary_length);
+std::vector<uint64_t> syndromeArrayToDetectionEvents(const std::vector<int>& z, int num_detectors, int boundary_length);

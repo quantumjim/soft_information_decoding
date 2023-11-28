@@ -11,7 +11,7 @@
 namespace pm {
     void soft_reweight_pymatching(
         UserGraph &matching,
-        const Eigen::VectorXcd& not_scaled_IQ_shot,  // Single shot, 1D array
+        const Eigen::MatrixXcd& not_scaled_IQ_data,
         int synd_rounds,
         const std::map<int, int>& qubit_mapping,
         const std::map<int, GridData>& kde_grid_dict,
@@ -23,7 +23,7 @@ namespace pm {
         p_mixed = (p_mixed != -1) ? p_mixed : 0;
 
         // Distance
-        int distance = (not_scaled_IQ_shot.size() + synd_rounds) / (synd_rounds + 1); // Hardcoded for RepCodes
+        int distance = (not_scaled_IQ_data.cols() + synd_rounds) / (synd_rounds + 1); // Hardcoded for RepCodes
 
         // Get edges
         std::vector<EdgeProperties> edges = pm::get_edges(matching);
@@ -87,7 +87,7 @@ namespace pm {
                 const auto& grid_data = kde_grid_dict.at(qubit_idx);
 
                 // Step 2: Rescale the corresponding IQ point
-                std::complex<double> iq_point = not_scaled_IQ_shot(src_node);
+                std::complex<double> iq_point = not_scaled_IQ_data(0, src_node);
                 const auto& [real_params, imag_params] = scaler_params_dict.at(qubit_idx);
                 double real_scaled = (std::real(iq_point) - real_params.first) / real_params.second;
                 double imag_scaled = (std::imag(iq_point) - imag_params.first) / imag_params.second;
@@ -109,7 +109,7 @@ namespace pm {
     }
 
     int decode_IQ_shots(
-        const UserGraph &matching,
+        UserGraph &matching,
         const Eigen::MatrixXcd& not_scaled_IQ_data,
         int synd_rounds,
         const std::map<int, int>& qubit_mapping,
@@ -119,12 +119,27 @@ namespace pm {
         
         int numErrors = 0;
         for (int shot = 0; shot < not_scaled_IQ_data.rows(); ++shot) {
-            Eigen::VectorXcd not_scaled_IQ_shot = not_scaled_IQ_data.row(shot);
+            Eigen::MatrixXcd not_scaled_IQ_shot_matrix = not_scaled_IQ_data.row(shot);
+            auto counts = get_counts(not_scaled_IQ_shot_matrix, qubit_mapping, kde_grid_dict, scaler_params_dict, synd_rounds);
+            std::string count_key = counts.begin()->first;
 
+            // add copying the graph to recompute weights to 1 or something 
+            soft_reweight_pymatching(matching, not_scaled_IQ_shot_matrix, synd_rounds, qubit_mapping, kde_grid_dict, scaler_params_dict, p_data, p_mixed, common_measure);
 
+            auto det_syndromes = counts_to_det_syndr(count_key, false, false);
+            auto detectionEvents = syndromeArrayToDetectionEvents(det_syndromes, matching.get_num_detectors(), matching.get_boundary().size());
 
+            auto [predicted_observables, rescaled_weight] = decode(matching, detectionEvents);
+
+            int actual_observable = (static_cast<int>(count_key[0]) - '0') % 2;  // Convert first character to int and modulo 2
+            // Check if predicted_observables is not empty and compare the first element
+            if (!predicted_observables.empty() && predicted_observables[0] != actual_observable) {
+                numErrors++;  // Increment error count if they don't match
+            }
 
         }
+
+        return numErrors;
     }
 
 }

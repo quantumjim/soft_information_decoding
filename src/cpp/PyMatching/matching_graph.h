@@ -9,12 +9,21 @@
 namespace pm {
     void soft_reweight_pymatching(
         UserGraph &matching,
-        const Eigen::VectorXcd& not_scaled_IQ_shot,  // Single shot, 1D array
+        const Eigen::MatrixXcd& not_scaled_IQ_data,
         int synd_rounds,
         const std::map<int, int>& qubit_mapping,
         const std::map<int, GridData>& kde_grid_dict,
         const std::map<int, std::pair<std::pair<double, double>, std::pair<double, double>>>& scaler_params_dict, // Adjusted to hold pairs of pairs
         float p_data = -1, float p_mixed = -1, float common_measure = -1);
+
+    int decode_IQ_shots(
+        UserGraph &matching,
+        const Eigen::MatrixXcd& not_scaled_IQ_data,
+        int synd_rounds,
+        const std::map<int, int>& qubit_mapping,
+        const std::map<int, GridData>& kde_grid_dict,
+        const std::map<int, std::pair<std::pair<double, double>, std::pair<double, double>>>& scaler_params_dict, 
+        float p_data, float p_mixed, float common_measure);
 }
 
 

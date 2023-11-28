@@ -4,6 +4,8 @@
 #include <vector>
 #include <stdexcept>
 
+#include "pymatching/sparse_blossom/driver/mwpm_decoding.h"
+
 
 
 namespace pm {
@@ -79,6 +81,19 @@ namespace pm {
         graph.add_or_merge_boundary_edge(node, observables_vec, weight, 
                                          error_probability, merge_strategy_from_string(merge_strategy));
     }
+
+
+    std::pair<std::vector<uint8_t>, double> decode(UserGraph &self, const std::vector<uint64_t> &detection_events) {
+        auto &mwpm = self.get_mwpm();
+        auto obs_crossed = std::make_unique<std::vector<uint8_t>>(self.get_num_observables(), 0);
+        pm::total_weight_int weight = 0;
+        pm::decode_detection_events(mwpm, detection_events, obs_crossed->data(), weight);
+        double rescaled_weight = static_cast<double>(weight) / mwpm.flooder.graph.normalising_constant;
+        std::vector<uint8_t> obs_crossed_vec(obs_crossed->begin(), obs_crossed->end());
+        return {obs_crossed_vec, rescaled_weight};
+    }
+
+
 
 }
 
@@ -231,7 +246,7 @@ std::vector<int> counts_to_det_syndr(const std::string& input_str, bool _resets,
 }
 
 
-std::vector<int> syndromeArrayToDetectionEvents(const std::vector<int>& z, int num_detectors, int boundary_length) {
+std::vector<uint64_t> syndromeArrayToDetectionEvents(const std::vector<int>& z, int num_detectors, int boundary_length) {
     
     // num_detectors throug UserGraph.get_num_detectors() 
     // boundary_length through UserGraph.get_boundary().size()
@@ -240,7 +255,7 @@ std::vector<int> syndromeArrayToDetectionEvents(const std::vector<int>& z, int n
         throw std::invalid_argument("Input vector is empty");
     }
 
-    std::vector<int> detection_events;
+    std::vector<uint64_t> detection_events;
 
     // Handling 1D array case with the specified condition
     if (num_detectors <= z.size() && z.size() <= num_detectors + boundary_length) {
