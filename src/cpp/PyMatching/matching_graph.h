@@ -14,7 +14,7 @@ namespace pm {
         const std::map<int, int>& qubit_mapping,
         const std::map<int, GridData>& kde_grid_dict,
         const std::map<int, std::pair<std::pair<double, double>, std::pair<double, double>>>& scaler_params_dict, // Adjusted to hold pairs of pairs
-        float p_data = -1, float p_meas = -1, float common_measure = -1);
+        float p_data = -1, float p_mixed = -1, float common_measure = -1);
 }
 
 

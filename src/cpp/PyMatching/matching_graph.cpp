@@ -16,11 +16,11 @@ namespace pm {
         const std::map<int, int>& qubit_mapping,
         const std::map<int, GridData>& kde_grid_dict,
         const std::map<int, std::pair<std::pair<double, double>, std::pair<double, double>>>& scaler_params_dict, 
-        float p_data, float p_meas, float common_measure) {
+        float p_data, float p_mixed, float common_measure) {
 
         // Set default values
         p_data = (p_data != -1) ? p_data : 6.836e-3; // Sherbrooke median
-        p_meas = (p_meas != -1) ? p_meas : 0;
+        p_mixed = (p_mixed != -1) ? p_mixed : 0;
 
         // Distance
         int distance = (not_scaled_IQ_data.cols() + synd_rounds) / (synd_rounds + 1); // Hardcoded for RepCodes
@@ -60,7 +60,7 @@ namespace pm {
 
             if (tgt_node == src_node + (distance-1) + 1) { // Hardcoded for RepCodes
                 // Time-Data edge
-                double p_mixed = p_data / 50;
+                // double p_mixed = p_data / 50;
                 new_weight = -std::log(p_mixed / (1 - p_mixed));
                 if (common_measure != -1) {
                     new_weight = std::round(new_weight / common_measure) * common_measure;
