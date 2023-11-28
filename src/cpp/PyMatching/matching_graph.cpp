@@ -11,7 +11,7 @@
 namespace pm {
     void soft_reweight_pymatching(
         UserGraph &matching,
-        const Eigen::MatrixXcd& not_scaled_IQ_data,
+        const Eigen::VectorXcd& not_scaled_IQ_shot,  // Single shot, 1D array
         int synd_rounds,
         const std::map<int, int>& qubit_mapping,
         const std::map<int, GridData>& kde_grid_dict,
@@ -23,7 +23,7 @@ namespace pm {
         p_mixed = (p_mixed != -1) ? p_mixed : 0;
 
         // Distance
-        int distance = (not_scaled_IQ_data.cols() + synd_rounds) / (synd_rounds + 1); // Hardcoded for RepCodes
+        int distance = (not_scaled_IQ_shot.size() + synd_rounds) / (synd_rounds + 1); // Hardcoded for RepCodes
 
         // Get edges
         std::vector<EdgeProperties> edges = pm::get_edges(matching);
@@ -87,7 +87,7 @@ namespace pm {
                 const auto& grid_data = kde_grid_dict.at(qubit_idx);
 
                 // Step 2: Rescale the corresponding IQ point
-                std::complex<double> iq_point = not_scaled_IQ_data(0, src_node);
+                std::complex<double> iq_point = not_scaled_IQ_shot(src_node);
                 const auto& [real_params, imag_params] = scaler_params_dict.at(qubit_idx);
                 double real_scaled = (std::real(iq_point) - real_params.first) / real_params.second;
                 double imag_scaled = (std::imag(iq_point) - imag_params.first) / imag_params.second;
@@ -107,6 +107,23 @@ namespace pm {
             }
         }
     }
+
+    int decode_IQ_shots(
+        const UserGraph &matching,
+        const Eigen::MatrixXcd& not_scaled_IQ_data,
+        int synd_rounds,
+        const std::map<int, int>& qubit_mapping,
+        const std::map<int, GridData>& kde_grid_dict,
+        const std::map<int, std::pair<std::pair<double, double>, std::pair<double, double>>>& scaler_params_dict, 
+        float p_data, float p_mixed, float common_measure) {
+            
+        
+
+
+
+        }
+
+
 }
 
 void processGraph_test(pm::UserGraph& graph) {

@@ -9,7 +9,7 @@
 namespace pm {
     void soft_reweight_pymatching(
         UserGraph &matching,
-        const Eigen::MatrixXcd& not_scaled_IQ_data,
+        const Eigen::VectorXcd& not_scaled_IQ_shot,  // Single shot, 1D array
         int synd_rounds,
         const std::map<int, int>& qubit_mapping,
         const std::map<int, GridData>& kde_grid_dict,

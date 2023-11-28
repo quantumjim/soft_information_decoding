@@ -96,7 +96,8 @@
         "specialfunctions": "cpp",
         "splines": "cpp",
         "any": "cpp",
-        "span": "cpp"
+        "span": "cpp",
+        "hash_map": "cpp"
     },
     "cmake.sourceDirectory": "${workspaceFolder}"
 }

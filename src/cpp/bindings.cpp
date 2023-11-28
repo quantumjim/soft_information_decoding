@@ -68,10 +68,15 @@ PYBIND11_MODULE(cpp_soft_info, m) {
       "Add or merge a boundary edge to the user graph",
       py::arg("graph"), py::arg("node"), py::arg("observables"), 
       py::arg("weight"), py::arg("error_probability"), py::arg("merge_strategy"));
+
+    m.def("counts_to_det_syndr", &counts_to_det_syndr, 
+      "Convert counts to deterministic syndromes",
+      py::arg("input_str"), py::arg("_resets") = false, 
+      py::arg("verbose") = false);
     
     m.def("soft_reweight_pymatching", &pm::soft_reweight_pymatching, 
       "Reweight a matching graph using soft information",
-      py::arg("matching"), py::arg("not_scaled_IQ_data"), 
+      py::arg("matching"), py::arg("not_scaled_IQ_shot"), 
       py::arg("synd_rounds"), py::arg("qubit_mapping"), 
       py::arg("kde_grid_dict"), py::arg("scaler_params_dict"), 
       py::arg("p_data"), py::arg("p_mixed"), py::arg("common_measure"));

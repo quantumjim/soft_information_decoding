@@ -32,4 +32,5 @@ namespace pm {
     std::vector<EdgeProperties> get_edges(const pm::UserGraph& graph);
 }
 
+std::vector<int> counts_to_det_syndr(const std::string& input_str, bool _resets = false, bool verbose = false);
 

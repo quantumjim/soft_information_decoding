@@ -28,7 +28,10 @@ def counts_to_det_syndr(input_str, _resets = False, verbose=False):
         print("Number of measurement rounds (T):", T)
     
     # Step 3: Separate the check_str into T parts
-    check_str_parts = [''.join(check_str[i::T]) for i in range(T)]
+    # check_str_parts = [''.join(check_str[i::T]) for i in range(T)] NOT NEEDED!
+    check_str_parts = check_str
+    if verbose:
+        print("Check str part T:", check_str_parts)
     
     # Step 4: Initialize detector string list with T+1 empty strings
     detector_str_parts = [''] * (T+1)
@@ -79,7 +82,7 @@ def counts_to_det_syndr(input_str, _resets = False, verbose=False):
     # Compute the (T+1)th part of the detector string using the T-1 part of the check str
     if not _resets:
         if verbose:
-            print("_reset = False: meas_str_parts[T-2]:", meas_str_parts[T-1])
+            print("_reset = False: meas_str_parts[T-1]:", meas_str_parts[T-1])
         detector_str_parts[T] = ''.join(
             str((int(xor_result[j]) + int(meas_str_parts[T-1][j])) % 2) 
             for j in range(len(xor_result))
@@ -97,7 +100,7 @@ def counts_to_det_syndr(input_str, _resets = False, verbose=False):
     # Convert detector string parts to a single numpy array
     numpy_list = np.array([int(bit) for part in detector_str_parts for bit in part])
     
-    if verbose:
-        print("Numpy list:", numpy_list)
+    # if verbose:
+    #     print("Numpy list:", numpy_list)
     
     return numpy_list
