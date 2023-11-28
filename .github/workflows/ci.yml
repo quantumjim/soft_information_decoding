@@ -4,8 +4,8 @@ on: [push]
 
 jobs:
     build:
-      runs-on: ubuntu-latest
-  
+      runs-on: macos-latest  # Changed to macOS runner
+
       steps:
       - name: Checkout repository and submodules
         uses: actions/checkout@v2
@@ -13,27 +13,22 @@ jobs:
           submodules: 'recursive' # Checkout submodules recursively
           token: ${{ secrets.MY_GITHUB_TOKEN_FOR_PRIVATE_REPOS }}
     
-    
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-           python-version: '3.11.4'
+          python-version: '3.11.4'
     
       - name: Export Python path
         run: echo "PYTHON_PATH=$(which python)" >> $GITHUB_ENV
 
       - name: Install CMake
-        run: sudo apt-get install -y cmake
+        run: brew install cmake  # Changed to brew for macOS
 
       - name: Install Bazel
         run: |
-          sudo apt-get install apt-transport-https curl gnupg
-          curl -fsSL https://bazel.build/bazel-release.pub.gpg | gpg --dearmor >bazel-archive-keyring.gpg
-          sudo mv bazel-archive-keyring.gpg /usr/share/keyrings
-          echo "deb [signed-by=/usr/share/keyrings/bazel-archive-keyring.gpg] https://storage.googleapis.com/bazel-apt stable jdk1.8" | sudo tee /etc/apt/sources.list.d/bazel.list
-          sudo apt-get update && sudo apt-get install bazel
+          brew tap bazelbuild/tap
+          brew install bazelbuild/tap/bazel
 
-        
       - name: Cache pipenv virtual environment
         uses: actions/cache@v2
         with:
@@ -51,11 +46,10 @@ jobs:
         run: |
           pipenv install --verbose
   
-      # - name: Test with pytest using pipenv
-      #   run: |
-      #     pipenv run pytest tests/
-
-      - name: Test with pytest using pipenv, excluding tests/cpp/PyMatching
+      - name: Test with pytest using pipenv
         run: |
-          pipenv run pytest tests/ --ignore=tests/cpp/PyMatching
-  
+          pipenv run pytest tests/
+
+      # - name: Test with pytest using pipenv, excluding tests/cpp/PyMatching
+      #   run: |
+      #     pipenv run pytest tests/ --ignore=tests/cpp/PyMatching
