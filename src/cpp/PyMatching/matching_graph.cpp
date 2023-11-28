@@ -116,13 +116,16 @@ namespace pm {
         const std::map<int, GridData>& kde_grid_dict,
         const std::map<int, std::pair<std::pair<double, double>, std::pair<double, double>>>& scaler_params_dict, 
         float p_data, float p_mixed, float common_measure) {
-            
         
+        int numErrors = 0;
+        for (int shot = 0; shot < not_scaled_IQ_data.rows(); ++shot) {
+            Eigen::VectorXcd not_scaled_IQ_shot = not_scaled_IQ_data.row(shot);
+
 
 
 
         }
-
+    }
 
 }
 
