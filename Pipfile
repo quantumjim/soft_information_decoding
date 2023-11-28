@@ -20,8 +20,9 @@ scikit-learn = "*"
 networkx = "*"
 pytest = "*"
 coverage = "*"
-pymatching = {file = "libs/PyMatching"}
 stim = "*"
+soft-information-decoding = {file = ".", editable = true}
+pymatching = {file = "libs/PyMatching"}
 
 [dev-packages]
 ipykernel = "*"
