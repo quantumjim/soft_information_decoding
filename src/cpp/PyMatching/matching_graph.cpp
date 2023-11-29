@@ -134,6 +134,39 @@ namespace pm {
         }
     }
 
+    void reweight_edges_to_one_diag(UserGraph &matching, float p_mixed, float distance) {
+        // Get edges
+        std::vector<EdgeProperties> edges = pm::get_edges(matching);
+    
+        for (const auto& edge : edges) { 
+            bool _has_time_component = false;
+            int src_node = edge.node1;
+            int tgt_node = edge.node2;
+            auto& edge_data = edge.attributes;
+
+            double new_weight = 1.0; 
+
+            if (tgt_node == -1) {
+                // Boundary edge
+                pm::add_boundary_edge(matching, src_node, edge_data.fault_ids, new_weight,
+                                    edge_data.error_probability, "replace"); 
+                continue;
+            }else{
+                if (tgt_node == src_node + (distance-1) + 1) { 
+                    // Mixed edges
+                    new_weight = -std::log(p_mixed / (1 - p_mixed));   
+                    pm::add_edge(matching, src_node, tgt_node, edge_data.fault_ids, new_weight,
+                                edge_data.error_probability, "replace");                 
+                }else{
+                // Data & Time edges
+                pm::add_edge(matching, src_node, tgt_node, edge_data.fault_ids, new_weight,
+                            edge_data.error_probability, "replace"); 
+                continue;
+                }
+            }
+        }
+    }
+
     int decode_IQ_shots(
         UserGraph &matching,
         const Eigen::MatrixXcd& not_scaled_IQ_data,
@@ -177,6 +210,39 @@ namespace pm {
         const std::map<int, std::pair<std::pair<double, double>, std::pair<double, double>>>& scaler_params_dict) {
         int numErrors = 0;
         reweight_edges_to_one(matching);
+        for (int shot = 0; shot < not_scaled_IQ_data.rows(); ++shot) {
+            Eigen::MatrixXcd not_scaled_IQ_shot_matrix = not_scaled_IQ_data.row(shot);
+            auto counts = get_counts(not_scaled_IQ_shot_matrix, qubit_mapping, kde_grid_dict, scaler_params_dict, synd_rounds);
+            std::string count_key = counts.begin()->first;
+
+            auto det_syndromes = counts_to_det_syndr(count_key, false, false);
+            auto detectionEvents = syndromeArrayToDetectionEvents(det_syndromes, matching.get_num_detectors(), matching.get_boundary().size());
+
+            auto [predicted_observables, rescaled_weight] = decode(matching, detectionEvents);
+
+            int actual_observable = (static_cast<int>(count_key[0]) - '0') % 2;  // Convert first character to int and modulo 2
+            // Check if predicted_observables is not empty and compare the first element
+            if (!predicted_observables.empty() && predicted_observables[0] != actual_observable) {
+                numErrors++;  // Increment error count if they don't match
+            }
+
+        }
+
+        return numErrors;
+    }
+
+    int decode_IQ_shots_flat_diag(
+        UserGraph &matching,
+        const Eigen::MatrixXcd& not_scaled_IQ_data,
+        int synd_rounds,
+        const std::map<int, int>& qubit_mapping,
+        const std::map<int, GridData>& kde_grid_dict,
+        const std::map<int, std::pair<std::pair<double, double>, std::pair<double, double>>>& scaler_params_dict,
+        float p_mixed) {
+        int numErrors = 0;
+        // Distance
+        int distance = (not_scaled_IQ_data.cols() + synd_rounds) / (synd_rounds + 1); // Hardcoded for RepCodes
+        reweight_edges_to_one_diag(matching, p_mixed, distance);
         for (int shot = 0; shot < not_scaled_IQ_data.rows(); ++shot) {
             Eigen::MatrixXcd not_scaled_IQ_shot_matrix = not_scaled_IQ_data.row(shot);
             auto counts = get_counts(not_scaled_IQ_shot_matrix, qubit_mapping, kde_grid_dict, scaler_params_dict, synd_rounds);
