@@ -18,9 +18,9 @@ namespace pm {
         const std::map<int, std::pair<std::pair<double, double>, std::pair<double, double>>>& scaler_params_dict, 
         float p_data, float p_mixed, float common_measure) {
 
-        // Set default values
-        p_data = (p_data != -1) ? p_data : 6.836e-3; // Sherbrooke median
-        p_mixed = (p_mixed != -1) ? p_mixed : 0;
+        // // Set default values
+        // p_data = (p_data != -1) ? p_data : 6.836e-3; // Sherbrooke median
+        // p_mixed = (p_mixed != -1) ? p_mixed : 0;
 
         // Distance
         int distance = (not_scaled_IQ_data.cols() + synd_rounds) / (synd_rounds + 1); // Hardcoded for RepCodes
@@ -38,35 +38,34 @@ namespace pm {
 
             if (tgt_node == -1) {
                 // Boundary edge
-                new_weight = -std::log(p_data / (1 - p_data));
+                if (p_data != -1) {new_weight = -std::log(p_data / (1 - p_data));
                 if (common_measure != -1) {
                     new_weight = std::round(new_weight / common_measure) * common_measure;
                 }
                 pm::add_boundary_edge(matching, src_node, edge_data.fault_ids, new_weight,
-                                    edge_data.error_probability, "replace"); 
+                                    edge_data.error_probability, "replace"); }
                 continue;
             }
 
             if (tgt_node == src_node + 1){ // always first pos smaller TODO: check if that is correct
                 // Data edge
-                new_weight = -std::log(p_data / (1 - p_data));
+                if (p_data != -1) {new_weight = -std::log(p_data / (1 - p_data));
                 if (common_measure != -1) {
                     new_weight = std::round(new_weight / common_measure) * common_measure;
                 }
                 pm::add_edge(matching, src_node, tgt_node, edge_data.fault_ids, new_weight,
-                            edge_data.error_probability, "replace"); 
+                            edge_data.error_probability, "replace");} 
                 continue;
             }
 
             if (tgt_node == src_node + (distance-1) + 1) { // Hardcoded for RepCodes
                 // Time-Data edge
-                // double p_mixed = p_data / 50;
-                new_weight = -std::log(p_mixed / (1 - p_mixed));
+                if (p_mixed != -1) {new_weight = -std::log(p_mixed / (1 - p_mixed));
                 if (common_measure != -1) {
                     new_weight = std::round(new_weight / common_measure) * common_measure;
                 }
                 pm::add_edge(matching, src_node, tgt_node, edge_data.fault_ids, new_weight,
-                            edge_data.error_probability, "replace"); 
+                            edge_data.error_probability, "replace"); }
                 continue;
             }
 
@@ -151,45 +150,45 @@ namespace pm {
 
             if (tgt_node == -1) {
                 // Boundary edge
-                new_weight = -std::log(p_data / (1 - p_data));
+                if (p_data != -1) {new_weight = -std::log(p_data / (1 - p_data));
                 if (common_measure != -1) {
                     new_weight = std::round(new_weight / common_measure) * common_measure;
                 }
                 pm::add_boundary_edge(matching, src_node, edge_data.fault_ids, new_weight,
-                                    edge_data.error_probability, "replace"); 
+                                    edge_data.error_probability, "replace"); }
                 continue;
             }
 
             if (tgt_node == src_node + 1){ // always first pos smaller TODO: check if that is correct
                 // Data edge
-                new_weight = -std::log(p_data / (1 - p_data));
+                if (p_data != -1) {new_weight = -std::log(p_data / (1 - p_data));
                 if (common_measure != -1) {
                     new_weight = std::round(new_weight / common_measure) * common_measure;
                 }
                 pm::add_edge(matching, src_node, tgt_node, edge_data.fault_ids, new_weight,
-                            edge_data.error_probability, "replace"); 
+                            edge_data.error_probability, "replace"); }
                 continue;
             }
 
             if (tgt_node == src_node + (distance-1) + 1) { // Hardcoded for RepCodes
                 // Mixed edge
-                new_weight = -std::log(p_mixed / (1 - p_mixed));
+                if (p_mixed != -1) {new_weight = -std::log(p_mixed / (1 - p_mixed));
                 if (common_measure != -1) {
                     new_weight = std::round(new_weight / common_measure) * common_measure;
                 }
                 pm::add_edge(matching, src_node, tgt_node, edge_data.fault_ids, new_weight,
-                            edge_data.error_probability, "replace"); 
+                            edge_data.error_probability, "replace"); }
                 continue;
             }
 
             if (tgt_node == src_node + (distance-1)) { // Hardcoded for RepCodes
                 // Time edge
-                new_weight = -std::log(p_meas / (1 - p_meas));
+                if (p_meas != -1) {new_weight = -std::log(p_meas / (1 - p_meas));
                 if (common_measure != -1) {
                     new_weight = std::round(new_weight / common_measure) * common_measure;
                 }
                 pm::add_edge(matching, src_node, tgt_node, edge_data.fault_ids, new_weight,
-                            edge_data.error_probability, "replace");
+                            edge_data.error_probability, "replace");}
             }
         }
     }
