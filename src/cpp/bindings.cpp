@@ -99,4 +99,10 @@ PYBIND11_MODULE(cpp_soft_info, m) {
       py::arg("synd_rounds"), py::arg("qubit_mapping"), 
       py::arg("kde_grid_dict"), py::arg("scaler_params_dict"), 
       py::arg("p_data"), py::arg("p_mixed"), py::arg("common_measure"));
+
+    m.def("decode_IQ_shots_flat", &pm::decode_IQ_shots_flat,
+      "Decode a matching graph using IQ data but weight edges to 1",
+      py::arg("matching"), py::arg("not_scaled_IQ_data"),
+      py::arg("synd_rounds"), py::arg("qubit_mapping"),
+      py::arg("kde_grid_dict"), py::arg("scaler_params_dict"));
 }
