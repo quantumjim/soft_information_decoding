@@ -93,9 +93,10 @@ PYBIND11_MODULE(cpp_soft_info, m) {
       "Reweight a matching graph to have edge weights of 1",
       py::arg("matching"));
 
-    m.def("reweight_edges_to_one_diag", &pm::reweight_edges_to_one_diag, 
+    m.def("reweight_edges_informed", &pm::reweight_edges_informed, 
       "Reweight a matching graph to have edge weights of 1 and use diagonal edges",
-      py::arg("matching"), py::arg("p_mixed"), py::arg("distance"));
+      py::arg("matching"), py::arg("distance"), py::arg("p_data"),
+      py::arg("p_mixed"), py::arg("p_meas"), py::arg("common_measure") = -1);
     
     m.def("decode_IQ_shots", &pm::decode_IQ_shots, 
       "Decode a matching graph using IQ data",
@@ -110,10 +111,10 @@ PYBIND11_MODULE(cpp_soft_info, m) {
       py::arg("synd_rounds"), py::arg("qubit_mapping"),
       py::arg("kde_grid_dict"), py::arg("scaler_params_dict"));
     
-    m.def("decode_IQ_shots_flat_diag", &pm::decode_IQ_shots_flat_diag,
+    m.def("decode_IQ_shots_flat_informed", &pm::decode_IQ_shots_flat_informed,
       "Decode a matching graph using IQ data but weight edges to 1 and use diagonal edges",
       py::arg("matching"), py::arg("not_scaled_IQ_data"),
       py::arg("synd_rounds"), py::arg("qubit_mapping"),
       py::arg("kde_grid_dict"), py::arg("scaler_params_dict"),
-      py::arg("p_mixed"));
+      py::arg("p_data"), py::arg("p_mixed"), py::arg("p_meas"), py::arg("common_measure") = -1);
 }

@@ -118,7 +118,7 @@ namespace pm {
             int tgt_node = edge.node2;
             auto& edge_data = edge.attributes;
 
-            double new_weight = 1.0; 
+            float new_weight = 1.0; 
 
             if (tgt_node == -1) {
                 // Boundary edge
@@ -134,7 +134,10 @@ namespace pm {
         }
     }
 
-    void reweight_edges_to_one_diag(UserGraph &matching, float p_mixed, float distance) {
+    void reweight_edges_informed(
+        UserGraph &matching,  float distance,
+        float p_data, float p_mixed,
+        float p_meas, float common_measure) {
         // Get edges
         std::vector<EdgeProperties> edges = pm::get_edges(matching);
     
@@ -144,25 +147,49 @@ namespace pm {
             int tgt_node = edge.node2;
             auto& edge_data = edge.attributes;
 
-            double new_weight = 1.0; 
+            double new_weight;
 
             if (tgt_node == -1) {
                 // Boundary edge
+                new_weight = -std::log(p_data / (1 - p_data));
+                if (common_measure != -1) {
+                    new_weight = std::round(new_weight / common_measure) * common_measure;
+                }
                 pm::add_boundary_edge(matching, src_node, edge_data.fault_ids, new_weight,
                                     edge_data.error_probability, "replace"); 
                 continue;
-            }else{
-                if (tgt_node == src_node + (distance-1) + 1) { 
-                    // Mixed edges
-                    new_weight = -std::log(p_mixed / (1 - p_mixed));   
-                    pm::add_edge(matching, src_node, tgt_node, edge_data.fault_ids, new_weight,
-                                edge_data.error_probability, "replace");                 
-                }else{
-                // Data & Time edges
+            }
+
+            if (tgt_node == src_node + 1){ // always first pos smaller TODO: check if that is correct
+                // Data edge
+                new_weight = -std::log(p_data / (1 - p_data));
+                if (common_measure != -1) {
+                    new_weight = std::round(new_weight / common_measure) * common_measure;
+                }
                 pm::add_edge(matching, src_node, tgt_node, edge_data.fault_ids, new_weight,
                             edge_data.error_probability, "replace"); 
                 continue;
+            }
+
+            if (tgt_node == src_node + (distance-1) + 1) { // Hardcoded for RepCodes
+                // Mixed edge
+                new_weight = -std::log(p_mixed / (1 - p_mixed));
+                if (common_measure != -1) {
+                    new_weight = std::round(new_weight / common_measure) * common_measure;
                 }
+                pm::add_edge(matching, src_node, tgt_node, edge_data.fault_ids, new_weight,
+                            edge_data.error_probability, "replace"); 
+                continue;
+            }
+
+            if (tgt_node == src_node + (distance-1)) { // Hardcoded for RepCodes
+                // Time edge
+                new_weight = -std::log(p_meas / (1 - p_meas));
+                if (common_measure != -1) {
+                    new_weight = std::round(new_weight / common_measure) * common_measure;
+                }
+                pm::add_edge(matching, src_node, tgt_node, edge_data.fault_ids, new_weight,
+                            edge_data.error_probability, "replace");
             }
         }
     }
@@ -231,18 +258,18 @@ namespace pm {
         return numErrors;
     }
 
-    int decode_IQ_shots_flat_diag(
+    int decode_IQ_shots_flat_informed(
         UserGraph &matching,
         const Eigen::MatrixXcd& not_scaled_IQ_data,
         int synd_rounds,
         const std::map<int, int>& qubit_mapping,
         const std::map<int, GridData>& kde_grid_dict,
         const std::map<int, std::pair<std::pair<double, double>, std::pair<double, double>>>& scaler_params_dict,
-        float p_mixed) {
+        float p_data, float p_mixed, float p_meas, float common_measure) {
         int numErrors = 0;
         // Distance
         int distance = (not_scaled_IQ_data.cols() + synd_rounds) / (synd_rounds + 1); // Hardcoded for RepCodes
-        reweight_edges_to_one_diag(matching, p_mixed, distance);
+        reweight_edges_informed(matching, distance, p_data, p_mixed, p_meas, common_measure);
         for (int shot = 0; shot < not_scaled_IQ_data.rows(); ++shot) {
             Eigen::MatrixXcd not_scaled_IQ_shot_matrix = not_scaled_IQ_data.row(shot);
             auto counts = get_counts(not_scaled_IQ_shot_matrix, qubit_mapping, kde_grid_dict, scaler_params_dict, synd_rounds);
