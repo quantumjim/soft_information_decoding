@@ -31,6 +31,14 @@ def create_coupling_graph_with_positions(backend):
     add_qubit_positions(G, n_qubits)
     return G
 
+def create_coupling_graph(backend):
+    """Create a graph from the coupling map."""
+    coupling_map = backend.configuration().coupling_map
+    G = nx.Graph()
+    for edge in coupling_map:
+        G.add_edge(edge[0], edge[1])
+    return G
+
 
 def highlight_path(G, path):
     """Highlight the given path in the graph.
@@ -83,7 +91,10 @@ def find_longest_path_general(backend, plot=False):
         tuple: (path, length, start_qubit)
         A tuple containing the longest path as a list of qubits, the length of the longest path, and the starting qubit.
     """
-    G = create_coupling_graph_with_positions(backend)
+    if plot == True:
+        G = create_coupling_graph_with_positions(backend)
+    else:
+        G = create_coupling_graph(backend)
 
     # Length of longest path, longest path, starting qubit
     longest_path_info = [0, [], None]
@@ -113,7 +124,10 @@ def find_longest_path_in_hex(backend, plot=False):
         A tuple containing the longest path as a list of qubits, the length of the longest path, and the starting qubit.
         If the graph is not a valid heavy hex map, returns a string describing the issue.
     """
-    G = create_coupling_graph_with_positions(backend)
+    if plot == True:
+        G = create_coupling_graph_with_positions(backend)
+    else:
+        G = create_coupling_graph(backend)
 
     corner_nodes = [node for node in G.nodes() if G.degree(node) == 1]
 
