@@ -69,7 +69,7 @@ def test_create_coupling_graph_with_positions(mock_add_qubit_positions):
 
 
 
-@mock.patch('src.soft_info.Hardware.coupling_map.create_coupling_graph_with_positions')
+@mock.patch('src.soft_info.Hardware.coupling_map.create_coupling_graph')
 def test_find_longest_path_in_hex(mock_create_graph):
     # Mock the graph creation for a heavy hex graph
     G = nx.Graph()
