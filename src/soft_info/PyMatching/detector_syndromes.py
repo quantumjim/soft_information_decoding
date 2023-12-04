@@ -4,7 +4,7 @@
 import numpy as np
 
 
-def counts_to_det_syndr(input_str, _resets = False, verbose=False):
+def counts_to_det_syndr(input_str, _resets = False, verbose=False, distance=None):
     # Step 1: Reverse the input string
     reversed_str = input_str[::-1]
     if verbose:
@@ -12,6 +12,18 @@ def counts_to_det_syndr(input_str, _resets = False, verbose=False):
 
     # Step 2: Separate the count string
     split_str = reversed_str.split(" ")
+    if len(split_str) < 2:
+        if distance == None:
+            raise ValueError("Count string must contain at least two parts. Or specify the distance rounds.")
+        else:
+            # Calculate the length of the string to be split every distance - 1 bits
+            split_len = len(reversed_str) - distance
+            # Split the string every distance - 1 bits except for the last d bit part
+            split_str = [reversed_str[i:i+distance-1] for i in range(0, split_len, distance-1)]
+            # Append the last d bit part
+            split_str.append(reversed_str[-distance:])
+            if verbose:
+                print("Split string:", split_str)
     count_str = split_str[-1]
     check_str = split_str[:-1]
     
