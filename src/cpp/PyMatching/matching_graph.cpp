@@ -193,6 +193,42 @@ namespace pm {
         }
     }
 
+    void reweight_edges_based_on_error_probs(UserGraph &matching, const std::map<std::string, size_t>& counts, bool _resets) {
+        // Calculate error probabilities for the edges
+        auto error_probs = calculate_naive_error_probs(matching, counts, _resets);
+
+        // Get edges
+        std::vector<EdgeProperties> edges = pm::get_edges(matching);
+
+        for (const auto& edge : edges) {
+            int src_node = edge.node1;
+            int tgt_node = edge.node2;
+            auto& edge_data = edge.attributes;
+
+            // Check if this edge has an associated error probability
+            auto it = error_probs.find({src_node, tgt_node});
+            if (it != error_probs.end() && it->second) {
+                // Update the error probability with the one from error_probs
+                float error_probability = it->second->probability; 
+
+                // Compute the new weight as -log(p_data / (1 - p_data))
+                float new_weight = (error_probability == 0 || error_probability == 1) ? 
+                    std::numeric_limits<float>::infinity() : 
+                    -std::log(error_probability / (1 - error_probability));
+
+                if (tgt_node == -1) {
+                    // Boundary edge
+                    pm::add_boundary_edge(matching, src_node, edge_data.fault_ids, new_weight,
+                                        error_probability, "replace"); 
+                } else {
+                    // Data/Time/Mixed edge
+                    pm::add_edge(matching, src_node, tgt_node, edge_data.fault_ids, new_weight,
+                                error_probability, "replace"); 
+                }
+            }
+        }
+    }
+
     int decode_IQ_shots(
         UserGraph &matching,
         const Eigen::MatrixXcd& not_scaled_IQ_data,
@@ -285,6 +321,42 @@ namespace pm {
                 numErrors++;  // Increment error count if they don't match
             }
 
+        }
+
+        return numErrors;
+    }
+
+    int reweight_and_decode_with_error_probs(
+        UserGraph &matching,
+        const std::map<std::string, size_t>& counts_tot,
+        bool _resets,
+        const Eigen::MatrixXcd& not_scaled_IQ_data,
+        int synd_rounds,
+        const std::map<int, int>& qubit_mapping,
+        const std::map<int, GridData>& kde_grid_dict,
+        const std::map<int, std::pair<std::pair<double, double>, std::pair<double, double>>>& scaler_params_dict) {
+
+        int numErrors = 0;
+        // Distance
+        int distance = (not_scaled_IQ_data.cols() + synd_rounds) / (synd_rounds + 1); // Hardcoded for RepCodes
+        reweight_edges_based_on_error_probs(matching, counts_tot, _resets);
+
+        // Loop over shots and decode each one
+        for (int shot = 0; shot < not_scaled_IQ_data.rows(); ++shot) {
+            // Process the IQ data for each shot
+            Eigen::MatrixXcd not_scaled_IQ_shot_matrix = not_scaled_IQ_data.row(shot);
+            auto counts = get_counts(not_scaled_IQ_shot_matrix, qubit_mapping, kde_grid_dict, scaler_params_dict, synd_rounds);
+
+            // Continue with the decoding process as in the original function
+            std::string count_key = counts.begin()->first;
+            auto det_syndromes = counts_to_det_syndr(count_key, false, false);
+            auto detectionEvents = syndromeArrayToDetectionEvents(det_syndromes, matching.get_num_detectors(), matching.get_boundary().size());
+            auto [predicted_observables, rescaled_weight] = decode(matching, detectionEvents);
+
+            int actual_observable = (static_cast<int>(count_key[0]) - '0') % 2;  // Convert first character to int and modulo 2
+            if (!predicted_observables.empty() && predicted_observables[0] != actual_observable) {
+                numErrors++;  // Increment error count if they don't match
+            }
         }
 
         return numErrors;

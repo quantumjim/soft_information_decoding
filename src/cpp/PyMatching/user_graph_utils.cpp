@@ -272,3 +272,59 @@ std::vector<uint64_t> syndromeArrayToDetectionEvents(const std::vector<int>& z, 
 
     return detection_events;
 }
+
+
+/////////////////// get_error_probs ///////////////////////
+
+
+std::map<std::pair<int, int>, std::optional<ErrorProbabilities>> calculate_naive_error_probs(
+    const pm::UserGraph& graph, 
+    const std::map<std::string, size_t>& counts,
+    bool _resets
+) {
+    // Map to store count for each combination ("00", "01", "10", "11") for each edge
+    std::map<std::pair<size_t, size_t>, std::map<std::string, size_t>> count;
+
+    // Initialize count for each edge
+    for (const auto& edge : graph.edges) {
+        count[{edge.node1, edge.node2}] = {{"00", 0}, {"01", 0}, {"10", 0}, {"11", 0}};
+    }
+
+    // Process each error string and update counts
+    for (const auto& pair : counts) {
+        const auto& error_string = pair.first;
+        const auto error_nodes = counts_to_det_syndr(error_string, _resets);
+
+        for (const auto& edge : graph.edges) {
+            std::string element;
+            if (edge.node1 == SIZE_MAX) {
+                // If node2 is in error, both elements are "1", otherwise both are "0"
+                element = error_nodes[edge.node2] ? "11" : "00";
+            } else if (edge.node2 == SIZE_MAX) {
+                // If node1 is in error, both elements are "1", otherwise both are "0"
+                element = error_nodes[edge.node1] ? "11" : "00";
+            } else {
+                element += error_nodes[edge.node1] ? "1" : "0"; // Check error status for node1
+                element += error_nodes[edge.node2] ? "1" : "0"; // Check error status for node2
+            }
+
+            count[{edge.node1, edge.node2}][element] += pair.second;
+        }
+    }
+    
+    std::map<std::pair<int, int>, std::optional<ErrorProbabilities>> error_probs;
+    for (const auto& item : count) {
+        const auto& edge = item.first;
+        const auto& histogram = item.second;
+
+        double ratio = (histogram.at("00") > 0) ? static_cast<double>(histogram.at("11")) / histogram.at("00") : std::numeric_limits<double>::quiet_NaN();
+        if (edge.first == SIZE_MAX || edge.second == SIZE_MAX) {
+            ratio /= 2.0;
+        }
+        double p = ratio / (1.0 + ratio);
+
+        error_probs[{static_cast<int>(edge.first), static_cast<int>(edge.second)}] = ErrorProbabilities{p, histogram.at("11") + histogram.at("00")};
+    }
+
+    return error_probs;
+}

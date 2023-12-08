@@ -39,7 +39,8 @@ PYBIND11_MODULE(cpp_soft_info, m) {
         .def_readwrite("grid_density_1", &GridData::grid_density_1);   
     
 
-    // user_graph_utils.h bindings
+    //////////// Usergraph Utils bindings ////////////
+
     m.def("get_edges", [](const pm::UserGraph& graph) {
         auto edges = get_edges(graph);
         py::list py_edges;
@@ -82,6 +83,9 @@ PYBIND11_MODULE(cpp_soft_info, m) {
       "Convert syndrome array to detection events",
       py::arg("z"), py::arg("num_detectors"), py::arg("boundary_length"));
     
+
+    //////////// Decoding Matching graph bindings ////////////
+
     m.def("soft_reweight_pymatching", &pm::soft_reweight_pymatching, 
       "Reweight a matching graph using soft information",
       py::arg("matching"), py::arg("not_scaled_IQ_data"), 
@@ -98,6 +102,10 @@ PYBIND11_MODULE(cpp_soft_info, m) {
       py::arg("matching"), py::arg("distance"), py::arg("p_data"),
       py::arg("p_mixed"), py::arg("p_meas"), py::arg("common_measure") = -1);
     
+    m.def("reweight_edges_based_on_error_probs", &pm::reweight_edges_based_on_error_probs,
+      "Reweight a matching graph based on error probabilities",
+      py::arg("matching"), py::arg("counts"), py::arg("_resets"));
+
     m.def("decode_IQ_shots", &pm::decode_IQ_shots, 
       "Decode a matching graph using IQ data",
       py::arg("matching"), py::arg("not_scaled_IQ_data"), 
@@ -117,4 +125,24 @@ PYBIND11_MODULE(cpp_soft_info, m) {
       py::arg("synd_rounds"), py::arg("qubit_mapping"),
       py::arg("kde_grid_dict"), py::arg("scaler_params_dict"),
       py::arg("p_data"), py::arg("p_mixed"), py::arg("p_meas"), py::arg("common_measure") = -1);
+
+    m.def("reweight_and_decode_with_error_probs", &pm::reweight_and_decode_with_error_probs,
+      "Reweight and decode a matching graph using error probabilities",
+      py::arg("matching"), py::arg("counts_tot"), py::arg("_resets"),
+      py::arg("not_scaled_IQ_data"), py::arg("synd_rounds"), 
+      py::arg("qubit_mapping"), py::arg("kde_grid_dict"), 
+      py::arg("scaler_params_dict"));
+
+
+    //////////// Error probabilities bindings ////////////
+
+    py::class_<ErrorProbabilities>(m, "ErrorProbabilities")
+        .def(py::init<>())
+        .def_readwrite("probability", &ErrorProbabilities::probability)
+        .def_readwrite("samples", &ErrorProbabilities::samples);
+
+    m.def("calculate_naive_error_probs", &calculate_naive_error_probs, 
+      "Calculate naive error probabilities",
+      py::arg("graph"), py::arg("counts"), py::arg("_resets") = false);
+
 }
