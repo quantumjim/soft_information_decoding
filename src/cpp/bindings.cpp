@@ -145,4 +145,8 @@ PYBIND11_MODULE(cpp_soft_info, m) {
       "Calculate naive error probabilities",
       py::arg("graph"), py::arg("counts"), py::arg("_resets") = false);
 
+    m.def("calculate_spitz_error_probs", &calculate_spitz_error_probs, 
+      "Calculate Spitz error probabilities",
+      py::arg("graph"), py::arg("counts"));
+
 }

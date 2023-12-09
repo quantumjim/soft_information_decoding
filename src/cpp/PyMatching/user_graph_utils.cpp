@@ -311,7 +311,7 @@ std::map<std::pair<int, int>, std::optional<ErrorProbabilities>> calculate_naive
             count[{edge.node1, edge.node2}][element] += pair.second;
         }
     }
-    
+
     std::map<std::pair<int, int>, std::optional<ErrorProbabilities>> error_probs;
     for (const auto& item : count) {
         const auto& edge = item.first;
@@ -324,6 +324,123 @@ std::map<std::pair<int, int>, std::optional<ErrorProbabilities>> calculate_naive
         double p = ratio / (1.0 + ratio);
 
         error_probs[{static_cast<int>(edge.first), static_cast<int>(edge.second)}] = ErrorProbabilities{p, histogram.at("11") + histogram.at("00")};
+    }
+
+    return error_probs;
+}
+
+std::map<std::pair<int, int>, ErrorProbabilities> calculate_spitz_error_probs(
+    const pm::UserGraph& graph, 
+    const std::map<std::string, size_t>& counts,
+    bool _resets) {
+
+    // Initialize variables
+    std::map<int, double> av_v, prod;
+    std::map<std::pair<int, int>, double> av_vv, av_xor;
+    std::map<int, std::vector<int>> neighbours;
+    std::map<std::pair<int, int>, ErrorProbabilities> error_probs;
+    std::set<int> boundary;
+
+    size_t total_shots = 0;
+    for (const auto& pair : counts) {
+        total_shots += pair.second;  // Accumulate the number of total_shots
+    }
+
+    // Initialize neighbors and average values
+    for (const auto& edge : graph.edges) {
+        if (edge.node1 == SIZE_MAX || edge.node1 == -1 || edge.node2 == SIZE_MAX || edge.node2 == -1) {
+            boundary.insert(edge.node1 == SIZE_MAX || edge.node1 == -1 ? edge.node2 : edge.node1);
+            continue;
+        }
+        av_v[edge.node1] = 0;
+        av_v[edge.node2] = 0;
+        av_vv[{edge.node1, edge.node2}] = 0;
+        av_xor[{edge.node1, edge.node2}] = 0;
+        neighbours[edge.node1].push_back(edge.node2);
+        neighbours[edge.node2].push_back(edge.node1);
+    }
+
+    // Process each error string and update counts
+    for (const auto& pair : counts) {
+        const auto& error_string = pair.first;
+        const auto count = pair.second;
+        auto error_nodes = counts_to_det_syndr(error_string, _resets); // Convert error string to a list of error nodes
+
+        // Convert the error vector to a list of checked node indices
+        std::vector<int> checked_node_indices;
+        for (size_t i = 0; i < error_nodes.size(); ++i) {
+            if (error_nodes[i] == 1) {
+                checked_node_indices.push_back(i);
+            }
+        }
+
+        // Update av_v, a_vv, av_xor for each checked node
+        for (int node_idx : checked_node_indices) {
+            av_v[node_idx] += count;  // Node at this index is in error
+
+            // Iterate over each neighbor of the current node
+            for (int neighbor_idx : neighbours[node_idx]) {
+                if (std::find(checked_node_indices.begin(), checked_node_indices.end(), neighbor_idx) != checked_node_indices.end()) {
+                    // Both the current node and its neighbor are in error
+                    av_vv[{node_idx, neighbor_idx}] += count;
+                } else {
+                    // Only the current node is in error, not its neighbor
+                    av_xor[{node_idx, neighbor_idx}] += count;
+                }
+            }
+        }
+    }
+
+    // Normalize the averages
+    for (auto& kv : av_v) {
+        kv.second /= static_cast<double>(total_shots);
+    }
+    for (auto& kv : av_vv) {
+        kv.second /= static_cast<double>(total_shots);
+    }
+    for (auto& kv : av_xor) {
+        kv.second /= static_cast<double>(total_shots);
+    }
+
+    
+
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    // Compute error probabilities
+    for (const auto& edge : av_vv) {
+        auto n0 = edge.first.first;
+        auto n1 = edge.first.second;
+        double ratio = av_xor[edge.first] != 0.5 ? (av_vv[edge.first] - av_v[n0] * av_v[n1]) / (1 - 2 * av_xor[edge.first]) : 0;
+        if (ratio < 0 || ratio > 1) {
+            error_probs[edge.first] = {std::nan(""), 0};
+        } else {
+            error_probs[edge.first] = {ratio, 0};
+        }
+    }
+
+
+    // Special calculation for boundary nodes
+    for (auto n0 : boundary) {
+        prod[n0] = 1.0;
+        for (auto n1 : neighbours[n0]) {
+            if (error_probs.find({n0, n1}) != error_probs.end()) {
+                prod[n0] *= 1 - 2 * error_probs[{n0, n1}].probability;
+            }
+        }
+        error_probs[{n0, n0}] = {0.5 + (av_v[n0] - 0.5) / prod[n0], 0};
     }
 
     return error_probs;

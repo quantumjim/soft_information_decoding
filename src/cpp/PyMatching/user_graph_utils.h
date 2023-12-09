@@ -48,3 +48,8 @@ std::map<std::pair<int, int>, std::optional<ErrorProbabilities>> calculate_naive
     const pm::UserGraph& graph, 
     const std::map<std::string, size_t>& counts,
     bool _resets);
+
+std::map<std::pair<int, int>, ErrorProbabilities> calculate_spitz_error_probs(
+    const pm::UserGraph& graph, 
+    const std::map<std::string, size_t>& counts
+);
