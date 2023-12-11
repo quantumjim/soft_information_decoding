@@ -61,6 +61,14 @@ namespace pm {
         const std::map<int, int>& qubit_mapping,
         const std::map<int, GridData>& kde_grid_dict,
         const std::map<int, std::pair<std::pair<double, double>, std::pair<double, double>>>& scaler_params_dict);
+
+    int decode_IQ_shots_no_reweighting(
+        UserGraph &matching,
+        const Eigen::MatrixXcd& not_scaled_IQ_data,
+        int synd_rounds,
+        const std::map<int, int>& qubit_mapping,
+        const std::map<int, GridData>& kde_grid_dict,
+        const std::map<int, std::pair<std::pair<double, double>, std::pair<double, double>>>& scaler_params_dict);
 }
 
 

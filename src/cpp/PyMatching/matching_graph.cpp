@@ -373,6 +373,36 @@ namespace pm {
         return numErrors;
     }
 
+    int decode_IQ_shots_no_reweighting(
+        UserGraph &matching,
+        const Eigen::MatrixXcd& not_scaled_IQ_data,
+        int synd_rounds,
+        const std::map<int, int>& qubit_mapping,
+        const std::map<int, GridData>& kde_grid_dict,
+        const std::map<int, std::pair<std::pair<double, double>, std::pair<double, double>>>& scaler_params_dict) {
+
+        int numErrors = 0;
+        // Loop over shots and decode each one
+        for (int shot = 0; shot < not_scaled_IQ_data.rows(); ++shot) {
+            // Process the IQ data for each shot
+            Eigen::MatrixXcd not_scaled_IQ_shot_matrix = not_scaled_IQ_data.row(shot);
+            auto counts = get_counts(not_scaled_IQ_shot_matrix, qubit_mapping, kde_grid_dict, scaler_params_dict, synd_rounds);
+
+            // Continue with the decoding process as in the original function
+            std::string count_key = counts.begin()->first;
+            auto det_syndromes = counts_to_det_syndr(count_key, false, false);
+            auto detectionEvents = syndromeArrayToDetectionEvents(det_syndromes, matching.get_num_detectors(), matching.get_boundary().size());
+            auto [predicted_observables, rescaled_weight] = decode(matching, detectionEvents);
+
+            int actual_observable = (static_cast<int>(count_key[0]) - '0') % 2;  // Convert first character to int and modulo 2
+            if (!predicted_observables.empty() && predicted_observables[0] != actual_observable) {
+                numErrors++;  // Increment error count if they don't match
+            }
+        }
+
+        return numErrors;
+    }
+
 }
 
 void processGraph_test(pm::UserGraph& graph) {

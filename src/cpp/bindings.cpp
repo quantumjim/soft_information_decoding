@@ -133,6 +133,11 @@ PYBIND11_MODULE(cpp_soft_info, m) {
       py::arg("qubit_mapping"), py::arg("kde_grid_dict"), 
       py::arg("scaler_params_dict"));
 
+    m.def("decode_IQ_shots_no_reweighting", &pm::decode_IQ_shots_no_reweighting,
+      "Decode a matching graph using IQ data but do not reweight edges",
+      py::arg("matching"), py::arg("not_scaled_IQ_data"),
+      py::arg("synd_rounds"), py::arg("qubit_mapping"),
+      py::arg("kde_grid_dict"), py::arg("scaler_params_dict"));
 
     //////////// Error probabilities bindings ////////////
 
