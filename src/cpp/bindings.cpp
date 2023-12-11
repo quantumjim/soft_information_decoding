@@ -88,7 +88,7 @@ PYBIND11_MODULE(cpp_soft_info, m) {
 
     m.def("soft_reweight_pymatching", &pm::soft_reweight_pymatching, 
       "Reweight a matching graph using soft information",
-      py::arg("matching"), py::arg("not_scaled_IQ_data"), 
+      py::arg("matching"), py::arg("merge_strategy"), py::arg("not_scaled_IQ_data"), 
       py::arg("synd_rounds"), py::arg("qubit_mapping"), 
       py::arg("kde_grid_dict"), py::arg("scaler_params_dict"), 
       py::arg("p_data"), py::arg("p_mixed"), py::arg("common_measure"));
@@ -108,7 +108,7 @@ PYBIND11_MODULE(cpp_soft_info, m) {
 
     m.def("decode_IQ_shots", &pm::decode_IQ_shots, 
       "Decode a matching graph using IQ data",
-      py::arg("matching"), py::arg("not_scaled_IQ_data"), 
+      py::arg("matching"), py::arg("merge_strategy"), py::arg("not_scaled_IQ_data"), 
       py::arg("synd_rounds"), py::arg("qubit_mapping"), 
       py::arg("kde_grid_dict"), py::arg("scaler_params_dict"), 
       py::arg("p_data"), py::arg("p_mixed"), py::arg("common_measure"));

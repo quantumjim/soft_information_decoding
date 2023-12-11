@@ -9,6 +9,7 @@
 namespace pm {
     void soft_reweight_pymatching(
         UserGraph &matching,
+        const std::string& merge_strategy,
         const Eigen::MatrixXcd& not_scaled_IQ_data,
         int synd_rounds,
         const std::map<int, int>& qubit_mapping,
@@ -27,6 +28,7 @@ namespace pm {
 
     int decode_IQ_shots(
         UserGraph &matching,
+        const std::string& merge_strategy,
         const Eigen::MatrixXcd& not_scaled_IQ_data,
         int synd_rounds,
         const std::map<int, int>& qubit_mapping,
