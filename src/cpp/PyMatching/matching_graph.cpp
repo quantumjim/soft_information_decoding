@@ -8,6 +8,8 @@
 #include <map>
 #include <cmath>
 
+#include <stdexcept> 
+
 namespace pm {
     void soft_reweight_pymatching(
         UserGraph &matching,
@@ -193,9 +195,16 @@ namespace pm {
         }
     }
 
-    void reweight_edges_based_on_error_probs(UserGraph &matching, const std::map<std::string, size_t>& counts, bool _resets) {
-        // Calculate error probabilities for the edges
-        auto error_probs = calculate_naive_error_probs(matching, counts, _resets);
+    void reweight_edges_based_on_error_probs(UserGraph &matching, const std::map<std::string, size_t>& counts, bool _resets, const std::string& method) {
+        
+        std::map<std::pair<int, int>, ErrorProbabilities>  error_probs;
+        if (method == "naive") {
+            error_probs = calculate_naive_error_probs(matching, counts, _resets);
+        } else if (method == "spitz") {
+            error_probs = calculate_spitz_error_probs(matching, counts, _resets);
+        } else {
+            throw std::invalid_argument("Invalid method: " + method);
+        }
 
         // Get edges
         std::vector<EdgeProperties> edges = pm::get_edges(matching);
@@ -207,9 +216,9 @@ namespace pm {
 
             // Check if this edge has an associated error probability
             auto it = error_probs.find({src_node, tgt_node});
-            if (it != error_probs.end() && it->second) {
-                // Update the error probability with the one from error_probs
-                float error_probability = it->second->probability; 
+            if (it != error_probs.end()) { // Check if the edge is found in error_probs
+                // Retrieve the error probability
+                float error_probability = it->second.probability;
 
                 // Compute the new weight as -log(p_data / (1 - p_data))
                 float new_weight = (error_probability == 0 || error_probability == 1) ? 
@@ -227,6 +236,7 @@ namespace pm {
                 }
             }
         }
+
     }
 
     int decode_IQ_shots(
@@ -326,10 +336,11 @@ namespace pm {
         return numErrors;
     }
 
-    int reweight_and_decode_with_error_probs(
+    int decode_IQ_shots_flat_err_probs(
         UserGraph &matching,
         const std::map<std::string, size_t>& counts_tot,
         bool _resets,
+        const std::string& method,
         const Eigen::MatrixXcd& not_scaled_IQ_data,
         int synd_rounds,
         const std::map<int, int>& qubit_mapping,
@@ -339,7 +350,7 @@ namespace pm {
         int numErrors = 0;
         // Distance
         int distance = (not_scaled_IQ_data.cols() + synd_rounds) / (synd_rounds + 1); // Hardcoded for RepCodes
-        reweight_edges_based_on_error_probs(matching, counts_tot, _resets);
+        reweight_edges_based_on_error_probs(matching, counts_tot, _resets, method);
 
         // Loop over shots and decode each one
         for (int shot = 0; shot < not_scaled_IQ_data.rows(); ++shot) {

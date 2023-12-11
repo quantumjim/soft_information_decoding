@@ -104,7 +104,7 @@ PYBIND11_MODULE(cpp_soft_info, m) {
     
     m.def("reweight_edges_based_on_error_probs", &pm::reweight_edges_based_on_error_probs,
       "Reweight a matching graph based on error probabilities",
-      py::arg("matching"), py::arg("counts"), py::arg("_resets"));
+      py::arg("matching"), py::arg("counts"), py::arg("_resets"), py::arg("method"));
 
     m.def("decode_IQ_shots", &pm::decode_IQ_shots, 
       "Decode a matching graph using IQ data",
@@ -126,9 +126,9 @@ PYBIND11_MODULE(cpp_soft_info, m) {
       py::arg("kde_grid_dict"), py::arg("scaler_params_dict"),
       py::arg("p_data"), py::arg("p_mixed"), py::arg("p_meas"), py::arg("common_measure") = -1);
 
-    m.def("reweight_and_decode_with_error_probs", &pm::reweight_and_decode_with_error_probs,
+    m.def("decode_IQ_shots_flat_err_probs", &pm::decode_IQ_shots_flat_err_probs,
       "Reweight and decode a matching graph using error probabilities",
-      py::arg("matching"), py::arg("counts_tot"), py::arg("_resets"),
+      py::arg("matching"), py::arg("counts_tot"), py::arg("_resets"), py::arg("method"),
       py::arg("not_scaled_IQ_data"), py::arg("synd_rounds"), 
       py::arg("qubit_mapping"), py::arg("kde_grid_dict"), 
       py::arg("scaler_params_dict"));
@@ -147,6 +147,6 @@ PYBIND11_MODULE(cpp_soft_info, m) {
 
     m.def("calculate_spitz_error_probs", &calculate_spitz_error_probs, 
       "Calculate Spitz error probabilities",
-      py::arg("graph"), py::arg("counts"));
+      py::arg("graph"), py::arg("counts"), py::arg("_resets"));
 
 }

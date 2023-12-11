@@ -23,7 +23,7 @@ namespace pm {
         float p_data, float p_mixed, float p_meas, 
         float common_measure);
 
-    void reweight_edges_based_on_error_probs(UserGraph &matching, const std::map<std::string, size_t>& counts, bool _resets);
+    void reweight_edges_based_on_error_probs(UserGraph &matching, const std::map<std::string, size_t>& counts, bool _resets, const std::string& method);
 
     int decode_IQ_shots(
         UserGraph &matching,
@@ -51,10 +51,11 @@ namespace pm {
         const std::map<int, std::pair<std::pair<double, double>, std::pair<double, double>>>& scaler_params_dict,
         float p_data, float p_mixed, float p_meas, float common_measure = -1);
 
-    int reweight_and_decode_with_error_probs(
+    int decode_IQ_shots_flat_err_probs(
         UserGraph &matching,
         const std::map<std::string, size_t>& counts_tot,
         bool _resets,
+        const std::string& method,
         const Eigen::MatrixXcd& not_scaled_IQ_data,
         int synd_rounds,
         const std::map<int, int>& qubit_mapping,

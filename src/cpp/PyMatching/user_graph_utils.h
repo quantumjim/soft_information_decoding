@@ -44,12 +44,12 @@ std::vector<int> counts_to_det_syndr(const std::string& input_str, bool _resets 
 
 std::vector<uint64_t> syndromeArrayToDetectionEvents(const std::vector<int>& z, int num_detectors, int boundary_length);
 
-std::map<std::pair<int, int>, std::optional<ErrorProbabilities>> calculate_naive_error_probs(
+std::map<std::pair<int, int>, ErrorProbabilities> calculate_naive_error_probs(
     const pm::UserGraph& graph, 
     const std::map<std::string, size_t>& counts,
     bool _resets);
 
 std::map<std::pair<int, int>, ErrorProbabilities> calculate_spitz_error_probs(
     const pm::UserGraph& graph, 
-    const std::map<std::string, size_t>& counts
-);
+    const std::map<std::string, size_t>& counts,
+    bool _resets);

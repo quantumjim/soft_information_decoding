@@ -277,11 +277,10 @@ std::vector<uint64_t> syndromeArrayToDetectionEvents(const std::vector<int>& z, 
 /////////////////// get_error_probs ///////////////////////
 
 
-std::map<std::pair<int, int>, std::optional<ErrorProbabilities>> calculate_naive_error_probs(
+std::map<std::pair<int, int>, ErrorProbabilities> calculate_naive_error_probs(
     const pm::UserGraph& graph, 
     const std::map<std::string, size_t>& counts,
-    bool _resets
-) {
+    bool _resets) {
     // Map to store count for each combination ("00", "01", "10", "11") for each edge
     std::map<std::pair<size_t, size_t>, std::map<std::string, size_t>> count;
 
@@ -312,7 +311,7 @@ std::map<std::pair<int, int>, std::optional<ErrorProbabilities>> calculate_naive
         }
     }
 
-    std::map<std::pair<int, int>, std::optional<ErrorProbabilities>> error_probs;
+    std::map<std::pair<int, int>, ErrorProbabilities> error_probs;
     for (const auto& item : count) {
         const auto& edge = item.first;
         const auto& histogram = item.second;
@@ -402,45 +401,49 @@ std::map<std::pair<int, int>, ErrorProbabilities> calculate_spitz_error_probs(
         kv.second /= static_cast<double>(total_shots);
     }
 
-    
+    // Step 1: Process each edge and calculate error probabilities
+    std::vector<std::pair<int, int>> boundary_edges;
+    for (const auto& edge : graph.edges) {
+        int node1 = edge.node1, node2 = edge.node2;
+        for (const auto& edge : graph.edges) {
+            if (node1 == -1 || node2 == -1) {
+                // Correctly pushing a pair of integers into boundary_edges
+                boundary_edges.push_back(std::make_pair(node1, node2));
+                continue;
+            }
 
-    
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    // Compute error probabilities
-    for (const auto& edge : av_vv) {
-        auto n0 = edge.first.first;
-        auto n1 = edge.first.second;
-        double ratio = av_xor[edge.first] != 0.5 ? (av_vv[edge.first] - av_v[n0] * av_v[n1]) / (1 - 2 * av_xor[edge.first]) : 0;
-        if (ratio < 0 || ratio > 1) {
-            error_probs[edge.first] = {std::nan(""), 0};
-        } else {
-            error_probs[edge.first] = {ratio, 0};
+            // Calculate error probability for regular edges
+            if (1 - 2 * av_xor[{node1, node2}] != 0) {
+                double x = (av_vv[{node1, node2}] - av_v[node1] * av_v[node2]) / (1 - 2 * av_xor[{node1, node2}]);
+                if (x < 0.25) {
+                    error_probs[{node1, node2}] = {std::max(0.0, 0.5 - std::sqrt(0.25 - x)), 0};
+                } else {
+                    error_probs[{node1, node2}] = {std::nan(""), 0};
+                }
+            } else {
+                error_probs[{node1, node2}] = {std::nan(""), 0};
+            }
         }
     }
 
+    // Step 2: Process boundary edges and update prod
+    for (const auto& boundary_edge : boundary_edges) {
+        int boundary_node = (boundary_edge.first == -1) ? boundary_edge.second : boundary_edge.first;
+        prod[boundary_node] = 1.0;
 
-    // Special calculation for boundary nodes
-    for (auto n0 : boundary) {
-        prod[n0] = 1.0;
-        for (auto n1 : neighbours[n0]) {
-            if (error_probs.find({n0, n1}) != error_probs.end()) {
-                prod[n0] *= 1 - 2 * error_probs[{n0, n1}].probability;
+        for (const auto& neighbor_idx : neighbours[boundary_node]) {
+            if (error_probs.find({boundary_node, neighbor_idx}) != error_probs.end()) {
+                prod[boundary_node] *= 1 - 2 * error_probs[{boundary_node, neighbor_idx}].probability;
+            } else if (error_probs.find({neighbor_idx, boundary_node}) != error_probs.end()) {
+                prod[boundary_node] *= 1 - 2 * error_probs[{neighbor_idx, boundary_node}].probability;
             }
         }
-        error_probs[{n0, n0}] = {0.5 + (av_v[n0] - 0.5) / prod[n0], 0};
+    }
+
+    // Step 3: Assign error probabilities to boundary edges
+    for (const auto& boundary_edge : boundary_edges) {
+        int boundary_node = (boundary_edge.first == -1) ? boundary_edge.second : boundary_edge.first;
+        error_probs[boundary_edge] = {0.5 + (av_v[boundary_node] - 0.5) / prod[boundary_node], 0};
     }
 
     return error_probs;
