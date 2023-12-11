@@ -13,13 +13,13 @@
 namespace pm {
     void soft_reweight_pymatching(
         UserGraph &matching,
-        const std::string& merge_strategy,
         const Eigen::MatrixXcd& not_scaled_IQ_data,
         int synd_rounds,
         const std::map<int, int>& qubit_mapping,
         const std::map<int, GridData>& kde_grid_dict,
         const std::map<int, std::pair<std::pair<double, double>, std::pair<double, double>>>& scaler_params_dict, 
-        float p_data, float p_mixed, float common_measure) {
+        float p_data, float p_mixed, float common_measure,
+        bool _bimodal, const std::string& merge_strategy) {
 
         // // Set default values
         // p_data = (p_data != -1) ? p_data : 6.836e-3; // Sherbrooke median
@@ -96,7 +96,12 @@ namespace pm {
                 Eigen::Vector2d scaled_point = {real_scaled, imag_scaled};
 
                 // Step 3: Get the llh_ratio
-                double llh_weight = llh_ratio(scaled_point, grid_data);
+                double llh_weight;
+                if (_bimodal) {
+                    llh_weight = llh_ratio(scaled_point, grid_data, edge_data.error_probability);
+                } else {
+                    llh_weight = llh_ratio(scaled_point, grid_data);
+                }
                 new_weight += llh_weight;
 
                 if (common_measure != -1) {
@@ -105,7 +110,7 @@ namespace pm {
 
                 // Update the edge weight
                 pm::add_edge(matching, src_node, tgt_node, edge_data.fault_ids, new_weight,
-                            edge_data.error_probability, merge_strategy);
+                            edge_data.error_probability, merge_strategy); // keeps the old error probability
             }
         }
     }
@@ -242,13 +247,13 @@ namespace pm {
 
     int decode_IQ_shots(
         UserGraph &matching,
-        const std::string& merge_strategy,
         const Eigen::MatrixXcd& not_scaled_IQ_data,
         int synd_rounds,
         const std::map<int, int>& qubit_mapping,
         const std::map<int, GridData>& kde_grid_dict,
         const std::map<int, std::pair<std::pair<double, double>, std::pair<double, double>>>& scaler_params_dict, 
-        float p_data, float p_mixed, float common_measure) {
+        float p_data, float p_mixed, float common_measure,
+        bool _bimodal, const std::string& merge_strategy) {
         
         int numErrors = 0;
         for (int shot = 0; shot < not_scaled_IQ_data.rows(); ++shot) {
@@ -257,7 +262,7 @@ namespace pm {
             std::string count_key = counts.begin()->first;
 
             // add copying the graph to recompute weights to 1 or something 
-            soft_reweight_pymatching(matching, merge_strategy, not_scaled_IQ_shot_matrix, synd_rounds, qubit_mapping, kde_grid_dict, scaler_params_dict, p_data, p_mixed, common_measure);
+            soft_reweight_pymatching(matching, not_scaled_IQ_shot_matrix, synd_rounds, qubit_mapping, kde_grid_dict, scaler_params_dict, p_data, p_mixed, common_measure, _bimodal, merge_strategy);
 
             auto det_syndromes = counts_to_det_syndr(count_key, false, false);
             auto detectionEvents = syndromeArrayToDetectionEvents(det_syndromes, matching.get_num_detectors(), matching.get_boundary().size());

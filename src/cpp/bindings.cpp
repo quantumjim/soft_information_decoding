@@ -26,6 +26,7 @@ PYBIND11_MODULE(cpp_soft_info, m) {
     m.def("llh_ratio", &llh_ratio, 
           py::arg("scaled_point"), 
           py::arg("grid_data"), 
+          py::arg("bimodal_prob") = -1,
           "Calculate the log-likelihood ratio for a given point and grid data");
 
     // m.def("print_edges_of_graph", &print_edges_of_graph, "Print the edges of a matching graph");
@@ -88,10 +89,11 @@ PYBIND11_MODULE(cpp_soft_info, m) {
 
     m.def("soft_reweight_pymatching", &pm::soft_reweight_pymatching, 
       "Reweight a matching graph using soft information",
-      py::arg("matching"), py::arg("merge_strategy"), py::arg("not_scaled_IQ_data"), 
+      py::arg("matching"), py::arg("not_scaled_IQ_data"), 
       py::arg("synd_rounds"), py::arg("qubit_mapping"), 
       py::arg("kde_grid_dict"), py::arg("scaler_params_dict"), 
-      py::arg("p_data"), py::arg("p_mixed"), py::arg("common_measure"));
+      py::arg("p_data"), py::arg("p_mixed"), py::arg("common_measure"), 
+      py::arg("_bimodal") = false, py::arg("merge_strategy") = "replace");
     
     m.def("reweight_edges_to_one", &pm::reweight_edges_to_one, 
       "Reweight a matching graph to have edge weights of 1",
@@ -108,10 +110,11 @@ PYBIND11_MODULE(cpp_soft_info, m) {
 
     m.def("decode_IQ_shots", &pm::decode_IQ_shots, 
       "Decode a matching graph using IQ data",
-      py::arg("matching"), py::arg("merge_strategy"), py::arg("not_scaled_IQ_data"), 
+      py::arg("matching"), py::arg("not_scaled_IQ_data"), 
       py::arg("synd_rounds"), py::arg("qubit_mapping"), 
       py::arg("kde_grid_dict"), py::arg("scaler_params_dict"), 
-      py::arg("p_data"), py::arg("p_mixed"), py::arg("common_measure"));
+      py::arg("p_data"), py::arg("p_mixed"), py::arg("common_measure"), 
+      py::arg("_bimodal") = false, py::arg("merge_strategy") = "replace");
 
     m.def("decode_IQ_shots_flat", &pm::decode_IQ_shots_flat,
       "Decode a matching graph using IQ data but weight edges to 1",

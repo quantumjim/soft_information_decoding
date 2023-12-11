@@ -90,16 +90,28 @@ std::tuple<int, double, double> grid_lookup(const Eigen::Vector2d& scaled_point,
 }
 
 
-double llh_ratio(const Eigen::Vector2d& scaled_point, const GridData& grid_data) {
+double llh_ratio(const Eigen::Vector2d& scaled_point, const GridData& grid_data, double bimodal_prob) {
 
     auto [outcome, density0, density1] = grid_lookup(scaled_point, grid_data);
 
 
     // Implement the logic as per the Python code
     if (outcome == 0) {
-        return -(density1 - density0);
+        if (bimodal_prob != -1) {
+            double proba0 = std::exp(density0);
+            double proba1 = std::exp(density1);
+            return -std::log(((1 - bimodal_prob) * proba1 + bimodal_prob * proba0) / ((1-bimodal_prob) * proba0 + bimodal_prob * proba1));
+        } else {
+            return -(density1 - density0);
+        }
     } else if (outcome == 1) {
-        return -(density0 - density1);
+        if (bimodal_prob != -1) {
+            double proba0 = std::exp(density0);
+            double proba1 = std::exp(density1);
+            return -std::log(((1-bimodal_prob) * proba0 + bimodal_prob * proba1) / ((1 - bimodal_prob) * proba1 + bimodal_prob * proba0));
+        } else {
+            return -(density0 - density1);
+        }
     }  else {
         std::ostringstream error_message;
         error_message << "Invalid estimated outcome: " << outcome 

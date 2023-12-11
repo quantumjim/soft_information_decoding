@@ -66413,5 +66413,167 @@
         "tags": [
             "RC(56, 100), 20"
         ]
+    },
+    {
+        "creation_date": "2023-12-11 17:52:54.016000+01:00",
+        "notebook_name": "bigger_rep_codes",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 10000,
+            "meas_level": 0,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Run bigger Repetition codes v4: new distances faster triple loop",
+            "code": "RepetitionCodeCircuit",
+            "distance": 10,
+            "rounds": 10,
+            "logical": "0",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cnvkwsbvn4c0008a6b30",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "RepCode_Count_job"
+        ]
+    },
+    {
+        "creation_date": "2023-12-11 17:52:56.869000+01:00",
+        "notebook_name": "bigger_rep_codes",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 10000,
+            "meas_level": 0,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Run bigger Repetition codes v4: new distances faster triple loop",
+            "code": "RepetitionCodeCircuit",
+            "distance": 10,
+            "rounds": 10,
+            "logical": "1",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cnvkwt3wsx00008wxsw0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "RepCode_Count_job"
+        ]
+    },
+    {
+        "creation_date": "2023-12-11 17:53:04.725000+01:00",
+        "notebook_name": "bigger_rep_codes",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 2500,
+            "meas_level": 0,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Run bigger Repetition codes v4: new distances faster triple loop",
+            "code": "RepetitionCodeCircuit",
+            "distance": 20,
+            "rounds": 20,
+            "logical": "0",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cnvkww3gpnkg008434rg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "RepCode_Count_job"
+        ]
+    },
+    {
+        "creation_date": "2023-12-11 17:53:10.258000+01:00",
+        "notebook_name": "bigger_rep_codes",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 2500,
+            "meas_level": 0,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Run bigger Repetition codes v4: new distances faster triple loop",
+            "code": "RepetitionCodeCircuit",
+            "distance": 20,
+            "rounds": 20,
+            "logical": "1",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cnvkwxkvn4c0008a6b3g",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "RepCode_Count_job"
+        ]
+    },
+    {
+        "creation_date": "2023-12-11 17:53:22.426000+01:00",
+        "notebook_name": "bigger_rep_codes",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 1111,
+            "meas_level": 0,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Run bigger Repetition codes v4: new distances faster triple loop",
+            "code": "RepetitionCodeCircuit",
+            "distance": 30,
+            "rounds": 30,
+            "logical": "0",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cnvkx0mye0eg008p0kng",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "RepCode_Count_job"
+        ]
+    },
+    {
+        "creation_date": "2023-12-11 17:53:33.286000+01:00",
+        "notebook_name": "bigger_rep_codes",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 1111,
+            "meas_level": 0,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Run bigger Repetition codes v4: new distances faster triple loop",
+            "code": "RepetitionCodeCircuit",
+            "distance": 30,
+            "rounds": 30,
+            "logical": "1",
+            "layout": "_is_hex=True"
+        },
+        "job_id": "cnvkx3cgpnkg008434sg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "RepCode_Count_job"
+        ]
     }
 ]
