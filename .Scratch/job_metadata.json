@@ -66011,7 +66011,8 @@
             "distance": 56,
             "rounds": "100",
             "logical": "1",
-            "layout": "_is_hex=True, sherbrooke"
+            "layout": "_is_hex=True, sherbrooke",
+            "job_status": "JobStatus.DONE"
         },
         "job_id": "cnp4xn60k0p00088wmxg",
         "job_name": null,
@@ -66038,7 +66039,8 @@
             "distance": 56,
             "rounds": "100",
             "logical": "0",
-            "layout": "_is_hex=True, sherbrooke"
+            "layout": "_is_hex=True, sherbrooke",
+            "job_status": "JobStatus.DONE"
         },
         "job_id": "cnp4y6g8sy80008p4dd0",
         "job_name": null,
@@ -66066,7 +66068,7 @@
             "rounds": "100",
             "logical": "1",
             "layout": "_is_hex=True, sherbrooke",
-            "job_status": "JobStatus.RUNNING"
+            "job_status": "JobStatus.DONE"
         },
         "job_id": "cnp4ybh9drj000843pyg",
         "job_name": null,
@@ -66265,7 +66267,7 @@
             "rounds": "100",
             "logical": "0",
             "layout": "_is_hex=True, sherbrooke",
-            "job_status": "JobStatus.RUNNING"
+            "job_status": "JobStatus.ERROR"
         },
         "job_id": "cnp51n6h4w80008vh36g",
         "job_name": null,
@@ -66293,7 +66295,8 @@
             "distance": 56,
             "rounds": "100",
             "logical": "1",
-            "layout": "_is_hex=True, sherbrooke"
+            "layout": "_is_hex=True, sherbrooke",
+            "job_status": "JobStatus.ERROR"
         },
         "job_id": "cnp51t70k0p00088wn3g",
         "job_name": null,
@@ -66321,7 +66324,8 @@
             "distance": 56,
             "rounds": "100",
             "logical": "0",
-            "layout": "_is_hex=True, sherbrooke"
+            "layout": "_is_hex=True, sherbrooke",
+            "job_status": "JobStatus.ERROR"
         },
         "job_id": "cnp54xk24wx0008fbsc0",
         "job_name": null,
@@ -66349,7 +66353,8 @@
             "distance": 56,
             "rounds": "100",
             "logical": "1",
-            "layout": "_is_hex=True, sherbrooke"
+            "layout": "_is_hex=True, sherbrooke",
+            "job_status": "JobStatus.ERROR"
         },
         "job_id": "cnp552w0k0p00088wna0",
         "job_name": null,
@@ -66377,7 +66382,8 @@
             "distance": 56,
             "rounds": "100",
             "logical": "0",
-            "layout": "_is_hex=True, sherbrooke"
+            "layout": "_is_hex=True, sherbrooke",
+            "job_status": "JobStatus.ERROR"
         },
         "job_id": "cnp55adh4w80008vh3fg",
         "job_name": null,
@@ -66405,7 +66411,8 @@
             "distance": 56,
             "rounds": "100",
             "logical": "1",
-            "layout": "_is_hex=True, sherbrooke"
+            "layout": "_is_hex=True, sherbrooke",
+            "job_status": "JobStatus.ERROR"
         },
         "job_id": "cnp55fn24wx0008fbseg",
         "job_name": null,
@@ -66432,7 +66439,8 @@
             "distance": 10,
             "rounds": 10,
             "logical": "0",
-            "layout": "_is_hex=True"
+            "layout": "_is_hex=True",
+            "job_status": "JobStatus.DONE"
         },
         "job_id": "cnvkwsbvn4c0008a6b30",
         "job_name": null,
@@ -66459,7 +66467,8 @@
             "distance": 10,
             "rounds": 10,
             "logical": "1",
-            "layout": "_is_hex=True"
+            "layout": "_is_hex=True",
+            "job_status": "JobStatus.DONE"
         },
         "job_id": "cnvkwt3wsx00008wxsw0",
         "job_name": null,
@@ -66486,7 +66495,8 @@
             "distance": 20,
             "rounds": 20,
             "logical": "0",
-            "layout": "_is_hex=True"
+            "layout": "_is_hex=True",
+            "job_status": "JobStatus.DONE"
         },
         "job_id": "cnvkww3gpnkg008434rg",
         "job_name": null,
@@ -66513,7 +66523,8 @@
             "distance": 20,
             "rounds": 20,
             "logical": "1",
-            "layout": "_is_hex=True"
+            "layout": "_is_hex=True",
+            "job_status": "JobStatus.DONE"
         },
         "job_id": "cnvkwxkvn4c0008a6b3g",
         "job_name": null,
@@ -66540,7 +66551,8 @@
             "distance": 30,
             "rounds": 30,
             "logical": "0",
-            "layout": "_is_hex=True"
+            "layout": "_is_hex=True",
+            "job_status": "JobStatus.DONE"
         },
         "job_id": "cnvkx0mye0eg008p0kng",
         "job_name": null,
@@ -66567,7 +66579,8 @@
             "distance": 30,
             "rounds": 30,
             "logical": "1",
-            "layout": "_is_hex=True"
+            "layout": "_is_hex=True",
+            "job_status": "JobStatus.DONE"
         },
         "job_id": "cnvkx3cgpnkg008434sg",
         "job_name": null,
