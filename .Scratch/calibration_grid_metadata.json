@@ -174,6 +174,20 @@
                 "0": "cmxpns7evjqg008aj740",
                 "1": "cmxpnrf5z3p0008dmqyg"
             }
+        },
+        "23.12.01_17h56_8pts_0.3std": {
+            "grid_file_path": "/Users/mha/My_Drive/Desktop/Studium/Physik/MSc/Semester_3/IBM/IBM_GIT/Soft-Info/.Scratch/calibration_grids/23.12.01_17h56_8pts_0.3std_{'0': 'cnn1wh29drj000841hwg', '1': 'cnn1xcx24wx0008f9kng'}_grid.json",
+            "job_ids": {
+                "0": "cnn1wh29drj000841hwg",
+                "1": "cnn1xcx24wx0008f9kng"
+            }
+        },
+        "23.11.09_16h47_8pts_0.3std": {
+            "grid_file_path": "/Users/mha/My_Drive/Desktop/Studium/Physik/MSc/Semester_3/IBM/IBM_GIT/Soft-Info/.Scratch/calibration_grids/23.11.09_16h47_8pts_0.3std_{'0': 'cn6gt4g64yf0008g82rg', '1': 'cn6gt3r9recg008x0grg'}_grid.json",
+            "job_ids": {
+                "0": "cn6gt4g64yf0008g82rg",
+                "1": "cn6gt3r9recg008x0grg"
+            }
         }
     },
     "ibmq_mumbai": {
