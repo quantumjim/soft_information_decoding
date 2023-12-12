@@ -67773,5 +67773,521 @@
         "tags": [
             "RepCode_Count_job"
         ]
+    },
+    {
+        "creation_date": "2023-12-12 16:40:54.285000+01:00",
+        "notebook_name": "get_IQ_calibration_data_Mumbai",
+        "backend_name": "ibmq_mumbai",
+        "backend_options": {
+            "shots": 100000,
+            "meas_level": 1,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "num_qubits": 27,
+            "sampled_state": "111111111111111111111111111",
+            "optimization_level": 0,
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2023-12-12 16:43:43.083107+01:00"
+        },
+        "job_id": "cnw7y1gb08x0008y4710",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "Calibration"
+        ]
+    },
+    {
+        "creation_date": "2023-12-12 16:41:00.379000+01:00",
+        "notebook_name": "get_IQ_calibration_data_Mumbai",
+        "backend_name": "ibmq_mumbai",
+        "backend_options": {
+            "shots": 100000,
+            "meas_level": 1,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "num_qubits": 27,
+            "sampled_state": "000000000000000000000000000",
+            "optimization_level": 0,
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2023-12-12 16:44:41.557972+01:00"
+        },
+        "job_id": "cnw7y30gpnkg008kjdg0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "Calibration"
+        ]
+    },
+    {
+        "creation_date": "2023-12-12 16:41:14.638000+01:00",
+        "notebook_name": "mumbai_RepCodes",
+        "backend_name": "ibmq_mumbai",
+        "backend_options": {
+            "shots": 111111,
+            "meas_level": 1,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Run bigger Repetition codes v4: new distances faster triple loop",
+            "code": "RepetitionCodeCircuit",
+            "distance": 3,
+            "rounds": 3,
+            "logical": "0",
+            "layout": "_is_hex=True",
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2023-12-12 16:45:46.571852+01:00"
+        },
+        "job_id": "cnw7y6gb08x0008y471g",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "RepCode_Count_job"
+        ]
+    },
+    {
+        "creation_date": "2023-12-12 16:41:19.117000+01:00",
+        "notebook_name": "mumbai_RepCodes",
+        "backend_name": "ibmq_mumbai",
+        "backend_options": {
+            "shots": 111111,
+            "meas_level": 1,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Run bigger Repetition codes v4: new distances faster triple loop",
+            "code": "RepetitionCodeCircuit",
+            "distance": 3,
+            "rounds": 3,
+            "logical": "1",
+            "layout": "_is_hex=True",
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2023-12-12 16:46:27.653842+01:00"
+        },
+        "job_id": "cnw7y7ggpnkg008kjdgg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "RepCode_Count_job"
+        ]
+    },
+    {
+        "creation_date": "2023-12-12 16:41:27.107000+01:00",
+        "notebook_name": "mumbai_RepCodes",
+        "backend_name": "ibmq_mumbai",
+        "backend_options": {
+            "shots": 30303,
+            "meas_level": 1,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Run bigger Repetition codes v4: new distances faster triple loop",
+            "code": "RepetitionCodeCircuit",
+            "distance": 3,
+            "rounds": 11,
+            "logical": "0",
+            "layout": "_is_hex=True",
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2023-12-12 16:46:53.325036+01:00"
+        },
+        "job_id": "cnw7y9sgpnkg008kjdh0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "RepCode_Count_job"
+        ]
+    },
+    {
+        "creation_date": "2023-12-12 16:41:29.964000+01:00",
+        "notebook_name": "mumbai_RepCodes",
+        "backend_name": "ibmq_mumbai",
+        "backend_options": {
+            "shots": 30303,
+            "meas_level": 1,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Run bigger Repetition codes v4: new distances faster triple loop",
+            "code": "RepetitionCodeCircuit",
+            "distance": 3,
+            "rounds": 11,
+            "logical": "1",
+            "layout": "_is_hex=True",
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2023-12-12 16:47:11.376799+01:00"
+        },
+        "job_id": "cnw7ya9gpnkg008kjdhg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "RepCode_Count_job"
+        ]
+    },
+    {
+        "creation_date": "2023-12-12 16:41:35.552000+01:00",
+        "notebook_name": "mumbai_RepCodes",
+        "backend_name": "ibmq_mumbai",
+        "backend_options": {
+            "shots": 30303,
+            "meas_level": 1,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Run bigger Repetition codes v4: new distances faster triple loop",
+            "code": "RepetitionCodeCircuit",
+            "distance": 11,
+            "rounds": 3,
+            "logical": "0",
+            "layout": "_is_hex=True",
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2023-12-12 16:47:29.313182+01:00"
+        },
+        "job_id": "cnw7ybsvn4c0008a7reg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "RepCode_Count_job"
+        ]
+    },
+    {
+        "creation_date": "2023-12-12 16:41:37.905000+01:00",
+        "notebook_name": "mumbai_RepCodes",
+        "backend_name": "ibmq_mumbai",
+        "backend_options": {
+            "shots": 30303,
+            "meas_level": 1,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Run bigger Repetition codes v4: new distances faster triple loop",
+            "code": "RepetitionCodeCircuit",
+            "distance": 11,
+            "rounds": 3,
+            "logical": "1",
+            "layout": "_is_hex=True",
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2023-12-12 16:47:53.079088+01:00"
+        },
+        "job_id": "cnw7yc9b08x0008y472g",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "RepCode_Count_job"
+        ]
+    },
+    {
+        "creation_date": "2023-12-12 16:41:44.776000+01:00",
+        "notebook_name": "mumbai_RepCodes",
+        "backend_name": "ibmq_mumbai",
+        "backend_options": {
+            "shots": 8264,
+            "meas_level": 1,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Run bigger Repetition codes v4: new distances faster triple loop",
+            "code": "RepetitionCodeCircuit",
+            "distance": 11,
+            "rounds": 11,
+            "logical": "0",
+            "layout": "_is_hex=True",
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2023-12-12 16:48:12.274652+01:00"
+        },
+        "job_id": "cnw7ye18ybr000847p70",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "RepCode_Count_job"
+        ]
+    },
+    {
+        "creation_date": "2023-12-12 16:41:47.352000+01:00",
+        "notebook_name": "mumbai_RepCodes",
+        "backend_name": "ibmq_mumbai",
+        "backend_options": {
+            "shots": 8264,
+            "meas_level": 1,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Run bigger Repetition codes v4: new distances faster triple loop",
+            "code": "RepetitionCodeCircuit",
+            "distance": 11,
+            "rounds": 11,
+            "logical": "1",
+            "layout": "_is_hex=True",
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2023-12-12 16:48:26.705057+01:00"
+        },
+        "job_id": "cnw7yes8ybr000847p7g",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "RepCode_Count_job"
+        ]
+    },
+    {
+        "creation_date": "2023-12-12 16:42:27.587000+01:00",
+        "notebook_name": "mumbai_RepCodes",
+        "backend_name": "ibmq_mumbai",
+        "backend_options": {
+            "shots": 111111,
+            "meas_level": 0,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Run bigger Repetition codes v4: new distances faster triple loop",
+            "code": "RepetitionCodeCircuit",
+            "distance": 3,
+            "rounds": 3,
+            "logical": "0",
+            "layout": "_is_hex=True",
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2023-12-12 16:49:09.271256+01:00"
+        },
+        "job_id": "cnw7yrv8ybr000847p80",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "RepCode_Count_job_count"
+        ]
+    },
+    {
+        "creation_date": "2023-12-12 16:42:30.310000+01:00",
+        "notebook_name": "mumbai_RepCodes",
+        "backend_name": "ibmq_mumbai",
+        "backend_options": {
+            "shots": 111111,
+            "meas_level": 0,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Run bigger Repetition codes v4: new distances faster triple loop",
+            "code": "RepetitionCodeCircuit",
+            "distance": 3,
+            "rounds": 3,
+            "logical": "1",
+            "layout": "_is_hex=True",
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2023-12-12 16:49:41.557758+01:00"
+        },
+        "job_id": "cnw7ysk8ybr000847p8g",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "RepCode_Count_job_count"
+        ]
+    },
+    {
+        "creation_date": "2023-12-12 16:42:38.357000+01:00",
+        "notebook_name": "mumbai_RepCodes",
+        "backend_name": "ibmq_mumbai",
+        "backend_options": {
+            "shots": 30303,
+            "meas_level": 0,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Run bigger Repetition codes v4: new distances faster triple loop",
+            "code": "RepetitionCodeCircuit",
+            "distance": 3,
+            "rounds": 11,
+            "logical": "0",
+            "layout": "_is_hex=True",
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2023-12-12 16:49:52.045187+01:00"
+        },
+        "job_id": "cnw7yvkvn4c0008a7rfg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "RepCode_Count_job_count"
+        ]
+    },
+    {
+        "creation_date": "2023-12-12 16:42:41.296000+01:00",
+        "notebook_name": "mumbai_RepCodes",
+        "backend_name": "ibmq_mumbai",
+        "backend_options": {
+            "shots": 30303,
+            "meas_level": 0,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Run bigger Repetition codes v4: new distances faster triple loop",
+            "code": "RepetitionCodeCircuit",
+            "distance": 3,
+            "rounds": 11,
+            "logical": "1",
+            "layout": "_is_hex=True",
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2023-12-12 16:50:02.744185+01:00"
+        },
+        "job_id": "cnw7ywbwsx00008tfm50",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "RepCode_Count_job_count"
+        ]
+    },
+    {
+        "creation_date": "2023-12-12 16:42:48.619000+01:00",
+        "notebook_name": "mumbai_RepCodes",
+        "backend_name": "ibmq_mumbai",
+        "backend_options": {
+            "shots": 30303,
+            "meas_level": 0,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Run bigger Repetition codes v4: new distances faster triple loop",
+            "code": "RepetitionCodeCircuit",
+            "distance": 11,
+            "rounds": 3,
+            "logical": "0",
+            "layout": "_is_hex=True",
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2023-12-12 16:50:12.165260+01:00"
+        },
+        "job_id": "cnw7yy3wsx00008tfm5g",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "RepCode_Count_job_count"
+        ]
+    },
+    {
+        "creation_date": "2023-12-12 16:42:51.411000+01:00",
+        "notebook_name": "mumbai_RepCodes",
+        "backend_name": "ibmq_mumbai",
+        "backend_options": {
+            "shots": 30303,
+            "meas_level": 0,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Run bigger Repetition codes v4: new distances faster triple loop",
+            "code": "RepetitionCodeCircuit",
+            "distance": 11,
+            "rounds": 3,
+            "logical": "1",
+            "layout": "_is_hex=True",
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2023-12-12 16:50:21.799923+01:00"
+        },
+        "job_id": "cnw7yyv8ybr000847p90",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "RepCode_Count_job_count"
+        ]
+    },
+    {
+        "creation_date": "2023-12-12 16:42:57.166000+01:00",
+        "notebook_name": "mumbai_RepCodes",
+        "backend_name": "ibmq_mumbai",
+        "backend_options": {
+            "shots": 8264,
+            "meas_level": 0,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Run bigger Repetition codes v4: new distances faster triple loop",
+            "code": "RepetitionCodeCircuit",
+            "distance": 11,
+            "rounds": 11,
+            "logical": "0",
+            "layout": "_is_hex=True",
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2023-12-12 16:50:25.872237+01:00"
+        },
+        "job_id": "cnw7z0cgpnkg008kjdj0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "RepCode_Count_job_count"
+        ]
+    },
+    {
+        "creation_date": "2023-12-12 16:43:00.312000+01:00",
+        "notebook_name": "mumbai_RepCodes",
+        "backend_name": "ibmq_mumbai",
+        "backend_options": {
+            "shots": 8264,
+            "meas_level": 0,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Run bigger Repetition codes v4: new distances faster triple loop",
+            "code": "RepetitionCodeCircuit",
+            "distance": 11,
+            "rounds": 11,
+            "logical": "1",
+            "layout": "_is_hex=True",
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2023-12-12 16:50:29.996546+01:00"
+        },
+        "job_id": "cnw7z14vn4c0008a7rg0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "RepCode_Count_job_count"
+        ]
     }
 ]
