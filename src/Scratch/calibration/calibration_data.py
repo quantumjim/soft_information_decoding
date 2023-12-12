@@ -34,9 +34,14 @@ def find_closest_calib_jobs(tobecalib_job: str, other_date = None):
 
     specified_job_creation_date = pd.to_datetime(specified_job_entry['creation_date'])
     specified_job_creation_date = specified_job_creation_date.tz_convert('UTC') if specified_job_creation_date.tzinfo else specified_job_creation_date
-    print(f"Specified job creation date: {specified_job_creation_date}")
+
+
+    specified_job_execution_date = pd.to_datetime(specified_job_entry['additional_metadata']['execution_date'])
+    print(f"Specified job execution date: {specified_job_execution_date}")
+    needed_calib_date = specified_job_execution_date
+
     if other_date is not None: # if specified, use other date as closest date
-        specified_job_creation_date = pd.to_datetime(other_date, utc=True)
+        needed_calib_date = pd.to_datetime(other_date, utc=True)
 
     backend_name = specified_job_entry['backend_name']
 
@@ -54,10 +59,10 @@ def find_closest_calib_jobs(tobecalib_job: str, other_date = None):
     for state in ['0', '1']:
         state_mask = md_filtered["sampled_state"] == md_filtered["num_qubits"].apply(lambda x: state * int(x))
         md_state_filtered = md_filtered[state_mask].copy()
-        md_state_filtered['creation_date'] = pd.to_datetime(md_state_filtered['creation_date'], utc=True)
-        closest_job_info = md_state_filtered.iloc[(md_state_filtered['creation_date'] - specified_job_creation_date).abs().argsort()[:1]]
+        md_state_filtered['execution_date'] = pd.to_datetime(md_state_filtered['execution_date'], utc=True, format='ISO8601')
+        closest_job_info = md_state_filtered.iloc[(md_state_filtered['execution_date'] - needed_calib_date).abs().argsort()[:1]]
         closest_job_id = closest_job_info['job_id'].values[0]
-        closest_creation_date_np = closest_job_info['creation_date'].values[0]
+        closest_creation_date_np = closest_job_info['execution_date'].values[0]
         closest_creation_date = pd.to_datetime(closest_creation_date_np).to_pydatetime()
         job_ids[state] = closest_job_id
         creation_dates[state] = closest_creation_date
