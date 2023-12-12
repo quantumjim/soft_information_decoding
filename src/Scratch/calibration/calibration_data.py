@@ -56,25 +56,32 @@ def find_closest_calib_jobs(tobecalib_job: str, other_date = None):
     
     job_ids = {}
     creation_dates = {}
+    execution_dates = {}
     for state in ['0', '1']:
         state_mask = md_filtered["sampled_state"] == md_filtered["num_qubits"].apply(lambda x: state * int(x))
         md_state_filtered = md_filtered[state_mask].copy()
         md_state_filtered['execution_date'] = pd.to_datetime(md_state_filtered['execution_date'], utc=True, format='ISO8601')
         closest_job_info = md_state_filtered.iloc[(md_state_filtered['execution_date'] - needed_calib_date).abs().argsort()[:1]]
         closest_job_id = closest_job_info['job_id'].values[0]
-        closest_creation_date_np = closest_job_info['execution_date'].values[0]
-        closest_creation_date = pd.to_datetime(closest_creation_date_np).to_pydatetime()
-        job_ids[state] = closest_job_id
+
+        closest_creation_date_np = closest_job_info['creation_date'].values[0]
+        closest_creation_date = pd.to_datetime(closest_creation_date_np, utc=True).to_pydatetime()
         creation_dates[state] = closest_creation_date
+
+        closest_execution_date_np = closest_job_info['execution_date'].values[0]
+        closest_execution_date = pd.to_datetime(closest_execution_date_np, utc=True).to_pydatetime()
+        execution_dates[state] = closest_execution_date
+
+        job_ids[state] = closest_job_id
     
     # Check if year, day, and hour are the same for both states
-    date_0 = creation_dates['0']
-    date_1 = creation_dates['1']
+    date_0 = execution_dates['0']
+    date_1 = execution_dates['1']
 
     if not (date_0.year == date_1.year and date_0.day == date_1.day and date_0.hour == date_1.hour):
         raise ValueError("Year, day, and hour of creation dates for the closest jobs are different for each state.")
 
-
+    print(f"Found jobs for backend {backend_name} with closest execution date {execution_dates['0']}. Retrieving kde grid...")
     return job_ids, backend_name, creation_dates['0']
 
 

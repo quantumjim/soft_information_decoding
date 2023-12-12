@@ -199,15 +199,15 @@ def create_or_load_kde_grid(provider, tobecalib_job: str, num_grid_points: int, 
         grid_metadata = {}
 
     # Find the closest calibration jobs
-    closest_job_ids, backend, execution_date = find_closest_calib_jobs(tobecalib_job, other_date=other_date)
-    print(f"Found jobs for backend {backend} with closest execution date {execution_date}. Retrieving kde grid...")
+    closest_job_ids, backend, creation_date = find_closest_calib_jobs(tobecalib_job, other_date=other_date)
+    # print(f"Found jobs for backend {backend} with closest execution date {creation_date}. Retrieving kde grid...")
 
     # Format the creation date and construct the key for metadata
-    formatted_key = f"{execution_date.strftime('%y.%m.%d_%Hh%M')}_{num_grid_points}pts_{num_std_dev}std"
+    formatted_key = f"{creation_date.strftime('%y.%m.%d_%Hh%M')}_{num_grid_points}pts_{num_std_dev}std"
     grid_entry = grid_metadata.get(backend, {}).get(formatted_key)
+    print(f"Searching for {backend} and {formatted_key}")
 
     
-
     if grid_entry:
         # Load the existing grid and scaler
         grid_file_path = grid_entry['grid_file_path']
@@ -226,7 +226,7 @@ def create_or_load_kde_grid(provider, tobecalib_job: str, num_grid_points: int, 
         save_grid(grid_dict, processed_scaler_dict, grid_file_path)
 
         # Update metadata
-        update_grid_metadata(metadata_file, creation_date=execution_date, backend_name=backend, job_ids=closest_job_ids, grid_file_path=grid_file_path, num_grid_points=num_grid_points, num_std_dev=num_std_dev)
+        update_grid_metadata(metadata_file, creation_date=creation_date, backend_name=backend, job_ids=closest_job_ids, grid_file_path=grid_file_path, num_grid_points=num_grid_points, num_std_dev=num_std_dev)
         
         # TODO: Change this to not load (Hacky fix because of some bug when cpp with created scaler dict)
         loaded_grid_dict, loaded_scaler_dict = load_grid(grid_file_path)
