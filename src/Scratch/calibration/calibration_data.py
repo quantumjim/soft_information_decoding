@@ -34,6 +34,7 @@ def find_closest_calib_jobs(tobecalib_job: str, other_date = None):
 
     specified_job_creation_date = pd.to_datetime(specified_job_entry['creation_date'])
     specified_job_creation_date = specified_job_creation_date.tz_convert('UTC') if specified_job_creation_date.tzinfo else specified_job_creation_date
+    print(f"Specified job creation date: {specified_job_creation_date}")
     if other_date is not None: # if specified, use other date as closest date
         specified_job_creation_date = pd.to_datetime(other_date, utc=True)
 
