@@ -81,7 +81,7 @@ def find_closest_calib_jobs(tobecalib_job: str, other_date = None):
     if not (date_0.year == date_1.year and date_0.day == date_1.day and date_0.hour == date_1.hour):
         raise ValueError("Year, day, and hour of creation dates for the closest jobs are different for each state.")
 
-    print(f"Found jobs for backend {backend_name} with closest execution date {execution_dates['0']}. Retrieving kde grid...")
+    print(f"Found jobs for backend {backend_name} with closest execution date {execution_dates['0']}.")
     return job_ids, backend_name, creation_dates['0']
 
 
