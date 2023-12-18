@@ -36,11 +36,11 @@ def get_calib_jobs(backend_name: str, needed_calib_date = None):
         state_mask = md_filtered["sampled_state"] == md_filtered["num_qubits"].apply(lambda x: state * int(x))
         md_state_filtered = md_filtered[state_mask].copy()
 
-        if needed_calib_date is not None:
-            md_state_filtered['execution_date'] = pd.to_datetime(md_state_filtered['execution_date'], utc=True, format='ISO8601')
+        md_state_filtered['execution_date'] = pd.to_datetime(md_state_filtered['execution_date'], utc=True, format='ISO8601')
+        if needed_calib_date is not None:            
             closest_job_info = md_state_filtered.iloc[(md_state_filtered['execution_date'] - needed_calib_date).abs().argsort()[:1]]
         else:
-            closest_job_info = md_state_filtered.nlargest(1, 'creation_date')
+            closest_job_info = md_state_filtered.nlargest(1, 'execution_date')
         closest_job_id = closest_job_info['job_id'].values[0]
 
         closest_creation_date_np = closest_job_info['creation_date'].values[0]
@@ -105,8 +105,7 @@ def load_calibration_memory(provider, tobecalib_job: Optional[str] = None, tobec
     if not tobecalib_job and not tobecalib_backend:
         raise NotImplementedError("Only loading calibration data for a specific job or a specified backend is currently supported.")
     
-    if tobecalib_job:
-        closest_job_ids, _, _ = find_closest_calib_jobs(tobecalib_job, tobecalib_backend, other_date=other_date)
+    closest_job_ids, _, _ = find_closest_calib_jobs(tobecalib_job, tobecalib_backend, other_date=other_date)
 
     all_memories = {}
     for state, job_id in closest_job_ids.items():
