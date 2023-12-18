@@ -21,10 +21,6 @@ namespace pm {
         float p_data, float p_mixed, float common_measure,
         bool _bimodal, const std::string& merge_strategy) {
 
-        // // Set default values
-        // p_data = (p_data != -1) ? p_data : 6.836e-3; // Sherbrooke median
-        // p_mixed = (p_mixed != -1) ? p_mixed : 0;
-
         // Distance
         int distance = (not_scaled_IQ_data.cols() + synd_rounds) / (synd_rounds + 1); // Hardcoded for RepCodes
 
@@ -249,6 +245,7 @@ namespace pm {
         UserGraph &matching,
         const Eigen::MatrixXcd& not_scaled_IQ_data,
         int synd_rounds,
+        int logical,
         const std::map<int, int>& qubit_mapping,
         const std::map<int, GridData>& kde_grid_dict,
         const std::map<int, std::pair<std::pair<double, double>, std::pair<double, double>>>& scaler_params_dict, 
@@ -269,7 +266,8 @@ namespace pm {
 
             auto [predicted_observables, rescaled_weight] = decode(matching, detectionEvents);
 
-            int actual_observable = (static_cast<int>(count_key[0]) - '0') % 2;  // Convert first character to int and modulo 2
+            int actual_observable = (static_cast<int>(count_key[0]) - logical) % 2;  // Convert first character to int and modulo 2
+            // int actual_observable = (static_cast<int>(count_key[0]) - '0') % 2;  // Convert first character to int and modulo 2
             // Check if predicted_observables is not empty and compare the first element
             if (!predicted_observables.empty() && predicted_observables[0] != actual_observable) {
                 numErrors++;  // Increment error count if they don't match
@@ -284,6 +282,7 @@ namespace pm {
         UserGraph &matching,
         const Eigen::MatrixXcd& not_scaled_IQ_data,
         int synd_rounds,
+        int logical,
         const std::map<int, int>& qubit_mapping,
         const std::map<int, GridData>& kde_grid_dict,
         const std::map<int, std::pair<std::pair<double, double>, std::pair<double, double>>>& scaler_params_dict) {
@@ -299,7 +298,7 @@ namespace pm {
 
             auto [predicted_observables, rescaled_weight] = decode(matching, detectionEvents);
 
-            int actual_observable = (static_cast<int>(count_key[0]) - '0') % 2;  // Convert first character to int and modulo 2
+            int actual_observable = (static_cast<int>(count_key[0]) - logical) % 2;  // Convert first character to int and modulo 2
             // Check if predicted_observables is not empty and compare the first element
             if (!predicted_observables.empty() && predicted_observables[0] != actual_observable) {
                 numErrors++;  // Increment error count if they don't match
@@ -314,6 +313,7 @@ namespace pm {
         UserGraph &matching,
         const Eigen::MatrixXcd& not_scaled_IQ_data,
         int synd_rounds,
+        int logical,
         const std::map<int, int>& qubit_mapping,
         const std::map<int, GridData>& kde_grid_dict,
         const std::map<int, std::pair<std::pair<double, double>, std::pair<double, double>>>& scaler_params_dict,
@@ -332,7 +332,7 @@ namespace pm {
 
             auto [predicted_observables, rescaled_weight] = decode(matching, detectionEvents);
 
-            int actual_observable = (static_cast<int>(count_key[0]) - '0') % 2;  // Convert first character to int and modulo 2
+            int actual_observable = (static_cast<int>(count_key[0]) - logical) % 2;  // Convert first character to int and modulo 2
             // Check if predicted_observables is not empty and compare the first element
             if (!predicted_observables.empty() && predicted_observables[0] != actual_observable) {
                 numErrors++;  // Increment error count if they don't match
@@ -345,6 +345,7 @@ namespace pm {
 
     int decode_IQ_shots_flat_err_probs(
         UserGraph &matching,
+        int logical,
         const std::map<std::string, size_t>& counts_tot,
         bool _resets,
         const std::string& method,
@@ -371,7 +372,7 @@ namespace pm {
             auto detectionEvents = syndromeArrayToDetectionEvents(det_syndromes, matching.get_num_detectors(), matching.get_boundary().size());
             auto [predicted_observables, rescaled_weight] = decode(matching, detectionEvents);
 
-            int actual_observable = (static_cast<int>(count_key[0]) - '0') % 2;  // Convert first character to int and modulo 2
+            int actual_observable = (static_cast<int>(count_key[0]) - logical) % 2;  // Convert first character to int and modulo 2
             if (!predicted_observables.empty() && predicted_observables[0] != actual_observable) {
                 numErrors++;  // Increment error count if they don't match
             }
@@ -384,6 +385,7 @@ namespace pm {
         UserGraph &matching,
         const Eigen::MatrixXcd& not_scaled_IQ_data,
         int synd_rounds,
+        int logical,
         const std::map<int, int>& qubit_mapping,
         const std::map<int, GridData>& kde_grid_dict,
         const std::map<int, std::pair<std::pair<double, double>, std::pair<double, double>>>& scaler_params_dict) {
@@ -401,7 +403,7 @@ namespace pm {
             auto detectionEvents = syndromeArrayToDetectionEvents(det_syndromes, matching.get_num_detectors(), matching.get_boundary().size());
             auto [predicted_observables, rescaled_weight] = decode(matching, detectionEvents);
 
-            int actual_observable = (static_cast<int>(count_key[0]) - '0') % 2;  // Convert first character to int and modulo 2
+            int actual_observable = (static_cast<int>(count_key[0]) - logical) % 2;  // Convert first character to int and modulo 2
             if (!predicted_observables.empty() && predicted_observables[0] != actual_observable) {
                 numErrors++;  // Increment error count if they don't match
             }
