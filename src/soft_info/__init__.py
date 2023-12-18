@@ -1,5 +1,5 @@
 import warnings
-import datetime
+from datetime import datetime
 
 from .IQ_data import *
 from .UnionFind import *
@@ -9,7 +9,7 @@ from .Probabilities import *
 
 
 def custom_showwarning(message, category, filename, lineno, file=None, line=None):
-    datetime_str = datetime.datetime.now().strftime("%H:%M:%S")
+    datetime_str = datetime.now().strftime("%H:%M:%S")
     print(f"{datetime_str} Warning: {message}. IN FILE: {filename}, LINE: {lineno}")
 
 
