@@ -94,7 +94,11 @@ namespace pm {
                 // Step 3: Get the llh_ratio
                 double llh_weight;
                 if (_bimodal) {
-                    llh_weight = llh_ratio(scaled_point, grid_data, edge_data.error_probability);
+                    // llh_weight = llh_ratio(scaled_point, grid_data, edge_data.error_probability);
+                    llh_weight = llh_ratio(scaled_point, grid_data);
+                    float llh_prob = 1 / (1 + std::exp(-llh_weight));
+                    llh_prob += edge_data.error_probability * 3; 
+                    llh_weight = -std::log(llh_prob / (1 - llh_prob));
                 } else {
                     llh_weight = llh_ratio(scaled_point, grid_data);
                 }
