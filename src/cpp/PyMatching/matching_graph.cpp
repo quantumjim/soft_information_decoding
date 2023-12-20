@@ -250,6 +250,7 @@ namespace pm {
         const Eigen::MatrixXcd& not_scaled_IQ_data,
         int synd_rounds,
         int logical,
+        bool _resets,
         const std::map<int, int>& qubit_mapping,
         const std::map<int, GridData>& kde_grid_dict,
         const std::map<int, std::pair<std::pair<double, double>, std::pair<double, double>>>& scaler_params_dict, 
@@ -265,7 +266,7 @@ namespace pm {
             // add copying the graph to recompute weights to 1 or something 
             soft_reweight_pymatching(matching, not_scaled_IQ_shot_matrix, synd_rounds, qubit_mapping, kde_grid_dict, scaler_params_dict, p_data, p_mixed, common_measure, _bimodal, merge_strategy);
 
-            auto det_syndromes = counts_to_det_syndr(count_key, false, false);
+            auto det_syndromes = counts_to_det_syndr(count_key, _resets, false);
             auto detectionEvents = syndromeArrayToDetectionEvents(det_syndromes, matching.get_num_detectors(), matching.get_boundary().size());
 
             auto [predicted_observables, rescaled_weight] = decode(matching, detectionEvents);
@@ -287,6 +288,7 @@ namespace pm {
         const Eigen::MatrixXcd& not_scaled_IQ_data,
         int synd_rounds,
         int logical,
+        bool _resets,
         const std::map<int, int>& qubit_mapping,
         const std::map<int, GridData>& kde_grid_dict,
         const std::map<int, std::pair<std::pair<double, double>, std::pair<double, double>>>& scaler_params_dict) {
@@ -297,7 +299,7 @@ namespace pm {
             auto counts = get_counts(not_scaled_IQ_shot_matrix, qubit_mapping, kde_grid_dict, scaler_params_dict, synd_rounds);
             std::string count_key = counts.begin()->first;
 
-            auto det_syndromes = counts_to_det_syndr(count_key, false, false);
+            auto det_syndromes = counts_to_det_syndr(count_key, _resets, false);
             auto detectionEvents = syndromeArrayToDetectionEvents(det_syndromes, matching.get_num_detectors(), matching.get_boundary().size());
 
             auto [predicted_observables, rescaled_weight] = decode(matching, detectionEvents);
@@ -318,6 +320,7 @@ namespace pm {
         const Eigen::MatrixXcd& not_scaled_IQ_data,
         int synd_rounds,
         int logical,
+        bool _resets,
         const std::map<int, int>& qubit_mapping,
         const std::map<int, GridData>& kde_grid_dict,
         const std::map<int, std::pair<std::pair<double, double>, std::pair<double, double>>>& scaler_params_dict,
@@ -331,7 +334,7 @@ namespace pm {
             auto counts = get_counts(not_scaled_IQ_shot_matrix, qubit_mapping, kde_grid_dict, scaler_params_dict, synd_rounds);
             std::string count_key = counts.begin()->first;
 
-            auto det_syndromes = counts_to_det_syndr(count_key, false, false);
+            auto det_syndromes = counts_to_det_syndr(count_key, _resets, false);
             auto detectionEvents = syndromeArrayToDetectionEvents(det_syndromes, matching.get_num_detectors(), matching.get_boundary().size());
 
             auto [predicted_observables, rescaled_weight] = decode(matching, detectionEvents);
@@ -372,7 +375,7 @@ namespace pm {
 
             // Continue with the decoding process as in the original function
             std::string count_key = counts.begin()->first;
-            auto det_syndromes = counts_to_det_syndr(count_key, false, false);
+            auto det_syndromes = counts_to_det_syndr(count_key, _resets, false);
             auto detectionEvents = syndromeArrayToDetectionEvents(det_syndromes, matching.get_num_detectors(), matching.get_boundary().size());
             auto [predicted_observables, rescaled_weight] = decode(matching, detectionEvents);
 
@@ -390,6 +393,7 @@ namespace pm {
         const Eigen::MatrixXcd& not_scaled_IQ_data,
         int synd_rounds,
         int logical,
+        bool _resets,
         const std::map<int, int>& qubit_mapping,
         const std::map<int, GridData>& kde_grid_dict,
         const std::map<int, std::pair<std::pair<double, double>, std::pair<double, double>>>& scaler_params_dict) {
@@ -403,7 +407,7 @@ namespace pm {
 
             // Continue with the decoding process as in the original function
             std::string count_key = counts.begin()->first;
-            auto det_syndromes = counts_to_det_syndr(count_key, false, false);
+            auto det_syndromes = counts_to_det_syndr(count_key, _resets, false);
             auto detectionEvents = syndromeArrayToDetectionEvents(det_syndromes, matching.get_num_detectors(), matching.get_boundary().size());
             auto [predicted_observables, rescaled_weight] = decode(matching, detectionEvents);
 

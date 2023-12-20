@@ -103,6 +103,7 @@ std::vector<int> counts_to_det_syndr(const std::string& input_str, bool _resets,
     std::string reversed_str(input_str.rbegin(), input_str.rend());
 
     if (verbose) {std::cout << "Reversed string: " << reversed_str << std::endl;} ////////////////
+    std::cout << "_resets is " << _resets << std::endl; ////////////////
 
     // Step 2: Separate the count string
     size_t space_pos = reversed_str.rfind(" ");

@@ -15,7 +15,8 @@ from ..Probabilities.KDE import get_KDEs
 
 
 class RepCodeIQSimulator():
-    def __init__(self, provider, distance: int, rounds: int, device: int, _is_hex:bool = True, other_date = None) -> None:
+    def __init__(self, provider, distance: int, rounds: int, device: int, _is_hex: bool = True,
+                 _resets: bool = False, other_date = None) -> None:
         self.provider = provider
         self.distance = distance
         self.rounds = rounds
@@ -25,7 +26,7 @@ class RepCodeIQSimulator():
         self.layout = get_repcode_layout(self.distance, self.backend, _is_hex=_is_hex)
         self.qubit_mapping = get_repcode_IQ_map(self.layout, self.rounds)
         self.kde_dict, self.scaler_dict = get_KDEs(self.provider, tobecalib_backend=self.device, other_date=self.other_date)
-        self.code = RepetitionCodeCircuit(self.distance, self.rounds)
+        self.code = RepetitionCodeCircuit(self.distance, self.rounds, resets=_resets)
 
 
     def get_noise_model(self, p1Q, p2Q, pXY, pZ, pRO, pRE) -> PauliNoiseModel:
