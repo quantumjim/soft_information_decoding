@@ -14,6 +14,9 @@ from ..Hardware.transpile_rep_code import get_repcode_layout, get_repcode_IQ_map
 from ..Probabilities.KDE import get_KDEs
 
 
+from qiskit_aer import AerSimulator
+from qiskit_qec.utils.stim_tools import noisify_circuit
+
 class RepCodeIQSimulator():
     def __init__(self, provider, distance: int, rounds: int, device: int, _is_hex: bool = True,
                  _resets: bool = False, other_date = None) -> None:
@@ -35,14 +38,18 @@ class RepCodeIQSimulator():
                     'h': {"chan": {'i':1-p1Q} | {i:p1Q/3 for i in 'xyz'}},
                     'idle_1': {"chan": {'i':1-pXY, 'x':pXY/2, 'y':pXY/2}},
                     'idle_2': {"chan": {'i':1-pZ, 'z':pZ}},
-                    'cx': {"chan": {'ii':1-p2Q} | {i+j:p2Q/15 for i in 'ixyz' for j in 'ixyz' if i+j!='ii'}},
+                    # 'cx': {"chan": {'ii':1-p2Q} | {i+j:p2Q/15 for i in 'ixyz' for j in 'ixyz' if i+j!='ii'}},
+                    'cx': {"chan": {'ii':1-p2Q} | {'i'+i:p2Q/3 for i in 'xyz' }},                    
                     'swap': {"chan": {'ii':1-p2Q} | {i+j:p2Q/15 for i in 'ixyz' for j in 'ixyz' if i+j!='ii'}}}
-
         return PauliNoiseModel(fromdict=error_dict)
     
     def get_counts(self, shots: int, noise_model: PauliNoiseModel, logical: int) -> dict:
         warnings.warn("Getting counts via stim. This may take time...")
-        return get_counts_via_stim(self.code.circuit[str(logical)], shots=shots, noise_model=noise_model)
+        qc = self.code.circuit[str(logical)]
+        qc = noisify_circuit(qc, noise_model)
+        counts = AerSimulator().run(qc, shots=shots).result().get_counts()
+        # return get_counts_via_stim(self.code.circuit[str(logical)], shots=shots, noise_model=noise_model)
+        return counts
     
     def counts_to_IQ(self, counts: dict):
         total_shots = sum(counts.values())
