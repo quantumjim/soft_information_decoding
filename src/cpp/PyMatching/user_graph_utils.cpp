@@ -93,6 +93,23 @@ namespace pm {
         return {obs_crossed_vec, rescaled_weight};
     }
 
+    std::vector<std::pair<int64_t, int64_t>> decode_to_edges_array(UserGraph &self, const std::vector<uint64_t> &detection_events) {
+        auto &mwpm = self.get_mwpm_with_search_graph();
+        auto edges = std::make_unique<std::vector<int64_t>>();
+        edges->reserve(detection_events.size() / 2);
+        pm::decode_detection_events_to_edges(mwpm, detection_events, *edges);
+
+        std::vector<std::pair<int64_t, int64_t>> edge_pairs;
+        edge_pairs.reserve(edges->size() / 2);
+
+        for (size_t i = 0; i < edges->size(); i += 2) {
+            edge_pairs.emplace_back((*edges)[i], (*edges)[i + 1]);
+        }
+
+        return edge_pairs;
+    }
+
+
 
 
 }

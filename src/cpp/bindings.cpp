@@ -74,6 +74,10 @@ PYBIND11_MODULE(cpp_soft_info, m) {
     m.def("decode", &pm::decode, 
       "Decode a matching graph",
       py::arg("graph"), py::arg("detection_events"));
+    
+    m.def("decode_to_edges_array", &pm::decode_to_edges_array, 
+      "Decode a matching graph to an array of edges",
+      py::arg("graph"), py::arg("detection_events"));
 
     m.def("counts_to_det_syndr", &counts_to_det_syndr, 
       "Convert counts to deterministic syndromes",
@@ -117,14 +121,16 @@ PYBIND11_MODULE(cpp_soft_info, m) {
       py::arg("_resets"), py::arg("qubit_mapping"), 
       py::arg("kde_grid_dict"), py::arg("scaler_params_dict"), 
       py::arg("p_data"), py::arg("p_mixed"), py::arg("common_measure"), 
-      py::arg("_bimodal") = false, py::arg("merge_strategy") = "replace");
+      py::arg("_bimodal") = false, py::arg("merge_strategy") = "replace",
+      py::arg("_detailed") = false);
 
     m.def("decode_IQ_shots_flat", &pm::decode_IQ_shots_flat,
       "Decode a matching graph using IQ data but weight edges to 1",
       py::arg("matching"), py::arg("not_scaled_IQ_data"),
       py::arg("synd_rounds"), py::arg("logical"),
       py::arg("_resets"), py::arg("qubit_mapping"),
-      py::arg("kde_grid_dict"), py::arg("scaler_params_dict"));
+      py::arg("kde_grid_dict"), py::arg("scaler_params_dict"), 
+      py::arg("_detailed") = false);
     
     m.def("decode_IQ_shots_flat_informed", &pm::decode_IQ_shots_flat_informed,
       "Decode a matching graph using IQ data but weight edges to 1 and use diagonal edges",
@@ -132,21 +138,22 @@ PYBIND11_MODULE(cpp_soft_info, m) {
       py::arg("synd_rounds"), py::arg("logical"),
       py::arg("_resets"), py::arg("qubit_mapping"),
       py::arg("kde_grid_dict"), py::arg("scaler_params_dict"),
-      py::arg("p_data"), py::arg("p_mixed"), py::arg("p_meas"), py::arg("common_measure") = -1);
+      py::arg("p_data"), py::arg("p_mixed"), py::arg("p_meas"), py::arg("common_measure") = -1,
+      py::arg("_detailed") = false);
 
     m.def("decode_IQ_shots_flat_err_probs", &pm::decode_IQ_shots_flat_err_probs,
       "Reweight and decode a matching graph using error probabilities",
       py::arg("matching"), py::arg("logical"), py::arg("counts_tot"), py::arg("_resets"), py::arg("method"),
       py::arg("not_scaled_IQ_data"), py::arg("synd_rounds"), 
       py::arg("qubit_mapping"), py::arg("kde_grid_dict"), 
-      py::arg("scaler_params_dict"));
+      py::arg("scaler_params_dict"), py::arg("_detailed") = false);
 
     m.def("decode_IQ_shots_no_reweighting", &pm::decode_IQ_shots_no_reweighting,
       "Decode a matching graph using IQ data but do not reweight edges",
       py::arg("matching"), py::arg("not_scaled_IQ_data"),
       py::arg("synd_rounds"), py::arg("logical"),
       py::arg("_resets"), py::arg("qubit_mapping"),
-      py::arg("kde_grid_dict"), py::arg("scaler_params_dict"));
+      py::arg("kde_grid_dict"), py::arg("scaler_params_dict"), py::arg("_detailed") = false);
 
     //////////// Error probabilities bindings ////////////
 

@@ -6,6 +6,11 @@
 #include <utility> 
 #include "pymatching/sparse_blossom/driver/user_graph.h" // Include necessary headers for declarations
 
+
+#ifndef USER_GRAPH_UTILS_H
+#define USER_GRAPH_UTILS_H
+
+
 struct EdgeAttributes {
     std::set<size_t> fault_ids;
     double weight;
@@ -38,6 +43,8 @@ namespace pm {
     std::vector<EdgeProperties> get_edges(const pm::UserGraph& graph);
 
     std::pair<std::vector<uint8_t>, double> decode(UserGraph &self, const std::vector<uint64_t> &detection_events);
+
+    std::vector<std::pair<int64_t, int64_t>> decode_to_edges_array(UserGraph &self, const std::vector<uint64_t> &detection_events);
 }
 
 std::vector<int> counts_to_det_syndr(const std::string& input_str, bool _resets = false, bool verbose = false);
@@ -53,3 +60,6 @@ std::map<std::pair<int, int>, ErrorProbabilities> calculate_spitz_error_probs(
     const pm::UserGraph& graph, 
     const std::map<std::string, size_t>& counts,
     bool _resets);
+
+
+#endif // USER_GRAPH_UTILS_H

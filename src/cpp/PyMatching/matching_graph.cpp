@@ -1,5 +1,4 @@
 #include "matching_graph.h"
-#include "user_graph_utils.h"
 #include "pymatching/sparse_blossom/driver/user_graph.h" // Include necessary headers for declarations
 #include <iostream>
 
@@ -7,10 +6,11 @@
 #include <set>
 #include <map>
 #include <cmath>
-
 #include <stdexcept> 
 
 namespace pm {
+
+    /////// REWEIGHTING /////
     void soft_reweight_pymatching(
         UserGraph &matching,
         const Eigen::MatrixXcd& not_scaled_IQ_data,
@@ -245,7 +245,23 @@ namespace pm {
 
     }
 
-    int decode_IQ_shots(
+
+    ////// DECODING ///////
+
+    ShotErrorDetails createShotErrorDetails(
+        UserGraph &matching,
+        std::vector<uint64_t>& detectionEvents,
+        std::vector<int>& det_syndromes) {
+
+        ShotErrorDetails errorDetail;
+        errorDetail.matched_edges = decode_to_edges_array(matching, detectionEvents);
+        errorDetail.detection_syndromes = det_syndromes; // Assuming det_syndromes is available here
+        errorDetail.edges = get_edges(matching);
+
+        return errorDetail;
+    }
+
+    DetailedDecodeResult decode_IQ_shots(
         UserGraph &matching,
         const Eigen::MatrixXcd& not_scaled_IQ_data,
         int synd_rounds,
@@ -255,9 +271,11 @@ namespace pm {
         const std::map<int, GridData>& kde_grid_dict,
         const std::map<int, std::pair<std::pair<double, double>, std::pair<double, double>>>& scaler_params_dict, 
         float p_data, float p_mixed, float common_measure,
-        bool _bimodal, const std::string& merge_strategy) {
+        bool _bimodal, const std::string& merge_strategy, bool _detailed) {
         
-        int numErrors = 0;
+        DetailedDecodeResult result;
+        result.num_errors = 0;
+
         for (int shot = 0; shot < not_scaled_IQ_data.rows(); ++shot) {
             Eigen::MatrixXcd not_scaled_IQ_shot_matrix = not_scaled_IQ_data.row(shot);
             auto counts = get_counts(not_scaled_IQ_shot_matrix, qubit_mapping, kde_grid_dict, scaler_params_dict, synd_rounds);
@@ -275,15 +293,18 @@ namespace pm {
             // int actual_observable = (static_cast<int>(count_key[0]) - '0') % 2;  // Convert first character to int and modulo 2
             // Check if predicted_observables is not empty and compare the first element
             if (!predicted_observables.empty() && predicted_observables[0] != actual_observable) {
-                numErrors++;  // Increment error count if they don't match
+                result.num_errors++;  // Increment error count if they don't match
+                if (_detailed) {
+                    ShotErrorDetails errorDetail = createShotErrorDetails(matching, detectionEvents, det_syndromes);
+                    result.error_details.push_back(errorDetail);
+                }
             }
-
         }
 
-        return numErrors;
+        return result;
     }
 
-    int decode_IQ_shots_flat(
+    DetailedDecodeResult decode_IQ_shots_flat(
         UserGraph &matching,
         const Eigen::MatrixXcd& not_scaled_IQ_data,
         int synd_rounds,
@@ -291,8 +312,12 @@ namespace pm {
         bool _resets,
         const std::map<int, int>& qubit_mapping,
         const std::map<int, GridData>& kde_grid_dict,
-        const std::map<int, std::pair<std::pair<double, double>, std::pair<double, double>>>& scaler_params_dict) {
-        int numErrors = 0;
+        const std::map<int, std::pair<std::pair<double, double>, std::pair<double, double>>>& scaler_params_dict,
+        bool _detailed) {
+
+        DetailedDecodeResult result;
+        result.num_errors = 0;
+        
         reweight_edges_to_one(matching);
         for (int shot = 0; shot < not_scaled_IQ_data.rows(); ++shot) {
             Eigen::MatrixXcd not_scaled_IQ_shot_matrix = not_scaled_IQ_data.row(shot);
@@ -307,15 +332,19 @@ namespace pm {
             int actual_observable = (static_cast<int>(count_key[0]) - logical) % 2;  // Convert first character to int and modulo 2
             // Check if predicted_observables is not empty and compare the first element
             if (!predicted_observables.empty() && predicted_observables[0] != actual_observable) {
-                numErrors++;  // Increment error count if they don't match
+                result.num_errors++;  // Increment error count if they don't match
+                if (_detailed) {
+                    ShotErrorDetails errorDetail = createShotErrorDetails(matching, detectionEvents, det_syndromes);
+                    result.error_details.push_back(errorDetail);
+                }
             }
 
         }
 
-        return numErrors;
+        return result;
     }
 
-    int decode_IQ_shots_flat_informed(
+    DetailedDecodeResult decode_IQ_shots_flat_informed(
         UserGraph &matching,
         const Eigen::MatrixXcd& not_scaled_IQ_data,
         int synd_rounds,
@@ -324,8 +353,12 @@ namespace pm {
         const std::map<int, int>& qubit_mapping,
         const std::map<int, GridData>& kde_grid_dict,
         const std::map<int, std::pair<std::pair<double, double>, std::pair<double, double>>>& scaler_params_dict,
-        float p_data, float p_mixed, float p_meas, float common_measure) {
-        int numErrors = 0;
+        float p_data, float p_mixed, float p_meas, float common_measure,
+        bool _detailed) {
+        
+        DetailedDecodeResult result;
+        result.num_errors = 0;
+        
         // Distance
         int distance = (not_scaled_IQ_data.cols() + synd_rounds) / (synd_rounds + 1); // Hardcoded for RepCodes
         reweight_edges_informed(matching, distance, p_data, p_mixed, p_meas, common_measure);
@@ -342,15 +375,19 @@ namespace pm {
             int actual_observable = (static_cast<int>(count_key[0]) - logical) % 2;  // Convert first character to int and modulo 2
             // Check if predicted_observables is not empty and compare the first element
             if (!predicted_observables.empty() && predicted_observables[0] != actual_observable) {
-                numErrors++;  // Increment error count if they don't match
+                result.num_errors++;  // Increment error count if they don't match
+                if (_detailed) {
+                    ShotErrorDetails errorDetail = createShotErrorDetails(matching, detectionEvents, det_syndromes);
+                    result.error_details.push_back(errorDetail);
+                }
             }
 
         }
 
-        return numErrors;
+        return result;
     }
 
-    int decode_IQ_shots_flat_err_probs(
+    DetailedDecodeResult decode_IQ_shots_flat_err_probs(
         UserGraph &matching,
         int logical,
         const std::map<std::string, size_t>& counts_tot,
@@ -360,9 +397,12 @@ namespace pm {
         int synd_rounds,
         const std::map<int, int>& qubit_mapping,
         const std::map<int, GridData>& kde_grid_dict,
-        const std::map<int, std::pair<std::pair<double, double>, std::pair<double, double>>>& scaler_params_dict) {
+        const std::map<int, std::pair<std::pair<double, double>, std::pair<double, double>>>& scaler_params_dict,
+        bool _detailed) {
 
-        int numErrors = 0;
+        DetailedDecodeResult result;
+        result.num_errors = 0;
+
         // Distance
         int distance = (not_scaled_IQ_data.cols() + synd_rounds) / (synd_rounds + 1); // Hardcoded for RepCodes
         reweight_edges_based_on_error_probs(matching, counts_tot, _resets, method);
@@ -381,14 +421,18 @@ namespace pm {
 
             int actual_observable = (static_cast<int>(count_key[0]) - logical) % 2;  // Convert first character to int and modulo 2
             if (!predicted_observables.empty() && predicted_observables[0] != actual_observable) {
-                numErrors++;  // Increment error count if they don't match
+                result.num_errors++;  // Increment error count if they don't match
+                if (_detailed) {
+                    ShotErrorDetails errorDetail = createShotErrorDetails(matching, detectionEvents, det_syndromes);
+                    result.error_details.push_back(errorDetail);
+                }
             }
         }
 
-        return numErrors;
+        return result;
     }
 
-    int decode_IQ_shots_no_reweighting(
+    DetailedDecodeResult decode_IQ_shots_no_reweighting(
         UserGraph &matching,
         const Eigen::MatrixXcd& not_scaled_IQ_data,
         int synd_rounds,
@@ -396,9 +440,12 @@ namespace pm {
         bool _resets,
         const std::map<int, int>& qubit_mapping,
         const std::map<int, GridData>& kde_grid_dict,
-        const std::map<int, std::pair<std::pair<double, double>, std::pair<double, double>>>& scaler_params_dict) {
+        const std::map<int, std::pair<std::pair<double, double>, std::pair<double, double>>>& scaler_params_dict,
+        bool _detailed) {
 
-        int numErrors = 0;
+        DetailedDecodeResult result;
+        result.num_errors = 0;
+
         // Loop over shots and decode each one
         for (int shot = 0; shot < not_scaled_IQ_data.rows(); ++shot) {
             // Process the IQ data for each shot
@@ -413,11 +460,15 @@ namespace pm {
 
             int actual_observable = (static_cast<int>(count_key[0]) - logical) % 2;  // Convert first character to int and modulo 2
             if (!predicted_observables.empty() && predicted_observables[0] != actual_observable) {
-                numErrors++;  // Increment error count if they don't match
+                result.num_errors++;  // Increment error count if they don't match
+                if (_detailed) {
+                    ShotErrorDetails errorDetail = createShotErrorDetails(matching, detectionEvents, det_syndromes);
+                    result.error_details.push_back(errorDetail);
+                }
             }
         }
 
-        return numErrors;
+        return result;
     }
 
 }
