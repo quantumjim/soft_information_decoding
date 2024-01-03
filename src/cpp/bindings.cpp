@@ -32,12 +32,37 @@ PYBIND11_MODULE(cpp_soft_info, m) {
     // m.def("print_edges_of_graph", &print_edges_of_graph, "Print the edges of a matching graph");
     m.def("processGraph_test", &processGraph_test, "Function to test process UserGraph");
 
+    //////////// STRUCTS ////////////
+
     py::class_<GridData>(m, "GridData")
         .def(py::init<Eigen::MatrixXd, Eigen::MatrixXd, Eigen::MatrixXd, Eigen::MatrixXd>())
         .def_readwrite("grid_x", &GridData::grid_x)
         .def_readwrite("grid_y", &GridData::grid_y)
         .def_readwrite("grid_density_0", &GridData::grid_density_0)
         .def_readwrite("grid_density_1", &GridData::grid_density_1);   
+        
+    py::class_<EdgeAttributes>(m, "EdgeAttributes")
+        .def(py::init<>()) // Default constructor
+        .def_readwrite("fault_ids", &EdgeAttributes::fault_ids)
+        .def_readwrite("weight", &EdgeAttributes::weight)
+        .def_readwrite("error_probability", &EdgeAttributes::error_probability);
+
+    py::class_<EdgeProperties>(m, "EdgeProperties")
+        .def(py::init<>())
+        .def_readwrite("node1", &EdgeProperties::node1)
+        .def_readwrite("node2", &EdgeProperties::node2)
+        .def_readwrite("attributes", &EdgeProperties::attributes);
+
+    py::class_<pm::ShotErrorDetails>(m, "ShotErrorDetails")
+        .def(py::init<>())
+        .def_readwrite("edges", &pm::ShotErrorDetails::edges)
+        .def_readwrite("matched_edges", &pm::ShotErrorDetails::matched_edges)
+        .def_readwrite("detection_syndromes", &pm::ShotErrorDetails::detection_syndromes);
+
+    py::class_<pm::DetailedDecodeResult>(m, "DetailedDecodeResult")
+        .def(py::init<>())
+        .def_readwrite("num_errors", &pm::DetailedDecodeResult::num_errors)
+        .def_readwrite("error_details", &pm::DetailedDecodeResult::error_details);
     
 
     //////////// Usergraph Utils bindings ////////////
