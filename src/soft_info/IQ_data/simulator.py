@@ -13,7 +13,6 @@ from qiskit_qec.utils import get_counts_via_stim
 from ..Hardware.transpile_rep_code import get_repcode_layout, get_repcode_IQ_map
 from ..Probabilities.KDE import get_KDEs
 
-
 from qiskit_aer import AerSimulator
 from qiskit_qec.utils.stim_tools import noisify_circuit
 
@@ -45,11 +44,11 @@ class RepCodeIQSimulator():
     
     def get_counts(self, shots: int, noise_model: PauliNoiseModel, logical: int) -> dict:
         warnings.warn("Getting counts via stim. This may take time...")
-        qc = self.code.circuit[str(logical)]
-        qc = noisify_circuit(qc, noise_model)
-        counts = AerSimulator().run(qc, shots=shots).result().get_counts()
-        # return get_counts_via_stim(self.code.circuit[str(logical)], shots=shots, noise_model=noise_model)
-        return counts
+        # qc = self.code.circuit[str(logical)]
+        # qc = noisify_circuit(qc, noise_model)
+        # counts = AerSimulator().run(qc, shots=shots).result().get_counts()
+        return get_counts_via_stim(self.code.circuit[str(logical)], shots=shots, noise_model=noise_model)
+        # return counts
     
     def counts_to_IQ(self, counts: dict):
         total_shots = sum(counts.values())
