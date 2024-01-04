@@ -119,9 +119,13 @@ def reweight_edges_to_one(matching: pymatching.Matching):
                               error_probability=error_probability, merge_strategy="replace")
 
 
-def draw_matching_graph(matching, d, T, syndromes=None, matched_edges=None, figsize=(8, 6)):
+def draw_matching_graph(matching=None, d=3, T=3, syndromes=None, matched_edges=None, figsize=(8, 6), edge_list=None):
     
-    matched_edges = matched_edges.tolist() if matched_edges is not None else None
+    try:
+        matched_edges = matched_edges.tolist() if matched_edges is not None else None
+    except AttributeError:
+        matched_edges = matched_edges if matched_edges is not None else None
+
     G = nx.Graph()
     pos = {}
     edge_colors = []
@@ -144,9 +148,11 @@ def draw_matching_graph(matching, d, T, syndromes=None, matched_edges=None, figs
             node_colors.append('skyblue')
     
     # Add edges to the graph and keep track of their attributes for drawing
-    for edge in matching.edges():
-        src_node, tgt_node, edge_data = edge
-        if tgt_node is not None:
+    iterable = matching.edges() if edge_list is None else edge_list
+    for edge in iterable:
+        src_node, tgt_node, edge_data = edge if edge_list is None else (edge.node1, edge.node2, edge.attributes)
+        edge_data = {'weight': edge_data.weight, "fault_ids": edge_data.fault_ids} if edge_list is not None else edge_data
+        if tgt_node is not None and tgt_node != 18446744073709551615:
             G.add_edge(src_node, tgt_node, weight=edge_data['weight'])
             # Now we don't need to append the color and widths here, since we'll draw them individually
 
@@ -162,7 +168,8 @@ def draw_matching_graph(matching, d, T, syndromes=None, matched_edges=None, figs
     for edge in G.edges():
         src_node, tgt_node = edge
         #sorted_edge = tuple(sorted([src_node, tgt_node]))
-        if matched_edges is not None and ([src_node, tgt_node] in matched_edges or [tgt_node, src_node] in matched_edges):
+        if matched_edges is not None and (([src_node, tgt_node] in matched_edges or [tgt_node, src_node] in matched_edges)
+                                           or ((src_node, tgt_node) in matched_edges or (tgt_node, src_node) in matched_edges)):
             color = 'blue'
             width = highlighted_edge_width
         else:
@@ -177,13 +184,15 @@ def draw_matching_graph(matching, d, T, syndromes=None, matched_edges=None, figs
     edge_labels = {edge: f"{weight:.2f}" for edge, weight in edge_weights.items()}
     nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels)
 
-    for edge in matching.edges():
-        src_node, tgt_node, edge_data = edge
-        if tgt_node is None:
+    for edge in iterable:
+        src_node, tgt_node, edge_data = edge if edge_list is None else (edge.node1, edge.node2, edge.attributes)
+        edge_data = {'weight': edge_data.weight, "fault_ids": edge_data.fault_ids} if edge_list is not None else edge_data
+        if tgt_node is None or tgt_node == 18446744073709551615:
             x_src = src_node % (d-1)
             y_src = src_node // (d-1)
             if matched_edges is not None:
-                if [src_node, -1] in matched_edges or [-1, src_node] in matched_edges:
+                if ([src_node, -1] in matched_edges or [-1, src_node] in matched_edges 
+                    or (src_node, -1) in matched_edges or (-1, src_node) in matched_edges):
                     color = 'orange' if edge_data.get('fault_ids') else 'blue'
                     lw = highlighted_edge_width
                 else:

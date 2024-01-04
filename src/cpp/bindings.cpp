@@ -32,6 +32,8 @@ PYBIND11_MODULE(cpp_soft_info, m) {
     // m.def("print_edges_of_graph", &print_edges_of_graph, "Print the edges of a matching graph");
     m.def("processGraph_test", &processGraph_test, "Function to test process UserGraph");
 
+
+
     //////////// STRUCTS ////////////
 
     py::class_<GridData>(m, "GridData")
@@ -64,6 +66,8 @@ PYBIND11_MODULE(cpp_soft_info, m) {
         .def_readwrite("num_errors", &pm::DetailedDecodeResult::num_errors)
         .def_readwrite("error_details", &pm::DetailedDecodeResult::error_details);
     
+
+
 
     //////////// Usergraph Utils bindings ////////////
 
