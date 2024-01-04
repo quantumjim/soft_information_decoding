@@ -119,7 +119,7 @@ def reweight_edges_to_one(matching: pymatching.Matching):
                               error_probability=error_probability, merge_strategy="replace")
 
 
-def draw_matching_graph(matching=None, d=3, T=3, syndromes=None, matched_edges=None, figsize=(8, 6), edge_list=None):
+def draw_matching_graph(matching=None, d=3, T=3, syndromes=None, matched_edges=None, figsize=(8, 6), scale_factor=1, edge_list=None):
     
     try:
         matched_edges = matched_edges.tolist() if matched_edges is not None else None
@@ -136,7 +136,7 @@ def draw_matching_graph(matching=None, d=3, T=3, syndromes=None, matched_edges=N
     normal_edge_width = 1
     highlighted_edge_width = 5
 
-    # Add all nodes to the graph with their positions and initial colors
+    # Add all nodes to the graph with their positions afnd initial colors
     for i in range((d-1)*(T+1)):
         x_pos = i % (d-1)
         y_pos = i // (d-1)
@@ -156,13 +156,22 @@ def draw_matching_graph(matching=None, d=3, T=3, syndromes=None, matched_edges=N
             G.add_edge(src_node, tgt_node, weight=edge_data['weight'])
             # Now we don't need to append the color and widths here, since we'll draw them individually
 
+    # Adjust sizes and fonts
+    node_size = 100 * scale_factor  # Scale down node size
+    font_size = 12 * scale_factor   # Scale down font size
+    normal_edge_width *= scale_factor  # Scale down edge width
+    highlighted_edge_width *= scale_factor
+
+    # Scale node positions
+    pos = {node: (x * scale_factor, y * scale_factor) for node, (x, y) in pos.items()}
+
     
     # Draw the graph
     plt.figure(figsize=figsize)
     
     nx.draw(G, pos, labels={node: node for node in G.nodes()}, with_labels=True, 
             node_color=node_colors,
-            font_weight='bold', node_size=500, font_size=12)
+            font_weight='bold', node_size=node_size, font_size=font_size)
     
     # Draw the graph edges individually with their specific colors and widths
     for edge in G.edges():
@@ -182,7 +191,7 @@ def draw_matching_graph(matching=None, d=3, T=3, syndromes=None, matched_edges=N
     # Draw edge weights
     edge_weights = nx.get_edge_attributes(G, 'weight')
     edge_labels = {edge: f"{weight:.2f}" for edge, weight in edge_weights.items()}
-    nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels)
+    nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, font_size=font_size)
 
     for edge in iterable:
         src_node, tgt_node, edge_data = edge if edge_list is None else (edge.node1, edge.node2, edge.attributes)
@@ -190,6 +199,9 @@ def draw_matching_graph(matching=None, d=3, T=3, syndromes=None, matched_edges=N
         if tgt_node is None or tgt_node == 18446744073709551615:
             x_src = src_node % (d-1)
             y_src = src_node // (d-1)
+            x_src_old = x_src
+            x_src *= scale_factor
+            y_src *= scale_factor
             if matched_edges is not None:
                 if ([src_node, -1] in matched_edges or [-1, src_node] in matched_edges 
                     or (src_node, -1) in matched_edges or (-1, src_node) in matched_edges):
@@ -202,18 +214,18 @@ def draw_matching_graph(matching=None, d=3, T=3, syndromes=None, matched_edges=N
                     color = 'r' if edge_data.get('fault_ids') else 'k'
                     lw = normal_edge_width
             weight_text = f"{edge_data['weight']:.2f}" if 'weight' in edge_data else ""
-            if x_src == 0:
-                plt.plot([x_src, x_src - 0.5], [-y_src, -y_src], color=color, lw=lw)
-                plt.text(x_src - 0.45, -y_src + 0.03, weight_text, fontsize=10)
-            elif x_src == d - 2:
-                plt.plot([x_src, x_src + 0.5], [-y_src, -y_src], color=color, lw=lw)
-                plt.text(x_src + 0.2, -y_src + 0.03, weight_text, fontsize=10)
+            if x_src_old == 0:
+                plt.plot([x_src, x_src - 0.5*scale_factor], [-y_src, -y_src], color=color, lw=lw)
+                plt.text(x_src - 0.45*scale_factor, -y_src + 0.03*scale_factor, weight_text, fontsize=font_size)
+            elif x_src_old == d - 2:
+                plt.plot([x_src, x_src + 0.5*scale_factor], [-y_src, -y_src], color=color, lw=lw)
+                plt.text(x_src + 0.2*scale_factor, -y_src + 0.03*scale_factor, weight_text, fontsize=font_size)
     
     # Create legend handles
     red_node = mlines.Line2D([], [], color='red', marker='o', linestyle='None',
-                             markersize=10, label='Syndromes')
-    blue_edge = mlines.Line2D([], [], color='blue', lw=2, label='Matched edges')
-    orange_edge = mlines.Line2D([], [], color='orange', lw=2, label='Matched LOGICAL edges')
+                             markersize=10*scale_factor, label='Syndromes')
+    blue_edge = mlines.Line2D([], [], color='blue', lw=2*scale_factor, label='Matched edges')
+    orange_edge = mlines.Line2D([], [], color='orange', lw=2*scale_factor, label='Matched LOGICAL edges')
 
     # Create a legend
     legend_handles = []
@@ -225,10 +237,10 @@ def draw_matching_graph(matching=None, d=3, T=3, syndromes=None, matched_edges=N
     
 
     # Locate the legend
-    plt.legend(handles=legend_handles, bbox_to_anchor=(1.05, 1), loc='upper left', borderaxespad=0.)
+    plt.legend(handles=legend_handles, bbox_to_anchor=(1.05, 1), loc='upper left', borderaxespad=0.0, fontsize=font_size)
 
 
-    nx.draw_networkx_nodes(G, pos, node_color=node_colors, node_size=500)
+    nx.draw_networkx_nodes(G, pos, node_color=node_colors, node_size=node_size)
 
     plt.axis('scaled')
     plt.subplots_adjust(right=0.7)
