@@ -17,6 +17,7 @@ namespace pm {
 
     struct DetailedDecodeResult {
         int num_errors;
+        std::vector<int> indices;
         std::vector<ShotErrorDetails> error_details;
     };
 

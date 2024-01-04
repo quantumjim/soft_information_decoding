@@ -294,6 +294,7 @@ namespace pm {
             // Check if predicted_observables is not empty and compare the first element
             if (!predicted_observables.empty() && predicted_observables[0] != actual_observable) {
                 result.num_errors++;  // Increment error count if they don't match
+                result.indices.push_back(shot);
                 if (_detailed) {
                     ShotErrorDetails errorDetail = createShotErrorDetails(matching, detectionEvents, det_syndromes);
                     result.error_details.push_back(errorDetail);
@@ -333,6 +334,7 @@ namespace pm {
             // Check if predicted_observables is not empty and compare the first element
             if (!predicted_observables.empty() && predicted_observables[0] != actual_observable) {
                 result.num_errors++;  // Increment error count if they don't match
+                result.indices.push_back(shot);
                 if (_detailed) {
                     ShotErrorDetails errorDetail = createShotErrorDetails(matching, detectionEvents, det_syndromes);
                     result.error_details.push_back(errorDetail);
@@ -376,6 +378,7 @@ namespace pm {
             // Check if predicted_observables is not empty and compare the first element
             if (!predicted_observables.empty() && predicted_observables[0] != actual_observable) {
                 result.num_errors++;  // Increment error count if they don't match
+                result.indices.push_back(shot);
                 if (_detailed) {
                     ShotErrorDetails errorDetail = createShotErrorDetails(matching, detectionEvents, det_syndromes);
                     result.error_details.push_back(errorDetail);
@@ -422,6 +425,7 @@ namespace pm {
             int actual_observable = (static_cast<int>(count_key[0]) - logical) % 2;  // Convert first character to int and modulo 2
             if (!predicted_observables.empty() && predicted_observables[0] != actual_observable) {
                 result.num_errors++;  // Increment error count if they don't match
+                result.indices.push_back(shot);
                 if (_detailed) {
                     ShotErrorDetails errorDetail = createShotErrorDetails(matching, detectionEvents, det_syndromes);
                     result.error_details.push_back(errorDetail);
@@ -461,6 +465,7 @@ namespace pm {
             int actual_observable = (static_cast<int>(count_key[0]) - logical) % 2;  // Convert first character to int and modulo 2
             if (!predicted_observables.empty() && predicted_observables[0] != actual_observable) {
                 result.num_errors++;  // Increment error count if they don't match
+                result.indices.push_back(shot);
                 if (_detailed) {
                     ShotErrorDetails errorDetail = createShotErrorDetails(matching, detectionEvents, det_syndromes);
                     result.error_details.push_back(errorDetail);

@@ -64,6 +64,7 @@ PYBIND11_MODULE(cpp_soft_info, m) {
     py::class_<pm::DetailedDecodeResult>(m, "DetailedDecodeResult")
         .def(py::init<>())
         .def_readwrite("num_errors", &pm::DetailedDecodeResult::num_errors)
+        .def_readwrite("indices", &pm::DetailedDecodeResult::indices)
         .def_readwrite("error_details", &pm::DetailedDecodeResult::error_details);
     
 
