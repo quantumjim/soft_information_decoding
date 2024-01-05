@@ -98,11 +98,12 @@ class TestRepCodeIQSimulator(unittest.TestCase):
 
     @patch.object(RepCodeIQSimulator, '__init__', lambda x, *args, **kwargs: None)
     @patch('soft_info.IQ_data.simulator.RepCodeIQSimulator.get_counts')
-    def test_counts_to_IQ_extreme(self, mock_get_counts):
+    @patch('soft_info.IQ_data.simulator.RepCodeIQSimulator.generate_IQ_dict')
+    def test_generate_extreme_IQ(self, mock_generate_IQ_dict, mock_get_counts):
 
         # Mock set up
         mock_get_counts.return_value = {"00 0": 1}
-        mock_IQ_dict = {
+        mock_generate_IQ_dict.return_value = {
             0: {"iq_point_safe": (0.09+0.09j), "iq_point_ambig": (0+0j)},
             1: {"iq_point_safe": (0.1+0.1j), "iq_point_ambig": (1+1j)},
             2: {"iq_point_safe": (0.2+0.2j), "iq_point_ambig": (2+2j)},
@@ -113,8 +114,8 @@ class TestRepCodeIQSimulator(unittest.TestCase):
         simulator.qubit_mapping = [0, 2, 1]  
         simulator.rounds = 1
 
-        iq_memory_safe = simulator.counts_to_IQ_extreme(shots=1, IQ_dict=mock_IQ_dict, p_ambig=0)
-        iq_memory_ambig = simulator.counts_to_IQ_extreme(shots=1, IQ_dict=mock_IQ_dict, p_ambig=1)
+        iq_memory_safe = simulator.generate_extreme_IQ(shots=1, p_ambig=0, noise_model=None)
+        iq_memory_ambig = simulator.generate_extreme_IQ(shots=1, p_ambig=1, noise_model=None)
 
         # Assertions
         np.testing.assert_array_almost_equal(iq_memory_safe, np.array([[0.09+0.09j, 0.2+0.2j, 0.1+0.1j]]), decimal=5)
