@@ -167,7 +167,7 @@ class RepCodeIQSimulator():
     def counts_to_IQ_extreme(self, shots: int, p_ambig: float in (0, 1), IQ_dict: dict):
         IQ_memory = np.zeros((shots, len(self.qubit_mapping)), dtype=np.complex128)
         count_str = list(self.get_counts(shots=1, noise_model=None, logical=0).keys())[0]# hardcoded for logical 0
-        print("count_str:", count_str)
+        print("\n---- count_str:", count_str, "----\n")
 
         for shot_idx in range(shots):
             num_spaces = 0
@@ -182,6 +182,8 @@ class RepCodeIQSimulator():
                 # sample with p_ambig
                 _ambig = np.random.choice([False, True], p=[1-p_ambig, p_ambig])
                 point_str = "safe" if not _ambig else "ambig"
+                if num_spaces == self.rounds:
+                    point_str = "safe"
                 sample = IQ_dict[qubit_idx]["iq_point_"+point_str]
 
                 IQ_memory[shot_idx, cIQ_idx] = sample
