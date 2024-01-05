@@ -119,10 +119,6 @@ class RepCodeIQSimulator():
             restricted_diff_max = np.where(mask, grid_diff_max, -np.inf)
             restricted_diff_min = np.where(mask, np.where(grid.grid_density_1 > grid.grid_density_0, grid_diff_min, np.inf), np.inf)
 
-            # Find the maximum and minimum differences in the restricted grids
-            max_diff = np.max(restricted_diff_max)
-            min_diff = np.min(restricted_diff_min)
-
             # Get the coordinates of the maximum and minimum differences
             max_diff_coordinate = np.unravel_index(np.argmax(restricted_diff_max), grid_diff_max.shape)
             min_diff_coordinate = np.unravel_index(np.argmin(restricted_diff_min), grid_diff_min.shape)
