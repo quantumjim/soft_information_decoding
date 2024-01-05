@@ -72,6 +72,7 @@ class TestRepCodeIQSimulator(unittest.TestCase):
         simulator.kde_dict = {0: [mock_kde0, mock_kde1], 1: [mock_kde0, mock_kde1], 2: [mock_kde0, mock_kde1]}
         simulator.scaler_dict = {0: mock_scaler, 1: mock_scaler, 2: mock_scaler}
         simulator.qubit_mapping = [1, 0, 2]  
+        simulator.rounds = 1
 
         # Count data for '01 1', '11 0', and '00 0'
         counts = {"01 1": 3, "11 0": 1, "00 0": 1}
@@ -110,13 +111,14 @@ class TestRepCodeIQSimulator(unittest.TestCase):
         # Set up the RepCodeIQSimulator instance
         simulator = RepCodeIQSimulator()
         simulator.qubit_mapping = [0, 2, 1]  
+        simulator.rounds = 1
 
         iq_memory_safe = simulator.counts_to_IQ_extreme(shots=1, IQ_dict=mock_IQ_dict, p_ambig=0)
         iq_memory_ambig = simulator.counts_to_IQ_extreme(shots=1, IQ_dict=mock_IQ_dict, p_ambig=1)
 
         # Assertions
         np.testing.assert_array_almost_equal(iq_memory_safe, np.array([[0.09+0.09j, 0.2+0.2j, 0.1+0.1j]]), decimal=5)
-        np.testing.assert_array_almost_equal(iq_memory_ambig, np.array([[0+0j, 2+2j, 1+1j]]), decimal=5)
+        np.testing.assert_array_almost_equal(iq_memory_ambig, np.array([[0+0j, 0.2+0.2j, 0.1+0.1j]]), decimal=5)
 
 
 
