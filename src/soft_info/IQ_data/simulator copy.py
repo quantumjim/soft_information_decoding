@@ -117,24 +117,22 @@ class RepCodeIQSimulator():
     def generate_IQ_dict(self) -> dict:
         IQ_dict = {}
         for qubit_idx, grid in self.grid_dict.items():
-            print()
-            print("qubit_idx", qubit_idx)
             # Calculate the differences for both states
-            grid_diff_0 = grid.grid_density_0 - grid.grid_density_1  # Max diff for state '0'
-            grid_diff_1 = grid.grid_density_1 - grid.grid_density_0  # Max diff for state '1'
+            grid_diff_max_0 = grid.grid_density_0 - grid.grid_density_1  # Max diff for state '0'
+            grid_diff_max_1 = grid.grid_density_1 - grid.grid_density_0  # Max diff for state '1'
 
             # Apply coordinate restriction
             mask = (grid.grid_x > -1) & (grid.grid_x < 1) & (grid.grid_y > -1) & (grid.grid_y < 1)
-            restricted_diff_max_0 = np.where(mask, grid_diff_0, -np.inf)
-            restricted_diff_min_0 = np.where(mask, np.where(grid.grid_density_1 > grid.grid_density_0, grid_diff_0, np.inf), np.inf)
-            restricted_diff_max_1 = np.where(mask, grid_diff_1, -np.inf)
-            restricted_diff_min_1 = np.where(mask, np.where(grid.grid_density_0 > grid.grid_density_1, grid_diff_1, np.inf), np.inf)
+            restricted_diff_max_0 = np.where(mask, grid_diff_max_0, -np.inf)
+            restricted_diff_min_0 = np.where(mask, np.where(grid.grid_density_1 > grid.grid_density_0, grid_diff_max_0, np.inf), np.inf)
+            restricted_diff_max_1 = np.where(mask, grid_diff_max_1, -np.inf)
+            restricted_diff_min_1 = np.where(mask, np.where(grid.grid_density_0 > grid.grid_density_1, grid_diff_max_1, np.inf), np.inf)
 
             # Get the coordinates of the maximum and minimum differences for both states
-            max_diff_coordinate_0 = np.unravel_index(np.argmax(restricted_diff_max_0), grid_diff_0.shape)
-            min_diff_coordinate_0 = np.unravel_index(np.argmin(restricted_diff_min_0), grid_diff_0.shape)
-            max_diff_coordinate_1 = np.unravel_index(np.argmax(restricted_diff_max_1), grid_diff_1.shape)
-            min_diff_coordinate_1 = np.unravel_index(np.argmin(restricted_diff_min_1), grid_diff_1.shape)
+            max_diff_coordinate_0 = np.unravel_index(np.argmax(restricted_diff_max_0), grid_diff_max_0.shape)
+            min_diff_coordinate_0 = np.unravel_index(np.argmin(restricted_diff_min_0), grid_diff_max_0.shape)
+            max_diff_coordinate_1 = np.unravel_index(np.argmax(restricted_diff_max_1), grid_diff_max_1.shape)
+            min_diff_coordinate_1 = np.unravel_index(np.argmin(restricted_diff_min_1), grid_diff_max_1.shape)
 
             # Get the scaler parameters
             (mean_real, std_real), (mean_imag, std_imag) = self.processed_scaler_dict[qubit_idx]
@@ -145,13 +143,9 @@ class RepCodeIQSimulator():
 
             # Create complex IQ points for both states
             iq_point_safe_0 = complex(*rescale(grid.grid_x[max_diff_coordinate_0], grid.grid_y[max_diff_coordinate_0]))
-            print("grid_point_safe_0", (grid.grid_x[max_diff_coordinate_0], grid.grid_y[max_diff_coordinate_0]))
             iq_point_ambig_0 = complex(*rescale(grid.grid_x[min_diff_coordinate_0], grid.grid_y[min_diff_coordinate_0]))
-            print("grid_point_ambig_0", (grid.grid_x[min_diff_coordinate_0], grid.grid_y[min_diff_coordinate_0]))
             iq_point_safe_1 = complex(*rescale(grid.grid_x[max_diff_coordinate_1], grid.grid_y[max_diff_coordinate_1]))
-            print("grid_point_safe_1", (grid.grid_x[max_diff_coordinate_1], grid.grid_y[max_diff_coordinate_1]))
             iq_point_ambig_1 = complex(*rescale(grid.grid_x[min_diff_coordinate_1], grid.grid_y[min_diff_coordinate_1]))
-            print("grid_point_ambig_1", (grid.grid_x[min_diff_coordinate_1], grid.grid_y[min_diff_coordinate_1]))
 
             # Append to IQ_dict
             IQ_dict[qubit_idx] = {

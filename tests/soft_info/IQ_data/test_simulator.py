@@ -102,11 +102,11 @@ class TestRepCodeIQSimulator(unittest.TestCase):
     def test_generate_extreme_IQ(self, mock_generate_IQ_dict, mock_get_counts):
 
         # Mock set up
-        mock_get_counts.return_value = {"00 0": 1}
+        mock_get_counts.return_value = {"00 0": 1, "01 1": 1}
         mock_generate_IQ_dict.return_value = {
-            0: {"iq_point_safe": (0.09+0.09j), "iq_point_ambig": (0+0j)},
-            1: {"iq_point_safe": (0.1+0.1j), "iq_point_ambig": (1+1j)},
-            2: {"iq_point_safe": (0.2+0.2j), "iq_point_ambig": (2+2j)},
+            0: {"iq_point_safe_0": (0.09+0.09j), "iq_point_ambig_0": (0+0j), "iq_point_safe_1": (0.091+0.091j), "iq_point_ambig_1": (0+1j)},
+            1: {"iq_point_safe_0": (0.1+0.1j), "iq_point_ambig_0": (1+1j), "iq_point_safe_1": (0.11+0.11j), "iq_point_ambig_1": (1+1j)},
+            2: {"iq_point_safe_0": (0.2+0.2j), "iq_point_ambig_0": (2+2j), "iq_point_safe_1": (0.21+0.21j), "iq_point_ambig_1": (2+3j)},
             }
 
         # Set up the RepCodeIQSimulator instance
@@ -118,8 +118,8 @@ class TestRepCodeIQSimulator(unittest.TestCase):
         iq_memory_ambig = simulator.generate_extreme_IQ(shots=1, p_ambig=1, noise_model=None)
 
         # Assertions
-        np.testing.assert_array_almost_equal(iq_memory_safe, np.array([[0.09+0.09j, 0.2+0.2j, 0.1+0.1j]]), decimal=5)
-        np.testing.assert_array_almost_equal(iq_memory_ambig, np.array([[0+0j, 0.2+0.2j, 0.1+0.1j]]), decimal=5)
+        np.testing.assert_array_almost_equal(iq_memory_safe, np.array([[0.09+0.09j, 0.2+0.2j, 0.1+0.1j], [0.091+0.091j, 0.21+0.21j, 0.1+0.1j]]), decimal=5)
+        np.testing.assert_array_almost_equal(iq_memory_ambig, np.array([[0+0j, 0.2+0.2j, 0.1+0.1j], [0+1j, 0.21+0.21j, 0.1+0.1j]]), decimal=5)
 
 
 
