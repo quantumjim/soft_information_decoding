@@ -98,7 +98,9 @@ namespace pm {
                     llh_weight = llh_ratio(scaled_point, grid_data);
                     float llh_prob = 1 / (1 + (1 / std::exp(-llh_weight)));
                     // std::cout << "llh_prob before: " << llh_prob << std::endl;
-                    llh_prob += edge_data.error_probability; // ignoring the cross terms because order 2 for now
+
+                    llh_prob = llh_prob + edge_data.error_probability - 2 * llh_prob * edge_data.error_probability;
+                    // added crossterms to not get negative weights
                     llh_weight = -std::log(llh_prob / (1 - llh_prob));
                     // std::cout << "llh_prob after: " << llh_prob << std::endl;
                     // std::cout << "llh_weight: " << llh_weight << std::endl;
