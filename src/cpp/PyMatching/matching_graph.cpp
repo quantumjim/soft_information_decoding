@@ -93,12 +93,14 @@ namespace pm {
                 Eigen::Vector2d scaled_point = {real_scaled, imag_scaled};
 
                 // Steb 2.2: get t-1 point
-                Eigen::Vector2d scaled_point_tminus1;
+                Eigen::Vector2d scaled_point_tminus1 = {0, 0};
                 if (_adv_probs and not _resets) {
-                    std::complex<double> iq_point_tminus1 = not_scaled_IQ_data(0, src_node - (distance-1)); // Hardcoded for RepCodes
-                    double real_scaled_tminus1 = (std::real(iq_point_tminus1) - real_params.first) / real_params.second;
-                    double imag_scaled_tminus1 = (std::imag(iq_point_tminus1) - imag_params.first) / imag_params.second;
-                    scaled_point_tminus1 = {real_scaled_tminus1, imag_scaled_tminus1};
+                    if (src_node - (distance-1)>=0) {
+                        std::complex<double> iq_point_tminus1 = not_scaled_IQ_data(0, src_node - (distance-1)); // Hardcoded for RepCodes
+                        double real_scaled_tminus1 = (std::real(iq_point_tminus1) - real_params.first) / real_params.second;
+                        double imag_scaled_tminus1 = (std::imag(iq_point_tminus1) - imag_params.first) / imag_params.second;
+                        scaled_point_tminus1 = {real_scaled_tminus1, imag_scaled_tminus1};
+                    }
                 }
 
                 // Step 3: Get the llh_ratio
@@ -118,9 +120,12 @@ namespace pm {
                 } else {
                     if (_adv_probs and not _resets) {
                         llh_weight = llh_ratio(scaled_point, grid_data);
-                        llh_weight_tminus1 = llh_ratio(scaled_point_tminus1, grid_data);
+                        float p_soft_tminus1 = 0;
                         float p_soft = 1 / (1 + (1 / std::exp(-llh_weight)));
-                        float p_soft_tminus1 = 1 / (1 + (1 / std::exp(-llh_weight_tminus1)));
+                        if (src_node - (distance-1)>=0) {
+                            llh_weight_tminus1 = llh_ratio(scaled_point_tminus1, grid_data);
+                            p_soft_tminus1 = 1 / (1 + (1 / std::exp(-llh_weight_tminus1)));
+                        }
                         float p_h = edge_data.error_probability;
                         float edge_prob = p_h * (1-p_soft_tminus1) * (1-p_soft) 
                                         + (1-p_h) * p_soft_tminus1 * (1-p_soft)
@@ -309,13 +314,11 @@ namespace pm {
             auto counts = get_counts(not_scaled_IQ_shot_matrix, qubit_mapping, kde_grid_dict, scaler_params_dict, synd_rounds);
             std::string count_key = counts.begin()->first;
 
-            std::cout << "before the reweighting" << std::endl;
             // add copying the graph to recompute weights to 1 or something 
             soft_reweight_pymatching(matching, not_scaled_IQ_shot_matrix, synd_rounds, _resets,
                                     qubit_mapping, kde_grid_dict, scaler_params_dict, p_data, p_mixed, 
                                     common_measure, _adv_probs, _bimodal, merge_strategy);
 
-            std::cout << "after the reweighting" << std::endl;
 
             auto det_syndromes = counts_to_det_syndr(count_key, _resets, false);
             auto detectionEvents = syndromeArrayToDetectionEvents(det_syndromes, matching.get_num_detectors(), matching.get_boundary().size());
