@@ -20,7 +20,7 @@ namespace pm {
         const std::map<int, GridData>& kde_grid_dict,
         const std::map<int, std::pair<std::pair<double, double>, std::pair<double, double>>>& scaler_params_dict, 
         float p_data, float p_mixed, float common_measure,
-        bool _adv_probs, bool _bimodal, const std::string& merge_strategy) {
+        bool _adv_probs, bool _bimodal, const std::string& merge_strategy, float p_offset) {
 
         // Distance
         int distance = (not_scaled_IQ_data.cols() + synd_rounds) / (synd_rounds + 1); // Hardcoded for RepCodes
@@ -127,9 +127,9 @@ namespace pm {
                             p_soft_tminus1 = 1 / (1 + (1 / std::exp(-llh_weight_tminus1)));
                         }
                         float p_h = edge_data.error_probability;
-                        float edge_prob = p_h * (1-p_soft_tminus1) * (1-p_soft) 
-                                        + (1-p_h) * p_soft_tminus1 * (1-p_soft)
-                                        + (1-p_h) * (1-p_soft_tminus1) * p_soft;
+                        float edge_prob = p_h * (p_offset-p_soft_tminus1) * (p_offset-p_soft) 
+                                        + (1-p_h) * p_soft_tminus1 * (p_offset-p_soft)
+                                        + (1-p_h) * (p_offset-p_soft_tminus1) * p_soft;
                         llh_weight = -std::log(edge_prob / (1 - edge_prob));
                     } else {
                         llh_weight = llh_ratio(scaled_point, grid_data);
@@ -304,7 +304,8 @@ namespace pm {
         const std::map<int, GridData>& kde_grid_dict,
         const std::map<int, std::pair<std::pair<double, double>, std::pair<double, double>>>& scaler_params_dict, 
         float p_data, float p_mixed, float common_measure,
-        bool _adv_probs, bool _bimodal, const std::string& merge_strategy, bool _detailed) {
+        bool _adv_probs, bool _bimodal, const std::string& merge_strategy, bool _detailed,
+        float p_offset) {
         
         DetailedDecodeResult result;
         result.num_errors = 0;
@@ -317,7 +318,7 @@ namespace pm {
             // add copying the graph to recompute weights to 1 or something 
             soft_reweight_pymatching(matching, not_scaled_IQ_shot_matrix, synd_rounds, _resets,
                                     qubit_mapping, kde_grid_dict, scaler_params_dict, p_data, p_mixed, 
-                                    common_measure, _adv_probs, _bimodal, merge_strategy);
+                                    common_measure, _adv_probs, _bimodal, merge_strategy, p_offset);
 
 
             auto det_syndromes = counts_to_det_syndr(count_key, _resets, false);

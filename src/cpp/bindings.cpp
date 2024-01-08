@@ -129,7 +129,7 @@ PYBIND11_MODULE(cpp_soft_info, m) {
       py::arg("kde_grid_dict"), py::arg("scaler_params_dict"), 
       py::arg("p_data"), py::arg("p_mixed"), py::arg("common_measure"), 
       py::arg("_adv_probs") = false, py::arg("_bimodal") = false, 
-      py::arg("merge_strategy") = "replace");
+      py::arg("merge_strategy") = "replace", py::arg("p_offset") = 1.0);
     
     m.def("reweight_edges_to_one", &pm::reweight_edges_to_one, 
       "Reweight a matching graph to have edge weights of 1",
@@ -155,7 +155,7 @@ PYBIND11_MODULE(cpp_soft_info, m) {
       py::arg("p_data"), py::arg("p_mixed"), py::arg("common_measure"), 
       py::arg("_adv_probs") = false,
       py::arg("_bimodal") = false, py::arg("merge_strategy") = "replace",
-      py::arg("_detailed") = false);
+      py::arg("_detailed") = false, py::arg("p_offset") = 1.0);
 
     m.def("decode_IQ_shots_flat", &pm::decode_IQ_shots_flat,
       "Decode a matching graph using IQ data but weight edges to 1",
