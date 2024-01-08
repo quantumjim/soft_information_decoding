@@ -25,11 +25,12 @@ namespace pm {
         UserGraph &matching,
         const Eigen::MatrixXcd& not_scaled_IQ_data,
         int synd_rounds,
+        bool _resets,
         const std::map<int, int>& qubit_mapping,
         const std::map<int, GridData>& kde_grid_dict,
         const std::map<int, std::pair<std::pair<double, double>, std::pair<double, double>>>& scaler_params_dict, // Adjusted to hold pairs of pairs
         float p_data = -1, float p_mixed = -1, float common_measure = -1,
-        bool _bimodal = false, const std::string& merge_strategy = "replace");
+        bool _adv_probs = false, bool _bimodal = false, const std::string& merge_strategy = "replace");
 
     void reweight_edges_to_one(UserGraph &matching);
 
@@ -55,7 +56,7 @@ namespace pm {
         const std::map<int, GridData>& kde_grid_dict,
         const std::map<int, std::pair<std::pair<double, double>, std::pair<double, double>>>& scaler_params_dict, 
         float p_data, float p_mixed, float common_measure = -1,
-        bool _bimodal = false,
+        bool _adv_probs = false, bool _bimodal = false,
         const std::string& merge_strategy = "replace",
         bool _detailed = false);
     

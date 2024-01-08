@@ -124,10 +124,12 @@ PYBIND11_MODULE(cpp_soft_info, m) {
     m.def("soft_reweight_pymatching", &pm::soft_reweight_pymatching, 
       "Reweight a matching graph using soft information",
       py::arg("matching"), py::arg("not_scaled_IQ_data"), 
-      py::arg("synd_rounds"), py::arg("qubit_mapping"), 
+      py::arg("synd_rounds"), py::arg("_resets"),
+      py::arg("qubit_mapping"), 
       py::arg("kde_grid_dict"), py::arg("scaler_params_dict"), 
       py::arg("p_data"), py::arg("p_mixed"), py::arg("common_measure"), 
-      py::arg("_bimodal") = false, py::arg("merge_strategy") = "replace");
+      py::arg("_adv_probs") = false, py::arg("_bimodal") = false, 
+      py::arg("merge_strategy") = "replace");
     
     m.def("reweight_edges_to_one", &pm::reweight_edges_to_one, 
       "Reweight a matching graph to have edge weights of 1",
@@ -151,6 +153,7 @@ PYBIND11_MODULE(cpp_soft_info, m) {
       py::arg("_resets"), py::arg("qubit_mapping"), 
       py::arg("kde_grid_dict"), py::arg("scaler_params_dict"), 
       py::arg("p_data"), py::arg("p_mixed"), py::arg("common_measure"), 
+      py::arg("_adv_probs") = false,
       py::arg("_bimodal") = false, py::arg("merge_strategy") = "replace",
       py::arg("_detailed") = false);
 
