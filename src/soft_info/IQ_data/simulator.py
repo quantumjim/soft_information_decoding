@@ -3,6 +3,7 @@
 
 
 import warnings
+from collections import OrderedDict
 
 import numpy as np
 from tqdm import tqdm
@@ -20,6 +21,11 @@ from Scratch import create_or_load_kde_grid
 
 
 class RepCodeIQSimulator():
+
+    _kde_cache = OrderedDict()
+    _grid_cache = OrderedDict()
+    _max_cache_size = 2
+
     def __init__(self, provider, distance: int, rounds: int, device: int, _is_hex: bool = True,
                  _resets: bool = False, other_date = None) -> None:
         self.provider = provider
@@ -30,13 +36,33 @@ class RepCodeIQSimulator():
         self.backend = self.provider.get_backend(self.device)
         self.layout = get_repcode_layout(self.distance, self.backend, _is_hex=_is_hex)
         self.qubit_mapping = get_repcode_IQ_map(self.layout, self.rounds)
-        self.kde_dict, self.scaler_dict = get_KDEs(self.provider, tobecalib_backend=self.device, other_date=self.other_date)
         self.code = RepetitionCodeCircuit(self.distance, self.rounds, resets=_resets)
-        self.grid_dict, self.processed_scaler_dict = create_or_load_kde_grid(self.provider, tobecalib_backend=self.device,
-                                                           num_grid_points=300, num_std_dev=2, other_date=self.other_date)
 
+        kde_cache_key = (device, other_date)
+        grid_cache_key = (device, other_date)
 
-    def get_noise_model(self, p1Q, p2Q, pXY, pZ, pRO, pRE) -> PauliNoiseModel:
+        if kde_cache_key in RepCodeIQSimulator._kde_cache:
+            self.kde_dict, self.scaler_dict = RepCodeIQSimulator._kde_cache[kde_cache_key]
+            RepCodeIQSimulator._kde_cache.move_to_end(kde_cache_key)
+        else:
+            self.kde_dict, self.scaler_dict = get_KDEs(self.provider, tobecalib_backend=self.device, other_date=self.other_date)
+            RepCodeIQSimulator._update_cache(RepCodeIQSimulator._kde_cache, kde_cache_key, (self.kde_dict, self.scaler_dict))
+
+        if grid_cache_key in RepCodeIQSimulator._grid_cache:
+            self.grid_dict, self.processed_scaler_dict = RepCodeIQSimulator._grid_cache[grid_cache_key]
+            RepCodeIQSimulator._grid_cache.move_to_end(grid_cache_key)
+        else:
+            self.grid_dict, self.processed_scaler_dict = create_or_load_kde_grid(self.provider, tobecalib_backend=self.device, num_grid_points=300, num_std_dev=2, other_date=self.other_date)
+            RepCodeIQSimulator._update_cache(RepCodeIQSimulator._grid_cache, grid_cache_key, (self.grid_dict, self.processed_scaler_dict))
+
+    @staticmethod
+    def _update_cache(cache: OrderedDict, key, value):
+        if len(cache) >= RepCodeIQSimulator._max_cache_size:
+            cache.popitem(last=False)  # Remove the oldest item
+        cache[key] = value
+
+    @staticmethod
+    def get_noise_model(p1Q, p2Q, pXY, pZ, pRO, pRE) -> PauliNoiseModel:
         error_dict = {'reset': {"chan": {'i':1-pRE, 'x':pRE}},
                     'measure': {"chan": {'i':1-pRO, 'x':pRO}},
                     'h': {"chan": {'i':1-p1Q} | {i:p1Q/3 for i in 'xyz'}},
