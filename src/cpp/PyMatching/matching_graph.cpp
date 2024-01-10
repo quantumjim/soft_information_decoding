@@ -20,7 +20,8 @@ namespace pm {
         const std::map<int, GridData>& kde_grid_dict,
         const std::map<int, std::pair<std::pair<double, double>, std::pair<double, double>>>& scaler_params_dict, 
         float p_data, float p_mixed, float common_measure,
-        bool _adv_probs, bool _bimodal, const std::string& merge_strategy, float p_offset) {
+        bool _adv_probs, bool _bimodal, const std::string& merge_strategy, float p_offset,
+        float p_multiplicator) {
 
         // Distance
         int distance = (not_scaled_IQ_data.cols() + synd_rounds) / (synd_rounds + 1); // Hardcoded for RepCodes
@@ -126,7 +127,7 @@ namespace pm {
                             llh_weight_tminus1 = llh_ratio(scaled_point_tminus1, grid_data);
                             p_soft_tminus1 = 1 / (1 + (1 / std::exp(-llh_weight_tminus1)));
                         }
-                        float p_h = edge_data.error_probability;
+                        float p_h = edge_data.error_probability * p_multiplicator;
                         float edge_prob = p_h * (p_offset-p_soft_tminus1) * (p_offset-p_soft) 
                                         + (1-p_h) * p_soft_tminus1 * (p_offset-p_soft)
                                         + (1-p_h) * (p_offset-p_soft_tminus1) * p_soft;
@@ -305,7 +306,7 @@ namespace pm {
         const std::map<int, std::pair<std::pair<double, double>, std::pair<double, double>>>& scaler_params_dict, 
         float p_data, float p_mixed, float common_measure,
         bool _adv_probs, bool _bimodal, const std::string& merge_strategy, bool _detailed,
-        float p_offset) {
+        float p_offset, float p_multiplicator) {
         
         DetailedDecodeResult result;
         result.num_errors = 0;
@@ -318,7 +319,7 @@ namespace pm {
             // add copying the graph to recompute weights to 1 or something 
             soft_reweight_pymatching(matching, not_scaled_IQ_shot_matrix, synd_rounds, _resets,
                                     qubit_mapping, kde_grid_dict, scaler_params_dict, p_data, p_mixed, 
-                                    common_measure, _adv_probs, _bimodal, merge_strategy, p_offset);
+                                    common_measure, _adv_probs, _bimodal, merge_strategy, p_offset, p_multiplicator);
 
 
             auto det_syndromes = counts_to_det_syndr(count_key, _resets, false);
