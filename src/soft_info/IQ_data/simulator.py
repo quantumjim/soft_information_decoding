@@ -10,6 +10,7 @@ from tqdm import tqdm
 from qiskit_qec.circuits import RepetitionCodeCircuit
 from qiskit_qec.noise import PauliNoiseModel
 from qiskit_qec.utils import get_counts_via_stim
+import stim
 
 from ..Hardware.transpile_rep_code import get_repcode_layout, get_repcode_IQ_map
 from ..Probabilities.KDE import get_KDEs
@@ -36,7 +37,9 @@ class RepCodeIQSimulator():
         self.backend = self.provider.get_backend(self.device)
         self.layout = get_repcode_layout(self.distance, self.backend, _is_hex=_is_hex)
         self.qubit_mapping = get_repcode_IQ_map(self.layout, self.rounds)
-        self.code = RepetitionCodeCircuit(self.distance, self.rounds, resets=_resets)
+        self._resets = _resets
+        # self.code = RepetitionCodeCircuit(self.distance, self.rounds, resets=_resets)
+        self.stim_circ = None
 
         kde_cache_key = (device, other_date)
         grid_cache_key = (device, other_date)
@@ -73,13 +76,85 @@ class RepCodeIQSimulator():
                     'swap': {"chan": {'ii':1-p2Q} | {i+j:p2Q/15 for i in 'ixyz' for j in 'ixyz' if i+j!='ii'}}}
         return PauliNoiseModel(fromdict=error_dict)
     
-    def get_counts(self, shots: int, noise_model: PauliNoiseModel, logical: int) -> dict:
-        warnings.warn("Getting counts via stim. This may take time...")
-        # qc = self.code.circuit[str(logical)]
-        # qc = noisify_circuit(qc, noise_model)
-        # counts = AerSimulator().run(qc, shots=shots).result().get_counts()
-        return get_counts_via_stim(self.code.circuit[str(logical)], shots=shots, noise_model=noise_model)
-        # return counts
+    def get_stim_circuit(self, noise_list: list) -> stim.Circuit:
+        """Returns a stim circuit with the given noise parameters.        
+        Args:
+            noise_list (list): List of noise parameters [two-qubit-fidelity, reset error, measurement error, idle error].
+        """
+        circuit = stim.Circuit.generated("repetition_code:memory",
+                                distance=self.distance,
+                                rounds=self.rounds,
+                                after_clifford_depolarization=noise_list[0], #two-qubit-fidelity,
+                                after_reset_flip_probability=noise_list[1], #reset error,
+                                before_measure_flip_probability=noise_list[2], #measurement error,
+                                before_round_data_depolarization=noise_list[3]) #idle error)
+        self.stim_circ = circuit
+
+    
+    def get_counts(self, shots: int, stim_circuit: stim.Circuit, verbose=False) -> dict:
+        meas_outcomes = stim_circuit.compile_sampler().sample(shots)
+        counts = {}
+        for row in meas_outcomes:
+            count_str = ''
+            for nb, bit in enumerate(row):
+                count_str += '0' if bit == False else '1'
+                if (nb+1) % (self.distance-1) == 0 and nb < self.rounds*(self.distance-1):
+                    count_str += ' ' 
+            count_str = count_str[::-1]
+            if count_str in counts:
+                counts[count_str] += 1
+            else:
+                counts[count_str] = 1
+        
+        # correct samples to have no reset counts if _resets == False
+        if self._resets == False:
+            no_reset_counts = {}
+            for count_key, shots in counts.items():
+                parts=count_key.split(" ")
+                print("parts:", parts) if verbose else None
+                count_part = parts[0]
+                print("count_part:", count_part) if verbose else None  
+                check_parts = parts[1:]
+                print("check_parts:", check_parts, "\n") if verbose else None
+
+                for i in range(len(check_parts)):
+                    if i == 0:
+                        print("skipped last check part:", check_parts[-1], "\n") if verbose else None
+                        continue
+                    current_check_str = check_parts[-(i+1)]
+                    print("current_check_str:", current_check_str) if verbose else None
+                    prev_check_str = check_parts[-i]
+                    print("prev_check_str:", prev_check_str) if verbose else None
+                    new_check_str = ''
+                    for bit1, bit2 in zip(prev_check_str, current_check_str):
+                        new_check_str += str(int(bit1)^int(bit2))
+                    print("new_check_str:", new_check_str, "\n") if verbose else None
+                    check_parts[-(i+1)] = new_check_str
+
+                print("\ncheck_parts after modulo:", check_parts) if verbose else None
+
+                new_count_str = count_part + " " +  ' '.join(check_parts)
+                print("\nnew_count_str:", new_count_str) if verbose else None
+
+                
+                if new_count_str in no_reset_counts:
+                    no_reset_counts[new_count_str] += shots
+                else:
+                    no_reset_counts[new_count_str] = shots
+            counts = no_reset_counts
+        
+        return counts
+
+
+        
+    # def get_counts(self, shots: int, noise_model: PauliNoiseModel, logical: int) -> dict:
+    #     warnings.warn("Getting counts via stim. This may take time...")
+    #     # qc = self.code.circuit[str(logical)]
+    #     # qc = noisify_circuit(qc, noise_model)
+    #     # counts = AerSimulator().run(qc, shots=shots).result().get_counts()
+    #     return get_counts_via_stim(self.code.circuit[str(logical)], shots=shots, noise_model=noise_model)
+    #     # return counts
+
     
     def counts_to_IQ(self, counts: dict):
         total_shots = sum(counts.values())
@@ -226,16 +301,20 @@ class RepCodeIQSimulator():
         return IQ_memory
 
 
-    def generate_IQ(self, shots: int, noise_model: PauliNoiseModel, logical: int) -> list:
-        counts = self.get_counts(shots, noise_model, logical)
+    def generate_IQ(self, shots: int, noise_list: list, logical: int = None, verbose = False) -> list:
+        warnings.warn("Logical != 0 is currently not supported") if logical is not None else None
+        stim_circ = self.get_stim_circuit(noise_list)
+        counts = self.get_counts(shots, stim_circ, verbose)
         IQ_memory = self.counts_to_IQ(counts)
         return IQ_memory
     
     
     def generate_extreme_IQ(self, shots: int, p_ambig: float in (0, 1), 
-                            noise_model: PauliNoiseModel = None) -> list:
+                            noise_list: list, verbose = False) -> list:
+        noise_list = [1e-20, 1e-20, 1e-20, 1e-20] if noise_list is None else noise_list
         IQ_dict = self.generate_IQ_dict()
-        counts = self.get_counts(shots, noise_model, logical=0) # hardcoded for logical 0
+        stim_circ = self.get_stim_circuit(noise_list)
+        counts = self.get_counts(shots, stim_circ, verbose) # hardcoded for logical 0
         IQ_memory = self.counts_to_IQ_extreme(p_ambig, IQ_dict, counts)
         return IQ_memory
 

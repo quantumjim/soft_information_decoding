@@ -113,15 +113,14 @@ class TestRepCodeIQSimulator(unittest.TestCase):
         simulator = RepCodeIQSimulator()
         simulator.qubit_mapping = [0, 2, 1]  
         simulator.rounds = 1
+        simulator.distance = 2
 
-        iq_memory_safe = simulator.generate_extreme_IQ(shots=1, p_ambig=0, noise_model=None)
-        iq_memory_ambig = simulator.generate_extreme_IQ(shots=1, p_ambig=1, noise_model=None)
+        iq_memory_safe = simulator.generate_extreme_IQ(shots=1, p_ambig=0, noise_list=None)
+        iq_memory_ambig = simulator.generate_extreme_IQ(shots=1, p_ambig=1, noise_list=None)
 
         # Assertions
         np.testing.assert_array_almost_equal(iq_memory_safe, np.array([[0.09+0.09j, 0.2+0.2j, 0.1+0.1j], [0.091+0.091j, 0.21+0.21j, 0.1+0.1j]]), decimal=5)
         np.testing.assert_array_almost_equal(iq_memory_ambig, np.array([[0+0j, 0.2+0.2j, 0.1+0.1j], [0+1j, 0.21+0.21j, 0.1+0.1j]]), decimal=5)
-
-
 
 
 
