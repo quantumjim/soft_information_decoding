@@ -302,19 +302,32 @@ class RepCodeIQSimulator():
 
 
     def generate_IQ(self, shots: int, noise_list: list, logical: int = None, verbose = False) -> list:
+        """Generates IQ data for the given logical state.
+        Args:
+            shots (int): Number of shots.
+            noise_list (list): List of noise parameters [two-qubit-fidelity, reset error, measurement error, idle error].
+            logical (int, optional): Logical state. Defaults to None.
+        """
         warnings.warn("Logical != 0 is currently not supported") if logical is not None else None
-        stim_circ = self.get_stim_circuit(noise_list)
-        counts = self.get_counts(shots, stim_circ, verbose)
+        self.get_stim_circuit(noise_list)
+        counts = self.get_counts(shots, self.stim_circ, verbose)
         IQ_memory = self.counts_to_IQ(counts)
         return IQ_memory
     
     
     def generate_extreme_IQ(self, shots: int, p_ambig: float in (0, 1), 
                             noise_list: list, verbose = False) -> list:
+        """Generates IQ data for the given logical state.
+        Args:
+            shots (int): Number of shots.
+            p_ambig (float): Probability of ambiguous measurement.
+            noise_list (list): List of noise parameters [two-qubit-fidelity, reset error, measurement error, idle error].
+            logical (int, optional): Logical state. Defaults to None.
+        """
         noise_list = [1e-20, 1e-20, 1e-20, 1e-20] if noise_list is None else noise_list
         IQ_dict = self.generate_IQ_dict()
-        stim_circ = self.get_stim_circuit(noise_list)
-        counts = self.get_counts(shots, stim_circ, verbose) # hardcoded for logical 0
+        self.get_stim_circuit(noise_list)
+        counts = self.get_counts(shots, self.stim_circ, verbose) # hardcoded for logical 0
         IQ_memory = self.counts_to_IQ_extreme(p_ambig, IQ_dict, counts)
         return IQ_memory
 
