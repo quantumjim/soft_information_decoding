@@ -31,7 +31,7 @@ namespace pm {
         const std::map<int, std::pair<std::pair<double, double>, std::pair<double, double>>>& scaler_params_dict, // Adjusted to hold pairs of pairs
         float p_data = -1, float p_mixed = -1, float common_measure = -1,
         bool _adv_probs = false, bool _bimodal = false, const std::string& merge_strategy = "replace",
-        float p_offset = 1.0, float p_multiplicator = 1.0);
+        float p_offset = 1.0, float p_multiplicator = 1.0, bool _ntnn_edges = false);
 
     void reweight_edges_to_one(UserGraph &matching);
 
@@ -60,7 +60,7 @@ namespace pm {
         bool _adv_probs = false, bool _bimodal = false,
         const std::string& merge_strategy = "replace",
         bool _detailed = false,
-        float p_offset = 1.0, float p_multiplicator = 1.0);
+        float p_offset = 1.0, float p_multiplicator = 1.0, bool _ntnn_edges = false);
     
     DetailedDecodeResult decode_IQ_shots_flat(
         UserGraph &matching,
