@@ -92,7 +92,7 @@ class RepCodeIQSimulator():
 
     
     def get_counts(self, shots: int, stim_circuit: stim.Circuit, verbose=False) -> dict:
-        meas_outcomes = stim_circuit.compile_sampler().sample(shots)
+        meas_outcomes = stim_circuit.compile_sampler(seed=42).sample(shots)
         counts = {}
         for row in meas_outcomes:
             count_str = ''

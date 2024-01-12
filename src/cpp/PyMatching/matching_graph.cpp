@@ -159,9 +159,15 @@ namespace pm
                             }
                         }
                         float p_h = edge_data.error_probability * p_multiplicator;
-                        float edge_prob = p_h * (p_offset - p_soft_tminus1) * (p_offset - p_soft) + (1 - p_h) * p_soft_tminus1 * (p_offset - p_soft) + (1 - p_h) * (p_offset - p_soft_tminus1) * p_soft;
+                        float edge_prob = p_h * (p_offset - p_soft_tminus1) * (p_offset - p_soft) + (1 - p_h) * p_soft_tminus1 * (p_offset - p_soft) + (1 - p_h) * (p_offset - p_soft_tminus1) * p_soft;   
                         if (_ntnn_edges){
+                            if (tgt_node < (distance-1)*synd_rounds) {
                             edge_prob = p_h;
+                            }
+                            else {
+                                edge_prob = p_h * (1-p_soft) + (1-p_h) * p_soft; // on last layer soft = hard flip => 2 indep mechanisms
+                                // std::cout << "edge_prob: " << edge_prob << std::endl;
+                            }
                         }
                         llh_weight = -std::log(edge_prob / (1 - edge_prob));
                     }
@@ -218,7 +224,7 @@ namespace pm
     void reweight_edges_informed(
         UserGraph &matching, float distance,
         float p_data, float p_mixed,
-        float p_meas, float common_measure)
+        float p_meas, float common_measure, bool _ntnn_edges)
     {
         // Get edges
         std::vector<EdgeProperties> edges = pm::get_edges(matching);
@@ -283,6 +289,11 @@ namespace pm
             if (tgt_node == src_node + (distance - 1))
             { // Hardcoded for RepCodes
                 // Time edge
+                if (src_node - (distance - 1) >= 0 and _ntnn_edges)
+                    {   
+                        pm::add_edge(matching, src_node - (distance - 1), tgt_node, edge_data.fault_ids, edge.attributes.weight,
+                                     edge_data.error_probability, "replace");
+                    }                                
                 if (p_meas != -1)
                 {
                     new_weight = -std::log(p_meas / (1 - p_meas));
@@ -292,6 +303,11 @@ namespace pm
                     }
                     pm::add_edge(matching, src_node, tgt_node, edge_data.fault_ids, new_weight,
                                  edge_data.error_probability, "replace");
+                    if (src_node - (distance - 1) >= 0 and _ntnn_edges)
+                    {   
+                        pm::add_edge(matching, src_node - (distance - 1), tgt_node, edge_data.fault_ids, new_weight,
+                                     edge_data.error_probability, "replace");
+                    }
                 }
             }
         }
@@ -470,7 +486,7 @@ namespace pm
         const std::map<int, GridData> &kde_grid_dict,
         const std::map<int, std::pair<std::pair<double, double>, std::pair<double, double>>> &scaler_params_dict,
         float p_data, float p_mixed, float p_meas, float common_measure,
-        bool _detailed)
+        bool _detailed, bool _ntnn_edges)
     {
 
         DetailedDecodeResult result;
@@ -478,7 +494,7 @@ namespace pm
 
         // Distance
         int distance = (not_scaled_IQ_data.cols() + synd_rounds) / (synd_rounds + 1); // Hardcoded for RepCodes
-        reweight_edges_informed(matching, distance, p_data, p_mixed, p_meas, common_measure);
+        reweight_edges_informed(matching, distance, p_data, p_mixed, p_meas, common_measure, _ntnn_edges);
         for (int shot = 0; shot < not_scaled_IQ_data.rows(); ++shot)
         {
             Eigen::MatrixXcd not_scaled_IQ_shot_matrix = not_scaled_IQ_data.row(shot);

@@ -38,7 +38,7 @@ namespace pm {
     void reweight_edges_informed(
         UserGraph &matching,  float distance, 
         float p_data, float p_mixed, float p_meas, 
-        float common_measure);
+        float common_measure, bool _ntnn_edges = false);
 
     void reweight_edges_based_on_error_probs(UserGraph &matching, const std::map<std::string, size_t>& counts, bool _resets, const std::string& method);
 
@@ -83,7 +83,7 @@ namespace pm {
         const std::map<int, GridData>& kde_grid_dict,
         const std::map<int, std::pair<std::pair<double, double>, std::pair<double, double>>>& scaler_params_dict,
         float p_data, float p_mixed, float p_meas, float common_measure = -1,
-        bool _detailed = false);
+        bool _detailed = false, bool _ntnn_edges = false);
 
     DetailedDecodeResult decode_IQ_shots_flat_err_probs(
         UserGraph &matching,

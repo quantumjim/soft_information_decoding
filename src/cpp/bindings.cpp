@@ -139,7 +139,8 @@ PYBIND11_MODULE(cpp_soft_info, m) {
     m.def("reweight_edges_informed", &pm::reweight_edges_informed, 
       "Reweight a matching graph to have edge weights of 1 and use diagonal edges",
       py::arg("matching"), py::arg("distance"), py::arg("p_data"),
-      py::arg("p_mixed"), py::arg("p_meas"), py::arg("common_measure") = -1);
+      py::arg("p_mixed"), py::arg("p_meas"), py::arg("common_measure") = -1,
+      py::arg("_ntnn_edges") = false);
     
     m.def("reweight_edges_based_on_error_probs", &pm::reweight_edges_based_on_error_probs,
       "Reweight a matching graph based on error probabilities",
@@ -174,7 +175,7 @@ PYBIND11_MODULE(cpp_soft_info, m) {
       py::arg("_resets"), py::arg("qubit_mapping"),
       py::arg("kde_grid_dict"), py::arg("scaler_params_dict"),
       py::arg("p_data"), py::arg("p_mixed"), py::arg("p_meas"), py::arg("common_measure") = -1,
-      py::arg("_detailed") = false);
+      py::arg("_detailed") = false, py::arg("_ntnn_edges") = false);
 
     m.def("decode_IQ_shots_flat_err_probs", &pm::decode_IQ_shots_flat_err_probs,
       "Reweight and decode a matching graph using error probabilities",
