@@ -1,4 +1,5 @@
 from unittest import mock
+from warnings import warn
 
 import numpy as np
 from numpy.random import default_rng
@@ -50,44 +51,54 @@ def test_fit_KDE(mock_plot_IQ_data, mock_plot_KDE):
 
 
 
-# @mock.patch('src.soft_info.IQ_data.KDE.fit_KDE')
-# @mock.patch('src.Scratch.calibration_data.load_calibration_memory')
-# def test_get_KDEs(mock_load_calibration_memory, mock_fit_KDE):
+# @mock.patch('src.soft_info.Probabilities.KDE.fit_KDE')
+# # @mock.patch('src.soft_info.Probabilities.KDE.load_calibration_memory')
+# def test_get_KDEs( mock_fit_KDE):
 #     # Create mock calibration memory data
-#     mock_memories = {
-#         qubit: {
-#             "mmr_0": np.random.rand(10) + 1j * np.random.rand(10),
-#             "mmr_1": np.random.rand(10) + 1j * np.random.rand(10)
-#         }
-#         for qubit in [0, 1]
-#     }
-#     mock_load_calibration_memory.return_value = mock_memories
-
-#     # Mock fit_KDE to return a KDE and scaler for each call
-#     mock_fit_KDE.return_value = (mock.Mock(), mock.Mock())
-
-#     # Call the function
 #     provider_mock = mock.Mock()
 #     device = 'device_name'
 #     qubits = [0, 1]
-#     all_kdes, all_scalers = get_KDEs(provider_mock, device, qubits)
+#     try:
+#         get_KDEs(None)
+#     except Exception as e:
+#         warn("Error during lazy import:" + str(e))
+#         print("Error during lazy import:", e)
 
-#     # Debug print
-#     print("Mock Memories:", mock_memories)
-#     print("All KDEs:", all_kdes)
-#     print("All Scalers:", all_scalers)
+#     with mock.patch('src.soft_info.Probabilities.KDE.load_calibration_memory') as mock_load_calibration_memory:
 
-#     # Assertions
-#     assert len(all_kdes) == len(
-#         qubits), "Number of KDEs does not match number of qubits"
-#     assert len(all_scalers) == len(
-#         qubits), "Number of scalers does not match number of qubits"
-#     for qubit in qubits:
-#         assert len(all_kdes[qubit]) == 2, "Each qubit should have two KDEs"
-#         assert isinstance(all_scalers[qubit],
-#                           mock.Mock), "Scaler is not a mock object"
+#         mock_memories = {
+#             qubit: {
+#                 "mmr_0": np.random.rand(10) + 1j * np.random.rand(10),
+#                 "mmr_1": np.random.rand(10) + 1j * np.random.rand(10)
+#             }
+#             for qubit in [0, 1]
+#         }
+#         mock_load_calibration_memory.return_value = mock_memories
 
-#     # Verify if the mocked functions are called correctly
-#     mock_load_calibration_memory.assert_called_with(
-#         provider_mock, device, qubits)
-#     mock_fit_KDE.assert_called()
+#         # Mock fit_KDE to return a KDE and scaler for each call
+#         mock_fit_KDE.return_value = (mock.Mock(), mock.Mock())
+
+#         # Call the function
+#         all_kdes, all_scalers = get_KDEs(provider_mock, device, qubits)
+
+#         # Debug print
+#         print("Mock Memories:", mock_memories)
+#         print("All KDEs:", all_kdes)
+#         print("All Scalers:", all_scalers)
+
+#         # Assertions
+#         assert len(all_kdes) == len(
+#             qubits), "Number of KDEs does not match number of qubits"
+#         assert len(all_scalers) == len(
+#             qubits), "Number of scalers does not match number of qubits"
+#         for qubit in qubits:
+#             assert len(all_kdes[qubit]) == 2, "Each qubit should have two KDEs"
+#             assert isinstance(all_scalers[qubit],
+#                             mock.Mock), "Scaler is not a mock object"
+
+#         # Verify if the mocked functions are called correctly
+#         mock_load_calibration_memory.assert_called_with(
+#             provider_mock, device, qubits)
+#         mock_fit_KDE.assert_called()
+    
+# TODO: fix this test, it is problematic because of the lazy import in get_KDEs

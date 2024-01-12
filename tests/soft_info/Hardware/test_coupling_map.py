@@ -40,36 +40,34 @@ def test_create_coupling_graph_with_positions(mock_add_qubit_positions):
     mock_add_qubit_positions.assert_called_once_with(G, mock_configuration.n_qubits)
 
 
-# @mock.patch('src.soft_info.Hardware.coupling_map.create_coupling_graph_with_positions')
-# @mock.patch('src.soft_info.Hardware.coupling_map.tqdm')
-# def test_find_longest_path_general(mock_tqdm, mock_create_graph):
-#     # Mock the graph creation
-#     G = nx.Graph()
-#     G.add_edges_from([(0, 1), (1, 2), (2, 3)])
-#     print("Nodes:", G.nodes())
-#     print("Edges:", G.edges())
+@mock.patch('src.soft_info.Hardware.coupling_map.create_coupling_graph')
+def test_find_longest_path_general( mock_create_coupling_graph):
+    # Mock the graph creation
+    G = nx.Graph()
+    G.add_edges_from([(0, 1), (1, 2), (2, 3)])
+    print("Nodes:", G.nodes())
+    print("Edges:", G.edges())
 
-#     mock_create_graph.return_value = G
+    mock_create_coupling_graph.return_value = G
 
-#     # Mock backend
-#     backend_mock = mock.Mock()
+    # Mock backend
+    backend_mock = "mock_backend"
 
-#     # Call the function
-#     path, length, start_qubit = find_longest_path_general(backend_mock)
+    # Call the function
+    path, length, start_qubit = find_longest_path_general(backend_mock)
 
-#     # Expected longest path in the mock graph
-#     expected_path = [0, 1, 2, 3]
-#     expected_length = 4
-#     expected_start_qubit = 0
+    # Expected longest path in the mock graph
+    expected_path = [0, 1, 2, 3]
+    expected_length = 4
+    expected_start_qubit = 0
 
-#     # Verify the result
-#     assert path == expected_path, "The longest path is incorrect"
-#     assert length == expected_length, "The length of the longest path is incorrect"
-#     assert start_qubit == expected_start_qubit, "The starting qubit of the longest path is incorrect"
-
+    # Verify the result
+    assert path == expected_path, "The longest path is incorrect"
+    assert length == expected_length, "The length of the longest path is incorrect"
+    assert start_qubit == expected_start_qubit, "The starting qubit of the longest path is incorrect"
 
 
-@mock.patch('src.soft_info.Hardware.coupling_map.create_coupling_graph_with_positions')
+@mock.patch('src.soft_info.Hardware.coupling_map.create_coupling_graph')
 def test_find_longest_path_in_hex(mock_create_graph):
     # Mock the graph creation for a heavy hex graph
     G = nx.Graph()

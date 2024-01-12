@@ -26,10 +26,15 @@ PYBIND11_MODULE(cpp_soft_info, m) {
     m.def("llh_ratio", &llh_ratio, 
           py::arg("scaled_point"), 
           py::arg("grid_data"), 
+          py::arg("bimodal_prob") = -1,
           "Calculate the log-likelihood ratio for a given point and grid data");
 
     // m.def("print_edges_of_graph", &print_edges_of_graph, "Print the edges of a matching graph");
     m.def("processGraph_test", &processGraph_test, "Function to test process UserGraph");
+
+
+
+    //////////// STRUCTS ////////////
 
     py::class_<GridData>(m, "GridData")
         .def(py::init<Eigen::MatrixXd, Eigen::MatrixXd, Eigen::MatrixXd, Eigen::MatrixXd>())
@@ -37,9 +42,36 @@ PYBIND11_MODULE(cpp_soft_info, m) {
         .def_readwrite("grid_y", &GridData::grid_y)
         .def_readwrite("grid_density_0", &GridData::grid_density_0)
         .def_readwrite("grid_density_1", &GridData::grid_density_1);   
+        
+    py::class_<EdgeAttributes>(m, "EdgeAttributes")
+        .def(py::init<>()) // Default constructor
+        .def_readwrite("fault_ids", &EdgeAttributes::fault_ids)
+        .def_readwrite("weight", &EdgeAttributes::weight)
+        .def_readwrite("error_probability", &EdgeAttributes::error_probability);
+
+    py::class_<EdgeProperties>(m, "EdgeProperties")
+        .def(py::init<>())
+        .def_readwrite("node1", &EdgeProperties::node1)
+        .def_readwrite("node2", &EdgeProperties::node2)
+        .def_readwrite("attributes", &EdgeProperties::attributes);
+
+    py::class_<pm::ShotErrorDetails>(m, "ShotErrorDetails")
+        .def(py::init<>())
+        .def_readwrite("edges", &pm::ShotErrorDetails::edges)
+        .def_readwrite("matched_edges", &pm::ShotErrorDetails::matched_edges)
+        .def_readwrite("detection_syndromes", &pm::ShotErrorDetails::detection_syndromes);
+
+    py::class_<pm::DetailedDecodeResult>(m, "DetailedDecodeResult")
+        .def(py::init<>())
+        .def_readwrite("num_errors", &pm::DetailedDecodeResult::num_errors)
+        .def_readwrite("indices", &pm::DetailedDecodeResult::indices)
+        .def_readwrite("error_details", &pm::DetailedDecodeResult::error_details);
     
 
-    // user_graph_utils.h bindings
+
+
+    //////////// Usergraph Utils bindings ////////////
+
     m.def("get_edges", [](const pm::UserGraph& graph) {
         auto edges = get_edges(graph);
         py::list py_edges;
@@ -68,6 +100,14 @@ PYBIND11_MODULE(cpp_soft_info, m) {
       "Add or merge a boundary edge to the user graph",
       py::arg("graph"), py::arg("node"), py::arg("observables"), 
       py::arg("weight"), py::arg("error_probability"), py::arg("merge_strategy"));
+    
+    m.def("decode", &pm::decode, 
+      "Decode a matching graph",
+      py::arg("graph"), py::arg("detection_events"));
+    
+    m.def("decode_to_edges_array", &pm::decode_to_edges_array, 
+      "Decode a matching graph to an array of edges",
+      py::arg("graph"), py::arg("detection_events"));
 
     m.def("counts_to_det_syndr", &counts_to_det_syndr, 
       "Convert counts to deterministic syndromes",
@@ -78,10 +118,91 @@ PYBIND11_MODULE(cpp_soft_info, m) {
       "Convert syndrome array to detection events",
       py::arg("z"), py::arg("num_detectors"), py::arg("boundary_length"));
     
+
+    //////////// Reweighting bindings ////////////
+
     m.def("soft_reweight_pymatching", &pm::soft_reweight_pymatching, 
       "Reweight a matching graph using soft information",
-      py::arg("matching"), py::arg("not_scaled_IQ_shot"), 
-      py::arg("synd_rounds"), py::arg("qubit_mapping"), 
+      py::arg("matching"), py::arg("not_scaled_IQ_data"), 
+      py::arg("synd_rounds"), py::arg("_resets"),
+      py::arg("qubit_mapping"), 
       py::arg("kde_grid_dict"), py::arg("scaler_params_dict"), 
-      py::arg("p_data"), py::arg("p_mixed"), py::arg("common_measure"));
+      py::arg("p_data"), py::arg("p_mixed"), py::arg("common_measure"), 
+      py::arg("_adv_probs") = false, py::arg("_bimodal") = false, 
+      py::arg("merge_strategy") = "replace", py::arg("p_offset") = 1.0,
+      py::arg("p_multiplicator") = 1.0, py::arg("_ntnn_edges") = false);
+    
+    m.def("reweight_edges_to_one", &pm::reweight_edges_to_one, 
+      "Reweight a matching graph to have edge weights of 1",
+      py::arg("matching"));
+
+    m.def("reweight_edges_informed", &pm::reweight_edges_informed, 
+      "Reweight a matching graph to have edge weights of 1 and use diagonal edges",
+      py::arg("matching"), py::arg("distance"), py::arg("p_data"),
+      py::arg("p_mixed"), py::arg("p_meas"), py::arg("common_measure") = -1);
+    
+    m.def("reweight_edges_based_on_error_probs", &pm::reweight_edges_based_on_error_probs,
+      "Reweight a matching graph based on error probabilities",
+      py::arg("matching"), py::arg("counts"), py::arg("_resets"), py::arg("method"));
+
+    //////////// Decoding bindings ////////////
+
+    m.def("decode_IQ_shots", &pm::decode_IQ_shots, 
+      "Decode a matching graph using IQ data",
+      py::arg("matching"), py::arg("not_scaled_IQ_data"), 
+      py::arg("synd_rounds"), py::arg("logical"),
+      py::arg("_resets"), py::arg("qubit_mapping"), 
+      py::arg("kde_grid_dict"), py::arg("scaler_params_dict"), 
+      py::arg("p_data"), py::arg("p_mixed"), py::arg("common_measure"), 
+      py::arg("_adv_probs") = false,
+      py::arg("_bimodal") = false, py::arg("merge_strategy") = "replace",
+      py::arg("_detailed") = false, py::arg("p_offset") = 1.0, py::arg("p_multiplicator") = 1.0,
+      py::arg("_ntnn_edges") = false);
+
+    m.def("decode_IQ_shots_flat", &pm::decode_IQ_shots_flat,
+      "Decode a matching graph using IQ data but weight edges to 1",
+      py::arg("matching"), py::arg("not_scaled_IQ_data"),
+      py::arg("synd_rounds"), py::arg("logical"),
+      py::arg("_resets"), py::arg("qubit_mapping"),
+      py::arg("kde_grid_dict"), py::arg("scaler_params_dict"), 
+      py::arg("_detailed") = false);
+    
+    m.def("decode_IQ_shots_flat_informed", &pm::decode_IQ_shots_flat_informed,
+      "Decode a matching graph using IQ data but weight edges to 1 and use diagonal edges",
+      py::arg("matching"), py::arg("not_scaled_IQ_data"),
+      py::arg("synd_rounds"), py::arg("logical"),
+      py::arg("_resets"), py::arg("qubit_mapping"),
+      py::arg("kde_grid_dict"), py::arg("scaler_params_dict"),
+      py::arg("p_data"), py::arg("p_mixed"), py::arg("p_meas"), py::arg("common_measure") = -1,
+      py::arg("_detailed") = false);
+
+    m.def("decode_IQ_shots_flat_err_probs", &pm::decode_IQ_shots_flat_err_probs,
+      "Reweight and decode a matching graph using error probabilities",
+      py::arg("matching"), py::arg("logical"), py::arg("counts_tot"), py::arg("_resets"), py::arg("method"),
+      py::arg("not_scaled_IQ_data"), py::arg("synd_rounds"), 
+      py::arg("qubit_mapping"), py::arg("kde_grid_dict"), 
+      py::arg("scaler_params_dict"), py::arg("_detailed") = false);
+
+    m.def("decode_IQ_shots_no_reweighting", &pm::decode_IQ_shots_no_reweighting,
+      "Decode a matching graph using IQ data but do not reweight edges",
+      py::arg("matching"), py::arg("not_scaled_IQ_data"),
+      py::arg("synd_rounds"), py::arg("logical"),
+      py::arg("_resets"), py::arg("qubit_mapping"),
+      py::arg("kde_grid_dict"), py::arg("scaler_params_dict"), py::arg("_detailed") = false);
+
+    //////////// Error probabilities bindings ////////////
+
+    py::class_<ErrorProbabilities>(m, "ErrorProbabilities")
+        .def(py::init<>())
+        .def_readwrite("probability", &ErrorProbabilities::probability)
+        .def_readwrite("samples", &ErrorProbabilities::samples);
+
+    m.def("calculate_naive_error_probs", &calculate_naive_error_probs, 
+      "Calculate naive error probabilities",
+      py::arg("graph"), py::arg("counts"), py::arg("_resets") = false);
+
+    m.def("calculate_spitz_error_probs", &calculate_spitz_error_probs, 
+      "Calculate Spitz error probabilities",
+      py::arg("graph"), py::arg("counts"), py::arg("_resets"));
+
 }

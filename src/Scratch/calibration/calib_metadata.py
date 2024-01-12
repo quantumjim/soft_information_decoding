@@ -171,7 +171,8 @@ def load_grid(filename):
 
 
 
-def create_or_load_kde_grid(provider, tobecalib_job: str, num_grid_points: int, num_std_dev: int=3, other_date = None):
+def create_or_load_kde_grid(provider, tobecalib_job: Optional[str] = None, tobecalib_backend: Optional[str] = None, 
+                            num_grid_points: int = 300, num_std_dev: int = 3, other_date = None):
     """
     Create or load a Kernel Density Estimation (KDE) grid for a specified calibration job.
     If the grid already exists in the metadata, it loads the grid and scaler dictionaries. 
@@ -199,15 +200,15 @@ def create_or_load_kde_grid(provider, tobecalib_job: str, num_grid_points: int, 
         grid_metadata = {}
 
     # Find the closest calibration jobs
-    closest_job_ids, backend, creation_time = find_closest_calib_jobs(tobecalib_job, other_date=other_date)
-    # print(f"Found jobs for backend {backend} with closest creation date {creation_time}. Retrieving kde grid...")
+    closest_job_ids, backend, creation_date = find_closest_calib_jobs(tobecalib_job, tobecalib_backend, other_date=other_date)
+    # print(f"Found jobs for backend {backend} with closest execution date {creation_date}. Retrieving kde grid...")
 
     # Format the creation date and construct the key for metadata
-    formatted_key = f"{creation_time.strftime('%y.%m.%d_%Hh%M')}_{num_grid_points}pts_{num_std_dev}std"
+    formatted_key = f"{creation_date.strftime('%y.%m.%d_%Hh%M')}_{num_grid_points}pts_{num_std_dev}std"
     grid_entry = grid_metadata.get(backend, {}).get(formatted_key)
+    print(f"Searching for {backend} and {formatted_key}")
 
     
-
     if grid_entry:
         # Load the existing grid and scaler
         grid_file_path = grid_entry['grid_file_path']
@@ -216,7 +217,8 @@ def create_or_load_kde_grid(provider, tobecalib_job: str, num_grid_points: int, 
     else:
         from soft_info import get_KDEs # Lazy import to avoid circular imports
         # Retrieve KDEs and scaler data
-        kde_dict, scaler_dict = get_KDEs(provider, tobecalib_job=tobecalib_job, other_date=other_date)
+        kde_dict, scaler_dict = get_KDEs(provider, tobecalib_job=tobecalib_job, 
+                                         tobecalib_backend=tobecalib_backend, other_date=other_date)
         processed_scaler_dict = process_scaler_dict(scaler_dict)
 
         # Generate a new grid and save it
@@ -226,7 +228,7 @@ def create_or_load_kde_grid(provider, tobecalib_job: str, num_grid_points: int, 
         save_grid(grid_dict, processed_scaler_dict, grid_file_path)
 
         # Update metadata
-        update_grid_metadata(metadata_file, creation_date=creation_time, backend_name=backend, job_ids=closest_job_ids, grid_file_path=grid_file_path, num_grid_points=num_grid_points, num_std_dev=num_std_dev)
+        update_grid_metadata(metadata_file, creation_date=creation_date, backend_name=backend, job_ids=closest_job_ids, grid_file_path=grid_file_path, num_grid_points=num_grid_points, num_std_dev=num_std_dev)
         
         # TODO: Change this to not load (Hacky fix because of some bug when cpp with created scaler dict)
         loaded_grid_dict, loaded_scaler_dict = load_grid(grid_file_path)

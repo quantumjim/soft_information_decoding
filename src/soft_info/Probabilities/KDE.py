@@ -98,7 +98,7 @@ def fit_KDE(IQ_data, bandwidth=0.2, plot=False, qubit_index='', num_samples=1e5,
     return kde, scaler
 
 
-def get_KDEs(provider, tobecalib_job: str, qubits: Optional[List[int]] = None,  
+def get_KDEs(provider, tobecalib_job: Optional[str] = None, tobecalib_backend: Optional[str] = None, qubits: Optional[List[int]] = None,  
              bandwidths: Union[float, list] = 0.2, plot: Union[bool, list] = False, 
              plot_db=False, num_samples=1e5, other_date = None) -> Dict[int, List]:
     """
@@ -124,7 +124,7 @@ def get_KDEs(provider, tobecalib_job: str, qubits: Optional[List[int]] = None,
     plot0, plot1 = (plot, plot) if not isinstance(plot, list) else plot
 
     from Scratch import load_calibration_memory # lazy import to avoid circular import
-    all_memories = load_calibration_memory(provider, tobecalib_job=tobecalib_job, qubits=qubits, other_date=other_date)
+    all_memories = load_calibration_memory(provider, tobecalib_job=tobecalib_job, tobecalib_backend=tobecalib_backend, qubits=qubits, other_date=other_date)
 
     if qubits is None:
         qubits = list(all_memories.keys())

@@ -32,7 +32,7 @@ std::map<std::string, int> get_counts(
     const std::map<int, std::pair<std::pair<double, double>, std::pair<double, double>>>& scaler_params_dict,
     int synd_rounds);
 
-double llh_ratio(const Eigen::Vector2d& scaled_point, const GridData& grid_data);
+double llh_ratio(const Eigen::Vector2d& scaled_point, const GridData& grid_data, double bimodal_prob = -1);
 
 Eigen::MatrixXd numpy_to_eigen(pybind11::array_t<double> np_array);
 

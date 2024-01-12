@@ -87,7 +87,7 @@ def metadata_loader(_extract: bool = False, _drop_inutile : bool = False):
         metadata = metadata.drop(
             columns=['backend_options', 'additional_metadata'])
     if _drop_inutile:
-        metadata = metadata.drop(columns=["meas_level", "init_qubits", "job_metadata", "job_name", "meas_return", "skip_transpilation", "memory"])
+        metadata = metadata.drop(columns=["init_qubits", "job_metadata", "job_name", "meas_return", "skip_transpilation", "memory"])
     return metadata.sort_values(by='creation_date', ascending=False)
 
 

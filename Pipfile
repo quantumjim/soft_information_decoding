@@ -23,6 +23,7 @@ coverage = "*"
 stim = "*"
 soft-information-decoding = {file = ".", editable = true}
 pymatching = {file = "libs/PyMatching"}
+tox = "*"
 
 [dev-packages]
 ipykernel = "*"

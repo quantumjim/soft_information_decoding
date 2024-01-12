@@ -1,6 +1,7 @@
 import pytest
 from unittest import mock
-from Scratch.calibration.calibration_data import load_calibration_memory
+from unittest.mock import patch
+from Scratch.calibration.calibration_data import find_closest_calib_jobs
 import pandas as pd
 import numpy as np
 
@@ -21,16 +22,21 @@ def mock_provider():
 
     return provider
 
-# @mock.patch('src.Scratch.metadata.metadata_loader')
-# @pytest.mark.filterwarnings(r"ignore:Loaded 0 memories with keys \[\]:UserWarning")
-# def test_no_matching_metadata_entries(mock_metadata_loader, mock_provider):
-#     mock_metadata_loader.return_value = pd.DataFrame()
-#     # Create a dataframe that has no matching entries for the filters
+def test_not_implemented_error():
+    with pytest.raises(NotImplementedError):
+        find_closest_calib_jobs()
 
-#     qubits = [0, 1]
-#     memories = load_calibration_memory(mock_provider, 'cmyhbrqrmwhg008bs4h0', qubits)
+@patch('Scratch.calibration.calibration_data.get_calib_jobs')  
+def test_loading_newest_jobs(mock_get_calib_jobs):
+    backend_name = 'test_backend'
+    mock_get_calib_jobs.return_value = ({'0': 'job_id_0', '1': 'job_id_1'}, 
+                                        {'0': pd.to_datetime('2023-01-01T00:00:00', utc=True),
+                                         '1': pd.to_datetime('2023-01-01T01:00:00', utc=True)},
+                                        {'0': pd.to_datetime('2023-01-01T00:00:00', utc=True),
+                                         '1': pd.to_datetime('2023-01-01T01:00:00', utc=True)})
 
-#     # Debug: Print the contents of memories
-#     print("Memories:", memories)
-
-#     assert all(len(mem) == 0 for mem in memories.values()), "No memories should be loaded"
+    expected_job_ids = {'0': 'job_id_0', '1': 'job_id_1'}
+    job_ids, backend, creation_dates = find_closest_calib_jobs(tobecalib_backend=backend_name)
+    
+    assert job_ids == expected_job_ids
+    assert backend == backend_name

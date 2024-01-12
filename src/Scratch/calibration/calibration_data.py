@@ -20,26 +20,7 @@ def extract_backend_name(backend_str):
         # Return None or raise an error if the pattern is not found
         return None
     
-
-def find_closest_calib_jobs(tobecalib_job: str, other_date = None):
-    """Find the closest calibration jobs for the given job ID."""
-    # Find attributes of the tobecalib_job
-    root_dir = find_and_create_scratch()
-    metadata_path = f"{root_dir}/job_metadata.json"
-    with open(metadata_path, 'r') as file:
-        metadata = json.load(file)
-    specified_job_entry = next((item for item in metadata if item['job_id'] == tobecalib_job), None)
-    if not specified_job_entry:
-        raise ValueError(f"No job found in metadata with ID: {tobecalib_job}")
-
-    specified_job_creation_date = pd.to_datetime(specified_job_entry['creation_date'])
-    specified_job_creation_date = specified_job_creation_date.tz_convert('UTC') if specified_job_creation_date.tzinfo else specified_job_creation_date
-    if other_date is not None: # if specified, use other date as closest date
-        specified_job_creation_date = pd.to_datetime(other_date, utc=True)
-
-    backend_name = specified_job_entry['backend_name']
-
-    # Find the calibration job ID using the metadata
+def get_calib_jobs(backend_name: str, needed_calib_date = None):
     md = metadata_loader(_extract=True, _drop_inutile=True).dropna(subset=["num_qubits"])
     mask = (
         (md["backend_name"] == backend_name) &
@@ -50,35 +31,81 @@ def find_closest_calib_jobs(tobecalib_job: str, other_date = None):
     
     job_ids = {}
     creation_dates = {}
+    execution_dates = {}
     for state in ['0', '1']:
         state_mask = md_filtered["sampled_state"] == md_filtered["num_qubits"].apply(lambda x: state * int(x))
         md_state_filtered = md_filtered[state_mask].copy()
-        md_state_filtered['creation_date'] = pd.to_datetime(md_state_filtered['creation_date'], utc=True)
-        closest_job_info = md_state_filtered.iloc[(md_state_filtered['creation_date'] - specified_job_creation_date).abs().argsort()[:1]]
+
+        md_state_filtered['execution_date'] = pd.to_datetime(md_state_filtered['execution_date'], utc=True, format='ISO8601')
+        if needed_calib_date is not None:            
+            closest_job_info = md_state_filtered.iloc[(md_state_filtered['execution_date'] - needed_calib_date).abs().argsort()[:1]]
+        else:
+            closest_job_info = md_state_filtered.nlargest(1, 'execution_date')
         closest_job_id = closest_job_info['job_id'].values[0]
+
         closest_creation_date_np = closest_job_info['creation_date'].values[0]
-        closest_creation_date = pd.to_datetime(closest_creation_date_np).to_pydatetime()
-        job_ids[state] = closest_job_id
+        closest_creation_date = pd.to_datetime(closest_creation_date_np, utc=True).to_pydatetime()
         creation_dates[state] = closest_creation_date
+
+        closest_execution_date_np = closest_job_info['execution_date'].values[0]
+        closest_execution_date = pd.to_datetime(closest_execution_date_np, utc=True).to_pydatetime()
+        execution_dates[state] = closest_execution_date
+
+        job_ids[state] = closest_job_id
     
     # Check if year, day, and hour are the same for both states
-    date_0 = creation_dates['0']
-    date_1 = creation_dates['1']
+    date_0 = execution_dates['0']
+    date_1 = execution_dates['1']
 
     if not (date_0.year == date_1.year and date_0.day == date_1.day and date_0.hour == date_1.hour):
         raise ValueError("Year, day, and hour of creation dates for the closest jobs are different for each state.")
 
+    return job_ids, execution_dates, creation_dates
 
-    return job_ids, backend_name, creation_dates['0']
-
-
-
-def load_calibration_memory(provider, tobecalib_job: str, qubits: Optional[List[int]] = None, other_date = None): 
-    """Load the calibration memory for the closest calibration jobs for the given job ID."""
-    if not tobecalib_job:
-        raise NotImplementedError("Only loading calibration data for a specific job is currently supported.")
+def find_closest_calib_jobs(tobecalib_job: Optional[str] = None,
+                            tobecalib_backend: Optional[str] = None,
+                            other_date = None):
+    """Find the closest calibration jobs for the given job ID."""
+    if tobecalib_job is None and tobecalib_backend is None:
+        raise NotImplementedError("Only loading calibration data for a specific job or a specified backend is currently supported.")
     
-    closest_job_ids, _, _ = find_closest_calib_jobs(tobecalib_job, other_date=other_date)
+    needed_calib_date = None
+    if tobecalib_job:# Find attributes of the tobecalib_job
+        root_dir = find_and_create_scratch()
+        metadata_path = f"{root_dir}/job_metadata.json"
+        with open(metadata_path, 'r') as file:
+            metadata = json.load(file)
+        specified_job_entry = next((item for item in metadata if item['job_id'] == tobecalib_job), None)
+        if not specified_job_entry:
+            raise ValueError(f"No job found in metadata with ID: {tobecalib_job}")
+
+        specified_job_creation_date = pd.to_datetime(specified_job_entry['creation_date'])
+        specified_job_creation_date = specified_job_creation_date.tz_convert('UTC') if specified_job_creation_date.tzinfo else specified_job_creation_date
+
+
+        specified_job_execution_date = pd.to_datetime(specified_job_entry['additional_metadata']['execution_date'])
+        print(f"Specified job execution date: {specified_job_execution_date}")
+        needed_calib_date = specified_job_execution_date
+
+        tobecalib_backend = specified_job_entry['backend_name']
+    
+    if other_date is not None: # if specified, use other date as closest date
+            needed_calib_date = pd.to_datetime(other_date, utc=True)
+
+    job_ids, execution_dates, creation_dates = get_calib_jobs(tobecalib_backend, needed_calib_date)
+
+    print(f"Found jobs for backend {tobecalib_backend} with closest execution date {execution_dates['0']}.")
+    return job_ids, tobecalib_backend, creation_dates['0']
+
+
+
+def load_calibration_memory(provider, tobecalib_job: Optional[str] = None, tobecalib_backend: Optional[str] = None,
+                             qubits: Optional[List[int]] = None, other_date = None): 
+    """Load the calibration memory for the closest calibration jobs for the given job ID."""
+    if not tobecalib_job and not tobecalib_backend:
+        raise NotImplementedError("Only loading calibration data for a specific job or a specified backend is currently supported.")
+    
+    closest_job_ids, _, _ = find_closest_calib_jobs(tobecalib_job, tobecalib_backend, other_date=other_date)
 
     all_memories = {}
     for state, job_id in closest_job_ids.items():

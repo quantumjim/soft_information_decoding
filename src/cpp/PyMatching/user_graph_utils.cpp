@@ -4,6 +4,8 @@
 #include <vector>
 #include <stdexcept>
 
+#include "pymatching/sparse_blossom/driver/mwpm_decoding.h"
+
 
 
 namespace pm {
@@ -79,6 +81,36 @@ namespace pm {
         graph.add_or_merge_boundary_edge(node, observables_vec, weight, 
                                          error_probability, merge_strategy_from_string(merge_strategy));
     }
+
+
+    std::pair<std::vector<uint8_t>, double> decode(UserGraph &self, const std::vector<uint64_t> &detection_events) {
+        auto &mwpm = self.get_mwpm();
+        auto obs_crossed = std::make_unique<std::vector<uint8_t>>(self.get_num_observables(), 0);
+        pm::total_weight_int weight = 0;
+        pm::decode_detection_events(mwpm, detection_events, obs_crossed->data(), weight);
+        double rescaled_weight = static_cast<double>(weight) / mwpm.flooder.graph.normalising_constant;
+        std::vector<uint8_t> obs_crossed_vec(obs_crossed->begin(), obs_crossed->end());
+        return {obs_crossed_vec, rescaled_weight};
+    }
+
+    std::vector<std::pair<int64_t, int64_t>> decode_to_edges_array(UserGraph &self, const std::vector<uint64_t> &detection_events) {
+        auto &mwpm = self.get_mwpm_with_search_graph();
+        auto edges = std::make_unique<std::vector<int64_t>>();
+        edges->reserve(detection_events.size() / 2);
+        pm::decode_detection_events_to_edges(mwpm, detection_events, *edges);
+
+        std::vector<std::pair<int64_t, int64_t>> edge_pairs;
+        edge_pairs.reserve(edges->size() / 2);
+
+        for (size_t i = 0; i < edges->size(); i += 2) {
+            edge_pairs.emplace_back((*edges)[i], (*edges)[i + 1]);
+        }
+
+        return edge_pairs;
+    }
+
+
+
 
 }
 
@@ -231,7 +263,7 @@ std::vector<int> counts_to_det_syndr(const std::string& input_str, bool _resets,
 }
 
 
-std::vector<int> syndromeArrayToDetectionEvents(const std::vector<int>& z, int num_detectors, int boundary_length) {
+std::vector<uint64_t> syndromeArrayToDetectionEvents(const std::vector<int>& z, int num_detectors, int boundary_length) {
     
     // num_detectors throug UserGraph.get_num_detectors() 
     // boundary_length through UserGraph.get_boundary().size()
@@ -240,7 +272,7 @@ std::vector<int> syndromeArrayToDetectionEvents(const std::vector<int>& z, int n
         throw std::invalid_argument("Input vector is empty");
     }
 
-    std::vector<int> detection_events;
+    std::vector<uint64_t> detection_events;
 
     // Handling 1D array case with the specified condition
     if (num_detectors <= z.size() && z.size() <= num_detectors + boundary_length) {
@@ -256,4 +288,180 @@ std::vector<int> syndromeArrayToDetectionEvents(const std::vector<int>& z, int n
     // TODO: Handling 2D array case (Hardcoded for RepCodes)
 
     return detection_events;
+}
+
+
+/////////////////// get_error_probs ///////////////////////
+
+
+std::map<std::pair<int, int>, ErrorProbabilities> calculate_naive_error_probs(
+    const pm::UserGraph& graph, 
+    const std::map<std::string, size_t>& counts,
+    bool _resets) {
+    // Map to store count for each combination ("00", "01", "10", "11") for each edge
+    std::map<std::pair<size_t, size_t>, std::map<std::string, size_t>> count;
+
+    // Initialize count for each edge
+    for (const auto& edge : graph.edges) {
+        count[{edge.node1, edge.node2}] = {{"00", 0}, {"01", 0}, {"10", 0}, {"11", 0}};
+    }
+
+    // Process each error string and update counts
+    for (const auto& pair : counts) {
+        const auto& error_string = pair.first;
+        const auto error_nodes = counts_to_det_syndr(error_string, _resets);
+
+        for (const auto& edge : graph.edges) {
+            std::string element;
+            if (edge.node1 == SIZE_MAX) {
+                // If node2 is in error, both elements are "1", otherwise both are "0"
+                element = error_nodes[edge.node2] ? "11" : "00";
+            } else if (edge.node2 == SIZE_MAX) {
+                // If node1 is in error, both elements are "1", otherwise both are "0"
+                element = error_nodes[edge.node1] ? "11" : "00";
+            } else {
+                element += error_nodes[edge.node1] ? "1" : "0"; // Check error status for node1
+                element += error_nodes[edge.node2] ? "1" : "0"; // Check error status for node2
+            }
+
+            count[{edge.node1, edge.node2}][element] += pair.second;
+        }
+    }
+
+    std::map<std::pair<int, int>, ErrorProbabilities> error_probs;
+    for (const auto& item : count) {
+        const auto& edge = item.first;
+        const auto& histogram = item.second;
+
+        double ratio = (histogram.at("00") > 0) ? static_cast<double>(histogram.at("11")) / histogram.at("00") : std::numeric_limits<double>::quiet_NaN();
+        if (edge.first == SIZE_MAX || edge.second == SIZE_MAX) {
+            ratio /= 2.0;
+        }
+        double p = ratio / (1.0 + ratio);
+
+        error_probs[{static_cast<int>(edge.first), static_cast<int>(edge.second)}] = ErrorProbabilities{p, histogram.at("11") + histogram.at("00")};
+    }
+
+    return error_probs;
+}
+
+std::map<std::pair<int, int>, ErrorProbabilities> calculate_spitz_error_probs(
+    const pm::UserGraph& graph, 
+    const std::map<std::string, size_t>& counts,
+    bool _resets) {
+
+    // Initialize variables
+    std::map<int, double> av_v, prod;
+    std::map<std::pair<int, int>, double> av_vv, av_xor;
+    std::map<int, std::vector<int>> neighbours;
+    std::map<std::pair<int, int>, ErrorProbabilities> error_probs;
+    std::set<int> boundary;
+
+    size_t total_shots = 0;
+    for (const auto& pair : counts) {
+        total_shots += pair.second;  // Accumulate the number of total_shots
+    }
+
+    // Initialize neighbors and average values
+    for (const auto& edge : graph.edges) {
+        if (edge.node1 == SIZE_MAX || edge.node1 == -1 || edge.node2 == SIZE_MAX || edge.node2 == -1) {
+            boundary.insert(edge.node1 == SIZE_MAX || edge.node1 == -1 ? edge.node2 : edge.node1);
+            continue;
+        }
+        av_v[edge.node1] = 0;
+        av_v[edge.node2] = 0;
+        av_vv[{edge.node1, edge.node2}] = 0;
+        av_xor[{edge.node1, edge.node2}] = 0;
+        neighbours[edge.node1].push_back(edge.node2);
+        neighbours[edge.node2].push_back(edge.node1);
+    }
+
+    // Process each error string and update counts
+    for (const auto& pair : counts) {
+        const auto& error_string = pair.first;
+        const auto count = pair.second;
+        auto error_nodes = counts_to_det_syndr(error_string, _resets); // Convert error string to a list of error nodes
+
+        // Convert the error vector to a list of checked node indices
+        std::vector<int> checked_node_indices;
+        for (size_t i = 0; i < error_nodes.size(); ++i) {
+            if (error_nodes[i] == 1) {
+                checked_node_indices.push_back(i);
+            }
+        }
+
+        // Update av_v, a_vv, av_xor for each checked node
+        for (int node_idx : checked_node_indices) {
+            av_v[node_idx] += count;  // Node at this index is in error
+
+            // Iterate over each neighbor of the current node
+            for (int neighbor_idx : neighbours[node_idx]) {
+                if (std::find(checked_node_indices.begin(), checked_node_indices.end(), neighbor_idx) != checked_node_indices.end()) {
+                    // Both the current node and its neighbor are in error
+                    av_vv[{node_idx, neighbor_idx}] += count;
+                } else {
+                    // Only the current node is in error, not its neighbor
+                    av_xor[{node_idx, neighbor_idx}] += count;
+                }
+            }
+        }
+    }
+
+    // Normalize the averages
+    for (auto& kv : av_v) {
+        kv.second /= static_cast<double>(total_shots);
+    }
+    for (auto& kv : av_vv) {
+        kv.second /= static_cast<double>(total_shots);
+    }
+    for (auto& kv : av_xor) {
+        kv.second /= static_cast<double>(total_shots);
+    }
+
+    // Step 1: Process each edge and calculate error probabilities
+    std::vector<std::pair<int, int>> boundary_edges;
+    for (const auto& edge : graph.edges) {
+        int node1 = edge.node1, node2 = edge.node2;
+        for (const auto& edge : graph.edges) {
+            if (node1 == -1 || node2 == -1) {
+                // Correctly pushing a pair of integers into boundary_edges
+                boundary_edges.push_back(std::make_pair(node1, node2));
+                continue;
+            }
+
+            // Calculate error probability for regular edges
+            if (1 - 2 * av_xor[{node1, node2}] != 0) {
+                double x = (av_vv[{node1, node2}] - av_v[node1] * av_v[node2]) / (1 - 2 * av_xor[{node1, node2}]);
+                if (x < 0.25) {
+                    error_probs[{node1, node2}] = {std::max(0.0, 0.5 - std::sqrt(0.25 - x)), 0};
+                } else {
+                    error_probs[{node1, node2}] = {std::nan(""), 0};
+                }
+            } else {
+                error_probs[{node1, node2}] = {std::nan(""), 0};
+            }
+        }
+    }
+
+    // Step 2: Process boundary edges and update prod
+    for (const auto& boundary_edge : boundary_edges) {
+        int boundary_node = (boundary_edge.first == -1) ? boundary_edge.second : boundary_edge.first;
+        prod[boundary_node] = 1.0;
+
+        for (const auto& neighbor_idx : neighbours[boundary_node]) {
+            if (error_probs.find({boundary_node, neighbor_idx}) != error_probs.end()) {
+                prod[boundary_node] *= 1 - 2 * error_probs[{boundary_node, neighbor_idx}].probability;
+            } else if (error_probs.find({neighbor_idx, boundary_node}) != error_probs.end()) {
+                prod[boundary_node] *= 1 - 2 * error_probs[{neighbor_idx, boundary_node}].probability;
+            }
+        }
+    }
+
+    // Step 3: Assign error probabilities to boundary edges
+    for (const auto& boundary_edge : boundary_edges) {
+        int boundary_node = (boundary_edge.first == -1) ? boundary_edge.second : boundary_edge.first;
+        error_probs[boundary_edge] = {0.5 + (av_v[boundary_node] - 0.5) / prod[boundary_node], 0};
+    }
+
+    return error_probs;
 }

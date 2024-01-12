@@ -5,6 +5,7 @@ import numpy as np
 from qiskit.result import Counts
 import pytest
 from sklearn.preprocessing import StandardScaler
+from sklearn.neighbors import KernelDensity
 
 from src.soft_info.Probabilities.probabilities import estimate_outcome, get_counts, llh_ratio
 
@@ -133,3 +134,5 @@ def test_get_counts_no_kde(mock_layout):
 #     # Check for expected behavior when KDEs or scaler are missing
 #     with pytest.warns(UserWarning, match="Not enough kernels or no scaler provided"):
 #         assert llh_ratio(None, kde_0=None, kde_1=None, scaler=None) is None, "Should return None when kernels or scaler are missing"
+    
+# TODO: fix this test (PS: do not care that much because using cpp function)
