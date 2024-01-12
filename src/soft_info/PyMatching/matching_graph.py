@@ -127,7 +127,7 @@ def draw_curved_edge(ax, pos, src_node, tgt_node, color, width, edge_weight, fon
 
     # Control points for the Bezier curve
     mid_pos = np.mean([src_pos, tgt_pos], axis=0)
-    control_point_offset = np.array([0.2, 2]) * scale_factor  
+    control_point_offset = np.array([0.5, 2]) * scale_factor  
     control_point = mid_pos + control_point_offset 
 
     # Create a Path and a Patch for the Bezier curve
@@ -136,7 +136,7 @@ def draw_curved_edge(ax, pos, src_node, tgt_node, color, width, edge_weight, fon
     ax.add_patch(patch)
 
     # Position for the weight text (adjust as needed)
-    text_pos = mid_pos + [-0.15*scale_factor, 0.03*scale_factor] 
+    text_pos = mid_pos + [-0.22*scale_factor, 0.03*scale_factor] 
     plt.text(text_pos[0], text_pos[1], f"{edge_weight:.2f}", color=color, fontsize=font_size)  # Adjust fontsize as needed
 
 
@@ -205,10 +205,10 @@ def draw_matching_graph(matching=None, d=3, T=3, syndromes=None, matched_edges=N
         # Determine the color and width based on whether the edge is in matched_edges
             if matched_edges is not None and (edge in matched_edges or (edge[1], edge[0]) in matched_edges):
                 color = 'blue'  # Color for matched edges
-                width = highlighted_edge_width
+                width = highlighted_edge_width*0.5
             else:
                 color = 'black'  # Default color for NNN edges
-                width = normal_edge_width
+                width = normal_edge_width*0.5
 
             # Draw an arc for NNN edges
             draw_curved_edge(ax, pos, src_node, tgt_node, color, width, edge_weight, font_size, scale_factor)

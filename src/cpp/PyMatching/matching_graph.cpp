@@ -161,7 +161,7 @@ namespace pm
                         float p_h = edge_data.error_probability * p_multiplicator;
                         float edge_prob = p_h * (p_offset - p_soft_tminus1) * (p_offset - p_soft) + (1 - p_h) * p_soft_tminus1 * (p_offset - p_soft) + (1 - p_h) * (p_offset - p_soft_tminus1) * p_soft;
                         if (_ntnn_edges){
-                            edge_prob = p_h * (1-p_soft) + (1-p_h) * p_soft;
+                            edge_prob = p_h;
                         }
                         llh_weight = -std::log(edge_prob / (1 - edge_prob));
                     }
