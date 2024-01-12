@@ -309,6 +309,7 @@ class RepCodeIQSimulator():
             logical (int, optional): Logical state. Defaults to None.
         """
         warnings.warn("Logical != 0 is currently not supported") if logical is not None else None
+        noise_list = [1e-8, 1e-8, 1e-8, 1e-8] if noise_list is None else noise_list
         self.get_stim_circuit(noise_list)
         counts = self.get_counts(shots, self.stim_circ, verbose)
         IQ_memory = self.counts_to_IQ(counts)
@@ -324,7 +325,7 @@ class RepCodeIQSimulator():
             noise_list (list): List of noise parameters [two-qubit-fidelity, reset error, measurement error, idle error].
             logical (int, optional): Logical state. Defaults to None.
         """
-        noise_list = [1e-20, 1e-20, 1e-20, 1e-20] if noise_list is None else noise_list
+        noise_list = [1e-8, 1e-8, 1e-8, 1e-8] if noise_list is None else noise_list
         IQ_dict = self.generate_IQ_dict()
         self.get_stim_circuit(noise_list)
         counts = self.get_counts(shots, self.stim_circ, verbose) # hardcoded for logical 0
