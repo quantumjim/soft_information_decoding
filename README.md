@@ -27,7 +27,7 @@ pipenv install
 ```
 
 ### Rebuild C++ Parts
-If you wish to change C++ parts, even if the soft_information_decoding package is in editable you need to rebuild it using the following command:
+If you wish to change C++ parts, even if the soft_information_decoding package is editable you need to rebuild it using the following command:
 ```bash
 pip install .
 ```
