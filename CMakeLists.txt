@@ -9,6 +9,14 @@ find_package(Python3 3.11 REQUIRED Interpreter Development)
 add_subdirectory(libs/pybind11)
 include_directories(libs/cpp/eigen-3.4.0)
 
+find_package(Armadillo REQUIRED)
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(MLPACK REQUIRED mlpack)
+
+include_directories(${MLPACK_INCLUDE_DIRS})
+link_directories(${MLPACK_LIBRARY_DIRS})
+add_definitions(${MLPACK_CFLAGS_OTHER})
+
 include_directories(${CMAKE_SOURCE_DIR}/libs/Stim/src)
 include_directories(${CMAKE_SOURCE_DIR}/libs/PyMatching/src)
 # include_directories(${CMAKE_SOURCE_DIR}/libs/PyMatching/Stim/src) # Add this line
@@ -29,6 +37,10 @@ pybind11_add_module(cpp_soft_info
 set(PYMATCHING_LIB "${CMAKE_SOURCE_DIR}/libs/PyMatching/bazel-bin")
 
 # Link the library to your modules as needed
-target_link_libraries(cpp_soft_info PRIVATE ${PYMATCHING_LIB}/liblibpymatching.a)
-target_link_libraries(cpp_soft_info PRIVATE ${PYMATCHING_LIB}/external/stim/libstim_lib.a)
-
+target_link_libraries(cpp_soft_info
+    PRIVATE
+    ${PYMATCHING_LIB}/liblibpymatching.a
+    ${PYMATCHING_LIB}/external/stim/libstim_lib.a
+    ${MLPACK_LIBRARIES}
+    # Any other libraries you need to link
+)
