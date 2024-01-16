@@ -127,30 +127,57 @@ std::map<std::string, float> llh_ratio_1Dgauss(
         double mean_0 = gauss_params.at("mean_0");
         double mean_1 = gauss_params.at("mean_1");
 
-        double norm0 = std::abs(rpoint - mean_0);
-        double norm1 = std::abs(rpoint - mean_1);
+        double p0 = std::exp(-std::pow(rpoint - mean_0, 2) / (2 * gauss_params["var"]));
+        double p1 = std::exp(-std::pow(rpoint - mean_1, 2) / (2 * gauss_params["var"]));
 
-        double weight = 0; // normalization divides away
-        if (norm0 > norm1) {
-            weight +=  mean_0 * mean_0 / (2 * gauss_params["var"]) 
-                - (mean_1 * mean_1) / (2 * gauss_params["var"]) 
-                + rpoint / gauss_params["var"] * (mean_1 - mean_0);
-        } else {
-            weight += mean_1 * mean_1 / (2 * gauss_params["var"]) 
-                - (mean_0 * mean_0) / (2 * gauss_params["var"]) 
-                + rpoint / gauss_params["var"] * (mean_0 - mean_1);
-        }
-        double proba = 1 / (1 + (1 / std::exp(-weight)));
-
-        std::cout << "weight: " << weight << std::endl;
-        std::cout << "proba: " << proba << std::endl;
+        std::cout << "p0: " << p0 << std::endl;
+        std::cout << "p1: " << p1 << std::endl;
         
+        double proba_soft = 0; 
+        if (p0 > p1) {
+            proba_soft = 1 / (1 + (p0 / p1));
+        } else {
+            proba_soft = 1 / (1 + (p1 / p0));
+        }
+        double weight = -std::log(proba_soft / (1 - proba_soft));
+
         std::map<std::string, float> result;
         result["weight"] = weight;
-        result["proba"] = proba;
+        result["proba"] = proba_soft;
 
         return result;
 }
+
+// std::map<std::string, float> llh_ratio_1Dgauss(
+//     double rpoint, std::map<std::string,float> gauss_params) {
+
+//         double mean_0 = gauss_params.at("mean_0");
+//         double mean_1 = gauss_params.at("mean_1");
+
+//         double norm0 = std::abs(rpoint - mean_0);
+//         double norm1 = std::abs(rpoint - mean_1);
+
+//         double weight = 0; // normalization divides away
+//         if (norm0 > norm1) {
+//             weight +=  mean_0 * mean_0 / (2 * gauss_params["var"]) 
+//                 - (mean_1 * mean_1) / (2 * gauss_params["var"]) 
+//                 + rpoint / gauss_params["var"] * (mean_1 - mean_0);
+//         } else {
+//             weight += mean_1 * mean_1 / (2 * gauss_params["var"]) 
+//                 - (mean_0 * mean_0) / (2 * gauss_params["var"]) 
+//                 + rpoint / gauss_params["var"] * (mean_0 - mean_1);
+//         }
+//         double proba = 1 / (1 + (1 / std::exp(-weight)));
+
+//         std::cout << "weight: " << weight << std::endl;
+//         std::cout << "proba: " << proba << std::endl;
+        
+//         std::map<std::string, float> result;
+//         result["weight"] = weight;
+//         result["proba"] = proba;
+
+//         return result;
+// }
 
 
 std::map<std::string, int> get_counts_1Dgauss(
