@@ -20,23 +20,25 @@ class CMakeBuild(build_ext):
                 ", ".join(e.name for e in self.extensions)
             )
 
+        num_cores = os.cpu_count()
+
         # Build PyMatching with Bazel
-        self.build_pymatching_with_bazel()
+        self.build_pymatching_with_bazel(num_cores)
 
         for ext in self.extensions:
-            self.build_extension(ext)
+            self.build_extension(ext, num_cores)
 
-    def build_pymatching_with_bazel(self):
+    def build_pymatching_with_bazel(self, num_cores):
         pymatching_dir = os.path.abspath('libs/PyMatching')
-        subprocess.check_call(['bazel', 'build', '//:pymatching', '//:libpymatching', '@stim//:stim_lib'], cwd=pymatching_dir)
+        subprocess.check_call(['bazel', 'build', '--jobs', str(num_cores), '//:pymatching', '//:libpymatching', '@stim//:stim_lib'], cwd=pymatching_dir)
 
-    def build_extension(self, ext):
+    def build_extension(self, ext, num_cores):
         extdir = os.path.abspath(os.path.dirname(self.get_ext_fullpath(ext.name)))
         cmake_args = ['-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=' + extdir,
                     '-DPYTHON_EXECUTABLE=' + sys.executable]
 
         cfg = 'Debug' if self.debug else 'Release'
-        build_args = ['--config', cfg, '--verbose']
+        build_args = ['--config', cfg, '--verbose', '--', '-j' + str(num_cores)]
 
         if not os.path.exists(self.build_temp):
             os.makedirs(self.build_temp)
