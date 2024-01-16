@@ -6,6 +6,7 @@
 #include <sstream>
 #include <stdexcept>
 #include <complex>
+#include <cmath>
 
 
 // Constructor for GridData
@@ -119,6 +120,91 @@ double llh_ratio(const Eigen::Vector2d& scaled_point, const GridData& grid_data,
         throw std::runtime_error(error_message.str());
     }
 }
+
+std::map<std::string, float> llh_ratio_1Dgauss(
+    double rpoint, std::map<std::string,float> gauss_params) {
+
+        double mean_0 = gauss_params.at("mean_0");
+        double mean_1 = gauss_params.at("mean_1");
+
+        double norm0 = std::abs(rpoint - mean_0);
+        double norm1 = std::abs(rpoint - mean_1);
+
+        double weight = 0; // normalization divides away
+        if (norm0 > norm1) {
+            weight +=  mean_0 * mean_0 / (2 * gauss_params["var"]) 
+                - (mean_1 * mean_1) / (2 * gauss_params["var"]) 
+                + rpoint / gauss_params["var"] * (mean_1 - mean_0);
+        } else {
+            weight += mean_1 * mean_1 / (2 * gauss_params["var"]) 
+                - (mean_0 * mean_0) / (2 * gauss_params["var"]) 
+                + rpoint / gauss_params["var"] * (mean_0 - mean_1);
+        }
+        double proba = 1 / (1 + (1 / std::exp(-weight)));
+
+        std::cout << "weight: " << weight << std::endl;
+        std::cout << "proba: " << proba << std::endl;
+        
+        std::map<std::string, float> result;
+        result["weight"] = weight;
+        result["proba"] = proba;
+
+        return result;
+}
+
+
+std::map<std::string, int> get_counts_1Dgauss(
+    const Eigen::MatrixXcd& not_scaled_IQ_data,
+    const std::map<int, int>& qubit_mapping,
+    const std::map<int, std::map<std::string, float>> &gauss_params_dict, 
+    int synd_rounds) {
+        std::map<std::string, int> counts;
+        int distance = (not_scaled_IQ_data.cols() + synd_rounds) / (synd_rounds + 1); // Hardcoded for RepCodes
+
+        if (not_scaled_IQ_data.cols() != (distance - 1) * synd_rounds + distance) {
+            std::ostringstream error_message;
+            error_message << "Number of columns in IQ data (" << not_scaled_IQ_data.cols() 
+                        << ") does not match the expected value (" 
+                        << ((distance - 1) * synd_rounds + distance) << ").";
+            throw std::runtime_error(error_message.str());
+        }
+
+        for (int shot = 0; shot < not_scaled_IQ_data.rows(); ++shot) { 
+            std::string outcome_str;
+            for (int msmt = 0; msmt < not_scaled_IQ_data.cols(); ++msmt) { 
+
+                try {
+                    int qubit_idx = qubit_mapping.at(msmt);
+                    const auto &gauss_params = gauss_params_dict.at(qubit_idx);
+                    std::complex<double> iq_point = not_scaled_IQ_data(shot, msmt);    
+                    double rpoint = std::real(iq_point);    
+
+                    double norm0 = std::abs(rpoint - gauss_params.at("mean_0"));
+                    double norm1 = std::abs(rpoint - gauss_params.at("mean_1"));
+
+                    if (norm0 > norm1) {
+                        outcome_str += "1";
+                    } else {
+                        outcome_str += "0";
+                    }
+                }
+                catch (const std::out_of_range& e) {
+                    throw std::runtime_error("Qubit index " + std::to_string(msmt) + " not found in qubit mapping (qubit_mapping)");
+                }
+
+                if ((msmt + 1) % (distance - 1) == 0 && (msmt + 1) / (distance - 1) <= synd_rounds) {
+                    outcome_str += " ";
+                }
+            }
+            std::reverse(outcome_str.begin(), outcome_str.end()); // Reverse string
+            counts[outcome_str]++;
+        }
+        return counts;
+    }
+
+
+
+
 
 // Helper function to convert NumPy array to Eigen::MatrixXd
 Eigen::MatrixXd numpy_to_eigen(pybind11::array_t<double> np_array) {

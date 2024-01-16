@@ -34,6 +34,16 @@ std::map<std::string, int> get_counts(
 
 double llh_ratio(const Eigen::Vector2d& scaled_point, const GridData& grid_data, double bimodal_prob = -1);
 
+
+std::map<std::string, float> llh_ratio_1Dgauss(
+    double rpoint, std::map<std::string,float> gauss_params);
+
+std::map<std::string, int> get_counts_1Dgauss(
+    const Eigen::MatrixXcd& not_scaled_IQ_data,
+    const std::map<int, int>& qubit_mapping,
+    const std::map<int, std::map<std::string, float>> &gauss_params_dict, 
+    int synd_rounds);
+
 Eigen::MatrixXd numpy_to_eigen(pybind11::array_t<double> np_array);
 
 #endif // PROBABILITIES_H

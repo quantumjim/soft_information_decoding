@@ -131,6 +131,12 @@ PYBIND11_MODULE(cpp_soft_info, m) {
       py::arg("_adv_probs") = false, py::arg("_bimodal") = false, 
       py::arg("merge_strategy") = "replace", py::arg("p_offset") = 1.0,
       py::arg("p_multiplicator") = 1.0, py::arg("_ntnn_edges") = false);
+
+    m.def("soft_reweight_1Dgauss", &pm::soft_reweight_1Dgauss, 
+      "Reweight a matching graph using soft information",
+      py::arg("matching"), py::arg("not_scaled_IQ_data"), 
+      py::arg("synd_rounds"), py::arg("_resets"),
+      py::arg("qubit_mapping"), py::arg("gauss_params_dict"));
     
     m.def("reweight_edges_to_one", &pm::reweight_edges_to_one, 
       "Reweight a matching graph to have edge weights of 1",
@@ -159,6 +165,13 @@ PYBIND11_MODULE(cpp_soft_info, m) {
       py::arg("_bimodal") = false, py::arg("merge_strategy") = "replace",
       py::arg("_detailed") = false, py::arg("p_offset") = 1.0, py::arg("p_multiplicator") = 1.0,
       py::arg("_ntnn_edges") = false);
+
+    m.def("decode_IQ_1Dgauss", &pm::decode_IQ_1Dgauss,
+      "Decode a matching graph using IQ data",
+      py::arg("matching"), py::arg("not_scaled_IQ_data"),
+      py::arg("synd_rounds"), py::arg("logical"),
+      py::arg("_resets"), py::arg("qubit_mapping"),
+      py::arg("gauss_params_dict"), py::arg("_detailed") = false);
 
     m.def("decode_IQ_shots_flat", &pm::decode_IQ_shots_flat,
       "Decode a matching graph using IQ data but weight edges to 1",

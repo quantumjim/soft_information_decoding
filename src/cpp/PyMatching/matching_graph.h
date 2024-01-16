@@ -33,6 +33,14 @@ namespace pm {
         bool _adv_probs = false, bool _bimodal = false, const std::string& merge_strategy = "replace",
         float p_offset = 1.0, float p_multiplicator = 1.0, bool _ntnn_edges = false);
 
+    void soft_reweight_1Dgauss(
+        UserGraph &matching,
+        const Eigen::MatrixXcd &not_scaled_IQ_data,
+        int synd_rounds,
+        bool _resets,
+        const std::map<int, int> &qubit_mapping,
+        const std::map<int, std::map<std::string, float>> &gauss_params_dict);
+
     void reweight_edges_to_one(UserGraph &matching);
 
     void reweight_edges_informed(
@@ -61,6 +69,16 @@ namespace pm {
         const std::string& merge_strategy = "replace",
         bool _detailed = false,
         float p_offset = 1.0, float p_multiplicator = 1.0, bool _ntnn_edges = false);
+
+    DetailedDecodeResult decode_IQ_1Dgauss(
+        UserGraph &matching,
+        const Eigen::MatrixXcd &not_scaled_IQ_data,
+        int synd_rounds,
+        int logical,
+        bool _resets,
+        const std::map<int, int> &qubit_mapping, 
+        const std::map<int, std::map<std::string, float>> &gauss_params_dict, 
+        bool _detailed = false);
     
     DetailedDecodeResult decode_IQ_shots_flat(
         UserGraph &matching,

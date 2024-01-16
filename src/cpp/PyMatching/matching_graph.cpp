@@ -9,8 +9,7 @@
 #include <stdexcept>
 
 namespace pm
-{
-
+{   
     /////// REWEIGHTING /////
     void soft_reweight_pymatching(
         UserGraph &matching,
@@ -188,6 +187,52 @@ namespace pm
                              edge_data.error_probability, merge_strategy); // keeps the old error probability
             }
         }
+    }
+
+    void soft_reweight_1Dgauss(
+        UserGraph &matching,
+        const Eigen::MatrixXcd &not_scaled_IQ_data,
+        int synd_rounds,
+        bool _resets,
+        const std::map<int, int> &qubit_mapping,
+        const std::map<int, std::map<std::string, float>> &gauss_params_dict) {
+
+            int distance = (not_scaled_IQ_data.cols() + synd_rounds) / (synd_rounds + 1); // Hardcoded for RepCodes
+            std::vector<EdgeProperties> edges = pm::get_edges(matching);
+
+            for (const auto &edge : edges) {
+                int src_node = edge.node1;
+                int tgt_node = edge.node2;
+                auto &edge_data = edge.attributes;
+
+                if (tgt_node == src_node + (distance - 1)) { // Time edges
+                    int qubit_idx = qubit_mapping.at(src_node);
+                    const auto &gauss_params = gauss_params_dict.at(qubit_idx);
+                    std::complex<double> iq_point = not_scaled_IQ_data(0, src_node);    
+                    double rpoint = std::real(iq_point);
+                    
+                    double rpoint_tminus1;
+                    if (src_node - (distance - 1) >= 0) {
+                        std::complex<double> iq_point_tminus1 = not_scaled_IQ_data(0, src_node - (distance - 1)); // Hardcoded for RepCodes
+                        rpoint_tminus1 = std::real(iq_point_tminus1);
+                    }
+
+                    std::map<std::string, float> llh_params = llh_ratio_1Dgauss(rpoint, gauss_params);
+                    std::map<std::string, float> llh_params_tminus1;
+
+                    if (_resets) {
+                        pm::add_edge(matching, src_node, tgt_node, edge_data.fault_ids,
+                                    llh_params["weight"], llh_params["proba"], "independent");
+                    } else {
+                        if (src_node - (distance - 1) >= 0) {
+                            llh_params_tminus1 = llh_ratio_1Dgauss(rpoint_tminus1, gauss_params);
+                            pm::add_edge(matching, src_node - (distance - 1), tgt_node, 
+                                        edge_data.fault_ids, llh_params_tminus1["weight"],
+                                        llh_params_tminus1["proba"], "replace");
+                        }
+                    }  
+                }
+            }
     }
 
     void reweight_edges_to_one(UserGraph &matching)
@@ -428,9 +473,53 @@ namespace pm
                 result.indices.push_back(shot);
             }
         }
-
         return result;
     }
+
+
+    DetailedDecodeResult decode_IQ_1Dgauss(
+        UserGraph &matching,
+        const Eigen::MatrixXcd &not_scaled_IQ_data,
+        int synd_rounds,
+        int logical,
+        bool _resets,
+        const std::map<int, int> &qubit_mapping, 
+        const std::map<int, std::map<std::string, float>> &gauss_params_dict, 
+        bool _detailed) {
+            
+            DetailedDecodeResult result;
+            result.num_errors = 0;
+
+            for (int shot = 0; shot < not_scaled_IQ_data.rows(); ++shot) {
+                Eigen::MatrixXcd not_scaled_IQ_shot_matrix = not_scaled_IQ_data.row(shot);
+                auto counts = get_counts_1Dgauss(not_scaled_IQ_shot_matrix, qubit_mapping, gauss_params_dict, synd_rounds);
+                std::string count_key = counts.begin()->first;
+
+                soft_reweight_1Dgauss(matching, not_scaled_IQ_shot_matrix, synd_rounds,
+                                      _resets, qubit_mapping, gauss_params_dict);
+
+                auto det_syndromes = counts_to_det_syndr(count_key, _resets, false);
+                auto detectionEvents = syndromeArrayToDetectionEvents(det_syndromes, matching.get_num_detectors(), matching.get_boundary().size());
+
+                auto [predicted_observables, rescaled_weight] = decode(matching, detectionEvents);
+
+                int actual_observable = (static_cast<int>(count_key[0]) - logical) % 2; // Convert first character to int and modulo 2
+                // int actual_observable = (static_cast<int>(count_key[0]) - '0') % 2;  // Convert first character to int and modulo 2
+                // Check if predicted_observables is not empty and compare the first element
+                if (_detailed)
+                {
+                    ShotErrorDetails errorDetail = createShotErrorDetails(matching, detectionEvents, det_syndromes);
+                    result.error_details.push_back(errorDetail);
+                }
+                if (!predicted_observables.empty() && predicted_observables[0] != actual_observable)
+                {
+                    result.num_errors++; // Increment error count if they don't match
+                    result.indices.push_back(shot);
+                }
+            }
+            return result;
+        }
+    
 
     DetailedDecodeResult decode_IQ_shots_flat(
         UserGraph &matching,
