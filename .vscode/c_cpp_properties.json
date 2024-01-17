@@ -6,7 +6,10 @@
                 "${workspaceFolder}/**",
                 "/Users/mha/My_Drive/Desktop/Studium/Physik/MSc/Semester_3/IBM/IBM_GIT/Soft-Info/libs/pybind11/include",
                 "/Users/mha/.pyenv/versions/3.11.4/include/python3.11",
-                "/opt/homebrew/include"
+                "/opt/homebrew/include",
+                "/opt/homebrew/opt/llvm/bin/../include/c++/v1",
+                "/opt/homebrew/Cellar/llvm/17.0.6/lib/clang/17/include",
+                "/Library/Developer/CommandLineTools/SDKs/MacOSX14.sdk/usr/include"
             ],
             "defines": [],
             "macFrameworkPath": [
