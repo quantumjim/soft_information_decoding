@@ -18,7 +18,10 @@ For macOS:
 brew install armadillo
 brew install mlpack
 ```
-
+Then add the Brew install path to your PATH variable:
+```bash
+/opt/homebrew/include
+```
 
 ### Install Python Dependencies
 After cloning the repository, navigate to the project directory and install the required Python packages using Pipenv: (WARNING THIS MAY TAKE A WHILE BECAUSE C++ PARTS ARE COMPILED)
