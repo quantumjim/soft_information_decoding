@@ -17,10 +17,15 @@ For macOS:
 ```bash
 brew install armadillo
 brew install mlpack
+brew install llvm # for clang and parrallelism
 ```
-Then add the Brew install path to your PATH variable:
+Then add the Brew install path to your include path variable:
 ```bash
 /opt/homebrew/include
+# also add include for omp.h 
+/opt/homebrew/opt/llvm/bin/../include/c++/v1
+/opt/homebrew/Cellar/llvm/17.0.6/lib/clang/17/include
+/Library/Developer/CommandLineTools/SDKs/MacOSX14.sdk/usr/include
 ```
 
 ### Install Python Dependencies
