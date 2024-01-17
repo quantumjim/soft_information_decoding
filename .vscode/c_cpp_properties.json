@@ -5,7 +5,8 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "/Users/mha/My_Drive/Desktop/Studium/Physik/MSc/Semester_3/IBM/IBM_GIT/Soft-Info/libs/pybind11/include",
-                "/Users/mha/.pyenv/versions/3.11.4/include/python3.11"
+                "/Users/mha/.pyenv/versions/3.11.4/include/python3.11",
+                "/opt/homebrew/include"
             ],
             "defines": [],
             "macFrameworkPath": [

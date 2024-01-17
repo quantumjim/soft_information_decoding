@@ -5,7 +5,7 @@ project(Soft_Info)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-find_package(Python3 3.11 REQUIRED Interpreter Development)
+find_package(Python3 3.11 EXACT REQUIRED Interpreter Development)
 add_subdirectory(libs/pybind11)
 include_directories(libs/cpp/eigen-3.4.0)
 
@@ -30,6 +30,7 @@ pybind11_add_module(example_module ${CMAKE_SOURCE_DIR}/src/cpp/example.cpp)
 pybind11_add_module(cpp_soft_info
     ${CMAKE_SOURCE_DIR}/src/cpp/bindings.cpp
     ${CMAKE_SOURCE_DIR}/src/cpp/Probabilities/probabilities.cpp
+    ${CMAKE_SOURCE_DIR}/src/cpp/Probabilities/KDE.cpp
     ${CMAKE_SOURCE_DIR}/src/cpp/PyMatching/matching_graph.cpp
     ${CMAKE_SOURCE_DIR}/src/cpp/PyMatching/user_graph_utils.cpp)  
 

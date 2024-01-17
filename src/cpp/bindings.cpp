@@ -5,6 +5,7 @@
 #include "Probabilities/probabilities.h"  // Include probabilities header
 #include "PyMatching/matching_graph.h"  // Include matching header
 #include "PyMatching/user_graph_utils.h"  // Include user graph utils header
+#include "Probabilities/KDE.h"  // Include KDE header
 
 #include "pymatching/sparse_blossom/driver/user_graph.h" // Include necessary headers for declarations
 
@@ -66,8 +67,13 @@ PYBIND11_MODULE(cpp_soft_info, m) {
         .def_readwrite("num_errors", &pm::DetailedDecodeResult::num_errors)
         .def_readwrite("indices", &pm::DetailedDecodeResult::indices)
         .def_readwrite("error_details", &pm::DetailedDecodeResult::error_details);
-    
 
+    py::class_<KDE_Result>(m, "KDE_Result")
+        .def(py::init<>())
+        .def_readwrite("kde_0", &KDE_Result::kde_0)
+        .def_readwrite("kde_1", &KDE_Result::kde_1)
+        .def_readwrite("scaler_mean", &KDE_Result::scaler_mean)
+        .def_readwrite("scaler_stddev", &KDE_Result::scaler_stddev);
 
 
     //////////// Usergraph Utils bindings ////////////
@@ -218,5 +224,16 @@ PYBIND11_MODULE(cpp_soft_info, m) {
     m.def("calculate_spitz_error_probs", &calculate_spitz_error_probs, 
       "Calculate Spitz error probabilities",
       py::arg("graph"), py::arg("counts"), py::arg("_resets"));
+
+
+    //////////// KDE bindings ////////////
+
+    m.def("get_KDEs", &get_KDEs, 
+      "Get KDEs for each qubit",
+      py::arg("all_memories"), py::arg("bandwidths"));
+
+    m.def("generate_grid_and_estimate_density", &GenerateGridAndEstimateDensity,
+      "Generate grid and estimate density",
+      py::arg("kde_dict"), py::arg("num_points"), py::arg("num_std_dev"));    
 
 }
