@@ -4,8 +4,6 @@
 #include "probabilities.h"
 #include <iostream>
 #include <sstream>
-#include <stdexcept>
-#include <complex>
 #include <cmath>
 
 
@@ -148,6 +146,41 @@ std::map<std::string, float> llh_ratio_1Dgauss(
         return result;
 }
 
+std::map<std::string, float> llh_ratio_kde(
+    const Eigen::Vector2d& not_scaled_point,
+    mlpack::KDE<mlpack::GaussianKernel, mlpack::EuclideanDistance, arma::mat, mlpack::KDTree> kde0,
+    mlpack::KDE<mlpack::GaussianKernel, mlpack::EuclideanDistance, arma::mat, mlpack::KDTree> kde1, 
+    arma::vec scaler_mean,
+    arma::vec scaler_stddev) {
+
+        arma::mat query_point(2, 1); // 2 rows, 1 column
+        query_point(0, 0) = not_scaled_point[0]; // real
+        query_point(1, 0) = not_scaled_point[1]; // imag
+
+        query_point.row(0) = (query_point.row(0) - scaler_mean[0]) / scaler_stddev[0];
+        query_point.row(1) = (query_point.row(1) - scaler_mean[1]) / scaler_stddev[1];
+
+        arma::vec estimations0(1);
+        arma::vec estimations1(1);
+        kde0.Evaluate(query_point, estimations0);
+        kde1.Evaluate(query_point, estimations1);
+
+        double weight = 0;
+        if (estimations0[0] > estimations1[0]) {
+            weight = -std::log(estimations1[0] / estimations0[0]);
+        } else {
+            weight = -std::log(estimations0[0] / estimations1[0]);
+        }
+
+        std::map<std::string, float> result;
+        result["weight"] = weight;
+        result["proba"] = 1 / (1 + (1 / std::exp(-weight)));
+       
+        return result;
+}
+
+
+
 // std::map<std::string, float> llh_ratio_1Dgauss(
 //     double rpoint, std::map<std::string,float> gauss_params) {
 
@@ -227,10 +260,113 @@ std::map<std::string, int> get_counts_1Dgauss(
             counts[outcome_str]++;
         }
         return counts;
+}
+
+
+std::map<std::string, int> get_counts_kde(
+    const Eigen::MatrixXcd& not_scaled_IQ_data,
+    const std::map<int, int>& qubit_mapping,
+    std::map<int, KDE_Result> kde_dict, 
+    int synd_rounds) {
+        std::map<std::string, int> counts;
+        int distance = (not_scaled_IQ_data.cols() + synd_rounds) / (synd_rounds + 1); // Hardcoded for RepCodes
+
+        arma::vec estimations0(1);
+        arma::vec estimations1(1);
+        for (int shot = 0; shot < not_scaled_IQ_data.rows(); ++shot) { 
+            std::string outcome_str;
+            for (int msmt = 0; msmt < not_scaled_IQ_data.cols(); ++msmt) { 
+
+
+                int qubit_idx = qubit_mapping.at(msmt);
+                auto &kde_entry = kde_dict.at(qubit_idx);
+                std::complex<double> not_scaled_point = not_scaled_IQ_data(shot, msmt);   
+
+                arma::mat query_point(2, 1); // 2 rows, 1 column
+                query_point(0, 0) = std::real(not_scaled_point); // real
+                query_point(1, 0) = std::imag(not_scaled_point); // imag 
+
+                query_point.row(0) = (query_point.row(0) - kde_entry.scaler_mean[0]) / kde_entry.scaler_stddev[0];
+                query_point.row(1) = (query_point.row(1) - kde_entry.scaler_mean[1]) / kde_entry.scaler_stddev[1];
+                
+                kde_entry.kde_0.Evaluate(query_point, estimations0);
+                kde_entry.kde_1.Evaluate(query_point, estimations1);
+
+                if (estimations0[0]> estimations1[0]) {
+                    outcome_str += "0";
+                } else {
+                    outcome_str += "1";
+                }
+
+                if ((msmt + 1) % (distance - 1) == 0 && (msmt + 1) / (distance - 1) <= synd_rounds) {
+                    outcome_str += " ";
+                }
+            }
+            std::reverse(outcome_str.begin(), outcome_str.end()); // Reverse string
+            counts[outcome_str]++;
+        }
+        return counts;
+        
     }
 
 
+// std::map<std::string, int> get_counts_kde(
+//     const Eigen::MatrixXcd& not_scaled_IQ_data,
+//     const std::map<int, int>& qubit_mapping,
+//     std::map<int, KDE_Result> kde_dict, 
+//     int synd_rounds) {
+//         std::map<std::string, int> counts;
+//         int distance = (not_scaled_IQ_data.cols() + synd_rounds) / (synd_rounds + 1); // Hardcoded for RepCodes
 
+//         if (not_scaled_IQ_data.cols() != (distance - 1) * synd_rounds + distance) {
+//             std::ostringstream error_message;
+//             error_message << "Number of columns in IQ data (" << not_scaled_IQ_data.cols() 
+//                         << ") does not match the expected value (" 
+//                         << ((distance - 1) * synd_rounds + distance) << ").";
+//             throw std::runtime_error(error_message.str());
+//         }
+
+//         for (int shot = 0; shot < not_scaled_IQ_data.rows(); ++shot) { 
+//             std::string outcome_str;
+//             for (int msmt = 0; msmt < not_scaled_IQ_data.cols(); ++msmt) { 
+
+//                 try {
+//                     int qubit_idx = qubit_mapping.at(msmt);
+//                     auto &kde_entry = kde_dict.at(qubit_idx);
+//                     std::complex<double> not_scaled_point = not_scaled_IQ_data(shot, msmt);   
+
+//                     arma::mat query_point(2, 1); // 2 rows, 1 column
+//                     query_point(0, 0) = std::real(not_scaled_point); // real
+//                     query_point(1, 0) = std::imag(not_scaled_point); // imag 
+
+//                     query_point.row(0) = (query_point.row(0) - kde_entry.scaler_mean[0]) / kde_entry.scaler_stddev[0];
+//                     query_point.row(1) = (query_point.row(1) - kde_entry.scaler_mean[1]) / kde_entry.scaler_stddev[1];
+                    
+//                     arma::vec estimations0(1);
+//                     arma::vec estimations1(1);
+//                     kde_entry.kde_0.Evaluate(query_point, estimations0);
+//                     kde_entry.kde_1.Evaluate(query_point, estimations1);
+
+//                     if (estimations0[0]> estimations1[0]) {
+//                         outcome_str += "0";
+//                     } else {
+//                         outcome_str += "1";
+//                     }
+//                 }
+//                 catch (const std::out_of_range& e) {
+//                     throw std::runtime_error("Qubit index " + std::to_string(msmt) + " not found in qubit mapping (qubit_mapping)");
+//                 }
+
+//                 if ((msmt + 1) % (distance - 1) == 0 && (msmt + 1) / (distance - 1) <= synd_rounds) {
+//                     outcome_str += " ";
+//                 }
+//             }
+//             std::reverse(outcome_str.begin(), outcome_str.end()); // Reverse string
+//             counts[outcome_str]++;
+//         }
+//         return counts;
+        
+//     }
 
 
 // Helper function to convert NumPy array to Eigen::MatrixXd

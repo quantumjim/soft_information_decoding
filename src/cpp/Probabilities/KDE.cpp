@@ -1,15 +1,7 @@
 // Maurice Hanisch mhanisc@ethz.ch
 // Created 16.01.24
 
-#include "KDE.h"
-
-#include <armadillo>
-#include <complex>
-#include <vector>
-#include <map>
-#include <string>
-#include <tuple>
-#include <stdexcept>
+#include "probabilities.h"
 #include <cstring> // for std::memcpy
 #include <optional>
 

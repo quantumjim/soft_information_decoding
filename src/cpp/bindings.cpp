@@ -5,7 +5,6 @@
 #include "Probabilities/probabilities.h"  // Include probabilities header
 #include "PyMatching/matching_graph.h"  // Include matching header
 #include "PyMatching/user_graph_utils.h"  // Include user graph utils header
-#include "Probabilities/KDE.h"  // Include KDE header
 
 #include "pymatching/sparse_blossom/driver/user_graph.h" // Include necessary headers for declarations
 
@@ -235,5 +234,10 @@ PYBIND11_MODULE(cpp_soft_info, m) {
     m.def("generate_grid_and_estimate_density", &GenerateGridAndEstimateDensity,
       "Generate grid and estimate density",
       py::arg("kde_dict"), py::arg("num_points"), py::arg("num_std_dev"));    
+    
+    m.def("get_count_kde", &get_counts_kde, 
+      "Get counts using KDE",
+      py::arg("not_scaled_IQ_data"), py::arg("qubit_mapping"), 
+      py::arg("kde_dict"), py::arg("synd_rounds"));
 
 }
