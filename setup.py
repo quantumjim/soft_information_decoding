@@ -34,8 +34,14 @@ class CMakeBuild(build_ext):
 
     def build_extension(self, ext, num_cores):
         extdir = os.path.abspath(os.path.dirname(self.get_ext_fullpath(ext.name)))
-        cmake_args = ['-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=' + extdir,
-                    '-DPYTHON_EXECUTABLE=' + sys.executable]
+        cmake_args = [
+        '-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=' + extdir,
+        '-DPYTHON_EXECUTABLE=' + sys.executable,
+        '-DCMAKE_C_COMPILER=/opt/homebrew/opt/llvm/bin/clang',  # Path to C compiler
+        '-DCMAKE_CXX_COMPILER=/opt/homebrew/opt/llvm/bin/clang++',
+        '-DCMAKE_CXX_FLAGS=-fopenmp'  # Path to C++ compiler
+    ] # for omp compiling
+
 
         cfg = 'Debug' if self.debug else 'Release'
         build_args = ['--config', cfg, '--verbose', '--', '-j' + str(num_cores)]

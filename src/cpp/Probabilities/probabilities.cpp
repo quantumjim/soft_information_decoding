@@ -6,6 +6,8 @@
 #include <sstream>
 #include <cmath>
 
+#include <omp.h>
+
 
 // Constructor for GridData
 GridData::GridData(Eigen::MatrixXd gx, Eigen::MatrixXd gy, Eigen::MatrixXd gd0, Eigen::MatrixXd gd1)
@@ -268,12 +270,16 @@ std::map<std::string, int> get_counts_kde(
     const std::map<int, int>& qubit_mapping,
     std::map<int, KDE_Result> kde_dict, 
     int synd_rounds) {
-        std::map<std::string, int> counts;
         int distance = (not_scaled_IQ_data.cols() + synd_rounds) / (synd_rounds + 1); // Hardcoded for RepCodes
 
-        arma::vec estimations0(1);
-        arma::vec estimations1(1);
+        std::vector<std::map<std::string, int>> private_counts(omp_get_max_threads()); // Private counts for each thread
+        #pragma omp parallel for
         for (int shot = 0; shot < not_scaled_IQ_data.rows(); ++shot) { 
+
+            int thread_id = omp_get_thread_num();
+            // std::cout << "Thread ID: " << thread_id << std::endl;
+            std::map<std::string, int>& my_counts = private_counts[thread_id];
+
             std::string outcome_str;
             for (int msmt = 0; msmt < not_scaled_IQ_data.cols(); ++msmt) { 
 
@@ -289,6 +295,9 @@ std::map<std::string, int> get_counts_kde(
                 query_point.row(0) = (query_point.row(0) - kde_entry.scaler_mean[0]) / kde_entry.scaler_stddev[0];
                 query_point.row(1) = (query_point.row(1) - kde_entry.scaler_mean[1]) / kde_entry.scaler_stddev[1];
                 
+                arma::vec estimations0(1);
+                arma::vec estimations1(1);
+
                 kde_entry.kde_0.Evaluate(query_point, estimations0);
                 kde_entry.kde_1.Evaluate(query_point, estimations1);
 
@@ -303,8 +312,18 @@ std::map<std::string, int> get_counts_kde(
                 }
             }
             std::reverse(outcome_str.begin(), outcome_str.end()); // Reverse string
-            counts[outcome_str]++;
+            my_counts[outcome_str]++;
         }
+
+
+        // Merge results
+        std::map<std::string, int> counts;
+        for (const auto& thread_map : private_counts) {
+            for (const auto& kv : thread_map) {
+                counts[kv.first] += kv.second;
+            }
+        }
+
         return counts;
         
     }
