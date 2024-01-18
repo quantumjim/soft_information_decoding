@@ -142,6 +142,12 @@ PYBIND11_MODULE(cpp_soft_info, m) {
       py::arg("matching"), py::arg("not_scaled_IQ_data"), 
       py::arg("synd_rounds"), py::arg("_resets"),
       py::arg("qubit_mapping"), py::arg("gauss_params_dict"));
+
+    m.def("soft_reweight_kde", &pm::soft_reweight_kde, 
+      "Reweight a matching graph using soft information",
+      py::arg("matching"), py::arg("not_scaled_IQ_data"), 
+      py::arg("synd_rounds"), py::arg("_resets"),
+      py::arg("qubit_mapping"), py::arg("kde_dict"));
     
     m.def("reweight_edges_to_one", &pm::reweight_edges_to_one, 
       "Reweight a matching graph to have edge weights of 1",
@@ -178,6 +184,13 @@ PYBIND11_MODULE(cpp_soft_info, m) {
       py::arg("_resets"), py::arg("qubit_mapping"),
       py::arg("gauss_params_dict"), py::arg("_detailed") = false);
 
+    m.def("decode_IQ_kde", &pm::decode_IQ_kde,
+      "Decode a matching graph using IQ data",
+      py::arg("matching"), py::arg("not_scaled_IQ_data"),
+      py::arg("synd_rounds"), py::arg("logical"),
+      py::arg("_resets"), py::arg("qubit_mapping"),
+      py::arg("kde_dict"), py::arg("_detailed") = false);
+      
     m.def("decode_IQ_shots_flat", &pm::decode_IQ_shots_flat,
       "Decode a matching graph using IQ data but weight edges to 1",
       py::arg("matching"), py::arg("not_scaled_IQ_data"),

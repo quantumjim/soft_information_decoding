@@ -56,12 +56,7 @@ double llh_ratio(const Eigen::Vector2d& scaled_point, const GridData& grid_data,
 std::map<std::string, float> llh_ratio_1Dgauss(
     double rpoint, std::map<std::string,float> gauss_params);
 
-std::map<std::string, float> llh_ratio_kde(
-    const Eigen::Vector2d& not_scaled_point,
-    mlpack::KDE<mlpack::GaussianKernel, mlpack::EuclideanDistance, arma::mat, mlpack::KDTree> kde0,
-    mlpack::KDE<mlpack::GaussianKernel, mlpack::EuclideanDistance, arma::mat, mlpack::KDTree> kde1, 
-    arma::vec scaler_mean,
-    arma::vec scaler_stddev);
+std::map<std::string, float> llh_ratio_kde(std::complex<double> not_scaled_point, KDE_Result kde_entry);
 
 std::map<std::string, int> get_counts_1Dgauss(
     const Eigen::MatrixXcd& not_scaled_IQ_data,

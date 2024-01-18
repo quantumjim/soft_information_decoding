@@ -41,6 +41,15 @@ namespace pm {
         const std::map<int, int> &qubit_mapping,
         const std::map<int, std::map<std::string, float>> &gauss_params_dict);
 
+    void soft_reweight_kde(
+        UserGraph &matching,
+        const Eigen::MatrixXcd &not_scaled_IQ_data,
+        int synd_rounds,
+        bool _resets,
+        const std::map<int, int> &qubit_mapping,
+        std::map<int, KDE_Result> kde_dict);
+        
+
     void reweight_edges_to_one(UserGraph &matching);
 
     void reweight_edges_informed(
@@ -78,6 +87,16 @@ namespace pm {
         bool _resets,
         const std::map<int, int> &qubit_mapping, 
         const std::map<int, std::map<std::string, float>> &gauss_params_dict, 
+        bool _detailed = false);
+    
+    DetailedDecodeResult decode_IQ_kde(
+        UserGraph &matching,
+        const Eigen::MatrixXcd &not_scaled_IQ_data,
+        int synd_rounds,
+        int logical,
+        bool _resets,
+        const std::map<int, int> &qubit_mapping, 
+        std::map<int, KDE_Result> kde_dict,
         bool _detailed = false);
     
     DetailedDecodeResult decode_IQ_shots_flat(

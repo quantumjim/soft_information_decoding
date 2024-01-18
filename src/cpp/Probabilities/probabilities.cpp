@@ -148,24 +148,19 @@ std::map<std::string, float> llh_ratio_1Dgauss(
         return result;
 }
 
-std::map<std::string, float> llh_ratio_kde(
-    const Eigen::Vector2d& not_scaled_point,
-    mlpack::KDE<mlpack::GaussianKernel, mlpack::EuclideanDistance, arma::mat, mlpack::KDTree> kde0,
-    mlpack::KDE<mlpack::GaussianKernel, mlpack::EuclideanDistance, arma::mat, mlpack::KDTree> kde1, 
-    arma::vec scaler_mean,
-    arma::vec scaler_stddev) {
+std::map<std::string, float> llh_ratio_kde(std::complex<double> not_scaled_point, KDE_Result kde_entry) {
 
         arma::mat query_point(2, 1); // 2 rows, 1 column
-        query_point(0, 0) = not_scaled_point[0]; // real
-        query_point(1, 0) = not_scaled_point[1]; // imag
+        query_point(0, 0) = std::real(not_scaled_point); // real
+        query_point(1, 0) = std::imag(not_scaled_point); // imag
 
-        query_point.row(0) = (query_point.row(0) - scaler_mean[0]) / scaler_stddev[0];
-        query_point.row(1) = (query_point.row(1) - scaler_mean[1]) / scaler_stddev[1];
+        query_point.row(0) = (query_point.row(0) - kde_entry.scaler_mean[0]) / kde_entry.scaler_stddev[0];
+        query_point.row(1) = (query_point.row(1) - kde_entry.scaler_mean[1]) / kde_entry.scaler_stddev[1];
 
         arma::vec estimations0(1);
         arma::vec estimations1(1);
-        kde0.Evaluate(query_point, estimations0);
-        kde1.Evaluate(query_point, estimations1);
+        kde_entry.kde_0.Evaluate(query_point, estimations0);
+        kde_entry.kde_1.Evaluate(query_point, estimations1);
 
         double weight = 0;
         if (estimations0[0] > estimations1[0]) {
@@ -282,8 +277,6 @@ std::map<std::string, int> get_counts_kde(
 
             std::string outcome_str;
             for (int msmt = 0; msmt < not_scaled_IQ_data.cols(); ++msmt) { 
-
-
                 int qubit_idx = qubit_mapping.at(msmt);
                 auto &kde_entry = kde_dict.at(qubit_idx);
                 std::complex<double> not_scaled_point = not_scaled_IQ_data(shot, msmt);   
