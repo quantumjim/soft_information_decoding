@@ -605,52 +605,144 @@ namespace pm
 
         }
 
+
     DetailedDecodeResult decode_IQ_kde(
         UserGraph &matching,
         const Eigen::MatrixXcd &not_scaled_IQ_data,
         int synd_rounds,
         int logical,
         bool _resets,
-        const std::map<int, int> &qubit_mapping, 
+        const std::map<int, int> &qubit_mapping,
         std::map<int, KDE_Result> kde_dict,
         bool _detailed) {
-            
-            DetailedDecodeResult result;
-            result.num_errors = 0;
 
-            // Start of profiling
-            auto start_total = std::chrono::high_resolution_clock::now();
+        DetailedDecodeResult result;
+        result.num_errors = 0;
 
-            for (int shot = 0; shot < not_scaled_IQ_data.rows(); ++shot) {
-                Eigen::MatrixXcd not_scaled_IQ_shot_matrix = not_scaled_IQ_data.row(shot);
+        // Start of profiling
+        auto start_total = std::chrono::high_resolution_clock::now();
 
-                auto counts = get_counts_kde(not_scaled_IQ_shot_matrix, qubit_mapping, kde_dict, synd_rounds);
-                std::string count_key = counts.begin()->first;
+        for (int shot = 0; shot < not_scaled_IQ_data.rows(); ++shot) {
+            // Start timing for this shot
+            auto start_shot = std::chrono::high_resolution_clock::now();
 
-                soft_reweight_kde(matching, not_scaled_IQ_shot_matrix, synd_rounds,
-                                      _resets, qubit_mapping, kde_dict);
+            Eigen::MatrixXcd not_scaled_IQ_shot_matrix = not_scaled_IQ_data.row(shot);
 
-                auto det_syndromes = counts_to_det_syndr(count_key, _resets, false);
-                auto detectionEvents = syndromeArrayToDetectionEvents(det_syndromes, matching.get_num_detectors(), matching.get_boundary().size());
+            // Measure time for get_counts_kde
+            auto start_get_counts = std::chrono::high_resolution_clock::now();
+            auto counts = get_counts_kde(not_scaled_IQ_shot_matrix, qubit_mapping, kde_dict, synd_rounds);
+            std::string count_key = counts.begin()->first;
+            auto end_get_counts = std::chrono::high_resolution_clock::now();
+            auto get_counts_duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_get_counts - start_get_counts);
 
-                auto [predicted_observables, rescaled_weight] = decode(matching, detectionEvents);
+            // Measure time for soft_reweight_kde
+            auto start_soft_reweight = std::chrono::high_resolution_clock::now();
+            soft_reweight_kde(matching, not_scaled_IQ_shot_matrix, synd_rounds,
+                _resets, qubit_mapping, kde_dict);
+            auto end_soft_reweight = std::chrono::high_resolution_clock::now();
+            auto soft_reweight_duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_soft_reweight - start_soft_reweight);
 
-                int actual_observable = (static_cast<int>(count_key[0]) - logical) % 2; // Convert first character to int and modulo 2
-                // int actual_observable = (static_cast<int>(count_key[0]) - '0') % 2;  // Convert first character to int and modulo 2
-                // Check if predicted_observables is not empty and compare the first element
-                if (_detailed)
-                {
-                    ShotErrorDetails errorDetail = createShotErrorDetails(matching, detectionEvents, det_syndromes);
-                    result.error_details.push_back(errorDetail);
-                }
-                if (!predicted_observables.empty() && predicted_observables[0] != actual_observable)
-                {
-                    result.num_errors++; // Increment error count if they don't match
-                    result.indices.push_back(shot);
-                }
+            // Measure time for counts_to_det_syndr
+            auto start_counts_to_det_syndr = std::chrono::high_resolution_clock::now();
+            auto det_syndromes = counts_to_det_syndr(count_key, _resets, false);
+            auto end_counts_to_det_syndr = std::chrono::high_resolution_clock::now();
+            auto counts_to_det_syndr_duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_counts_to_det_syndr - start_counts_to_det_syndr);
+
+            auto detectionEvents = syndromeArrayToDetectionEvents(det_syndromes, matching.get_num_detectors(), matching.get_boundary().size());
+
+            // Measure time for decode
+            auto start_decode = std::chrono::high_resolution_clock::now();
+            auto [predicted_observables, rescaled_weight] = decode(matching, detectionEvents);
+            auto end_decode = std::chrono::high_resolution_clock::now();
+            auto decode_duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_decode - start_decode);
+
+            int actual_observable = (static_cast<int>(count_key[0]) - logical) % 2;
+
+            // Stop timing for this shot
+            auto end_shot = std::chrono::high_resolution_clock::now();
+
+            // Calculate the time for this shot
+            auto shot_duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_shot - start_shot);
+
+            // Print the time for each part
+            std::cout << "Shot " << shot << " timing:" << std::endl;
+            std::cout << "get_counts_kde: " << get_counts_duration.count() << " milliseconds" << std::endl;
+            std::cout << "soft_reweight_kde: " << soft_reweight_duration.count() << " milliseconds" << std::endl;
+            std::cout << "counts_to_det_syndr: " << counts_to_det_syndr_duration.count() << " milliseconds" << std::endl;
+            std::cout << "decode: " << decode_duration.count() << " milliseconds" << std::endl;
+            std::cout << "Total shot execution time: " << shot_duration.count() << " milliseconds" << std::endl;
+
+            if (_detailed) {
+                ShotErrorDetails errorDetail = createShotErrorDetails(matching, detectionEvents, det_syndromes);
+                result.error_details.push_back(errorDetail);
             }
-            return result;
+            if (!predicted_observables.empty() && predicted_observables[0] != actual_observable) {
+                result.num_errors++; // Increment error count if they don't match
+                result.indices.push_back(shot);
+            }
         }
+
+        // Stop timing for the entire function
+        auto end_total = std::chrono::high_resolution_clock::now();
+
+        // Calculate the total time for the function
+        auto total_duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_total - start_total);
+
+        // Print the total time for the function
+        std::cout << "Total execution time: " << total_duration.count() << " milliseconds" << std::endl;
+
+        return result;
+    }
+
+
+    
+
+    // DetailedDecodeResult decode_IQ_kde(
+    //     UserGraph &matching,
+    //     const Eigen::MatrixXcd &not_scaled_IQ_data,
+    //     int synd_rounds,
+    //     int logical,
+    //     bool _resets,
+    //     const std::map<int, int> &qubit_mapping, 
+    //     std::map<int, KDE_Result> kde_dict,
+    //     bool _detailed) {
+            
+    //         DetailedDecodeResult result;
+    //         result.num_errors = 0;
+
+    //         // Start of profiling
+    //         auto start_total = std::chrono::high_resolution_clock::now();
+
+    //         for (int shot = 0; shot < not_scaled_IQ_data.rows(); ++shot) {
+    //             Eigen::MatrixXcd not_scaled_IQ_shot_matrix = not_scaled_IQ_data.row(shot);
+
+    //             auto counts = get_counts_kde(not_scaled_IQ_shot_matrix, qubit_mapping, kde_dict, synd_rounds);
+    //             std::string count_key = counts.begin()->first;
+
+    //             soft_reweight_kde(matching, not_scaled_IQ_shot_matrix, synd_rounds,
+    //                                   _resets, qubit_mapping, kde_dict);
+
+    //             auto det_syndromes = counts_to_det_syndr(count_key, _resets, false);
+    //             auto detectionEvents = syndromeArrayToDetectionEvents(det_syndromes, matching.get_num_detectors(), matching.get_boundary().size());
+
+    //             auto [predicted_observables, rescaled_weight] = decode(matching, detectionEvents);
+
+    //             int actual_observable = (static_cast<int>(count_key[0]) - logical) % 2; // Convert first character to int and modulo 2
+    //             // int actual_observable = (static_cast<int>(count_key[0]) - '0') % 2;  // Convert first character to int and modulo 2
+    //             // Check if predicted_observables is not empty and compare the first element
+    //             if (_detailed)
+    //             {
+    //                 ShotErrorDetails errorDetail = createShotErrorDetails(matching, detectionEvents, det_syndromes);
+    //                 result.error_details.push_back(errorDetail);
+    //             }
+    //             if (!predicted_observables.empty() && predicted_observables[0] != actual_observable)
+    //             {
+    //                 result.num_errors++; // Increment error count if they don't match
+    //                 result.indices.push_back(shot);
+    //             }
+    //         }
+    //         return result;
+    //     }
 
 
 
