@@ -684,7 +684,7 @@ namespace pm
                 }
                 // std::reverse(count_key.begin(), count_key.end()); // Reverse string (NOT NEEDED BECAUSE SLOWS DOWN)
 
-                auto det_syndromes = counts_to_det_syndr(count_key, _resets, false);
+                auto det_syndromes = counts_to_det_syndr(count_key, _resets, false, false);
                 auto detectionEvents = syndromeArrayToDetectionEvents(det_syndromes, matching.get_num_detectors(), matching.get_boundary().size());
                 auto [predicted_observables, rescaled_weight] = decode(matching, detectionEvents);
                 int actual_observable = (static_cast<int>(count_key[0]) - logical) % 2;

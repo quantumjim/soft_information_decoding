@@ -124,14 +124,18 @@ namespace pm {
 }
 
 
-std::vector<int> counts_to_det_syndr(const std::string& input_str, bool _resets, bool verbose) {
+std::vector<int> counts_to_det_syndr(const std::string& input_str, bool _resets, bool verbose, bool reverse) {
     // Step 1: Reverse the input string
-    // std::string reversed_str(input_str.rbegin(), input_str.rend());
-
-    std::string reversed_str = input_str;
+    std::string reversed_str;
+    if (reverse) {
+        std::string reversed(input_str.rbegin(), input_str.rend());
+        reversed_str = reversed;
+    } else {
+        reversed_str = input_str;
+    }
 
     if (verbose) {std::cout << "Reversed string: " << reversed_str << std::endl;} ////////////////
-    if (verbose) {std::cout << "WARNING: not reversing the string for speed reasons!" << std::endl;} ////////////////
+    // if (verbose) {std::cout << "WARNING: not reversing the string for speed reasons!" << std::endl;} ////////////////
 
     // Step 2: Separate the count string
     size_t space_pos = reversed_str.rfind(" ");

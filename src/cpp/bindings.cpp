@@ -117,7 +117,7 @@ PYBIND11_MODULE(cpp_soft_info, m) {
     m.def("counts_to_det_syndr", &counts_to_det_syndr, 
       "Convert counts to deterministic syndromes",
       py::arg("input_str"), py::arg("_resets") = false, 
-      py::arg("verbose") = false);
+      py::arg("verbose") = false, py::arg("reverse") = true);
 
     m.def("syndromeArrayToDetectionEvents", &syndromeArrayToDetectionEvents, 
       "Convert syndrome array to detection events",

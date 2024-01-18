@@ -49,7 +49,7 @@ namespace pm {
     UserGraph detector_error_model_to_user_graph_private(const stim::DetectorErrorModel& detector_error_model);
 }
 
-std::vector<int> counts_to_det_syndr(const std::string& input_str, bool _resets = false, bool verbose = false);
+std::vector<int> counts_to_det_syndr(const std::string& input_str, bool _resets = false, bool verbose = false, bool reverse = true);
 
 std::vector<uint64_t> syndromeArrayToDetectionEvents(const std::vector<int>& z, int num_detectors, int boundary_length);
 
