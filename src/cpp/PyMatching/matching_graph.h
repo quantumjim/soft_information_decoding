@@ -90,7 +90,8 @@ namespace pm {
         bool _detailed = false);
     
     DetailedDecodeResult decode_IQ_kde(
-        UserGraph &matching,
+        // UserGraph &matching,
+        stim::DetectorErrorModel& detector_error_model,
         const Eigen::MatrixXcd &not_scaled_IQ_data,
         int synd_rounds,
         int logical,

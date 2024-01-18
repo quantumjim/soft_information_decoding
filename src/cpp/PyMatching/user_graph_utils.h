@@ -45,6 +45,8 @@ namespace pm {
     std::pair<std::vector<uint8_t>, double> decode(UserGraph &self, const std::vector<uint64_t> &detection_events);
 
     std::vector<std::pair<int64_t, int64_t>> decode_to_edges_array(UserGraph &self, const std::vector<uint64_t> &detection_events);
+
+    UserGraph detector_error_model_to_user_graph_private(const stim::DetectorErrorModel& detector_error_model);
 }
 
 std::vector<int> counts_to_det_syndr(const std::string& input_str, bool _resets = false, bool verbose = false);

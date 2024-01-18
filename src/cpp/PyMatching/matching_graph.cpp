@@ -8,8 +8,8 @@
 #include <cmath>
 #include <stdexcept>
 
-
 #include <chrono>
+#include <omp.h>
 
 
 namespace pm
@@ -606,8 +606,9 @@ namespace pm
         }
 
 
+
     DetailedDecodeResult decode_IQ_kde(
-        UserGraph &matching,
+        stim::DetectorErrorModel& detector_error_model,
         const Eigen::MatrixXcd &not_scaled_IQ_data,
         int synd_rounds,
         int logical,
@@ -617,25 +618,16 @@ namespace pm
         bool _detailed) {
 
         DetailedDecodeResult result;
-        result.num_errors = 0;
-
-        std::set<size_t> empty_set;
-
-        // Start of profiling
-        auto start_total = std::chrono::high_resolution_clock::now();
-        
+        result.num_errors = 0;    
+        std::set<size_t> empty_set;        
         int distance = (not_scaled_IQ_data.cols() + synd_rounds) / (synd_rounds + 1); // Hardcoded for RepCodes
 
+        
         for (int shot = 0; shot < not_scaled_IQ_data.rows(); ++shot) {
-            // Start timing for this shot
-            auto start_shot = std::chrono::high_resolution_clock::now();
-
+            UserGraph matching = detector_error_model_to_user_graph_private(detector_error_model);
             Eigen::MatrixXcd not_scaled_IQ_shot_matrix = not_scaled_IQ_data.row(shot);
-
-            // Measure time for get_counts_kde
-            auto start_get_counts = std::chrono::high_resolution_clock::now();
-
             std::string count_key;
+
             for (int msmt = 0; msmt < not_scaled_IQ_shot_matrix.cols(); ++msmt) { 
                 int qubit_idx = qubit_mapping.at(msmt);
                 auto &kde_entry = kde_dict.at(qubit_idx);
@@ -660,8 +652,8 @@ namespace pm
 
                 if (estimations0[0] > estimations1[0]) {
                     count_key += "0";    
-                    p_small = estimations1[0];
                     p_big = estimations0[0];
+                    p_small = estimations1[0];
                 } else {
                     count_key += "1";
                     p_small = estimations0[0];
@@ -670,77 +662,26 @@ namespace pm
 
                 if (msmt < (distance-1)*synd_rounds) {  
                     double p_soft = 1 / (1 + p_big/p_small);                   
-                    if (_resets) {                                        
-                        size_t neighbor_index = matching.nodes[msmt].index_of_neighbor(msmt + (distance-1));
-                        if (neighbor_index != SIZE_MAX) {
-                            // Edge exists, access its attributes
-                            auto edge_it = matching.nodes[msmt].neighbors[neighbor_index].edge_it;
-
-                            double error_probability = edge_it->error_probability;
-                            double p_tot = p_soft*(1-error_probability) + (1-p_soft)*error_probability;
-
-                            pm::add_edge(matching, msmt, msmt + (distance-1), empty_set, -std::log(p_tot/(1-p_tot)), error_probability, "replace");
-                        } else {
-                            throw std::runtime_error("Edge does not exist between:" + std::to_string(msmt) +  " and " + std::to_string(msmt + (distance-1)));
-                        }
+                    if (_resets) {                                   
+                            pm::add_edge(matching, msmt, msmt + (distance-1), empty_set, -std::log(p_soft/(1-p_soft)), p_soft, "independent");
                     } else {
                         if (msmt < (distance-1)*(synd_rounds-1)) {
-                            double L = -std::log(p_soft/(1-p_soft));
-                            pm::add_edge(matching, msmt, msmt + 2 * (distance-1), empty_set, L, 0.5, "replace");
-                        } else {
-                            size_t neighbor_index = matching.nodes[msmt].index_of_neighbor(msmt + (distance-1));
-                            if (neighbor_index != SIZE_MAX) {
-                                // Edge exists, access its attributes
-                                auto edge_it = matching.nodes[msmt].neighbors[neighbor_index].edge_it;
-
-                                double error_probability = edge_it->error_probability;
-                                double p_tot = p_soft*(1-error_probability) + (1-p_soft)*error_probability;
-
-                                pm::add_edge(matching, msmt, msmt + (distance-1), empty_set, -std::log(p_tot/(1-p_tot)), error_probability, "replace");
-                            } else {
-                                throw std::runtime_error("Edge does not exist between:" + std::to_string(msmt) +  " and " + std::to_string(msmt + (distance-1)));
-                            }
+                            pm::add_edge(matching, msmt, msmt + 2 * (distance-1), empty_set, -std::log(p_soft/(1-p_soft)), p_soft, "replace");
+                        } else {                            
+                            pm::add_edge(matching, msmt, msmt + (distance-1), empty_set, -std::log(p_soft/(1-p_soft)), p_soft, "independent");
                         }
                     }
                 }
-
                 if ((msmt + 1) % (distance - 1) == 0 && (msmt + 1) / (distance - 1) <= synd_rounds) {
                     count_key += " ";
                 }            
             }
-            // std::reverse(count_key.begin(), count_key.end()); // Reverse string
+            // std::reverse(count_key.begin(), count_key.end()); // Reverse string (NOT NEEDED BECAUSE SLOWS DOWN)
 
-            auto end_get_counts = std::chrono::high_resolution_clock::now();
-            auto get_counts_duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_get_counts - start_get_counts);
-
-            // Measure time for counts_to_det_syndr
-            auto start_counts_to_det_syndr = std::chrono::high_resolution_clock::now();
             auto det_syndromes = counts_to_det_syndr(count_key, _resets, false);
-            auto end_counts_to_det_syndr = std::chrono::high_resolution_clock::now();
-            auto counts_to_det_syndr_duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_counts_to_det_syndr - start_counts_to_det_syndr);
-
             auto detectionEvents = syndromeArrayToDetectionEvents(det_syndromes, matching.get_num_detectors(), matching.get_boundary().size());
-
-            // Measure time for decode
-            auto start_decode = std::chrono::high_resolution_clock::now();
             auto [predicted_observables, rescaled_weight] = decode(matching, detectionEvents);
-            auto end_decode = std::chrono::high_resolution_clock::now();
-            auto decode_duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_decode - start_decode);
-
             int actual_observable = (static_cast<int>(count_key[0]) - logical) % 2;
-
-            // Stop timing for this shot
-            auto end_shot = std::chrono::high_resolution_clock::now();
-
-            // Calculate the time for this shot
-            auto shot_duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_shot - start_shot);
-
-            // Print the time for each part
-            std::cout << "Shot " << shot << " timing:" << std::endl;
-            std::cout << "get_counts_kde: " << get_counts_duration.count() << " milliseconds" << std::endl;
-            std::cout << "counts_to_det_syndr: " << counts_to_det_syndr_duration.count() << " milliseconds" << std::endl;
-            std::cout << "decode: " << decode_duration.count() << " milliseconds" << std::endl;
-            std::cout << "Total shot execution time: " << shot_duration.count() << " milliseconds" << std::endl;
 
             if (_detailed) {
                 ShotErrorDetails errorDetail = createShotErrorDetails(matching, detectionEvents, det_syndromes);
@@ -752,17 +693,283 @@ namespace pm
             }
         }
 
-        // Stop timing for the entire function
-        auto end_total = std::chrono::high_resolution_clock::now();
-
-        // Calculate the total time for the function
-        auto total_duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_total - start_total);
-
-        // Print the total time for the function
-        std::cout << "Total execution time: " << total_duration.count() << " milliseconds" << std::endl;
-
         return result;
     }
+
+    // DetailedDecodeResult decode_IQ_kde(
+    //     // UserGraph &matching,
+    //     stim::DetectorErrorModel& detector_error_model,
+    //     const Eigen::MatrixXcd &not_scaled_IQ_data,
+    //     int synd_rounds,
+    //     int logical,
+    //     bool _resets,
+    //     const std::map<int, int> &qubit_mapping,
+    //     std::map<int, KDE_Result> kde_dict,
+    //     bool _detailed) {
+
+    //     DetailedDecodeResult result;
+    //     result.num_errors = 0;
+
+        
+
+    //     std::set<size_t> empty_set;        
+    //     int distance = (not_scaled_IQ_data.cols() + synd_rounds) / (synd_rounds + 1); // Hardcoded for RepCodes
+
+    //     for (int shot = 0; shot < not_scaled_IQ_data.rows(); ++shot) {
+
+    //         UserGraph matching = detector_error_model_to_user_graph_private(detector_error_model);
+    //         Eigen::MatrixXcd not_scaled_IQ_shot_matrix = not_scaled_IQ_data.row(shot);
+    //         std::string count_key;
+
+    //         for (int msmt = 0; msmt < not_scaled_IQ_shot_matrix.cols(); ++msmt) { 
+    //             int qubit_idx = qubit_mapping.at(msmt);
+    //             auto &kde_entry = kde_dict.at(qubit_idx);
+    //             std::complex<double> not_scaled_point = not_scaled_IQ_data(shot, msmt);   
+
+    //             arma::mat query_point(2, 1); // 2 rows, 1 column
+    //             query_point(0, 0) = std::real(not_scaled_point); // real
+    //             query_point(1, 0) = std::imag(not_scaled_point); // imag 
+
+    //             query_point.row(0) -= kde_entry.scaler_mean[0]; // Element-wise subtraction
+    //             query_point.row(1) -= kde_entry.scaler_mean[1]; // Element-wise subtraction
+    //             query_point.row(0) /= kde_entry.scaler_stddev[0]; // Element-wise division
+    //             query_point.row(1) /= kde_entry.scaler_stddev[1]; // Element-wise division
+                
+    //             arma::vec estimations0(1);
+    //             arma::vec estimations1(1);
+    //             kde_entry.kde_0.Evaluate(query_point, estimations0);
+    //             kde_entry.kde_1.Evaluate(query_point, estimations1);
+
+    //             double p_small;
+    //             double p_big;
+
+    //             if (estimations0[0] > estimations1[0]) {
+    //                 count_key += "0";    
+    //                 p_small = estimations1[0];
+    //                 p_big = estimations0[0];
+    //             } else {
+    //                 count_key += "1";
+    //                 p_small = estimations0[0];
+    //                 p_big = estimations1[0];
+    //             }
+
+    //             if (msmt < (distance-1)*synd_rounds) {  
+    //                 double p_soft = 1 / (1 + p_big/p_small);                   
+    //                 if (_resets) {                                        
+    //                     size_t neighbor_index = matching.nodes[msmt].index_of_neighbor(msmt + (distance-1));
+    //                     if (neighbor_index != SIZE_MAX) {
+    //                         // Edge exists, access its attributes
+    //                         auto edge_it = matching.nodes[msmt].neighbors[neighbor_index].edge_it;
+
+    //                         double error_probability = edge_it->error_probability;
+    //                         double p_tot = p_soft*(1-error_probability) + (1-p_soft)*error_probability;
+
+    //                         pm::add_edge(matching, msmt, msmt + (distance-1), empty_set, -std::log(p_tot/(1-p_tot)), error_probability, "replace");
+    //                     } else {
+    //                         throw std::runtime_error("Edge does not exist between:" + std::to_string(msmt) +  " and " + std::to_string(msmt + (distance-1)));
+    //                     }
+    //                 } else {
+    //                     if (msmt < (distance-1)*(synd_rounds-1)) {
+    //                         double L = -std::log(p_soft/(1-p_soft));
+    //                         pm::add_edge(matching, msmt, msmt + 2 * (distance-1), empty_set, L, 0.5, "replace");
+    //                     } else {
+    //                         size_t neighbor_index = matching.nodes[msmt].index_of_neighbor(msmt + (distance-1));
+    //                         if (neighbor_index != SIZE_MAX) {
+    //                             // Edge exists, access its attributes
+    //                             auto edge_it = matching.nodes[msmt].neighbors[neighbor_index].edge_it;
+
+    //                             double error_probability = edge_it->error_probability;
+    //                             double p_tot = p_soft*(1-error_probability) + (1-p_soft)*error_probability;
+
+    //                             pm::add_edge(matching, msmt, msmt + (distance-1), empty_set, -std::log(p_tot/(1-p_tot)), error_probability, "replace");
+    //                         } else {
+    //                             throw std::runtime_error("Edge does not exist between:" + std::to_string(msmt) +  " and " + std::to_string(msmt + (distance-1)));
+    //                         }
+    //                     }
+    //                 }
+    //             }
+
+    //             if ((msmt + 1) % (distance - 1) == 0 && (msmt + 1) / (distance - 1) <= synd_rounds) {
+    //                 count_key += " ";
+    //             }            
+    //         }
+    //         // std::reverse(count_key.begin(), count_key.end()); // Reverse string (NOT NEEDED BECAUSE SLOWS DOWN)
+
+    //         auto det_syndromes = counts_to_det_syndr(count_key, _resets, false);
+    //         auto detectionEvents = syndromeArrayToDetectionEvents(det_syndromes, matching.get_num_detectors(), matching.get_boundary().size());
+    //         auto [predicted_observables, rescaled_weight] = decode(matching, detectionEvents);
+    //         int actual_observable = (static_cast<int>(count_key[0]) - logical) % 2;
+
+    //         if (_detailed) {
+    //             ShotErrorDetails errorDetail = createShotErrorDetails(matching, detectionEvents, det_syndromes);
+    //             result.error_details.push_back(errorDetail);
+    //         }
+    //         if (!predicted_observables.empty() && predicted_observables[0] != actual_observable) {
+    //             result.num_errors++; // Increment error count if they don't match
+    //             result.indices.push_back(shot);
+    //         }
+    //     }
+
+    //     return result;
+    // }
+
+    // DetailedDecodeResult decode_IQ_kde(
+    //     UserGraph &matching,
+    //     const Eigen::MatrixXcd &not_scaled_IQ_data,
+    //     int synd_rounds,
+    //     int logical,
+    //     bool _resets,
+    //     const std::map<int, int> &qubit_mapping,
+    //     std::map<int, KDE_Result> kde_dict,
+    //     bool _detailed) {
+
+    //     DetailedDecodeResult result;
+    //     result.num_errors = 0;
+
+    //     std::set<size_t> empty_set;
+
+    //     // Start of profiling
+    //     auto start_total = std::chrono::high_resolution_clock::now();
+        
+    //     int distance = (not_scaled_IQ_data.cols() + synd_rounds) / (synd_rounds + 1); // Hardcoded for RepCodes
+
+    //     for (int shot = 0; shot < not_scaled_IQ_data.rows(); ++shot) {
+    //         // Start timing for this shot
+    //         auto start_shot = std::chrono::high_resolution_clock::now();
+
+    //         Eigen::MatrixXcd not_scaled_IQ_shot_matrix = not_scaled_IQ_data.row(shot);
+
+    //         // Measure time for get_counts_kde
+    //         auto start_get_counts = std::chrono::high_resolution_clock::now();
+
+    //         std::string count_key;
+    //         for (int msmt = 0; msmt < not_scaled_IQ_shot_matrix.cols(); ++msmt) { 
+    //             int qubit_idx = qubit_mapping.at(msmt);
+    //             auto &kde_entry = kde_dict.at(qubit_idx);
+    //             std::complex<double> not_scaled_point = not_scaled_IQ_data(shot, msmt);   
+
+    //             arma::mat query_point(2, 1); // 2 rows, 1 column
+    //             query_point(0, 0) = std::real(not_scaled_point); // real
+    //             query_point(1, 0) = std::imag(not_scaled_point); // imag 
+
+    //             query_point.row(0) -= kde_entry.scaler_mean[0]; // Element-wise subtraction
+    //             query_point.row(1) -= kde_entry.scaler_mean[1]; // Element-wise subtraction
+    //             query_point.row(0) /= kde_entry.scaler_stddev[0]; // Element-wise division
+    //             query_point.row(1) /= kde_entry.scaler_stddev[1]; // Element-wise division
+                
+    //             arma::vec estimations0(1);
+    //             arma::vec estimations1(1);
+    //             kde_entry.kde_0.Evaluate(query_point, estimations0);
+    //             kde_entry.kde_1.Evaluate(query_point, estimations1);
+
+    //             double p_small;
+    //             double p_big;
+
+    //             if (estimations0[0] > estimations1[0]) {
+    //                 count_key += "0";    
+    //                 p_small = estimations1[0];
+    //                 p_big = estimations0[0];
+    //             } else {
+    //                 count_key += "1";
+    //                 p_small = estimations0[0];
+    //                 p_big = estimations1[0];
+    //             }
+
+    //             if (msmt < (distance-1)*synd_rounds) {  
+    //                 double p_soft = 1 / (1 + p_big/p_small);                   
+    //                 if (_resets) {                                        
+    //                     size_t neighbor_index = matching.nodes[msmt].index_of_neighbor(msmt + (distance-1));
+    //                     if (neighbor_index != SIZE_MAX) {
+    //                         // Edge exists, access its attributes
+    //                         auto edge_it = matching.nodes[msmt].neighbors[neighbor_index].edge_it;
+
+    //                         double error_probability = edge_it->error_probability;
+    //                         double p_tot = p_soft*(1-error_probability) + (1-p_soft)*error_probability;
+
+    //                         pm::add_edge(matching, msmt, msmt + (distance-1), empty_set, -std::log(p_tot/(1-p_tot)), error_probability, "replace");
+    //                     } else {
+    //                         throw std::runtime_error("Edge does not exist between:" + std::to_string(msmt) +  " and " + std::to_string(msmt + (distance-1)));
+    //                     }
+    //                 } else {
+    //                     if (msmt < (distance-1)*(synd_rounds-1)) {
+    //                         double L = -std::log(p_soft/(1-p_soft));
+    //                         pm::add_edge(matching, msmt, msmt + 2 * (distance-1), empty_set, L, 0.5, "replace");
+    //                     } else {
+    //                         size_t neighbor_index = matching.nodes[msmt].index_of_neighbor(msmt + (distance-1));
+    //                         if (neighbor_index != SIZE_MAX) {
+    //                             // Edge exists, access its attributes
+    //                             auto edge_it = matching.nodes[msmt].neighbors[neighbor_index].edge_it;
+
+    //                             double error_probability = edge_it->error_probability;
+    //                             double p_tot = p_soft*(1-error_probability) + (1-p_soft)*error_probability;
+
+    //                             pm::add_edge(matching, msmt, msmt + (distance-1), empty_set, -std::log(p_tot/(1-p_tot)), error_probability, "replace");
+    //                         } else {
+    //                             throw std::runtime_error("Edge does not exist between:" + std::to_string(msmt) +  " and " + std::to_string(msmt + (distance-1)));
+    //                         }
+    //                     }
+    //                 }
+    //             }
+
+    //             if ((msmt + 1) % (distance - 1) == 0 && (msmt + 1) / (distance - 1) <= synd_rounds) {
+    //                 count_key += " ";
+    //             }            
+    //         }
+    //         // std::reverse(count_key.begin(), count_key.end()); // Reverse string
+
+    //         auto end_get_counts = std::chrono::high_resolution_clock::now();
+    //         auto get_counts_duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_get_counts - start_get_counts);
+
+    //         // Measure time for counts_to_det_syndr
+    //         auto start_counts_to_det_syndr = std::chrono::high_resolution_clock::now();
+    //         auto det_syndromes = counts_to_det_syndr(count_key, _resets, false);
+    //         auto end_counts_to_det_syndr = std::chrono::high_resolution_clock::now();
+    //         auto counts_to_det_syndr_duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_counts_to_det_syndr - start_counts_to_det_syndr);
+
+    //         auto detectionEvents = syndromeArrayToDetectionEvents(det_syndromes, matching.get_num_detectors(), matching.get_boundary().size());
+
+    //         // Measure time for decode
+    //         auto start_decode = std::chrono::high_resolution_clock::now();
+    //         auto [predicted_observables, rescaled_weight] = decode(matching, detectionEvents);
+    //         auto end_decode = std::chrono::high_resolution_clock::now();
+    //         auto decode_duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_decode - start_decode);
+
+    //         int actual_observable = (static_cast<int>(count_key[0]) - logical) % 2;
+
+    //         // Stop timing for this shot
+    //         auto end_shot = std::chrono::high_resolution_clock::now();
+
+    //         // Calculate the time for this shot
+    //         auto shot_duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_shot - start_shot);
+
+    //         // Print the time for each part
+    //         std::cout << "Shot " << shot << " timing:" << std::endl;
+    //         std::cout << "get_counts_kde: " << get_counts_duration.count() << " milliseconds" << std::endl;
+    //         std::cout << "counts_to_det_syndr: " << counts_to_det_syndr_duration.count() << " milliseconds" << std::endl;
+    //         std::cout << "decode: " << decode_duration.count() << " milliseconds" << std::endl;
+    //         std::cout << "Total shot execution time: " << shot_duration.count() << " milliseconds" << std::endl;
+
+    //         if (_detailed) {
+    //             ShotErrorDetails errorDetail = createShotErrorDetails(matching, detectionEvents, det_syndromes);
+    //             result.error_details.push_back(errorDetail);
+    //         }
+    //         if (!predicted_observables.empty() && predicted_observables[0] != actual_observable) {
+    //             result.num_errors++; // Increment error count if they don't match
+    //             result.indices.push_back(shot);
+    //         }
+    //     }
+
+    //     // Stop timing for the entire function
+    //     auto end_total = std::chrono::high_resolution_clock::now();
+
+    //     // Calculate the total time for the function
+    //     auto total_duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_total - start_total);
+
+    //     // Print the total time for the function
+    //     std::cout << "Total execution time: " << total_duration.count() << " milliseconds" << std::endl;
+
+    //     return result;
+    // }
 
 
     

@@ -110,6 +110,15 @@ namespace pm {
     }
 
 
+    UserGraph detector_error_model_to_user_graph_private(const stim::DetectorErrorModel& detector_error_model) {
+        UserGraph user_graph(detector_error_model.count_detectors(), detector_error_model.count_observables());
+        iter_detector_error_model_edges(
+            detector_error_model, [&](double p, const std::vector<size_t>& detectors, std::vector<size_t>& observables) {
+                user_graph.handle_dem_instruction(p, detectors, observables);
+            });
+        return user_graph;
+    }
+
 
 
 }

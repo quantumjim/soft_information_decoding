@@ -122,6 +122,10 @@ PYBIND11_MODULE(cpp_soft_info, m) {
     m.def("syndromeArrayToDetectionEvents", &syndromeArrayToDetectionEvents, 
       "Convert syndrome array to detection events",
       py::arg("z"), py::arg("num_detectors"), py::arg("boundary_length"));
+
+    m.def("detector_error_model_to_user_graph", &pm::detector_error_model_to_user_graph_private, 
+      "Convert a detector error model to a user graph",
+      py::arg("detector_error_model"));
     
 
     //////////// Reweighting bindings ////////////
@@ -186,7 +190,7 @@ PYBIND11_MODULE(cpp_soft_info, m) {
 
     m.def("decode_IQ_kde", &pm::decode_IQ_kde,
       "Decode a matching graph using IQ data",
-      py::arg("matching"), py::arg("not_scaled_IQ_data"),
+      py::arg("detector_error_model"), py::arg("not_scaled_IQ_data"),
       py::arg("synd_rounds"), py::arg("logical"),
       py::arg("_resets"), py::arg("qubit_mapping"),
       py::arg("kde_dict"), py::arg("_detailed") = false);
