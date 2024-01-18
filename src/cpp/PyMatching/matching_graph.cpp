@@ -618,81 +618,96 @@ namespace pm
         bool _detailed) {
 
         DetailedDecodeResult result;
-        result.num_errors = 0;    
+        result.num_errors = 0; 
+
         std::set<size_t> empty_set;        
         int distance = (not_scaled_IQ_data.cols() + synd_rounds) / (synd_rounds + 1); // Hardcoded for RepCodes
 
-        
-        for (int shot = 0; shot < not_scaled_IQ_data.rows(); ++shot) {
-            UserGraph matching = detector_error_model_to_user_graph_private(detector_error_model);
-            Eigen::MatrixXcd not_scaled_IQ_shot_matrix = not_scaled_IQ_data.row(shot);
-            std::string count_key;
+        #pragma omp parallel
+        {
+            DetailedDecodeResult localResult;
+            localResult.num_errors = 0;
 
-            for (int msmt = 0; msmt < not_scaled_IQ_shot_matrix.cols(); ++msmt) { 
-                int qubit_idx = qubit_mapping.at(msmt);
-                auto &kde_entry = kde_dict.at(qubit_idx);
-                std::complex<double> not_scaled_point = not_scaled_IQ_data(shot, msmt);   
+            #pragma omp for nowait        
+            for (int shot = 0; shot < not_scaled_IQ_data.rows(); ++shot) {
+                UserGraph matching = detector_error_model_to_user_graph_private(detector_error_model);
+                Eigen::MatrixXcd not_scaled_IQ_shot_matrix = not_scaled_IQ_data.row(shot);
+                std::string count_key;
 
-                arma::mat query_point(2, 1); // 2 rows, 1 column
-                query_point(0, 0) = std::real(not_scaled_point); // real
-                query_point(1, 0) = std::imag(not_scaled_point); // imag 
+                for (int msmt = 0; msmt < not_scaled_IQ_shot_matrix.cols(); ++msmt) { 
+                    int qubit_idx = qubit_mapping.at(msmt);
+                    auto &kde_entry = kde_dict.at(qubit_idx);
+                    std::complex<double> not_scaled_point = not_scaled_IQ_data(shot, msmt);   
 
-                query_point.row(0) -= kde_entry.scaler_mean[0]; // Element-wise subtraction
-                query_point.row(1) -= kde_entry.scaler_mean[1]; // Element-wise subtraction
-                query_point.row(0) /= kde_entry.scaler_stddev[0]; // Element-wise division
-                query_point.row(1) /= kde_entry.scaler_stddev[1]; // Element-wise division
-                
-                arma::vec estimations0(1);
-                arma::vec estimations1(1);
-                kde_entry.kde_0.Evaluate(query_point, estimations0);
-                kde_entry.kde_1.Evaluate(query_point, estimations1);
+                    arma::mat query_point(2, 1); // 2 rows, 1 column
+                    query_point(0, 0) = std::real(not_scaled_point); // real
+                    query_point(1, 0) = std::imag(not_scaled_point); // imag 
 
-                double p_small;
-                double p_big;
+                    query_point.row(0) -= kde_entry.scaler_mean[0]; // Element-wise subtraction
+                    query_point.row(1) -= kde_entry.scaler_mean[1]; // Element-wise subtraction
+                    query_point.row(0) /= kde_entry.scaler_stddev[0]; // Element-wise division
+                    query_point.row(1) /= kde_entry.scaler_stddev[1]; // Element-wise division
+                    
+                    arma::vec estimations0(1);
+                    arma::vec estimations1(1);
+                    kde_entry.kde_0.Evaluate(query_point, estimations0);
+                    kde_entry.kde_1.Evaluate(query_point, estimations1);
 
-                if (estimations0[0] > estimations1[0]) {
-                    count_key += "0";    
-                    p_big = estimations0[0];
-                    p_small = estimations1[0];
-                } else {
-                    count_key += "1";
-                    p_small = estimations0[0];
-                    p_big = estimations1[0];
-                }
+                    double p_small;
+                    double p_big;
 
-                if (msmt < (distance-1)*synd_rounds) {  
-                    double p_soft = 1 / (1 + p_big/p_small);                   
-                    if (_resets) {                                   
-                            pm::add_edge(matching, msmt, msmt + (distance-1), empty_set, -std::log(p_soft/(1-p_soft)), p_soft, "independent");
+                    if (estimations0[0] > estimations1[0]) {
+                        count_key += "0";    
+                        p_big = estimations0[0];
+                        p_small = estimations1[0];
                     } else {
-                        if (msmt < (distance-1)*(synd_rounds-1)) {
-                            pm::add_edge(matching, msmt, msmt + 2 * (distance-1), empty_set, -std::log(p_soft/(1-p_soft)), p_soft, "replace");
-                        } else {                            
-                            pm::add_edge(matching, msmt, msmt + (distance-1), empty_set, -std::log(p_soft/(1-p_soft)), p_soft, "independent");
+                        count_key += "1";
+                        p_small = estimations0[0];
+                        p_big = estimations1[0];
+                    }
+
+                    if (msmt < (distance-1)*synd_rounds) {  
+                        double p_soft = 1 / (1 + p_big/p_small);                   
+                        if (_resets) {                                   
+                                pm::add_edge(matching, msmt, msmt + (distance-1), empty_set, -std::log(p_soft/(1-p_soft)), p_soft, "independent");
+                        } else {
+                            if (msmt < (distance-1)*(synd_rounds-1)) {
+                                pm::add_edge(matching, msmt, msmt + 2 * (distance-1), empty_set, -std::log(p_soft/(1-p_soft)), p_soft, "replace");
+                            } else {                            
+                                pm::add_edge(matching, msmt, msmt + (distance-1), empty_set, -std::log(p_soft/(1-p_soft)), p_soft, "independent");
+                            }
                         }
                     }
+                    if ((msmt + 1) % (distance - 1) == 0 && (msmt + 1) / (distance - 1) <= synd_rounds) {
+                        count_key += " ";
+                    }            
                 }
-                if ((msmt + 1) % (distance - 1) == 0 && (msmt + 1) / (distance - 1) <= synd_rounds) {
-                    count_key += " ";
-                }            
-            }
-            // std::reverse(count_key.begin(), count_key.end()); // Reverse string (NOT NEEDED BECAUSE SLOWS DOWN)
+                // std::reverse(count_key.begin(), count_key.end()); // Reverse string (NOT NEEDED BECAUSE SLOWS DOWN)
 
-            auto det_syndromes = counts_to_det_syndr(count_key, _resets, false);
-            auto detectionEvents = syndromeArrayToDetectionEvents(det_syndromes, matching.get_num_detectors(), matching.get_boundary().size());
-            auto [predicted_observables, rescaled_weight] = decode(matching, detectionEvents);
-            int actual_observable = (static_cast<int>(count_key[0]) - logical) % 2;
+                auto det_syndromes = counts_to_det_syndr(count_key, _resets, false);
+                auto detectionEvents = syndromeArrayToDetectionEvents(det_syndromes, matching.get_num_detectors(), matching.get_boundary().size());
+                auto [predicted_observables, rescaled_weight] = decode(matching, detectionEvents);
+                int actual_observable = (static_cast<int>(count_key[0]) - logical) % 2;
 
-            if (_detailed) {
-                ShotErrorDetails errorDetail = createShotErrorDetails(matching, detectionEvents, det_syndromes);
-                result.error_details.push_back(errorDetail);
-            }
-            if (!predicted_observables.empty() && predicted_observables[0] != actual_observable) {
-                result.num_errors++; // Increment error count if they don't match
-                result.indices.push_back(shot);
+                if (_detailed) {
+                    ShotErrorDetails errorDetail = createShotErrorDetails(matching, detectionEvents, det_syndromes);
+                    localResult.error_details.push_back(errorDetail);
+                }
+                if (!predicted_observables.empty() && predicted_observables[0] != actual_observable) {
+                    localResult.num_errors++; // Increment error count if they don't match
+                    localResult.indices.push_back(shot);
+                }
+            }              
+            
+            // Combine results
+            #pragma omp critical
+            {
+                result.num_errors += localResult.num_errors;
+                result.indices.insert(result.indices.end(), localResult.indices.begin(), localResult.indices.end());
+                result.error_details.insert(result.error_details.end(), localResult.error_details.begin(), localResult.error_details.end());
             }
         }
-
+        
         return result;
     }
 
