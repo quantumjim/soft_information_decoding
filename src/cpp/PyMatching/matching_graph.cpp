@@ -619,8 +619,12 @@ namespace pm
         DetailedDecodeResult result;
         result.num_errors = 0;
 
+        std::set<size_t> empty_set;
+
         // Start of profiling
         auto start_total = std::chrono::high_resolution_clock::now();
+        
+        int distance = (not_scaled_IQ_data.cols() + synd_rounds) / (synd_rounds + 1); // Hardcoded for RepCodes
 
         for (int shot = 0; shot < not_scaled_IQ_data.rows(); ++shot) {
             // Start timing for this shot
@@ -630,17 +634,84 @@ namespace pm
 
             // Measure time for get_counts_kde
             auto start_get_counts = std::chrono::high_resolution_clock::now();
-            auto counts = get_counts_kde(not_scaled_IQ_shot_matrix, qubit_mapping, kde_dict, synd_rounds);
-            std::string count_key = counts.begin()->first;
+
+            std::string count_key;
+            for (int msmt = 0; msmt < not_scaled_IQ_shot_matrix.cols(); ++msmt) { 
+                int qubit_idx = qubit_mapping.at(msmt);
+                auto &kde_entry = kde_dict.at(qubit_idx);
+                std::complex<double> not_scaled_point = not_scaled_IQ_data(shot, msmt);   
+
+                arma::mat query_point(2, 1); // 2 rows, 1 column
+                query_point(0, 0) = std::real(not_scaled_point); // real
+                query_point(1, 0) = std::imag(not_scaled_point); // imag 
+
+                query_point.row(0) -= kde_entry.scaler_mean[0]; // Element-wise subtraction
+                query_point.row(1) -= kde_entry.scaler_mean[1]; // Element-wise subtraction
+                query_point.row(0) /= kde_entry.scaler_stddev[0]; // Element-wise division
+                query_point.row(1) /= kde_entry.scaler_stddev[1]; // Element-wise division
+                
+                arma::vec estimations0(1);
+                arma::vec estimations1(1);
+                kde_entry.kde_0.Evaluate(query_point, estimations0);
+                kde_entry.kde_1.Evaluate(query_point, estimations1);
+
+                double p_small;
+                double p_big;
+
+                if (estimations0[0] > estimations1[0]) {
+                    count_key += "0";    
+                    p_small = estimations1[0];
+                    p_big = estimations0[0];
+                } else {
+                    count_key += "1";
+                    p_small = estimations0[0];
+                    p_big = estimations1[0];
+                }
+
+                if (msmt < (distance-1)*synd_rounds) {  
+                    double p_soft = 1 / (1 + p_big/p_small);                   
+                    if (_resets) {                                        
+                        size_t neighbor_index = matching.nodes[msmt].index_of_neighbor(msmt + (distance-1));
+                        if (neighbor_index != SIZE_MAX) {
+                            // Edge exists, access its attributes
+                            auto edge_it = matching.nodes[msmt].neighbors[neighbor_index].edge_it;
+
+                            double error_probability = edge_it->error_probability;
+                            double p_tot = p_soft*(1-error_probability) + (1-p_soft)*error_probability;
+
+                            pm::add_edge(matching, msmt, msmt + (distance-1), empty_set, -std::log(p_tot/(1-p_tot)), error_probability, "replace");
+                        } else {
+                            throw std::runtime_error("Edge does not exist between:" + std::to_string(msmt) +  " and " + std::to_string(msmt + (distance-1)));
+                        }
+                    } else {
+                        if (msmt < (distance-1)*(synd_rounds-1)) {
+                            double L = -std::log(p_soft/(1-p_soft));
+                            pm::add_edge(matching, msmt, msmt + 2 * (distance-1), empty_set, L, 0.5, "replace");
+                        } else {
+                            size_t neighbor_index = matching.nodes[msmt].index_of_neighbor(msmt + (distance-1));
+                            if (neighbor_index != SIZE_MAX) {
+                                // Edge exists, access its attributes
+                                auto edge_it = matching.nodes[msmt].neighbors[neighbor_index].edge_it;
+
+                                double error_probability = edge_it->error_probability;
+                                double p_tot = p_soft*(1-error_probability) + (1-p_soft)*error_probability;
+
+                                pm::add_edge(matching, msmt, msmt + (distance-1), empty_set, -std::log(p_tot/(1-p_tot)), error_probability, "replace");
+                            } else {
+                                throw std::runtime_error("Edge does not exist between:" + std::to_string(msmt) +  " and " + std::to_string(msmt + (distance-1)));
+                            }
+                        }
+                    }
+                }
+
+                if ((msmt + 1) % (distance - 1) == 0 && (msmt + 1) / (distance - 1) <= synd_rounds) {
+                    count_key += " ";
+                }            
+            }
+            // std::reverse(count_key.begin(), count_key.end()); // Reverse string
+
             auto end_get_counts = std::chrono::high_resolution_clock::now();
             auto get_counts_duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_get_counts - start_get_counts);
-
-            // Measure time for soft_reweight_kde
-            auto start_soft_reweight = std::chrono::high_resolution_clock::now();
-            soft_reweight_kde(matching, not_scaled_IQ_shot_matrix, synd_rounds,
-                _resets, qubit_mapping, kde_dict);
-            auto end_soft_reweight = std::chrono::high_resolution_clock::now();
-            auto soft_reweight_duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_soft_reweight - start_soft_reweight);
 
             // Measure time for counts_to_det_syndr
             auto start_counts_to_det_syndr = std::chrono::high_resolution_clock::now();
@@ -667,7 +738,6 @@ namespace pm
             // Print the time for each part
             std::cout << "Shot " << shot << " timing:" << std::endl;
             std::cout << "get_counts_kde: " << get_counts_duration.count() << " milliseconds" << std::endl;
-            std::cout << "soft_reweight_kde: " << soft_reweight_duration.count() << " milliseconds" << std::endl;
             std::cout << "counts_to_det_syndr: " << counts_to_det_syndr_duration.count() << " milliseconds" << std::endl;
             std::cout << "decode: " << decode_duration.count() << " milliseconds" << std::endl;
             std::cout << "Total shot execution time: " << shot_duration.count() << " milliseconds" << std::endl;

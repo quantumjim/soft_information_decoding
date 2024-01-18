@@ -325,7 +325,7 @@ std::map<std::string, int> get_counts_1Dgauss(
 std::map<std::string, int> get_counts_kde(
     const Eigen::MatrixXcd& not_scaled_IQ_data,
     const std::map<int, int>& qubit_mapping,
-    std::map<int, KDE_Result> kde_dict, 
+    std::map<int, KDE_Result> kde_dict,
     int synd_rounds) {
         std::map<std::string, int> counts;
         int distance = (not_scaled_IQ_data.cols() + synd_rounds) / (synd_rounds + 1); // Hardcoded for RepCodes
