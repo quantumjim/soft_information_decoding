@@ -239,7 +239,8 @@ namespace pm
             }
     }
 
-
+    
+    // has cummulative reweighting problem + extremely slow (slower than python)
     void soft_reweight_kde(
         UserGraph &matching,
         const Eigen::MatrixXcd &not_scaled_IQ_data,
@@ -605,8 +606,6 @@ namespace pm
 
         }
 
-
-
     DetailedDecodeResult decode_IQ_kde(
         stim::DetectorErrorModel& detector_error_model,
         const Eigen::MatrixXcd &not_scaled_IQ_data,
@@ -618,19 +617,21 @@ namespace pm
         bool _detailed) {
 
         DetailedDecodeResult result;
-        result.num_errors = 0; 
+        result.num_errors = 0;
 
         std::set<size_t> empty_set;        
         int distance = (not_scaled_IQ_data.cols() + synd_rounds) / (synd_rounds + 1); // Hardcoded for RepCodes
 
-        #pragma omp parallel
+        UserGraph matching;
+        
+        #pragma omp parallel private(matching)
         {
+            matching = detector_error_model_to_user_graph_private(detector_error_model);
             DetailedDecodeResult localResult;
             localResult.num_errors = 0;
 
-            #pragma omp for nowait        
+            #pragma omp for nowait  
             for (int shot = 0; shot < not_scaled_IQ_data.rows(); ++shot) {
-                UserGraph matching = detector_error_model_to_user_graph_private(detector_error_model);
                 Eigen::MatrixXcd not_scaled_IQ_shot_matrix = not_scaled_IQ_data.row(shot);
                 std::string count_key;
 
@@ -658,8 +659,8 @@ namespace pm
 
                     if (estimations0[0] > estimations1[0]) {
                         count_key += "0";    
-                        p_big = estimations0[0];
                         p_small = estimations1[0];
+                        p_big = estimations0[0];
                     } else {
                         count_key += "1";
                         p_small = estimations0[0];
@@ -668,26 +669,49 @@ namespace pm
 
                     if (msmt < (distance-1)*synd_rounds) {  
                         double p_soft = 1 / (1 + p_big/p_small);                   
-                        if (_resets) {                                   
-                                pm::add_edge(matching, msmt, msmt + (distance-1), empty_set, -std::log(p_soft/(1-p_soft)), p_soft, "independent");
+                        if (_resets) {                                        
+                            size_t neighbor_index = matching.nodes[msmt].index_of_neighbor(msmt + (distance-1));
+                            if (neighbor_index != SIZE_MAX) {
+                                // Edge exists, access its attributes
+                                auto edge_it = matching.nodes[msmt].neighbors[neighbor_index].edge_it;
+
+                                double error_probability = edge_it->error_probability;
+                                double p_tot = p_soft*(1-error_probability) + (1-p_soft)*error_probability;
+
+                                pm::add_edge(matching, msmt, msmt + (distance-1), empty_set, -std::log(p_tot/(1-p_tot)), error_probability, "replace");
+                            } else {
+                                throw std::runtime_error("Edge does not exist between:" + std::to_string(msmt) +  " and " + std::to_string(msmt + (distance-1)));
+                            }
                         } else {
                             if (msmt < (distance-1)*(synd_rounds-1)) {
-                                pm::add_edge(matching, msmt, msmt + 2 * (distance-1), empty_set, -std::log(p_soft/(1-p_soft)), p_soft, "replace");
-                            } else {                            
-                                pm::add_edge(matching, msmt, msmt + (distance-1), empty_set, -std::log(p_soft/(1-p_soft)), p_soft, "independent");
+                                double L = -std::log(p_soft/(1-p_soft));
+                                pm::add_edge(matching, msmt, msmt + 2 * (distance-1), empty_set, L, 0.5, "replace");
+                            } else {
+                                size_t neighbor_index = matching.nodes[msmt].index_of_neighbor(msmt + (distance-1));
+                                if (neighbor_index != SIZE_MAX) {
+                                    // Edge exists, access its attributes
+                                    auto edge_it = matching.nodes[msmt].neighbors[neighbor_index].edge_it;
+
+                                    double error_probability = edge_it->error_probability;
+                                    double p_tot = p_soft*(1-error_probability) + (1-p_soft)*error_probability;
+
+                                    pm::add_edge(matching, msmt, msmt + (distance-1), empty_set, -std::log(p_tot/(1-p_tot)), error_probability, "replace");
+                                } else {
+                                    throw std::runtime_error("Edge does not exist between:" + std::to_string(msmt) +  " and " + std::to_string(msmt + (distance-1)));
+                                }
                             }
                         }
                     }
+
                     if ((msmt + 1) % (distance - 1) == 0 && (msmt + 1) / (distance - 1) <= synd_rounds) {
                         count_key += " ";
                     }            
                 }
-                // std::reverse(count_key.begin(), count_key.end()); // Reverse string (NOT NEEDED BECAUSE SLOWS DOWN)
 
                 auto det_syndromes = counts_to_det_syndr(count_key, _resets, false, false);
                 auto detectionEvents = syndromeArrayToDetectionEvents(det_syndromes, matching.get_num_detectors(), matching.get_boundary().size());
                 auto [predicted_observables, rescaled_weight] = decode(matching, detectionEvents);
-                int actual_observable = (static_cast<int>(count_key[0]) - logical) % 2;
+                int actual_observable = (static_cast<int>(count_key.back()) - logical) % 2;
 
                 if (_detailed) {
                     ShotErrorDetails errorDetail = createShotErrorDetails(matching, detectionEvents, det_syndromes);
@@ -697,9 +721,9 @@ namespace pm
                     localResult.num_errors++; // Increment error count if they don't match
                     localResult.indices.push_back(shot);
                 }
-            }              
-            
-            // Combine results
+            }
+
+            //Combine results
             #pragma omp critical
             {
                 result.num_errors += localResult.num_errors;
@@ -707,10 +731,115 @@ namespace pm
                 result.error_details.insert(result.error_details.end(), localResult.error_details.begin(), localResult.error_details.end());
             }
         }
-        
         return result;
     }
 
+    // PBL: varying if repeated
+    // DetailedDecodeResult decode_IQ_kde(
+    //     stim::DetectorErrorModel& detector_error_model,
+    //     const Eigen::MatrixXcd &not_scaled_IQ_data,
+    //     int synd_rounds,
+    //     int logical,
+    //     bool _resets,
+    //     const std::map<int, int> &qubit_mapping,
+    //     std::map<int, KDE_Result> kde_dict,
+    //     bool _detailed) {
+
+    //     DetailedDecodeResult result;
+    //     result.num_errors = 0; 
+
+    //     std::set<size_t> empty_set;        
+    //     int distance = (not_scaled_IQ_data.cols() + synd_rounds) / (synd_rounds + 1); // Hardcoded for RepCodes
+
+    //     #pragma omp parallel
+    //     {
+    //         DetailedDecodeResult localResult;
+    //         localResult.num_errors = 0;
+
+    //         #pragma omp for nowait        
+    //         for (int shot = 0; shot < not_scaled_IQ_data.rows(); ++shot) {
+    //             UserGraph matching = detector_error_model_to_user_graph_private(detector_error_model);
+    //             Eigen::MatrixXcd not_scaled_IQ_shot_matrix = not_scaled_IQ_data.row(shot);
+    //             std::string count_key;
+
+    //             for (int msmt = 0; msmt < not_scaled_IQ_shot_matrix.cols(); ++msmt) { 
+    //                 int qubit_idx = qubit_mapping.at(msmt);
+    //                 auto &kde_entry = kde_dict.at(qubit_idx);
+    //                 std::complex<double> not_scaled_point = not_scaled_IQ_data(shot, msmt);   
+
+    //                 arma::mat query_point(2, 1); // 2 rows, 1 column
+    //                 query_point(0, 0) = std::real(not_scaled_point); // real
+    //                 query_point(1, 0) = std::imag(not_scaled_point); // imag 
+
+    //                 query_point.row(0) -= kde_entry.scaler_mean[0]; // Element-wise subtraction
+    //                 query_point.row(1) -= kde_entry.scaler_mean[1]; // Element-wise subtraction
+    //                 query_point.row(0) /= kde_entry.scaler_stddev[0]; // Element-wise division
+    //                 query_point.row(1) /= kde_entry.scaler_stddev[1]; // Element-wise division
+                    
+    //                 arma::vec estimations0(1);
+    //                 arma::vec estimations1(1);
+    //                 kde_entry.kde_0.Evaluate(query_point, estimations0);
+    //                 kde_entry.kde_1.Evaluate(query_point, estimations1);
+
+    //                 double p_small;
+    //                 double p_big;
+
+    //                 if (estimations0[0] > estimations1[0]) {
+    //                     count_key += "0";    
+    //                     p_big = estimations0[0];
+    //                     p_small = estimations1[0];
+    //                 } else {
+    //                     count_key += "1";
+    //                     p_small = estimations0[0];
+    //                     p_big = estimations1[0];
+    //                 }
+
+    //                 if (msmt < (distance-1)*synd_rounds) {  
+    //                     double p_soft = 1 / (1 + p_big/p_small);                   
+    //                     if (_resets) {                                   
+    //                             pm::add_edge(matching, msmt, msmt + (distance-1), empty_set, -std::log(p_soft/(1-p_soft)), p_soft, "independent");
+    //                     } else {
+    //                         if (msmt < (distance-1)*(synd_rounds-1)) {
+    //                             pm::add_edge(matching, msmt, msmt + 2 * (distance-1), empty_set, -std::log(p_soft/(1-p_soft)), p_soft, "replace");
+    //                         } else {                            
+    //                             pm::add_edge(matching, msmt, msmt + (distance-1), empty_set, -std::log(p_soft/(1-p_soft)), p_soft, "independent");
+    //                         }
+    //                     }
+    //                 }
+    //                 if ((msmt + 1) % (distance - 1) == 0 && (msmt + 1) / (distance - 1) <= synd_rounds) {
+    //                     count_key += " ";
+    //                 }            
+    //             }
+    //             // std::reverse(count_key.begin(), count_key.end()); // Reverse string (NOT NEEDED BECAUSE SLOWS DOWN)
+
+    //             auto det_syndromes = counts_to_det_syndr(count_key, _resets, false, false);
+    //             auto detectionEvents = syndromeArrayToDetectionEvents(det_syndromes, matching.get_num_detectors(), matching.get_boundary().size());
+    //             auto [predicted_observables, rescaled_weight] = decode(matching, detectionEvents);
+    //             int actual_observable = (static_cast<int>(count_key[-1]) - logical) % 2;
+
+    //             if (_detailed) {
+    //                 ShotErrorDetails errorDetail = createShotErrorDetails(matching, detectionEvents, det_syndromes);
+    //                 localResult.error_details.push_back(errorDetail);
+    //             }
+    //             if (!predicted_observables.empty() && predicted_observables[0] != actual_observable) {
+    //                 localResult.num_errors++; // Increment error count if they don't match
+    //                 localResult.indices.push_back(shot);
+    //             }
+    //         }              
+            
+    //         // Combine results
+    //         #pragma omp critical
+    //         {
+    //             result.num_errors += localResult.num_errors;
+    //             result.indices.insert(result.indices.end(), localResult.indices.begin(), localResult.indices.end());
+    //             result.error_details.insert(result.error_details.end(), localResult.error_details.begin(), localResult.error_details.end());
+    //         }
+    //     }
+        
+    //     return result;
+    // }
+
+    // PBL: not parrallelized
     // DetailedDecodeResult decode_IQ_kde(
     //     // UserGraph &matching,
     //     stim::DetectorErrorModel& detector_error_model,
@@ -724,15 +853,12 @@ namespace pm
 
     //     DetailedDecodeResult result;
     //     result.num_errors = 0;
-
-        
+    //     UserGraph matching = detector_error_model_to_user_graph_private(detector_error_model);
 
     //     std::set<size_t> empty_set;        
     //     int distance = (not_scaled_IQ_data.cols() + synd_rounds) / (synd_rounds + 1); // Hardcoded for RepCodes
 
     //     for (int shot = 0; shot < not_scaled_IQ_data.rows(); ++shot) {
-
-    //         UserGraph matching = detector_error_model_to_user_graph_private(detector_error_model);
     //         Eigen::MatrixXcd not_scaled_IQ_shot_matrix = not_scaled_IQ_data.row(shot);
     //         std::string count_key;
 
@@ -808,12 +934,20 @@ namespace pm
     //                 count_key += " ";
     //             }            
     //         }
+
+    //         // std::cout << "count_key 1:_" << count_key << "_" << std::endl;
+
     //         // std::reverse(count_key.begin(), count_key.end()); // Reverse string (NOT NEEDED BECAUSE SLOWS DOWN)
 
-    //         auto det_syndromes = counts_to_det_syndr(count_key, _resets, false);
+    //         // std::cout << "count_key 2:_" << count_key << "_" << std::endl;
+
+    //         // std::cout << "count_key[0]:_" << count_key[0] << "_" << std::endl;
+    //         // std::cout << "count_key[-1]:_" << count_key.back() << "_" << std::endl;=
+
+    //         auto det_syndromes = counts_to_det_syndr(count_key, _resets, false, false);
     //         auto detectionEvents = syndromeArrayToDetectionEvents(det_syndromes, matching.get_num_detectors(), matching.get_boundary().size());
     //         auto [predicted_observables, rescaled_weight] = decode(matching, detectionEvents);
-    //         int actual_observable = (static_cast<int>(count_key[0]) - logical) % 2;
+    //         int actual_observable = (static_cast<int>(count_key.back()) - logical) % 2;
 
     //         if (_detailed) {
     //             ShotErrorDetails errorDetail = createShotErrorDetails(matching, detectionEvents, det_syndromes);
@@ -828,6 +962,7 @@ namespace pm
     //     return result;
     // }
 
+    // PBL: profiling std::couts
     // DetailedDecodeResult decode_IQ_kde(
     //     UserGraph &matching,
     //     const Eigen::MatrixXcd &not_scaled_IQ_data,
@@ -988,7 +1123,7 @@ namespace pm
 
 
     
-
+    // // has cummulative reweighting problem + extremely slow (slower than python)
     // DetailedDecodeResult decode_IQ_kde(
     //     UserGraph &matching,
     //     const Eigen::MatrixXcd &not_scaled_IQ_data,
