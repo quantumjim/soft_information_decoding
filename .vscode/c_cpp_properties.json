@@ -7,7 +7,6 @@
                 "/Users/mha/My_Drive/Desktop/Studium/Physik/MSc/Semester_3/IBM/IBM_GIT/Soft-Info/libs/pybind11/include",
                 "/Users/mha/.pyenv/versions/3.11.4/include/python3.11",
                 "/opt/homebrew/include",
-                "/opt/homebrew/opt/llvm/bin/../include/c++/v1",
                 "/opt/homebrew/Cellar/llvm/17.0.6/lib/clang/17/include",
                 "/Library/Developer/CommandLineTools/SDKs/MacOSX14.sdk/usr/include"
             ],
@@ -15,11 +14,11 @@
             "macFrameworkPath": [
                 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks"
             ],
-            "compilerPath": "/usr/bin/clang",
+            "compilerPath": "/opt/homebrew/opt/llvm/bin/clang",
             "cStandard": "c17",
             "cppStandard": "c++17",
-            "intelliSenseMode": "macos-clang-arm64",
-            "configurationProvider": "ms-vscode.cmake-tools"
+            "intelliSenseMode": "macos-clang-arm64"
+            // Removed "configurationProvider" for testing
         }
     ],
     "version": 4
