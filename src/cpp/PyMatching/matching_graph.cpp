@@ -162,6 +162,7 @@ namespace pm
                             }
                         }
                         float p_h = edge_data.error_probability * p_multiplicator;
+                        // std::cout << "p_h: " << p_h << std::endl;
                         float edge_prob = p_h * (p_offset - p_soft_tminus1) * (p_offset - p_soft) + (1 - p_h) * p_soft_tminus1 * (p_offset - p_soft) + (1 - p_h) * (p_offset - p_soft_tminus1) * p_soft;   
                         if (_ntnn_edges){
                             if (tgt_node < (distance-1)*synd_rounds) {
@@ -623,7 +624,7 @@ namespace pm
         int distance = (not_scaled_IQ_data.cols() + synd_rounds) / (synd_rounds + 1); // Hardcoded for RepCodes
 
         UserGraph matching;
-        
+
         #pragma omp parallel private(matching)
         {
             matching = detector_error_model_to_user_graph_private(detector_error_model);
