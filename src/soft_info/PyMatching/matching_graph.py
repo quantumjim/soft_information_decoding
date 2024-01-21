@@ -140,7 +140,7 @@ def draw_curved_edge(ax, pos, src_node, tgt_node, color, width, edge_weight, fon
     plt.text(text_pos[0], text_pos[1], f"{edge_weight:.2f}", color=color, fontsize=font_size)  # Adjust fontsize as needed
 
 
-def draw_matching_graph(matching=None, d=3, T=3, syndromes=None, matched_edges=None, figsize=(8, 6), scale_factor=1, edge_list=None):
+def draw_matching_graph(matching=None, d=3, T=3, syndromes=None, matched_edges=None, figsize=(8, 6), scale_factor=1, edge_list=None, dpi=None):
     
     try:
         matched_edges = matched_edges.tolist() if matched_edges is not None else None
@@ -188,7 +188,10 @@ def draw_matching_graph(matching=None, d=3, T=3, syndromes=None, matched_edges=N
 
     
     # Draw the graph
-    plt.figure(figsize=figsize)
+    if dpi is not None:
+        plt.figure(figsize=figsize, dpi=dpi)
+    else:
+        plt.figure(figsize=figsize)
     
     nx.draw(G, pos, labels={node: node for node in G.nodes()}, with_labels=True, 
             node_color=node_colors,
