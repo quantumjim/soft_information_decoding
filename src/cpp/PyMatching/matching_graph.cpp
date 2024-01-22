@@ -619,6 +619,7 @@ namespace pm
 
         DetailedDecodeResult result;
         result.num_errors = 0;
+        result.error_details.resize(not_scaled_IQ_data.rows());
 
         std::set<size_t> empty_set;        
         int distance = (not_scaled_IQ_data.cols() + synd_rounds) / (synd_rounds + 1); // Hardcoded for RepCodes
@@ -628,8 +629,8 @@ namespace pm
         #pragma omp parallel private(matching)
         {
             matching = detector_error_model_to_user_graph_private(detector_error_model);
-            DetailedDecodeResult localResult;
-            localResult.num_errors = 0;
+            // DetailedDecodeResult localResult;
+            // localResult.num_errors = 0;
 
             #pragma omp for nowait  
             for (int shot = 0; shot < not_scaled_IQ_data.rows(); ++shot) {
@@ -716,21 +717,25 @@ namespace pm
 
                 if (_detailed) {
                     ShotErrorDetails errorDetail = createShotErrorDetails(matching, detectionEvents, det_syndromes);
-                    localResult.error_details.push_back(errorDetail);
+                    // localResult.error_details.push_back(errorDetail);
+                    result.error_details[shot] = errorDetail;
                 }
-                if (!predicted_observables.empty() && predicted_observables[0] != actual_observable) {
-                    localResult.num_errors++; // Increment error count if they don't match
-                    localResult.indices.push_back(shot);
+                #pragma omp critical
+                {
+                    if (!predicted_observables.empty() && predicted_observables[0] != actual_observable) {
+                        result.num_errors++; // Increment error count if they don't match
+                        result.indices.push_back(shot);
+                    }
                 }
             }
 
-            //Combine results
-            #pragma omp critical
-            {
-                result.num_errors += localResult.num_errors;
-                result.indices.insert(result.indices.end(), localResult.indices.begin(), localResult.indices.end());
-                result.error_details.insert(result.error_details.end(), localResult.error_details.begin(), localResult.error_details.end());
-            }
+            // //Combine results
+            // #pragma omp critical
+            // {
+            //     result.num_errors += localResult.num_errors;
+            //     result.indices.insert(result.indices.end(), localResult.indices.begin(), localResult.indices.end());
+            //     result.error_details.insert(result.error_details.end(), localResult.error_details.begin(), localResult.error_details.end());
+            // }
         }
         return result;
     }
