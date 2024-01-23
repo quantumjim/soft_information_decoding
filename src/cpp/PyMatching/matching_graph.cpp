@@ -680,6 +680,14 @@ namespace pm
                                 double error_probability = edge_it->error_probability;
                                 double p_tot = p_soft*(1-error_probability) + (1-p_soft)*error_probability;
 
+                                // std::cout << "" << std::endl;
+                                // std::cout << "weight of edge (before):" << edge_it->weight << std::endl;
+                                // std::cout << "err_proba of edge: " << error_probability << std::endl;
+                                // std::cout << "" << std::endl;
+                                // std::cout << "p_big, p_small" << p_big << ", " << p_small << std::endl;
+                                // std::cout << "p_soft: " << p_soft << std::endl;
+                                // std::cout << "new weight of edge:" << -std::log(p_tot/(1-p_tot)) << std::endl;
+
                                 pm::add_edge(matching, msmt, msmt + (distance-1), empty_set, -std::log(p_tot/(1-p_tot)), error_probability, "replace");
                             } else {
                                 throw std::runtime_error("Edge does not exist between:" + std::to_string(msmt) +  " and " + std::to_string(msmt + (distance-1)));
@@ -696,6 +704,11 @@ namespace pm
 
                                     double error_probability = edge_it->error_probability;
                                     double p_tot = p_soft*(1-error_probability) + (1-p_soft)*error_probability;
+
+                                    // std::cout << "weight of edge (before):" << edge_it->weight << std::endl;
+                                    // std::cout << "err_proba of edge: " << error_probability << std::endl;
+                                    // std::cout << "p_soft: " << p_soft << std::endl;
+                                    // std::cout << "new weight of edge:" << -std::log(p_tot/(1-p_tot)) << std::endl;
 
                                     pm::add_edge(matching, msmt, msmt + (distance-1), empty_set, -std::log(p_tot/(1-p_tot)), error_probability, "replace");
                                 } else {
