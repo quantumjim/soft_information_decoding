@@ -83,7 +83,7 @@ std::tuple<arma::vec, arma::vec> StandardizeData(arma::mat& data,
                                                  std::optional<arma::vec> stddev = std::nullopt);
 
 std::map<int, KDE_Result> get_KDEs(const std::map<int, std::map<std::string, std::vector<std::complex<double>>>>& all_memories,
-                                   const std::vector<double>& bandwidths);
+                                   const std::vector<double>& bandwidths, double relError = -1, double absError = -1);
 
 std::map<int, std::tuple<Eigen::VectorXd, Eigen::VectorXd>> GenerateGridAndEstimateDensity(std::map<int, KDE_Result> kde_dict, 
                                                        int num_points, double num_std_dev);

@@ -615,7 +615,9 @@ namespace pm
         bool _resets,
         const std::map<int, int> &qubit_mapping,
         std::map<int, KDE_Result> kde_dict,
-        bool _detailed) {
+        bool _detailed,
+        double relError,
+        double absError) {
 
         DetailedDecodeResult result;
         result.num_errors = 0;
@@ -653,6 +655,16 @@ namespace pm
                     
                     arma::vec estimations0(1);
                     arma::vec estimations1(1);
+
+                    if (relError != -1) {
+                        kde_entry.kde_0.RelativeError(relError);
+                        kde_entry.kde_1.RelativeError(relError);
+                    }
+                    if (absError != -1) {
+                        kde_entry.kde_0.AbsoluteError(absError);
+                        kde_entry.kde_1.AbsoluteError(absError);
+                    }
+
                     kde_entry.kde_0.Evaluate(query_point, estimations0);
                     kde_entry.kde_1.Evaluate(query_point, estimations1);
 

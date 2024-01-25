@@ -41,7 +41,7 @@ std::tuple<arma::vec, arma::vec> StandardizeData(arma::mat& data,
 
 
 std::map<int, KDE_Result> get_KDEs(const std::map<int, std::map<std::string, std::vector<std::complex<double>>>>& all_memories,
-                                   const std::vector<double>& bandwidths) {
+                                   const std::vector<double>& bandwidths, double relError, double absError) {
     std::map<int, KDE_Result> results;
 
     for (const auto& qubit_entry : all_memories) {
@@ -72,9 +72,12 @@ std::map<int, KDE_Result> get_KDEs(const std::map<int, std::map<std::string, std
         // mlpack::KDE<mlpack::GaussianKernel, mlpack::EuclideanDistance, arma::mat, mlpack::KDTree> kde0(bandwidth);
         // mlpack::KDE<mlpack::GaussianKernel, mlpack::EuclideanDistance, arma::mat, mlpack::KDTree> kde1(bandwidth);
 
-
-        double relError = mlpack::KDEDefaultParams::relError;
-        double absError = mlpack::KDEDefaultParams::absError;
+        if (relError == -1) {
+            relError = mlpack::KDEDefaultParams::relError;
+        }
+        if (absError == -1) {
+            absError = mlpack::KDEDefaultParams::absError;
+        }
 
         // mlpack::GaussianKernel kernel(bandwidth);
         mlpack::EpanechnikovKernel epanechnikovKernel(bandwidth);

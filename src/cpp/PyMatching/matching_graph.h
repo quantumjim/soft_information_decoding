@@ -98,7 +98,8 @@ namespace pm {
         bool _resets,
         const std::map<int, int> &qubit_mapping, 
         std::map<int, KDE_Result> kde_dict,
-        bool _detailed = false);
+        bool _detailed = false,
+        double relError = -1, double absError = -1);
     
     DetailedDecodeResult decode_IQ_shots_flat(
         UserGraph &matching,

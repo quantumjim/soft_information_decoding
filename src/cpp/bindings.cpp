@@ -193,7 +193,8 @@ PYBIND11_MODULE(cpp_soft_info, m) {
       py::arg("detector_error_model"), py::arg("not_scaled_IQ_data"),
       py::arg("synd_rounds"), py::arg("logical"),
       py::arg("_resets"), py::arg("qubit_mapping"),
-      py::arg("kde_dict"), py::arg("_detailed") = false);
+      py::arg("kde_dict"), py::arg("_detailed") = false, 
+      py::arg("relError") = -1, py::arg("absError") = -1);
       
     m.def("decode_IQ_shots_flat", &pm::decode_IQ_shots_flat,
       "Decode a matching graph using IQ data but weight edges to 1",
@@ -246,7 +247,8 @@ PYBIND11_MODULE(cpp_soft_info, m) {
 
     m.def("get_KDEs", &get_KDEs, 
       "Get KDEs for each qubit",
-      py::arg("all_memories"), py::arg("bandwidths"));
+      py::arg("all_memories"), py::arg("bandwidths"),
+      py::arg("relError") = -1, py::arg("absError") = -1);
 
     m.def("generate_grid_and_estimate_density", &GenerateGridAndEstimateDensity,
       "Generate grid and estimate density",
