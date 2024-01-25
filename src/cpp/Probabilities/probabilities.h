@@ -32,8 +32,8 @@ struct GridData {
 
 // Define the KDE_Result struct because imported in KDE module
 struct KDE_Result {
-    mlpack::KDE<mlpack::GaussianKernel, mlpack::EuclideanDistance, arma::mat, mlpack::KDTree> kde_0;
-    mlpack::KDE<mlpack::GaussianKernel, mlpack::EuclideanDistance, arma::mat, mlpack::KDTree> kde_1;
+    mlpack::KDE<mlpack::EpanechnikovKernel, mlpack::EuclideanDistance, arma::mat, mlpack::KDTree> kde_0;
+    mlpack::KDE<mlpack::EpanechnikovKernel, mlpack::EuclideanDistance, arma::mat, mlpack::KDTree> kde_1;
     arma::vec scaler_mean;
     arma::vec scaler_stddev;
 };

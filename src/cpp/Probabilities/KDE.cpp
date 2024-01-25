@@ -5,6 +5,10 @@
 #include <cstring> // for std::memcpy
 #include <optional>
 
+#include <chrono>
+
+
+
 arma::mat ComplexTo2DMatrix(const std::vector<std::complex<double>>& complexVec) {
     arma::mat mat(2, complexVec.size());
     for (size_t i = 0; i < complexVec.size(); ++i) {
@@ -65,8 +69,23 @@ std::map<int, KDE_Result> get_KDEs(const std::map<int, std::map<std::string, std
         
         // throw std::runtime_error("KDE.cpp: get_KDEs: mmr_1_data size before standardization: " + std::to_string(mmr_1_data.n_cols));
         double bandwidth = bandwidths[qubit_idx];
-        mlpack::KDE<mlpack::GaussianKernel, mlpack::EuclideanDistance, arma::mat, mlpack::KDTree> kde0(bandwidth);
-        mlpack::KDE<mlpack::GaussianKernel, mlpack::EuclideanDistance, arma::mat, mlpack::KDTree> kde1(bandwidth);
+        // mlpack::KDE<mlpack::GaussianKernel, mlpack::EuclideanDistance, arma::mat, mlpack::KDTree> kde0(bandwidth);
+        // mlpack::KDE<mlpack::GaussianKernel, mlpack::EuclideanDistance, arma::mat, mlpack::KDTree> kde1(bandwidth);
+
+
+        double relError = mlpack::KDEDefaultParams::relError;
+        double absError = mlpack::KDEDefaultParams::absError;
+
+        // mlpack::GaussianKernel kernel(bandwidth);
+        mlpack::EpanechnikovKernel epanechnikovKernel(bandwidth);
+        mlpack::EuclideanDistance metric;
+
+        mlpack::KDE<mlpack::EpanechnikovKernel, mlpack::EuclideanDistance, arma::mat, mlpack::KDTree> kde0(
+            relError, absError, epanechnikovKernel, mlpack::KDEDefaultParams::mode, metric);
+
+        mlpack::KDE<mlpack::EpanechnikovKernel, mlpack::EuclideanDistance, arma::mat, mlpack::KDTree> kde1(
+            relError, absError, epanechnikovKernel, mlpack::KDEDefaultParams::mode, metric);
+
         kde0.Train(mmr_0_data);
         kde1.Train(mmr_1_data);
 
@@ -90,6 +109,69 @@ Eigen::VectorXd armaVecToEigenVec(const arma::vec& armaVec) {
     std::memcpy(eigenVec.data(), armaVec.memptr(), armaVec.n_elem * sizeof(double));
     return eigenVec;
 }
+
+
+
+
+// std::map<int, std::tuple<Eigen::VectorXd, Eigen::VectorXd>> GenerateGridAndEstimateDensity(
+//     std::map<int, KDE_Result> kde_dict, int num_points, double num_std_dev) {
+
+//     auto start = std::chrono::high_resolution_clock::now();
+//     std::map<int, std::tuple<Eigen::VectorXd, Eigen::VectorXd>> grid_data_map;
+
+//     double dx = 2 * num_std_dev / (num_points - 1);
+
+//     arma::mat all_points(2, num_points * num_points);
+//     int idx = 0;
+//     for (int i = 0; i < num_points; ++i) {
+//         for (int j = 0; j < num_points; ++j) {
+//             all_points(0, idx) = -num_std_dev + i * dx; // x-coordinate
+//             all_points(1, idx) = -num_std_dev + j * dx; // y-coordinate
+//             ++idx;
+//         }
+//     }
+//     auto end = std::chrono::high_resolution_clock::now();
+//     std::chrono::duration<double> elapsed = end - start;
+//     std::cout << "Grid generation time: " << elapsed.count() << " seconds" << std::endl;
+
+//     for (auto& qubit_entry : kde_dict) {
+//         start = std::chrono::high_resolution_clock::now();
+
+//         int qubit_idx = qubit_entry.first;
+//         auto& kde0 = qubit_entry.second.kde_0; // Assuming you have access to KDE models like this
+//         auto& kde1 = qubit_entry.second.kde_1;
+
+//         arma::vec estimations0(all_points.n_cols);
+//         arma::vec estimations1(all_points.n_cols);
+
+//         end = std::chrono::high_resolution_clock::now();
+//         elapsed = end - start;
+//         std::cout << "KDE initialization time for qubit " << qubit_idx << ": " << elapsed.count() << " seconds" << std::endl;
+
+//         start = std::chrono::high_resolution_clock::now();
+
+//         kde0.Evaluate(all_points, estimations0);
+//         kde1.Evaluate(all_points, estimations1);
+
+//         end = std::chrono::high_resolution_clock::now();
+//         elapsed = end - start;
+//         std::cout << "KDE evaluation time for qubit " << qubit_idx << ": " << elapsed.count() << " seconds" << std::endl;
+
+//         start = std::chrono::high_resolution_clock::now();
+
+//         Eigen::VectorXd estimations0_eigen = armaVecToEigenVec(estimations0);
+//         Eigen::VectorXd estimations1_eigen = armaVecToEigenVec(estimations1);
+
+//         end = std::chrono::high_resolution_clock::now();
+//         elapsed = end - start;
+//         std::cout << "Conversion to Eigen time for qubit " << qubit_idx << ": " << elapsed.count() << " seconds" << std::endl;
+
+//         grid_data_map[qubit_idx] = std::make_tuple(estimations0_eigen, estimations1_eigen);
+//     }
+
+//     return grid_data_map;
+// }
+
 
 std::map<int, std::tuple<Eigen::VectorXd, Eigen::VectorXd>> GenerateGridAndEstimateDensity(std::map<int, KDE_Result> kde_dict, 
                                                        int num_points, double num_std_dev) {
