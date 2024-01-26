@@ -5,7 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def plot_IQ_data(data, n_bins=250, figsize=(8,4), title=None):
+def plot_IQ_data(data, n_bins=250, twod_nbins=100, figsize=(8,4), title=None):
     real_parts = np.real(data).flatten()
     imag_parts = np.imag(data).flatten()
 
@@ -38,7 +38,7 @@ def plot_IQ_data(data, n_bins=250, figsize=(8,4), title=None):
     ax_hist_y.grid(True)
 
     # 3D Histogram Heatmap
-    H, xedges, yedges = np.histogram2d(real_parts, imag_parts, bins=100)
+    H, xedges, yedges = np.histogram2d(real_parts, imag_parts, bins=twod_nbins)
     X, Y = np.meshgrid(xedges[:-1], yedges[:-1])
     ax3d = plt.subplot2grid((4, 8), (0, 4), rowspan=4,
                             colspan=4, projection='3d')
