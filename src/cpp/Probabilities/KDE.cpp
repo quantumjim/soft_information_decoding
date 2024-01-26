@@ -116,68 +116,10 @@ Eigen::VectorXd armaVecToEigenVec(const arma::vec& armaVec) {
 
 
 
-// std::map<int, std::tuple<Eigen::VectorXd, Eigen::VectorXd>> GenerateGridAndEstimateDensity(
-//     std::map<int, KDE_Result> kde_dict, int num_points, double num_std_dev) {
+std::map<int, std::tuple<Eigen::VectorXd, Eigen::VectorXd>> GenerateGridAndEstimateDensity(
+    std::map<int, KDE_Result> kde_dict, int num_points, double num_std_dev) {
 
-//     auto start = std::chrono::high_resolution_clock::now();
-//     std::map<int, std::tuple<Eigen::VectorXd, Eigen::VectorXd>> grid_data_map;
-
-//     double dx = 2 * num_std_dev / (num_points - 1);
-
-//     arma::mat all_points(2, num_points * num_points);
-//     int idx = 0;
-//     for (int i = 0; i < num_points; ++i) {
-//         for (int j = 0; j < num_points; ++j) {
-//             all_points(0, idx) = -num_std_dev + i * dx; // x-coordinate
-//             all_points(1, idx) = -num_std_dev + j * dx; // y-coordinate
-//             ++idx;
-//         }
-//     }
-//     auto end = std::chrono::high_resolution_clock::now();
-//     std::chrono::duration<double> elapsed = end - start;
-//     std::cout << "Grid generation time: " << elapsed.count() << " seconds" << std::endl;
-
-//     for (auto& qubit_entry : kde_dict) {
-//         start = std::chrono::high_resolution_clock::now();
-
-//         int qubit_idx = qubit_entry.first;
-//         auto& kde0 = qubit_entry.second.kde_0; // Assuming you have access to KDE models like this
-//         auto& kde1 = qubit_entry.second.kde_1;
-
-//         arma::vec estimations0(all_points.n_cols);
-//         arma::vec estimations1(all_points.n_cols);
-
-//         end = std::chrono::high_resolution_clock::now();
-//         elapsed = end - start;
-//         std::cout << "KDE initialization time for qubit " << qubit_idx << ": " << elapsed.count() << " seconds" << std::endl;
-
-//         start = std::chrono::high_resolution_clock::now();
-
-//         kde0.Evaluate(all_points, estimations0);
-//         kde1.Evaluate(all_points, estimations1);
-
-//         end = std::chrono::high_resolution_clock::now();
-//         elapsed = end - start;
-//         std::cout << "KDE evaluation time for qubit " << qubit_idx << ": " << elapsed.count() << " seconds" << std::endl;
-
-//         start = std::chrono::high_resolution_clock::now();
-
-//         Eigen::VectorXd estimations0_eigen = armaVecToEigenVec(estimations0);
-//         Eigen::VectorXd estimations1_eigen = armaVecToEigenVec(estimations1);
-
-//         end = std::chrono::high_resolution_clock::now();
-//         elapsed = end - start;
-//         std::cout << "Conversion to Eigen time for qubit " << qubit_idx << ": " << elapsed.count() << " seconds" << std::endl;
-
-//         grid_data_map[qubit_idx] = std::make_tuple(estimations0_eigen, estimations1_eigen);
-//     }
-
-//     return grid_data_map;
-// }
-
-
-std::map<int, std::tuple<Eigen::VectorXd, Eigen::VectorXd>> GenerateGridAndEstimateDensity(std::map<int, KDE_Result> kde_dict, 
-                                                       int num_points, double num_std_dev) {
+    auto start = std::chrono::high_resolution_clock::now();
     std::map<int, std::tuple<Eigen::VectorXd, Eigen::VectorXd>> grid_data_map;
 
     double dx = 2 * num_std_dev / (num_points - 1);
@@ -191,22 +133,80 @@ std::map<int, std::tuple<Eigen::VectorXd, Eigen::VectorXd>> GenerateGridAndEstim
             ++idx;
         }
     }
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> elapsed = end - start;
+    std::cout << "Grid generation time: " << elapsed.count() << " seconds" << std::endl;
+
     for (auto& qubit_entry : kde_dict) {
+        start = std::chrono::high_resolution_clock::now();
+
         int qubit_idx = qubit_entry.first;
         auto& kde0 = qubit_entry.second.kde_0; // Assuming you have access to KDE models like this
         auto& kde1 = qubit_entry.second.kde_1;
 
         arma::vec estimations0(all_points.n_cols);
         arma::vec estimations1(all_points.n_cols);
+
+        end = std::chrono::high_resolution_clock::now();
+        elapsed = end - start;
+        std::cout << "KDE initialization time for qubit " << qubit_idx << ": " << elapsed.count() << " seconds" << std::endl;
+
+        start = std::chrono::high_resolution_clock::now();
+
         kde0.Evaluate(all_points, estimations0);
-        kde1.Evaluate(all_points, estimations1);      
+        kde1.Evaluate(all_points, estimations1);
+
+        end = std::chrono::high_resolution_clock::now();
+        elapsed = end - start;
+        std::cout << "KDE evaluation time for qubit " << qubit_idx << ": " << elapsed.count() << " seconds" << std::endl;
+
+        start = std::chrono::high_resolution_clock::now();
 
         Eigen::VectorXd estimations0_eigen = armaVecToEigenVec(estimations0);
         Eigen::VectorXd estimations1_eigen = armaVecToEigenVec(estimations1);
+
+        end = std::chrono::high_resolution_clock::now();
+        elapsed = end - start;
+        std::cout << "Conversion to Eigen time for qubit " << qubit_idx << ": " << elapsed.count() << " seconds" << std::endl;
 
         grid_data_map[qubit_idx] = std::make_tuple(estimations0_eigen, estimations1_eigen);
     }
 
     return grid_data_map;
 }
+
+
+// std::map<int, std::tuple<Eigen::VectorXd, Eigen::VectorXd>> GenerateGridAndEstimateDensity(std::map<int, KDE_Result> kde_dict, 
+//                                                        int num_points, double num_std_dev) {
+//     std::map<int, std::tuple<Eigen::VectorXd, Eigen::VectorXd>> grid_data_map;
+
+//     double dx = 2 * num_std_dev / (num_points - 1);
+
+//     arma::mat all_points(2, num_points * num_points);
+//     int idx = 0;
+//     for (int i = 0; i < num_points; ++i) {
+//         for (int j = 0; j < num_points; ++j) {
+//             all_points(0, idx) = -num_std_dev + i * dx; // x-coordinate
+//             all_points(1, idx) = -num_std_dev + j * dx; // y-coordinate
+//             ++idx;
+//         }
+//     }
+//     for (auto& qubit_entry : kde_dict) {
+//         int qubit_idx = qubit_entry.first;
+//         auto& kde0 = qubit_entry.second.kde_0; // Assuming you have access to KDE models like this
+//         auto& kde1 = qubit_entry.second.kde_1;
+
+//         arma::vec estimations0(all_points.n_cols);
+//         arma::vec estimations1(all_points.n_cols);
+//         kde0.Evaluate(all_points, estimations0);
+//         kde1.Evaluate(all_points, estimations1);      
+
+//         Eigen::VectorXd estimations0_eigen = armaVecToEigenVec(estimations0);
+//         Eigen::VectorXd estimations1_eigen = armaVecToEigenVec(estimations1);
+
+//         grid_data_map[qubit_idx] = std::make_tuple(estimations0_eigen, estimations1_eigen);
+//     }
+
+//     return grid_data_map;
+// }
 
