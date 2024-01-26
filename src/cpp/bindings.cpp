@@ -71,6 +71,7 @@ PYBIND11_MODULE(cpp_soft_info, m) {
         .def(py::init<>())
         .def_readwrite("kde_0", &KDE_Result::kde_0)
         .def_readwrite("kde_1", &KDE_Result::kde_1)
+        .def_readwrite("bestBandwidth", &KDE_Result::bestBandwidth)
         .def_readwrite("scaler_mean", &KDE_Result::scaler_mean)
         .def_readwrite("scaler_stddev", &KDE_Result::scaler_stddev);
 
@@ -248,7 +249,8 @@ PYBIND11_MODULE(cpp_soft_info, m) {
     m.def("get_KDEs", &get_KDEs, 
       "Get KDEs for each qubit",
       py::arg("all_memories"), py::arg("bandwidths"),
-      py::arg("relError") = -1, py::arg("absError") = -1);
+      py::arg("relError") = -1, py::arg("absError") = -1,
+      py::arg("num_points") = 51);
 
     m.def("generate_grid_and_estimate_density", &GenerateGridAndEstimateDensity,
       "Generate grid and estimate density",
