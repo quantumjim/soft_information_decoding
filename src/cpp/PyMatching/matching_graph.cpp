@@ -617,7 +617,8 @@ namespace pm
         std::map<int, KDE_Result> kde_dict,
         bool _detailed,
         double relError,
-        double absError) {
+        double absError,
+        int nb_intervals) {
 
         DetailedDecodeResult result;
         result.num_errors = 0;
@@ -682,7 +683,14 @@ namespace pm
                     }
 
                     if (msmt < (distance-1)*synd_rounds) {  
-                        double p_soft = 1 / (1 + p_big/p_small);                   
+                        double p_soft = 1 / (1 + p_big/p_small);    
+
+                        // round p_soft
+                        if (nb_intervals != -1) {
+                            double intervalSize = 0.5 / nb_intervals;
+                            int intervalIndex = static_cast<int>(p_soft / intervalSize);
+                            p_soft = intervalIndex * intervalSize;
+                        }               
                         if (_resets) {                                        
                             size_t neighbor_index = matching.nodes[msmt].index_of_neighbor(msmt + (distance-1));
                             if (neighbor_index != SIZE_MAX) {

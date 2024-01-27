@@ -99,7 +99,8 @@ namespace pm {
         const std::map<int, int> &qubit_mapping, 
         std::map<int, KDE_Result> kde_dict,
         bool _detailed = false,
-        double relError = -1, double absError = -1);
+        double relError = -1, double absError = -1,
+        int nb_intervals = -1);
     
     DetailedDecodeResult decode_IQ_shots_flat(
         UserGraph &matching,
