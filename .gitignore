@@ -17,6 +17,8 @@ src/example_module.cpython-312-darwin.so
 .coverage
 __pycache__/
 build
+notebooks/Simulator/IQ_data_extreme.pkl
+notebooks/Simulator/IQ_data.pkl
 
 src/cpp_soft_info.cpython-311-darwin.so
 src/example_module.cpython-311-darwin.so
