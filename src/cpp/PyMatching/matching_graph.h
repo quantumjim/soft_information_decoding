@@ -79,6 +79,18 @@ namespace pm {
         bool _detailed = false,
         float p_offset = 1.0, float p_multiplicator = 1.0, bool _ntnn_edges = false);
 
+    DetailedDecodeResult decode_IQ_fast(
+        stim::DetectorErrorModel detector_error_model,
+        const Eigen::MatrixXcd &not_scaled_IQ_data,
+        int synd_rounds,
+        int logical,
+        bool _resets,
+        const std::map<int, int> &qubit_mapping,
+        const std::map<int, GridData> &kde_grid_dict,
+        const std::map<int, std::pair<std::pair<double, double>, std::pair<double, double>>> &scaler_params_dict,
+        bool _detailed,
+        int nb_intervals);
+
     DetailedDecodeResult decode_IQ_1Dgauss(
         UserGraph &matching,
         const Eigen::MatrixXcd &not_scaled_IQ_data,

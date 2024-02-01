@@ -562,6 +562,126 @@ namespace pm
         return result;
     }
 
+    DetailedDecodeResult decode_IQ_fast(
+        stim::DetectorErrorModel detector_error_model,
+        const Eigen::MatrixXcd &not_scaled_IQ_data,
+        int synd_rounds,
+        int logical,
+        bool _resets,
+        const std::map<int, int> &qubit_mapping,
+        const std::map<int, GridData> &kde_grid_dict,
+        const std::map<int, std::pair<std::pair<double, double>, std::pair<double, double>>> &scaler_params_dict,
+        bool _detailed,
+        int nb_intervals) {
+            
+            DetailedDecodeResult result;
+            result.num_errors = 0;
+            result.error_details.resize(not_scaled_IQ_data.rows());
+
+            std::set<size_t> empty_set;        
+            int distance = (not_scaled_IQ_data.cols() + synd_rounds) / (synd_rounds + 1); // Hardcoded for RepCodes
+            
+            UserGraph matching;
+            #pragma omp parallel private(matching)
+            {
+                matching = detector_error_model_to_user_graph_private(detector_error_model);
+                #pragma omp for nowait  
+                for (int shot = 0; shot < not_scaled_IQ_data.rows(); ++shot) {
+                    Eigen::MatrixXcd not_scaled_IQ_shot_matrix = not_scaled_IQ_data.row(shot);
+                    std::string count_key;
+                    for (int msmt = 0; msmt < not_scaled_IQ_shot_matrix.cols(); ++msmt) { 
+                        int qubit_idx = qubit_mapping.at(msmt);
+                        std::complex<double> not_scaled_point = not_scaled_IQ_data(shot, msmt);
+                        auto &grid_data = kde_grid_dict.at(qubit_idx);
+
+                        const auto& [real_params, imag_params] = scaler_params_dict.at(qubit_idx);
+                        double real_scaled = (std::real(not_scaled_point) - real_params.first) / real_params.second;
+                        double imag_scaled = (std::imag(not_scaled_point) - imag_params.first) / imag_params.second;
+                        Eigen::Vector2d scaled_point = {real_scaled, imag_scaled};
+
+                        auto [outcome, density0, density1] = grid_lookup(scaled_point, grid_data);
+
+                        double p_small;
+                        double p_big;
+
+                        if (outcome == 0) {
+                            count_key += "0";    
+                            p_small = std::exp(density1);
+                            p_big = std::exp(density0);
+                        } else {
+                            count_key += "1";
+                            p_small = std::exp(density0);
+                            p_big = std::exp(density1);
+                        }
+
+                        if (msmt < (distance-1)*synd_rounds) {  
+                            double p_soft = 1 / (1 + p_big/p_small);    
+
+                            // round p_soft
+                            if (nb_intervals != -1) {
+                                double intervalSize = 0.5 / nb_intervals;
+                                int intervalIndex = static_cast<int>(p_soft / intervalSize);
+                                p_soft = intervalIndex * intervalSize;
+                            }               
+                            if (_resets) {                                        
+                                size_t neighbor_index = matching.nodes[msmt].index_of_neighbor(msmt + (distance-1));
+                                if (neighbor_index != SIZE_MAX) {
+                                    // Edge exists, access its attributes
+                                    auto edge_it = matching.nodes[msmt].neighbors[neighbor_index].edge_it;
+
+                                    double error_probability = edge_it->error_probability;
+                                    double p_tot = p_soft*(1-error_probability) + (1-p_soft)*error_probability;
+
+                                    pm::add_edge(matching, msmt, msmt + (distance-1), empty_set, -std::log(p_tot/(1-p_tot)), error_probability, "replace");
+                                } else {
+                                    throw std::runtime_error("Edge does not exist between:" + std::to_string(msmt) +  " and " + std::to_string(msmt + (distance-1)));
+                                }
+                            } else {
+                                if (msmt < (distance-1)*(synd_rounds-1)) {
+                                    double L = -std::log(p_soft/(1-p_soft));
+                                    pm::add_edge(matching, msmt, msmt + 2 * (distance-1), empty_set, L, 0.5, "replace");
+                                } else {
+                                    size_t neighbor_index = matching.nodes[msmt].index_of_neighbor(msmt + (distance-1));
+                                    if (neighbor_index != SIZE_MAX) {
+                                        // Edge exists, access its attributes
+                                        auto edge_it = matching.nodes[msmt].neighbors[neighbor_index].edge_it;
+
+                                        double error_probability = edge_it->error_probability;
+                                        double p_tot = p_soft*(1-error_probability) + (1-p_soft)*error_probability;
+
+                                        pm::add_edge(matching, msmt, msmt + (distance-1), empty_set, -std::log(p_tot/(1-p_tot)), error_probability, "replace");
+                                    } else {
+                                        throw std::runtime_error("Edge does not exist between:" + std::to_string(msmt) +  " and " + std::to_string(msmt + (distance-1)));
+                                    }
+                                }
+                            }
+                        }
+                        if ((msmt + 1) % (distance - 1) == 0 && (msmt + 1) / (distance - 1) <= synd_rounds) {
+                            count_key += " ";
+                        }  
+
+                    }
+                    auto det_syndromes = counts_to_det_syndr(count_key, _resets, false, false);
+                    auto detectionEvents = syndromeArrayToDetectionEvents(det_syndromes, matching.get_num_detectors(), matching.get_boundary().size());
+                    auto [predicted_observables, rescaled_weight] = decode(matching, detectionEvents);
+                    int actual_observable = (static_cast<int>(count_key.back()) - logical) % 2;
+
+                    if (_detailed) {
+                        ShotErrorDetails errorDetail = createShotErrorDetails(matching, detectionEvents, det_syndromes);
+                        result.error_details[shot] = errorDetail;
+                    }
+                    #pragma omp critical
+                    {
+                        if (!predicted_observables.empty() && predicted_observables[0] != actual_observable) {
+                            result.num_errors++; // Increment error count if they don't match
+                            result.indices.push_back(shot);
+                        }
+                    }
+                }
+            }
+            return result;
+        }
+    
 
     DetailedDecodeResult decode_IQ_1Dgauss(
         UserGraph &matching,
@@ -606,6 +726,7 @@ namespace pm
             return result;
 
         }
+
 
     DetailedDecodeResult decode_IQ_kde(
         stim::DetectorErrorModel& detector_error_model,

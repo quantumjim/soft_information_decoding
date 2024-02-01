@@ -182,6 +182,15 @@ PYBIND11_MODULE(cpp_soft_info, m) {
       py::arg("_detailed") = false, py::arg("p_offset") = 1.0, py::arg("p_multiplicator") = 1.0,
       py::arg("_ntnn_edges") = false);
 
+    m.def("decode_IQ_fast", &pm::decode_IQ_fast,
+      "Decode a matching graph using IQ data (FAST VERSION)",
+      py::arg("detector_error_model"), py::arg("not_scaled_IQ_data"),
+      py::arg("synd_rounds"), py::arg("logical"),
+      py::arg("_resets"), py::arg("qubit_mapping"),
+      py::arg("kde_grid_dict"), py::arg("scaler_params_dict"),
+      py::arg("_detailed") = false,
+      py::arg("nb_intervals") = -1);
+
     m.def("decode_IQ_1Dgauss", &pm::decode_IQ_1Dgauss,
       "Decode a matching graph using IQ data",
       py::arg("matching"), py::arg("not_scaled_IQ_data"),
