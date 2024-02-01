@@ -89,7 +89,8 @@ namespace pm {
         const std::map<int, GridData> &kde_grid_dict,
         const std::map<int, std::pair<std::pair<double, double>, std::pair<double, double>>> &scaler_params_dict,
         bool _detailed,
-        int nb_intervals);
+        int nb_intervals,
+        float interval_offset = 0.5);
 
     DetailedDecodeResult decode_IQ_1Dgauss(
         UserGraph &matching,

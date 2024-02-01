@@ -572,7 +572,8 @@ namespace pm
         const std::map<int, GridData> &kde_grid_dict,
         const std::map<int, std::pair<std::pair<double, double>, std::pair<double, double>>> &scaler_params_dict,
         bool _detailed,
-        int nb_intervals) {
+        int nb_intervals,
+        float interval_offset) {
             
             DetailedDecodeResult result;
             result.num_errors = 0;
@@ -621,7 +622,7 @@ namespace pm
                             if (nb_intervals != -1) {
                                 double intervalSize = 0.5 / nb_intervals;
                                 int intervalIndex = static_cast<int>(p_soft / intervalSize);
-                                p_soft = intervalIndex * intervalSize;
+                                p_soft = (intervalIndex + interval_offset) * intervalSize;
                             }               
                             if (_resets) {                                        
                                 size_t neighbor_index = matching.nodes[msmt].index_of_neighbor(msmt + (distance-1));

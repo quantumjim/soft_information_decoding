@@ -189,7 +189,8 @@ PYBIND11_MODULE(cpp_soft_info, m) {
       py::arg("_resets"), py::arg("qubit_mapping"),
       py::arg("kde_grid_dict"), py::arg("scaler_params_dict"),
       py::arg("_detailed") = false,
-      py::arg("nb_intervals") = -1);
+      py::arg("nb_intervals") = -1,
+      py::arg("interval_offset") = 0.5);
 
     m.def("decode_IQ_1Dgauss", &pm::decode_IQ_1Dgauss,
       "Decode a matching graph using IQ data",
