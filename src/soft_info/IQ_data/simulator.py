@@ -35,7 +35,7 @@ class RepCodeIQSimulator():
         self.device = device
         self.other_date = other_date
         self.backend = self.provider.get_backend(self.device)
-        self.layout = get_repcode_layout(self.distance, self.backend, _is_hex=_is_hex)
+        self.layout = get_repcode_layout(self.distance, self.backend, _is_hex=_is_hex) if self.device != 'ibm_torino' else RepCodeIQSimulator.get_layout_torino(self.distance) # Hardcoded torino layout
         self.qubit_mapping = get_repcode_IQ_map(self.layout, self.rounds)
         self._resets = _resets
         # self.code = RepetitionCodeCircuit(self.distance, self.rounds, resets=_resets)
@@ -57,6 +57,18 @@ class RepCodeIQSimulator():
         else:
             self.grid_dict, self.processed_scaler_dict = create_or_load_kde_grid(self.provider, tobecalib_backend=self.device, num_grid_points=300, num_std_dev=2, other_date=self.other_date)
             RepCodeIQSimulator._update_cache(RepCodeIQSimulator._grid_cache, grid_cache_key, (self.grid_dict, self.processed_scaler_dict))
+
+
+    # Hardcoded torino layout (UGLY!)
+    @staticmethod
+    def get_layout_torino(distance):
+        import pickle
+        with open('longest_path_torino.pkl', 'rb') as f:
+            path = pickle.load(f)
+        bounded_path = path[:2 * distance - 1]
+        layout = bounded_path[1::2] + bounded_path[::2] 
+    
+        return layout
 
     @staticmethod
     def _update_cache(cache: OrderedDict, key, value):
