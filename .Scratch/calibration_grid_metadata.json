@@ -415,6 +415,13 @@
                 "0": "cnnf9a50k0p00088v6wg",
                 "1": "cnnf99d8sy80008p34e0"
             }
+        },
+        "23.12.02_09h11_300pts_2std": {
+            "grid_file_path": "/Users/mha/My_Drive/Desktop/Studium/Physik/MSc/Semester_3/IBM/IBM_GIT/Soft-Info/.Scratch/calibration_grids/23.12.02_09h11_300pts_2std_{'0': 'cnnf9a50k0p00088v6wg', '1': 'cnnf99d8sy80008p34e0'}_grid.json",
+            "job_ids": {
+                "0": "cnnf9a50k0p00088v6wg",
+                "1": "cnnf99d8sy80008p34e0"
+            }
         }
     }
 }
