@@ -1,5 +1,5 @@
 import warnings
-from datetime import datetime
+from datetime import datetime as dt
 
 from .core import *
 from .qubit_coordinates import *
@@ -8,7 +8,7 @@ from .calibration import *
 
 
 def custom_showwarning(message, category, filename, lineno, file=None, line=None):
-    datetime_str = datetime.now().strftime("%H:%M:%S")
+    datetime_str = dt.now().strftime("%H:%M:%S")
     print(f"{datetime_str} Warning: {message}. IN FILE: {filename}, LINE: {lineno}")
 
 
