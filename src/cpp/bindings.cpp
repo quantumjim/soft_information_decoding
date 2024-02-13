@@ -206,7 +206,8 @@ PYBIND11_MODULE(cpp_soft_info, m) {
       py::arg("_resets"), py::arg("qubit_mapping"),
       py::arg("kde_dict"), py::arg("_detailed") = false, 
       py::arg("relError") = -1, py::arg("absError") = -1,
-      py::arg("nb_intervals")= -1);
+      py::arg("nb_intervals")= -1,
+      py::arg("interval_offset") = 0.5);
       
     m.def("decode_IQ_shots_flat", &pm::decode_IQ_shots_flat,
       "Decode a matching graph using IQ data but weight edges to 1",

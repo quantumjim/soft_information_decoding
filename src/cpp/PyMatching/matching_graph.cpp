@@ -740,7 +740,8 @@ namespace pm
         bool _detailed,
         double relError,
         double absError,
-        int nb_intervals) {
+        int nb_intervals,
+        float interval_offset) {
 
         DetailedDecodeResult result;
         result.num_errors = 0;
@@ -811,7 +812,7 @@ namespace pm
                         if (nb_intervals != -1) {
                             double intervalSize = 0.5 / nb_intervals;
                             int intervalIndex = static_cast<int>(p_soft / intervalSize);
-                            p_soft = intervalIndex * intervalSize;
+                            p_soft = (intervalIndex + interval_offset) * intervalSize;
                         }               
                         if (_resets) {                                        
                             size_t neighbor_index = matching.nodes[msmt].index_of_neighbor(msmt + (distance-1));

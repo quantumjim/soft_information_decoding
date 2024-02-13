@@ -100,7 +100,8 @@ namespace pm {
         bool _resets,
         const std::map<int, int> &qubit_mapping, 
         const std::map<int, std::map<std::string, float>> &gauss_params_dict, 
-        bool _detailed = false);
+        bool _detailed = false,
+        float interval_offset = 0.5);
     
     DetailedDecodeResult decode_IQ_kde(
         // UserGraph &matching,
