@@ -283,7 +283,7 @@ class RepCodeIQSimulator():
 
     
 
-    def counts_to_IQ_extreme(self, p_ambig: float in (0, 1), 
+    def counts_to_IQ_extreme(self, p_ambig: float, 
                             IQ_dict: dict, counts: dict):
         total_shots = sum(counts.values())
         IQ_memory = np.zeros((total_shots, len(self.qubit_mapping)), dtype=np.complex128)
@@ -328,7 +328,7 @@ class RepCodeIQSimulator():
         return IQ_memory
     
     
-    def generate_extreme_IQ(self, shots: int, p_ambig: float in (0, 1), 
+    def generate_extreme_IQ(self, shots: int, p_ambig: float, 
                             noise_list: list, verbose = False) -> list:
         """Generates IQ data for the given logical state.
         Args:

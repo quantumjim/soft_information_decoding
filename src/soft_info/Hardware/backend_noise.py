@@ -8,14 +8,17 @@ import pytz
 import numpy as np
 
 
-def get_noise_dict_from_backend(backend, used_qubits: list, date: str = None):
+def get_noise_dict_from_backend(provider, device: str, used_qubits: list = None, date: str = None):
     """Get the noise dictionary from the backend.
     
     Args:
         backend (qiskit backend): Needed backend.
         layout (list): List of qubits to get noise from (use layout directly).
     """
-
+    backend = provider.get_backend(device)
+    if used_qubits is None:
+        used_qubits = list(range(backend.configuration().n_qubits))
+        # print("Used qubits not specified, using all qubits:", used_qubits)
     noise_dict = {} 
     round_time = 4000e-9 # HARCODED mean for (10, 10) to (50, 50) RepCodes 
     if date is not None and type(date) is str:
@@ -48,24 +51,26 @@ def get_noise_dict_from_backend(backend, used_qubits: list, date: str = None):
     return noise_dict
 
 
-def get_avgs_from_dict(noise_dict: dict):
+def get_avgs_from_dict(noise_dict: dict, used_qubits: list):
     """Get the averages from the noise dictionary.
     
     Returns:
         list: Dict of averages in order [idle, readout, single_gate, two_gate]
     """
 
-    idle_avg = np.average([noise_dict[qubit]['idle'] for qubit in noise_dict])
-    readout_avg = np.average([noise_dict[qubit]['readout_error'] for qubit in noise_dict])
-    single_gate_avg = np.average([noise_dict[qubit]['gate'] for qubit in noise_dict])
+    idle_avg = np.average([noise_dict[qubit]['idle'] for qubit in noise_dict if qubit in used_qubits])
+    readout_avg = np.average([noise_dict[qubit]['readout_error'] for qubit in noise_dict if qubit in used_qubits])
+    single_gate_avg = np.average([noise_dict[qubit]['gate'] for qubit in noise_dict if qubit in used_qubits])
     two_gate_avg = np.average([noise_dict[qubit]['2-gate'][connection]
-                            for qubit in noise_dict
-                            for connection in noise_dict[qubit]['2-gate']])
+                            for qubit in noise_dict if qubit in used_qubits
+                            for connection in noise_dict[qubit]['2-gate'] if connection in used_qubits])
     
     return {'idle': idle_avg,
             'readout': readout_avg,
             'single_gate': single_gate_avg,
             'two_gate': two_gate_avg}
+ 
+
 
 
 
