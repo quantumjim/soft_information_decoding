@@ -1,0 +1,54 @@
+
+[
+    {
+        "creation_date": "2023-12-01 18:58:11.918000+01:00",
+        "notebook_name": "get_IQ_calibration_data_Sherbrooke",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 10000,
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "num_qubits": 127,
+            "sampled_state": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+            "optimization_level": 0,
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2023-12-02 12:01:38.369000+01:00"
+        },
+        "job_id": "cnn1xcx24wx0008f9kng",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "Calibration"
+        ]
+    },
+    {
+        "creation_date": "2023-12-01 18:56:20.907000+01:00",
+        "notebook_name": "get_IQ_calibration_data_Sherbrooke",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 10000,
+            "memory": false,
+            "meas_level": 1,
+            "init_qubits": true,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "num_qubits": 127,
+            "sampled_state": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+            "optimization_level": 0,
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2023-12-02 12:01:10.708061+01:00"
+        },
+        "job_id": "cnn1wh29drj000841hwg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "Calibration"
+        ]
+    }]
