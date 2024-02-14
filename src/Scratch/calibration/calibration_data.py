@@ -64,7 +64,7 @@ def get_calib_jobs(backend_name: str, needed_calib_date = None):
 
 def find_closest_calib_jobs(tobecalib_job: Optional[str] = None,
                             tobecalib_backend: Optional[str] = None,
-                            other_date = None):
+                            other_date = None, verbose = True):
     """Find the closest calibration jobs for the given job ID."""
     if tobecalib_job is None and tobecalib_backend is None:
         raise NotImplementedError("Only loading calibration data for a specific job or a specified backend is currently supported.")
@@ -84,7 +84,7 @@ def find_closest_calib_jobs(tobecalib_job: Optional[str] = None,
 
 
         specified_job_execution_date = pd.to_datetime(specified_job_entry['additional_metadata']['execution_date'])
-        print(f"Specified job execution date: {specified_job_execution_date}")
+        print(f"Specified job execution date: {specified_job_execution_date}") if verbose else None
         needed_calib_date = specified_job_execution_date
 
         tobecalib_backend = specified_job_entry['backend_name']
@@ -94,7 +94,7 @@ def find_closest_calib_jobs(tobecalib_job: Optional[str] = None,
 
     job_ids, execution_dates, creation_dates = get_calib_jobs(tobecalib_backend, needed_calib_date)
 
-    print(f"Found jobs for backend {tobecalib_backend} with closest execution date {execution_dates['0']}.")
+    print(f"Found jobs for backend {tobecalib_backend} with closest execution date {execution_dates['0']}.") if verbose else None
     return job_ids, tobecalib_backend, creation_dates['0']
 
 
