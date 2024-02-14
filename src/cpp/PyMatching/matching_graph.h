@@ -89,7 +89,7 @@ namespace pm {
         const std::map<int, GridData> &kde_grid_dict,
         const std::map<int, std::pair<std::pair<double, double>, std::pair<double, double>>> &scaler_params_dict,
         bool _detailed,
-        int nb_intervals,
+        float nb_intervals,
         float interval_offset = 0.5);
 
     DetailedDecodeResult decode_IQ_1Dgauss(
@@ -100,8 +100,7 @@ namespace pm {
         bool _resets,
         const std::map<int, int> &qubit_mapping, 
         const std::map<int, std::map<std::string, float>> &gauss_params_dict, 
-        bool _detailed = false,
-        float interval_offset = 0.5);
+        bool _detailed = false);
     
     DetailedDecodeResult decode_IQ_kde(
         // UserGraph &matching,
@@ -114,7 +113,8 @@ namespace pm {
         std::map<int, KDE_Result> kde_dict,
         bool _detailed = false,
         double relError = -1, double absError = -1,
-        int nb_intervals = -1);
+        float nb_intervals = -1,
+        float interval_offset = 0.5);
     
     DetailedDecodeResult decode_IQ_shots_flat(
         UserGraph &matching,
