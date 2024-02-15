@@ -1386,7 +1386,7 @@ namespace pm
     }
 
     DetailedDecodeResult decode_IQ_shots_flat_informed(
-        UserGraph &matching,
+        stim::DetectorErrorModel detector_error_model,
         const Eigen::MatrixXcd &not_scaled_IQ_data,
         int synd_rounds,
         int logical,
@@ -1400,35 +1400,48 @@ namespace pm
 
         DetailedDecodeResult result;
         result.num_errors = 0;
+        result.error_details.resize(not_scaled_IQ_data.rows());
+
+        std::set<size_t> empty_set;  
+        UserGraph matching;     
 
         // Distance
         int distance = (not_scaled_IQ_data.cols() + synd_rounds) / (synd_rounds + 1); // Hardcoded for RepCodes
-        reweight_edges_informed(matching, distance, p_data, p_mixed, p_meas, common_measure, _ntnn_edges);
-        for (int shot = 0; shot < not_scaled_IQ_data.rows(); ++shot)
+        
+        #pragma omp parallel private(matching)
         {
-            Eigen::MatrixXcd not_scaled_IQ_shot_matrix = not_scaled_IQ_data.row(shot);
-            auto counts = get_counts(not_scaled_IQ_shot_matrix, qubit_mapping, kde_grid_dict, scaler_params_dict, synd_rounds);
-            std::string count_key = counts.begin()->first;
-
-            auto det_syndromes = counts_to_det_syndr(count_key, _resets, false);
-            auto detectionEvents = syndromeArrayToDetectionEvents(det_syndromes, matching.get_num_detectors(), matching.get_boundary().size());
-
-            auto [predicted_observables, rescaled_weight] = decode(matching, detectionEvents);
-
-            int actual_observable = (static_cast<int>(count_key[0]) - logical) % 2; // Convert first character to int and modulo 2
-            // Check if predicted_observables is not empty and compare the first element
-            if (_detailed)
+            matching = detector_error_model_to_user_graph_private(detector_error_model);
+            reweight_edges_informed(matching, distance, p_data, p_mixed, p_meas, common_measure, _ntnn_edges);
+            #pragma omp for nowait 
+            for (int shot = 0; shot < not_scaled_IQ_data.rows(); ++shot)
             {
-                ShotErrorDetails errorDetail = createShotErrorDetails(matching, detectionEvents, det_syndromes);
-                result.error_details.push_back(errorDetail);
-            }
-            if (!predicted_observables.empty() && predicted_observables[0] != actual_observable)
-            {
-                result.num_errors++; // Increment error count if they don't match
-                result.indices.push_back(shot);
+                Eigen::MatrixXcd not_scaled_IQ_shot_matrix = not_scaled_IQ_data.row(shot);
+                auto counts = get_counts(not_scaled_IQ_shot_matrix, qubit_mapping, kde_grid_dict, scaler_params_dict, synd_rounds);
+                std::string count_key = counts.begin()->first;
+
+                auto det_syndromes = counts_to_det_syndr(count_key, _resets, false);
+                auto detectionEvents = syndromeArrayToDetectionEvents(det_syndromes, matching.get_num_detectors(), matching.get_boundary().size());
+
+                auto [predicted_observables, rescaled_weight] = decode(matching, detectionEvents);
+
+                int actual_observable = (static_cast<int>(count_key[0]) - logical) % 2; // Convert first character to int and modulo 2
+                // Check if predicted_observables is not empty and compare the first element
+                
+                #pragma omp critical
+                {
+                    if (_detailed)
+                    {
+                        ShotErrorDetails errorDetail = createShotErrorDetails(matching, detectionEvents, det_syndromes);
+                        result.error_details.push_back(errorDetail);
+                    }
+                    if (!predicted_observables.empty() && predicted_observables[0] != actual_observable)
+                    {
+                        result.num_errors++; // Increment error count if they don't match
+                        result.indices.push_back(shot);
+                    }
+                }
             }
         }
-
         return result;
     }
 
