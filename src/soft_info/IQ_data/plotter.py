@@ -5,11 +5,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def plot_IQ_data(data, n_bins=250, twod_nbins=100, figsize=(8,4), title=None):
+def plot_IQ_data(data, n_bins=250, twod_nbins=100, figsize=(8,4), title=None, dpi = 100):
     real_parts = np.real(data).flatten()
     imag_parts = np.imag(data).flatten()
 
-    fig = plt.figure(figsize=figsize)
+    fig = plt.figure(figsize=figsize, dpi=dpi)
 
     # Main scatter plot
     alpha = min(1, max(2e4 / len(data), 2e-3))
@@ -69,6 +69,34 @@ def plot_IQ_data(data, n_bins=250, twod_nbins=100, figsize=(8,4), title=None):
 
 
 def plot_multiple_IQ_data(datasets, legend_labels=None, figsize = None, alpha = None, n_bins=250, title=None):
+    FIGURE_WIDTH_1COL = 3.404  # For PRX style, change for according to journal
+    FIGURE_WIDTH_2COL = 7.057  # For PRX style, change for according to journal
+    FIGURE_HEIGHT_1COL_GR = FIGURE_WIDTH_1COL*2/(1 + np.sqrt(5))
+    FIGURE_HEIGHT_2COL_GR = FIGURE_WIDTH_2COL*2/(1 + np.sqrt(5))
+
+    font_size = 6 # For PRX style, change for according to journal
+
+    plt.rcParams.update({
+        'font.size'           : font_size,  
+        'figure.titlesize'    : 'medium',
+        'figure.dpi'          : 1000,
+        'figure.figsize'      : (FIGURE_WIDTH_1COL, FIGURE_HEIGHT_1COL_GR),
+        'axes.titlesize'      : 'medium',
+        'axes.axisbelow'      : True,
+        'xtick.direction'     : 'in',
+        'xtick.labelsize'     : 'small',
+        'ytick.direction'     : 'in',
+        'ytick.labelsize'     : 'small',
+        'image.interpolation' : 'none',
+        'legend.fontsize'     : font_size,
+        'axes.labelsize'      : font_size,
+        'axes.titlesize'      : font_size,
+        'xtick.labelsize'     : font_size,
+        'ytick.labelsize'     : font_size,
+    })
+
+
+    plt.rcParams.update({'font.family':'sans-serif'})
     if figsize:
         fig = plt.figure(figsize=figsize)
     else:
