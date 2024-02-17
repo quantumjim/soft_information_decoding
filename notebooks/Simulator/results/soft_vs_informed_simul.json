@@ -1,0 +1,98 @@
+{
+    "(55, 35)": {
+        "grid": 1,
+        "informed": 11,
+        "shots": 200000,
+        "p_meas": -1
+    },
+    "(55, 55)": {
+        "grid": 3,
+        "informed": 44,
+        "shots": 200000,
+        "p_meas": -1
+    },
+    "(51, 51)": {
+        "grid": 5,
+        "informed": 24,
+        "shots": 200000,
+        "p_meas": -1
+    },
+    "(47, 47)": {
+        "grid": 2,
+        "informed": 54,
+        "shots": 200000,
+        "p_meas": -1
+    },
+    "(44, 44)": {
+        "grid": 10,
+        "informed": 82,
+        "shots": 200000,
+        "p_meas": -1
+    },
+    "(40, 40)": {
+        "grid": 12,
+        "informed": 100,
+        "shots": 200000,
+        "p_meas": -1
+    },
+    "(37, 37)": {
+        "grid": 19,
+        "informed": 103,
+        "shots": 200000,
+        "p_meas": -1
+    },
+    "(33, 33)": {
+        "grid": 63,
+        "informed": 180,
+        "shots": 200000,
+        "p_meas": -1
+    },
+    "(30, 30)": {
+        "grid": 47,
+        "informed": 195,
+        "shots": 200000,
+        "p_meas": -1
+    },
+    "(26, 26)": {
+        "grid": 122,
+        "informed": 359,
+        "shots": 200000,
+        "p_meas": -1
+    },
+    "(22, 22)": {
+        "grid": 207,
+        "informed": 489,
+        "shots": 200000,
+        "p_meas": -1
+    },
+    "(19, 19)": {
+        "grid": 384,
+        "informed": 680,
+        "shots": 200000,
+        "p_meas": -1
+    },
+    "(15, 15)": {
+        "grid": 633,
+        "informed": 947,
+        "shots": 200000,
+        "p_meas": -1
+    },
+    "(12, 12)": {
+        "grid": 1030,
+        "informed": 1377,
+        "shots": 200000,
+        "p_meas": -1
+    },
+    "(8, 8)": {
+        "grid": 2375,
+        "informed": 2806,
+        "shots": 200000,
+        "p_meas": -1
+    },
+    "(5, 5)": {
+        "grid": 4890,
+        "informed": 5434,
+        "shots": 200000,
+        "p_meas": -1
+    }
+}
