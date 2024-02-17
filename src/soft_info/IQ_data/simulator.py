@@ -102,9 +102,43 @@ class RepCodeIQSimulator():
                                 before_round_data_depolarization=noise_list[3]) #idle error)
         self.stim_circ = circuit
 
-    
+    # def vectorized_processing(self, meas_outcomes):
+    #     # Step 1: Convert to '0' and '1'
+    #     meas_strings = np.where(meas_outcomes, '1', '0')
+
+    #     # Step 2: Insert spaces and reverse. For vectorization, we work with array manipulation
+    #     # Calculate the positions where spaces should be added (accounting for reversing)
+    #     space_indices = np.arange(self.distance - 2, self.rounds * (self.distance - 1), self.distance - 1)
+
+    #     # Initialize an empty list to store processed strings
+    #     processed_strings = []
+
+    #     # Process each measurement outcome
+    #     for row in meas_strings:
+    #         # Convert row to a list of characters for easier manipulation
+    #         char_list = list(row)
+            
+    #         # Insert spaces at the calculated positions
+    #         for index in space_indices:
+    #             if index < len(char_list):
+    #                 char_list.insert(index + 1, ' ')
+            
+    #         # Reverse the string and join
+    #         processed_string = ''.join(char_list[::-1])
+    #         processed_strings.append(processed_string)
+
+    #     # Convert processed strings back to an array
+    #     processed_array = np.array(processed_strings)
+
+    #     # Step 3: Count occurrences of each unique string
+    #     unique, counts = np.unique(processed_array, return_counts=True)
+    #     counts_dict = dict(zip(unique, counts))
+
+    #     return counts_dict
+        
     def get_counts(self, shots: int, stim_circuit: stim.Circuit, verbose=False) -> dict:
         meas_outcomes = stim_circuit.compile_sampler(seed=42).sample(shots)
+        print("generated counts")
         counts = {}
         for row in meas_outcomes:
             count_str = ''
@@ -117,6 +151,10 @@ class RepCodeIQSimulator():
                 counts[count_str] += 1
             else:
                 counts[count_str] = 1
+
+        # counts = self.vectorized_processing(meas_outcomes)
+        
+        print("correcting counts")
         
         # correct samples to have no reset counts if _resets == False
         if self._resets == False:
@@ -155,7 +193,9 @@ class RepCodeIQSimulator():
                     no_reset_counts[new_count_str] = shots
             counts = no_reset_counts
         
+        print("finished correcting counts")
         return counts
+
 
 
         
@@ -168,7 +208,7 @@ class RepCodeIQSimulator():
     #     # return counts
 
     
-    def counts_to_IQ(self, counts: dict):
+    def counts_to_IQ(self, counts: dict, verbose = False):
         total_shots = sum(counts.values())
         len_IQ_array = len(self.qubit_mapping)
         IQ_memory = np.zeros((total_shots, len_IQ_array), dtype=np.complex128)
@@ -199,7 +239,8 @@ class RepCodeIQSimulator():
             kde_samples[qubit_idx] = {'0': samples0, '1': samples1}
         
         shot_idx = 0
-        for count_str, shots in tqdm(counts.items()):
+        iterable = tqdm(counts.items()) if verbose else counts.items()
+        for count_str, shots in iterable:
             for _ in range(shots):
                 num_spaces = 0
                 inverted_count_str = count_str[::-1]
@@ -324,7 +365,7 @@ class RepCodeIQSimulator():
         noise_list = [1e-8, 1e-8, 1e-8, 1e-8] if noise_list is None else noise_list
         self.get_stim_circuit(noise_list)
         counts = self.get_counts(shots, self.stim_circ, verbose)
-        IQ_memory = self.counts_to_IQ(counts)
+        IQ_memory = self.counts_to_IQ(counts, verbose)
         return IQ_memory
     
     
