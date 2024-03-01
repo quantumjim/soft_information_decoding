@@ -1,0 +1,170 @@
+{
+    "(5, 15)": {
+        "grid": 4186,
+        "informed": 4705,
+        "shots": 50000,
+        "p_meas": -1
+    },
+    "(9, 15)": {
+        "grid": 919,
+        "informed": 1175,
+        "shots": 50000,
+        "p_meas": -1
+    },
+    "(13, 15)": {
+        "grid": 307,
+        "informed": 397,
+        "shots": 50000,
+        "p_meas": -1
+    },
+    "(18, 15)": {
+        "grid": 76,
+        "informed": 152,
+        "shots": 50000,
+        "p_meas": -1
+    },
+    "(22, 15)": {
+        "grid": 25,
+        "informed": 54,
+        "shots": 50000,
+        "p_meas": -1
+    },
+    "(26, 15)": {
+        "grid": 8,
+        "informed": 22,
+        "shots": 50000,
+        "p_meas": -1
+    },
+    "(31, 15)": {
+        "grid": 1,
+        "informed": 3,
+        "shots": 50000,
+        "p_meas": -1
+    },
+    "(5, 50)": {
+        "grid": 24574,
+        "informed": 27019,
+        "shots": 100000,
+        "p_meas": -1
+    },
+    "(9, 50)": {
+        "grid": 7674,
+        "informed": 9587,
+        "shots": 100000,
+        "p_meas": -1
+    },
+    "(13, 50)": {
+        "grid": 2813,
+        "informed": 3940,
+        "shots": 100000,
+        "p_meas": -1
+    },
+    "(18, 50)": {
+        "grid": 962,
+        "informed": 1778,
+        "shots": 100000,
+        "p_meas": -1
+    },
+    "(22, 50)": {
+        "grid": 360,
+        "informed": 897,
+        "shots": 100000,
+        "p_meas": -1
+    },
+    "(26, 50)": {
+        "grid": 191,
+        "informed": 606,
+        "shots": 100000,
+        "p_meas": -1
+    },
+    "(31, 50)": {
+        "grid": 52,
+        "informed": 246,
+        "shots": 100000,
+        "p_meas": -1
+    },
+    "(15, 10)": {
+        "grid": 83,
+        "informed": 105,
+        "shots": 50000,
+        "p_meas": -1
+    },
+    "(15, 16)": {
+        "grid": 146,
+        "informed": 223,
+        "shots": 50000,
+        "p_meas": -1
+    },
+    "(15, 23)": {
+        "grid": 284,
+        "informed": 448,
+        "shots": 50000,
+        "p_meas": -1
+    },
+    "(15, 30)": {
+        "grid": 447,
+        "informed": 670,
+        "shots": 50000,
+        "p_meas": -1
+    },
+    "(15, 36)": {
+        "grid": 542,
+        "informed": 855,
+        "shots": 50000,
+        "p_meas": -1
+    },
+    "(15, 43)": {
+        "grid": 674,
+        "informed": 1068,
+        "shots": 50000,
+        "p_meas": -1
+    },
+    "(15, 50)": {
+        "grid": 840,
+        "informed": 1282,
+        "shots": 50000,
+        "p_meas": -1
+    },
+    "(15, 58)": {
+        "grid": 990,
+        "informed": 1482,
+        "shots": 50000,
+        "p_meas": -1
+    },
+    "(15, 65)": {
+        "grid": 1085,
+        "informed": 1724,
+        "shots": 50000,
+        "p_meas": -1
+    },
+    "(15, 72)": {
+        "grid": 1194,
+        "informed": 1904,
+        "shots": 50000,
+        "p_meas": -1
+    },
+    "(15, 79)": {
+        "grid": 1396,
+        "informed": 2117,
+        "shots": 50000,
+        "p_meas": -1
+    },
+    "(15, 86)": {
+        "grid": 1499,
+        "informed": 2338,
+        "shots": 50000,
+        "p_meas": -1
+    },
+    "(15, 93)": {
+        "grid": 1630,
+        "informed": 2507,
+        "shots": 50000,
+        "p_meas": -1
+    },
+    "(15, 100)": {
+        "grid": 1757,
+        "informed": 2717,
+        "shots": 50000,
+        "p_meas": -1
+    }
+}
