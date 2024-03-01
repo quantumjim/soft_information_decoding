@@ -114,7 +114,9 @@
         "type_traits": "cpp",
         "utility": "cpp",
         "armadillo": "cpp",
-        "*.ipp": "cpp"
+        "*.ipp": "cpp",
+        "csetjmp": "cpp",
+        "numeric": "cpp"
     },
     "cmake.sourceDirectory": "${workspaceFolder}"
 }

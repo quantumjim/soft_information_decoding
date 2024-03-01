@@ -5,6 +5,7 @@
 #include "Probabilities/probabilities.h"  // Include probabilities header
 #include "PyMatching/matching_graph.h"  // Include matching header
 #include "PyMatching/user_graph_utils.h"  // Include user graph utils header
+#include "PyMatching/predecoders.h"  // Include predecoders header
 
 #include "pymatching/sparse_blossom/driver/user_graph.h" // Include necessary headers for declarations
 
@@ -272,5 +273,17 @@ PYBIND11_MODULE(cpp_soft_info, m) {
       "Get counts using KDE",
       py::arg("not_scaled_IQ_data"), py::arg("qubit_mapping"), 
       py::arg("kde_dict"), py::arg("synd_rounds"));
+
+
+    //////////// Predecoders bindings ////////////
+
+    m.def("decode_time_nn_predecode_grid", &pd::decode_time_nn_predecode_grid,
+      "Decode IQ data using a soft info predecoder",
+      py::arg("detector_error_model"), py::arg("not_scaled_IQ_data"),
+      py::arg("synd_rounds"), py::arg("logical"),
+      py::arg("_resets"), py::arg("qubit_mapping"),
+      py::arg("kde_grid_dict"), py::arg("scaler_params_dict"),
+      py::arg("_detailed"), 
+      py::arg("threshold"));
 
 }
