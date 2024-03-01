@@ -102,6 +102,8 @@ class RepCodeIQSimulator():
                                 before_round_data_depolarization=noise_list[3]) #idle error)
         self.stim_circ = circuit
 
+        return circuit
+
     # def vectorized_processing(self, meas_outcomes):
     #     # Step 1: Convert to '0' and '1'
     #     meas_strings = np.where(meas_outcomes, '1', '0')
@@ -138,7 +140,7 @@ class RepCodeIQSimulator():
         
     def get_counts(self, shots: int, stim_circuit: stim.Circuit, verbose=False) -> dict:
         meas_outcomes = stim_circuit.compile_sampler(seed=42).sample(shots)
-        print("generated counts")
+        print("generated stim counts")
         counts = {}
         for row in meas_outcomes:
             count_str = ''
@@ -206,6 +208,8 @@ class RepCodeIQSimulator():
     #     # counts = AerSimulator().run(qc, shots=shots).result().get_counts()
     #     return get_counts_via_stim(self.code.circuit[str(logical)], shots=shots, noise_model=noise_model)
     #     # return counts
+
+
 
     
     def counts_to_IQ(self, counts: dict, verbose = False):
@@ -363,9 +367,17 @@ class RepCodeIQSimulator():
         """
         warnings.warn("Logical != 0 is currently not supported") if logical is not None else None
         noise_list = [1e-8, 1e-8, 1e-8, 1e-8] if noise_list is None else noise_list
+        # print("generating stim circ")
         self.get_stim_circuit(noise_list)
+        # print("generating counts")
         counts = self.get_counts(shots, self.stim_circ, verbose)
+        # print the first k,v pair of the sorted counts
+        # sort the counts
+        # counts = dict(sorted(counts.items(), key=lambda item: item[1], reverse=True))
+        # print("first k,v pair of sorted counts:", list(counts.items())[0]) 
+        # print("generating IQ")
         IQ_memory = self.counts_to_IQ(counts, verbose)
+        
         return IQ_memory
     
     
