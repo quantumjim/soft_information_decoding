@@ -23,7 +23,8 @@ namespace pd {
             const std::map<int, GridData> &kde_grid_dict,
             const std::map<int, std::pair<std::pair<double, double>, std::pair<double, double>>> &scaler_params_dict,
             bool _detailed,
-            float threshold=1.0); // defaults to 1.0 so that it is always below
+            float threshold,
+            bool _ntnn_edges); // defaults to 1.0 so that it is always below
 }
 
 

@@ -17,7 +17,8 @@ namespace pd {
         const std::map<int, GridData> &kde_grid_dict,
         const std::map<int, std::pair<std::pair<double, double>, std::pair<double, double>>> &scaler_params_dict,
         bool _detailed,
-        float threshold) {
+        float threshold,
+        bool _ntnn_edges) {
 
             pm::DetailedDecodeResult result;
             result.num_errors = 0;
@@ -32,6 +33,9 @@ namespace pd {
             #pragma omp parallel private(matching)
             {
                 matching = pm::detector_error_model_to_user_graph_private(detector_error_model);
+                if (_ntnn_edges) {
+                    pm::reweight_edges_informed(matching, distance, -1, -1, -1, -1, _ntnn_edges); // -1 bcs we don't use the weights
+                }
                 #pragma omp for nowait  
                 for (int shot = 0; shot < not_scaled_IQ_data.rows(); ++shot) {
                     Eigen::MatrixXcd not_scaled_IQ_shot_matrix = not_scaled_IQ_data.row(shot);
