@@ -216,13 +216,13 @@ namespace pd {
                     auto [predicted_observables, rescaled_weight] = decode(matching, detectionEvents);
                     int actual_observable = (static_cast<int>(counts.back()) - logical) % 2;
 
-                    #pragma omp critical
+                    
                     nb_rm_edges_vec[shot] = nb_rm_edges;
-
                     if (_detailed) {
                         pm::ShotErrorDetails errorDetail = createShotErrorDetails(matching, detectionEvents, det_syndromes);
                         result.error_details[shot] = errorDetail;
                     }
+                    #pragma omp critical
                     {
                         if (!predicted_observables.empty() && predicted_observables[0] != actual_observable) {
                             result.num_errors++; // Increment error count if they don't match

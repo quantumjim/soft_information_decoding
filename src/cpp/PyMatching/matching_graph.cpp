@@ -1427,13 +1427,15 @@ namespace pm
                 int actual_observable = (static_cast<int>(count_key[0]) - logical) % 2; // Convert first character to int and modulo 2
                 // Check if predicted_observables is not empty and compare the first element
                 
+                
+                if (_detailed)
+                {
+                    ShotErrorDetails errorDetail = createShotErrorDetails(matching, detectionEvents, det_syndromes);
+                    // result.error_details.push_back(errorDetail);
+                    result.error_details[shot] = errorDetail;
+                }
                 #pragma omp critical
                 {
-                    if (_detailed)
-                    {
-                        ShotErrorDetails errorDetail = createShotErrorDetails(matching, detectionEvents, det_syndromes);
-                        result.error_details.push_back(errorDetail);
-                    }
                     if (!predicted_observables.empty() && predicted_observables[0] != actual_observable)
                     {
                         result.num_errors++; // Increment error count if they don't match
