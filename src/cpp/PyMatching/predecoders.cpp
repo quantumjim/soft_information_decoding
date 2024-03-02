@@ -7,7 +7,7 @@
 
 namespace pd {
 
-    pm::DetailedDecodeResult decode_time_nn_predecode_grid(
+    PreDecodeResult decode_time_nn_predecode_grid(
         stim::DetectorErrorModel detector_error_model,
         const Eigen::MatrixXcd &not_scaled_IQ_data,
         int synd_rounds,
@@ -22,6 +22,8 @@ namespace pd {
             pm::DetailedDecodeResult result;
             result.num_errors = 0;
             result.error_details.resize(not_scaled_IQ_data.rows());
+
+            std::vector<int> nb_rm_edges_vec(not_scaled_IQ_data.rows(), 0);
 
             std::set<size_t> empty_set;        
             int distance = (not_scaled_IQ_data.cols() + synd_rounds) / (synd_rounds + 1); // Hardcoded for RepCodes
@@ -55,8 +57,6 @@ namespace pd {
 
                         auto [outcome, density0, density1] = grid_lookup(scaled_point, grid_data);
 
-
-
                         // 1) Get the detector bit
                         if (msmt < distance-1) { // first row of measurement 
                             detector_bit = outcome;
@@ -64,27 +64,36 @@ namespace pd {
                                 corrected_bit = outcome;
                             }
                             det_syndromes.push_back(detector_bit);
+                            corrected_counts.push_back(corrected_bit);
                         }
                         else if (msmt > (distance-1)*synd_rounds) { // last row of data measurements + 1 (== >)
-                            corrected_bit = outcome + counts.back() % 2; // using the corrected_bit structure (incomprehensible but efficient)
+                            // std::cout << "msmt: " << msmt << std::endl;
+                            // std::cout << "outcome: " << outcome << std::endl;
+                            // std::cout << "counts.back(): " << counts.back() << std::endl;
+                            corrected_bit = (outcome + counts.back()) % 2; // using the corrected_bit structure (incomprehensible but efficient)
                             if (!_resets) {
-                                detector_bit = corrected_bit + corrected_counts[msmt-(distance-1)]  % 2;
+                                detector_bit = (corrected_bit + corrected_counts[msmt-1-(distance-1)])  % 2; // -1 because we skip 1 measurement
                             }
                             else {
-                                detector_bit = corrected_bit + counts[msmt-(distance-1)] % 2;
+                                detector_bit = (corrected_bit + counts[msmt-1-(distance-1)]) % 2; // -1 because we skip 1 measurement
                             }
                             det_syndromes.push_back(detector_bit);
+                            corrected_counts.push_back(corrected_bit);
                         }
                         else if (msmt < (distance-1)*synd_rounds) { // Middle rows of measurements (without the first data msmt)
                             if (!_resets) {
-                                corrected_bit = outcome + counts[msmt-(distance-1)] % 2;
-                                detector_bit = corrected_bit + corrected_counts[msmt-(distance-1)]  % 2;
+                                corrected_bit = (outcome + counts[msmt-(distance-1)]) % 2;
+                                detector_bit = (corrected_bit + corrected_counts[msmt-(distance-1)])  % 2;
                             }
                             else {
-                                detector_bit = outcome + counts[msmt-(distance-1)] % 2;
+                                detector_bit = (outcome + counts[msmt-(distance-1)]) % 2;
                             }
                             det_syndromes.push_back(detector_bit);
+                            corrected_counts.push_back(corrected_bit);
                         }
+                        
+                        // Push back the count
+                        counts.push_back(outcome);
 
                         // pointer to the needed elements of the syndrome
                         int* det_bit_ptr = &det_syndromes.back();
@@ -106,6 +115,7 @@ namespace pd {
                             }
                             
                             double p_soft = 1 / (1 + p_big/p_small);
+                            // std::cout << "p_soft: " << p_soft << std::endl;
 
 
                             // Mark suspicious detector bits
@@ -113,11 +123,32 @@ namespace pd {
                                 *det_bit_ptr = 2;
                             }
                         }
-
-                        // Push back all the values
-                        counts.push_back(outcome);
-                        corrected_counts.push_back(corrected_bit);
                     }
+
+                    // // print the counts
+                    // std::cout << std::endl;
+                    // std::cout << "Shot " << shot << " has counts: " << std::endl;
+                    
+                    // for (int i = 0; i < counts.size(); ++i) {
+                    //     std::cout << counts[i] << " ";
+                    // }
+                    // std::cout << std::endl;
+
+                    // // print the corrected counts
+                    // // std::cout << std::endl;
+                    // std::cout << "Shot " << shot << " has corrected counts: " << std::endl;
+                    // for (int i = 0; i < corrected_counts.size(); ++i) {
+                    //     std::cout << corrected_counts[i] << " ";
+                    // }
+                    // std::cout << std::endl;
+
+                    // // print the syndromes
+                    // // std::cout << std::endl;
+                    // std::cout << "Shot (bf sus corrections) " << shot << " has syndromes: " << std::endl;
+                    // for (int i = 0; i < det_syndromes.size(); ++i) {
+                    //     std::cout << det_syndromes[i] << " ";
+                    // }
+                    // std::cout << std::endl;
 
                     // 3) Correct detector syndromes with suspicious bits (Iterate through the syndromes)
                     for (int det_idx = 0; det_idx < det_syndromes.size(); ++det_idx) {
@@ -130,7 +161,7 @@ namespace pd {
                                 if (det_idx >= 2*(distance-1)) { // AFTER the second row (bcs NTNN edges)
                                     int* prev_prev_bit_ptr = &det_syndromes[det_idx-2*(distance-1)];
 
-                                    if (*det_bit_ptr == 1 and *prev_prev_bit_ptr==2) { // if the previous NTNN detector bit was suspicious
+                                    if ((*det_bit_ptr == 1 || *det_bit_ptr == 2) && *prev_prev_bit_ptr == 2) { // if the previous NTNN detector bit was suspicious
                                         *det_bit_ptr = 0;
                                         *prev_prev_bit_ptr= 0;
                                         nb_rm_edges++;
@@ -152,7 +183,7 @@ namespace pd {
                                 }
                             }
                             else { // With Resets
-                                if (*det_bit_ptr == 1 and *prev_bit_ptr==2) { // if the previous detector bit was suspicious
+                                if ((*det_bit_ptr == 1 || *det_bit_ptr == 2) && *prev_bit_ptr == 2) { // if the previous detector bit was suspicious
                                     *det_bit_ptr = 0;
                                     *prev_bit_ptr= 0;
                                     nb_rm_edges++;
@@ -164,19 +195,30 @@ namespace pd {
                         }
                     }
 
-                    std::cout << "Shot " << shot << " has " << nb_rm_edges << " removed edges" << std::endl;
+                    // // print the syndromes
+                    // // std::cout << std::endl;
+                    // std::cout << "Shot (af sus corrections) " << shot << " has syndromes: " << std::endl;
+                    // for (int i = 0; i < det_syndromes.size(); ++i) {
+                    //     std::cout << det_syndromes[i] << " ";
+                    // }
+                    // std::cout << std::endl;
+                    // std::cout << "Shot " << shot << " has " << nb_rm_edges << " removed edges" << std::endl;
+                    // std::cout << std::endl;
+
+
 
                     // 4) Decode the shot
-                    std::cout << "det_syndromes_size: " << det_syndromes.size() << std::endl;
-
                     auto detectionEvents = syndromeArrayToDetectionEvents(det_syndromes, matching.get_num_detectors(), matching.get_boundary().size());
                     auto [predicted_observables, rescaled_weight] = decode(matching, detectionEvents);
                     int actual_observable = (static_cast<int>(counts.back()) - logical) % 2;
+
+                    #pragma omp critical
+                    nb_rm_edges_vec[shot] = nb_rm_edges;
+
                     if (_detailed) {
                         pm::ShotErrorDetails errorDetail = createShotErrorDetails(matching, detectionEvents, det_syndromes);
                         result.error_details[shot] = errorDetail;
                     }
-                    #pragma omp critical
                     {
                         if (!predicted_observables.empty() && predicted_observables[0] != actual_observable) {
                             result.num_errors++; // Increment error count if they don't match
@@ -186,7 +228,10 @@ namespace pd {
 
                 }
             }
-            return result;
+            PreDecodeResult preDecodeResult;
+            preDecodeResult.decode_result = result;
+            preDecodeResult.nb_rm_edges = nb_rm_edges_vec;
+            return preDecodeResult;
         }
 
 

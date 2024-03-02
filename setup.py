@@ -39,7 +39,7 @@ class CMakeBuild(build_ext):
         '-DPYTHON_EXECUTABLE=' + sys.executable,
         '-DCMAKE_C_COMPILER=/opt/homebrew/opt/llvm/bin/clang',  # Path to C compiler
         '-DCMAKE_CXX_COMPILER=/opt/homebrew/opt/llvm/bin/clang++',
-        # '-DCMAKE_CXX_FLAGS=-fopenmp'  # for omp compiling
+        '-DCMAKE_CXX_FLAGS=-fopenmp'  # for omp compiling
     ] # for omp compiling
 
 

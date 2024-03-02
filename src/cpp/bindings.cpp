@@ -76,6 +76,11 @@ PYBIND11_MODULE(cpp_soft_info, m) {
         .def_readwrite("scaler_mean", &KDE_Result::scaler_mean)
         .def_readwrite("scaler_stddev", &KDE_Result::scaler_stddev);
 
+    py::class_<pd::PreDecodeResult>(m, "PreDecodeResult")
+        .def(py::init<>())
+        .def_readwrite("decode_result", &pd::PreDecodeResult::decode_result)
+        .def_readwrite("nb_rm_edges", &pd::PreDecodeResult::nb_rm_edges);
+
 
     //////////// Usergraph Utils bindings ////////////
 

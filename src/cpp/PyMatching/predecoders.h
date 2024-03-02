@@ -7,7 +7,13 @@
 
 
 namespace pd {
-    pm::DetailedDecodeResult decode_time_nn_predecode_grid(
+
+    struct PreDecodeResult {
+        pm::DetailedDecodeResult decode_result;
+        std::vector<int> nb_rm_edges;
+    };
+
+    PreDecodeResult decode_time_nn_predecode_grid(
             stim::DetectorErrorModel detector_error_model,
             const Eigen::MatrixXcd &not_scaled_IQ_data,
             int synd_rounds,
