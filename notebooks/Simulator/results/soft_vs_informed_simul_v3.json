@@ -1,0 +1,122 @@
+{
+    "(5, 5)": {
+        "grid": 6025,
+        "informed": 6735,
+        "shots": 250000,
+        "p_meas": -1
+    },
+    "(8, 8)": {
+        "grid": 2925,
+        "informed": 3449,
+        "shots": 250000,
+        "p_meas": -1
+    },
+    "(10, 10)": {
+        "grid": 1953,
+        "informed": 2392,
+        "shots": 250000,
+        "p_meas": -1
+    },
+    "(12, 12)": {
+        "grid": 1274,
+        "informed": 1639,
+        "shots": 250000,
+        "p_meas": -1
+    },
+    "(15, 15)": {
+        "grid": 761,
+        "informed": 1187,
+        "shots": 250000,
+        "p_meas": -1
+    },
+    "(19, 19)": {
+        "grid": 446,
+        "informed": 855,
+        "shots": 250000,
+        "p_meas": -1
+    },
+    "(20, 20)": {
+        "grid": 343,
+        "informed": 719,
+        "shots": 250000,
+        "p_meas": -1
+    },
+    "(22, 22)": {
+        "grid": 220,
+        "informed": 564,
+        "shots": 250000,
+        "p_meas": -1
+    },
+    "(26, 26)": {
+        "grid": 160,
+        "informed": 478,
+        "shots": 250000,
+        "p_meas": -1
+    },
+    "(30, 35)": {
+        "grid": 106,
+        "informed": 346,
+        "shots": 250000,
+        "p_meas": -1
+    },
+    "(30, 30)": {
+        "grid": 69,
+        "informed": 276,
+        "shots": 250000,
+        "p_meas": -1
+    },
+    "(33, 33)": {
+        "grid": 40,
+        "informed": 190,
+        "shots": 250000,
+        "p_meas": -1
+    },
+    "(37, 37)": {
+        "grid": 33,
+        "informed": 137,
+        "shots": 250000,
+        "p_meas": -1
+    },
+    "(40, 35)": {
+        "grid": 14,
+        "informed": 89,
+        "shots": 250000,
+        "p_meas": -1
+    },
+    "(40, 40)": {
+        "grid": 19,
+        "informed": 114,
+        "shots": 250000,
+        "p_meas": -1
+    },
+    "(44, 44)": {
+        "grid": 7,
+        "informed": 86,
+        "shots": 250000,
+        "p_meas": -1
+    },
+    "(47, 47)": {
+        "grid": 7,
+        "informed": 75,
+        "shots": 250000,
+        "p_meas": -1
+    },
+    "(51, 51)": {
+        "grid": 2,
+        "informed": 39,
+        "shots": 250000,
+        "p_meas": -1
+    },
+    "(55, 35)": {
+        "grid": 0,
+        "informed": 11,
+        "shots": 250000,
+        "p_meas": -1
+    },
+    "(55, 55)": {
+        "grid": 3,
+        "informed": 45,
+        "shots": 250000,
+        "p_meas": -1
+    }
+}
