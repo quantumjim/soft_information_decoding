@@ -68237,5 +68237,161 @@
         "tags": [
             "RepCode_Count_job_count"
         ]
+    },
+    {
+        "creation_date": "2024-03-07 18:48:50.839000+01:00",
+        "notebook_name": "DEEP_get_IQ_calibration_data_Sherbrooke",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 10000,
+            "meas_level": 1,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "num_qubits": 127,
+            "sampled_state": "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
+            "optimization_level": 0,
+            "num_CNOTS_layers": 50
+        },
+        "job_id": "cqmzw0gy0sfg0089qd9g",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "Calibration",
+            "Deep_circuit"
+        ]
+    },
+    {
+        "creation_date": "2024-03-07 18:49:51.733000+01:00",
+        "notebook_name": "DEEP_get_IQ_calibration_data_Sherbrooke",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 10000,
+            "meas_level": 1,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "num_qubits": 127,
+            "sampled_state": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+            "optimization_level": 0,
+            "num_CNOTS_layers": 50
+        },
+        "job_id": "cqmzwfss76n0008851eg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "Calibration",
+            "Deep_circuit"
+        ]
+    },
+    {
+        "creation_date": "2024-03-07 18:52:06.026000+01:00",
+        "notebook_name": "DEEP_get_IQ_calibration_data_Torino_copy",
+        "backend_name": "ibm_torino",
+        "backend_options": {
+            "shots": 10000,
+            "meas_level": 1,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "num_qubits": 133,
+            "sampled_state": "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
+            "optimization_level": 0,
+            "num_CNOT_layers": 50
+        },
+        "job_id": "cqmzxhec8df0008b2s6g",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "Calibration",
+            "Deep_circuit"
+        ]
+    },
+    {
+        "creation_date": "2024-03-07 18:52:41.471000+01:00",
+        "notebook_name": "DEEP_get_IQ_calibration_data_Torino_copy",
+        "backend_name": "ibm_torino",
+        "backend_options": {
+            "shots": 10000,
+            "meas_level": 1,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "num_qubits": 133,
+            "sampled_state": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+            "optimization_level": 0,
+            "num_CNOT_layers": 50
+        },
+        "job_id": "cqmzxtfs76n0008851kg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "Calibration",
+            "Deep_circuit"
+        ]
+    },
+    {
+        "creation_date": "2024-03-07 18:54:46.190000+01:00",
+        "notebook_name": "Deep_get_IQ_calibration_data_Mumbai_copy",
+        "backend_name": "ibmq_mumbai",
+        "backend_options": {
+            "shots": 100000,
+            "meas_level": 1,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "num_qubits": 27,
+            "sampled_state": "111111111111111111111111111",
+            "optimization_level": 0,
+            "num_CNOT_layers": 50
+        },
+        "job_id": "cqmzyskyffvg008vy8qg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "Calibration",
+            "Deep_circuit"
+        ]
+    },
+    {
+        "creation_date": "2024-03-07 18:54:49.801000+01:00",
+        "notebook_name": "Deep_get_IQ_calibration_data_Mumbai_copy",
+        "backend_name": "ibmq_mumbai",
+        "backend_options": {
+            "shots": 100000,
+            "meas_level": 1,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "num_qubits": 27,
+            "sampled_state": "000000000000000000000000000",
+            "optimization_level": 0,
+            "num_CNOT_layers": 50
+        },
+        "job_id": "cqmzytbyffvg008vy8rg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "Calibration",
+            "Deep_circuit"
+        ]
     }
 ]
