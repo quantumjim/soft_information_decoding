@@ -1,0 +1,142 @@
+{
+    "(5, 5)": {
+        "grid": 4210,
+        "informed": 5141,
+        "shots": 200000,
+        "p_meas": -1,
+        "resets": true
+    },
+    "(8, 8)": {
+        "grid": 1810,
+        "informed": 2526,
+        "shots": 200000,
+        "p_meas": -1,
+        "resets": true
+    },
+    "(10, 10)": {
+        "grid": 1013,
+        "informed": 1565,
+        "shots": 200000,
+        "p_meas": -1,
+        "resets": true
+    },
+    "(12, 12)": {
+        "grid": 584,
+        "informed": 1060,
+        "shots": 200000,
+        "p_meas": -1,
+        "resets": true
+    },
+    "(15, 15)": {
+        "grid": 293,
+        "informed": 638,
+        "shots": 200000,
+        "p_meas": -1,
+        "resets": true
+    },
+    "(19, 19)": {
+        "grid": 107,
+        "informed": 336,
+        "shots": 200000,
+        "p_meas": -1,
+        "resets": true
+    },
+    "(20, 20)": {
+        "grid": 74,
+        "informed": 260,
+        "shots": 200000,
+        "p_meas": -1,
+        "resets": true
+    },
+    "(22, 22)": {
+        "grid": 50,
+        "informed": 190,
+        "shots": 200000,
+        "p_meas": -1,
+        "resets": true
+    },
+    "(26, 26)": {
+        "grid": 20,
+        "informed": 131,
+        "shots": 200000,
+        "p_meas": -1,
+        "resets": true
+    },
+    "(30, 35)": {
+        "grid": 6,
+        "informed": 73,
+        "shots": 200000,
+        "p_meas": -1,
+        "resets": true
+    },
+    "(30, 30)": {
+        "grid": 9,
+        "informed": 53,
+        "shots": 200000,
+        "p_meas": -1,
+        "resets": true
+    },
+    "(33, 33)": {
+        "grid": 8,
+        "informed": 40,
+        "shots": 200000,
+        "p_meas": -1,
+        "resets": true
+    },
+    "(37, 37)": {
+        "grid": 1,
+        "informed": 18,
+        "shots": 200000,
+        "p_meas": -1,
+        "resets": true
+    },
+    "(40, 35)": {
+        "grid": 0,
+        "informed": 5,
+        "shots": 200000,
+        "p_meas": -1,
+        "resets": true
+    },
+    "(40, 40)": {
+        "grid": 0,
+        "informed": 8,
+        "shots": 200000,
+        "p_meas": -1,
+        "resets": true
+    },
+    "(44, 44)": {
+        "grid": 0,
+        "informed": 6,
+        "shots": 200000,
+        "p_meas": -1,
+        "resets": true
+    },
+    "(47, 47)": {
+        "grid": 0,
+        "informed": 4,
+        "shots": 200000,
+        "p_meas": -1,
+        "resets": true
+    },
+    "(51, 51)": {
+        "grid": 0,
+        "informed": 2,
+        "shots": 200000,
+        "p_meas": -1,
+        "resets": true
+    },
+    "(55, 35)": {
+        "grid": 0,
+        "informed": 0,
+        "shots": 200000,
+        "p_meas": -1,
+        "resets": true
+    },
+    "(55, 55)": {
+        "grid": 0,
+        "informed": 2,
+        "shots": 200000,
+        "p_meas": -1,
+        "resets": true
+    }
+}
