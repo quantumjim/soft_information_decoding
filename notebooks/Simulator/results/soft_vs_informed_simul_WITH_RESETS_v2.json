@@ -90,16 +90,16 @@
         "p_meas": -1,
         "resets": true
     },
-    "(40, 35)": {
-        "grid": 1,
-        "informed": 36,
+    "(40, 40)": {
+        "grid": 2,
+        "informed": 63,
         "shots": 1000000,
         "p_meas": -1,
         "resets": true
     },
-    "(40, 40)": {
-        "grid": 2,
-        "informed": 63,
+    "(40, 35)": {
+        "grid": 1,
+        "informed": 36,
         "shots": 1000000,
         "p_meas": -1,
         "resets": true
