@@ -79,7 +79,7 @@ def plot_multiple_IQ_data(datasets, legend_labels=None, figsize = None, alpha = 
     plt.rcParams.update({
         'font.size'           : font_size,  
         'figure.titlesize'    : 'medium',
-        'figure.dpi'          : 1000,
+        'figure.dpi'          : 200,
         'figure.figsize'      : (FIGURE_WIDTH_1COL, FIGURE_HEIGHT_1COL_GR),
         'axes.titlesize'      : 'medium',
         'axes.axisbelow'      : True,
