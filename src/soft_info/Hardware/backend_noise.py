@@ -3,6 +3,7 @@
 
 import datetime as datetime
 from dateutil import parser
+import warnings
 import pytz
 
 import numpy as np
@@ -42,7 +43,11 @@ def get_noise_dict_from_backend(provider, device: str, used_qubits: list = None,
 
     for pair in backend.coupling_map:
         if pair[0] in used_qubits and pair[1] in used_qubits:
-            two_gate_error = properties.gate_error('ecr', pair)
+            try:
+                two_gate_error = properties.gate_error('ecr', pair)
+            except Exception as e:
+                warnings.warn(f"Could not get two gate error of ECR due to {e}, taking CX instead.")
+                two_gate_error = properties.gate_error('cx', pair)
             if two_gate_error > .5:
                 two_gate_error = .5
             noise_dict[pair[0]]['2-gate'][pair[1]] = two_gate_error
