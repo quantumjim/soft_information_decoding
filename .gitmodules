@@ -13,3 +13,6 @@
 [submodule "libs/Stim"]
 	path = libs/Stim
 	url = https://github.com/quantumlib/Stim.git
+[submodule "libs/3CX-BaconShor"]
+	path = libs/3CX-BaconShor
+	url = https://github.com/IBM/logical-Bell-states-in-3CX-BaconShor-codes.git
