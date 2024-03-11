@@ -24,8 +24,6 @@ include_directories(${CMAKE_SOURCE_DIR}/libs/PyMatching/src)
 include_directories(${CMAKE_SOURCE_DIR}/src/cpp/Probabilities)
 include_directories(${CMAKE_SOURCE_DIR}/src/cpp/PyMatching)
 
-pybind11_add_module(example_module ${CMAKE_SOURCE_DIR}/src/cpp/example.cpp)
-
 # Pybind11 module for the cpp_soft_info
 pybind11_add_module(cpp_soft_info
     ${CMAKE_SOURCE_DIR}/src/cpp/bindings.cpp
