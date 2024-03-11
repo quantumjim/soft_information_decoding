@@ -68569,5 +68569,1708 @@
             "Calibration",
             "Deep_circuit"
         ]
+    },
+    {
+        "creation_date": "2024-03-10 17:24:25.699000+01:00",
+        "notebook_name": "mean_over",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 9615,
+            "meas_level": 0,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "rep_delay": 0.0005,
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Mean positions",
+            "code": "RepetitionCodeCircuit",
+            "distance": 3,
+            "rounds": 3,
+            "resets": false,
+            "logical": 0,
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2024-03-10 18:31:07.313967+01:00"
+        },
+        "job_id": "cqpxxedb9z30008m7ngg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "RepCode Mean Positions"
+        ]
+    },
+    {
+        "creation_date": "2024-03-10 17:27:31.257000+01:00",
+        "notebook_name": "get_IQ_calibration_data_Sherbrooke",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 10000,
+            "meas_level": 1,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "num_qubits": 127,
+            "sampled_state": "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
+            "optimization_level": 0,
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2024-03-10 18:31:13.729432+01:00"
+        },
+        "job_id": "cqpxywv417q0008ys9xg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "Calibration"
+        ]
+    },
+    {
+        "creation_date": "2024-03-10 17:27:37.431000+01:00",
+        "notebook_name": "get_IQ_calibration_data_Sherbrooke",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 10000,
+            "meas_level": 1,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "num_qubits": 127,
+            "sampled_state": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+            "optimization_level": 0,
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2024-03-10 18:32:09.566106+01:00"
+        },
+        "job_id": "cqpxyyb267h0008fj4h0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "Calibration"
+        ]
+    },
+    {
+        "creation_date": "2024-03-10 17:46:29.870000+01:00",
+        "notebook_name": "mean_pos_mumbai",
+        "backend_name": "ibmq_mumbai",
+        "backend_options": {
+            "shots": 62500,
+            "meas_level": 0,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "rep_delay": 0.0005,
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Mean positions",
+            "code": "RepetitionCodeCircuit",
+            "distance": 3,
+            "rounds": 3,
+            "resets": false,
+            "logical": 0,
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2024-03-10 17:55:21.162061+01:00"
+        },
+        "job_id": "cqpy7sf417q0008ysa40",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "RepCode Mean Positions"
+        ]
+    },
+    {
+        "creation_date": "2024-03-10 17:46:45.540000+01:00",
+        "notebook_name": "get_IQ_calibration_data_Mumbai",
+        "backend_name": "ibmq_mumbai",
+        "backend_options": {
+            "shots": 100000,
+            "meas_level": 1,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "num_qubits": 27,
+            "sampled_state": "111111111111111111111111111",
+            "optimization_level": 0,
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2024-03-10 17:55:49.844492+01:00"
+        },
+        "job_id": "cqpy7xfb9z30008m7ntg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "Calibration"
+        ]
+    },
+    {
+        "creation_date": "2024-03-10 17:46:47.715000+01:00",
+        "notebook_name": "get_IQ_calibration_data_Mumbai",
+        "backend_name": "ibmq_mumbai",
+        "backend_options": {
+            "shots": 100000,
+            "meas_level": 1,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "num_qubits": 27,
+            "sampled_state": "000000000000000000000000000",
+            "optimization_level": 0,
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2024-03-10 17:56:34.510733+01:00"
+        },
+        "job_id": "cqpy7xz267h0008fj4wg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "Calibration"
+        ]
+    },
+    {
+        "creation_date": "2024-03-10 18:13:19.422000+01:00",
+        "notebook_name": "mean_pos_mumbai",
+        "backend_name": "ibmq_mumbai",
+        "backend_options": {
+            "shots": 62500,
+            "meas_level": 1,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "rep_delay": 0.0005,
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Mean positions",
+            "code": "RepetitionCodeCircuit",
+            "distance": 3,
+            "rounds": 3,
+            "resets": false,
+            "logical": 0,
+            "job_status": "JobStatus.ERROR"
+        },
+        "job_id": "cqpymbs2b6ng008y69e0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "RepCode Mean Positions"
+        ]
+    },
+    {
+        "creation_date": "2024-03-10 18:25:08.471000+01:00",
+        "notebook_name": "mean_pos_mumbai",
+        "backend_name": "ibmq_mumbai",
+        "backend_options": {
+            "shots": 62500,
+            "meas_level": 1,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "rep_delay": 0.0005,
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Mean positions",
+            "code": "RepetitionCodeCircuit",
+            "distance": 3,
+            "rounds": 3,
+            "resets": false,
+            "logical": 0,
+            "job_status": "JobStatus.ERROR"
+        },
+        "job_id": "cqpysx72b6ng008y69fg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "RepCode Mean Positions"
+        ]
+    },
+    {
+        "creation_date": "2024-03-10 18:36:49.567000+01:00",
+        "notebook_name": "mean_pos_mumbai",
+        "backend_name": "ibmq_mumbai",
+        "backend_options": {
+            "shots": 6944,
+            "meas_level": 1,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "rep_delay": 0.0005,
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Mean positions",
+            "code": "RepetitionCodeCircuit",
+            "distance": 3,
+            "rounds": 3,
+            "resets": false,
+            "logical": 0,
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2024-03-10 18:37:54.874642+01:00"
+        },
+        "job_id": "cqpyzcd2b6ng008y69pg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "RepCode Mean Positions"
+        ]
+    },
+    {
+        "creation_date": "2024-03-10 20:55:27.623000+01:00",
+        "notebook_name": "mean_pos_sherbrooke",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 111,
+            "meas_level": 0,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "rep_delay": 0.0005,
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Mean positions",
+            "code": "RepetitionCodeCircuit",
+            "distance": 10,
+            "rounds": 10,
+            "resets": false,
+            "logical": 0,
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2024-03-11 05:57:10.130197+01:00"
+        },
+        "job_id": "cqq10bsjx32g008542ng",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "RepCode Mean Positions",
+            "1e6/d*T"
+        ]
+    },
+    {
+        "creation_date": "2024-03-10 20:55:34.160000+01:00",
+        "notebook_name": "mean_pos_sherbrooke",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 111,
+            "meas_level": 0,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "rep_delay": 0.0005,
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Mean positions",
+            "code": "RepetitionCodeCircuit",
+            "distance": 10,
+            "rounds": 10,
+            "resets": false,
+            "logical": 0,
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2024-03-11 05:57:52.628749+01:00"
+        },
+        "job_id": "cqq10d9417q0008ysdmg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "RepCode Mean Positions",
+            "1e6/d*T"
+        ]
+    },
+    {
+        "creation_date": "2024-03-10 20:55:39.862000+01:00",
+        "notebook_name": "mean_pos_sherbrooke",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 111,
+            "meas_level": 0,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "rep_delay": 0.0005,
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Mean positions",
+            "code": "RepetitionCodeCircuit",
+            "distance": 10,
+            "rounds": 10,
+            "resets": false,
+            "logical": 0,
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2024-03-11 05:58:02.448946+01:00"
+        },
+        "job_id": "cqq10es267h0008fj8qg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "RepCode Mean Positions",
+            "1e6/d*T"
+        ]
+    },
+    {
+        "creation_date": "2024-03-10 20:55:45.511000+01:00",
+        "notebook_name": "mean_pos_sherbrooke",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 111,
+            "meas_level": 0,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "rep_delay": 0.0005,
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Mean positions",
+            "code": "RepetitionCodeCircuit",
+            "distance": 10,
+            "rounds": 10,
+            "resets": false,
+            "logical": 0,
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2024-03-11 05:58:16.395716+01:00"
+        },
+        "job_id": "cqq10ga267h0008fj8r0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "RepCode Mean Positions",
+            "1e6/d*T"
+        ]
+    },
+    {
+        "creation_date": "2024-03-10 20:55:53.329000+01:00",
+        "notebook_name": "mean_pos_sherbrooke",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 111,
+            "meas_level": 0,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "rep_delay": 0.0005,
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Mean positions",
+            "code": "RepetitionCodeCircuit",
+            "distance": 10,
+            "rounds": 10,
+            "resets": false,
+            "logical": 0,
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2024-03-11 05:58:26.390398+01:00"
+        },
+        "job_id": "cqq10ja4td0g008cp2mg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "RepCode Mean Positions",
+            "1e6/d*T"
+        ]
+    },
+    {
+        "creation_date": "2024-03-10 20:55:59.348000+01:00",
+        "notebook_name": "mean_pos_sherbrooke",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 111,
+            "meas_level": 0,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "rep_delay": 0.0005,
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Mean positions",
+            "code": "RepetitionCodeCircuit",
+            "distance": 10,
+            "rounds": 10,
+            "resets": false,
+            "logical": 0,
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2024-03-11 05:58:51.958369+01:00"
+        },
+        "job_id": "cqq10ktv78p00084kph0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "RepCode Mean Positions",
+            "1e6/d*T"
+        ]
+    },
+    {
+        "creation_date": "2024-03-10 20:56:05.331000+01:00",
+        "notebook_name": "mean_pos_sherbrooke",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 111,
+            "meas_level": 0,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "rep_delay": 0.0005,
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Mean positions",
+            "code": "RepetitionCodeCircuit",
+            "distance": 10,
+            "rounds": 10,
+            "resets": false,
+            "logical": 0,
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2024-03-11 05:59:02.032434+01:00"
+        },
+        "job_id": "cqq10na417q0008ysdp0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "RepCode Mean Positions",
+            "1e6/d*T"
+        ]
+    },
+    {
+        "creation_date": "2024-03-10 20:56:12.756000+01:00",
+        "notebook_name": "mean_pos_sherbrooke",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 111,
+            "meas_level": 0,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "rep_delay": 0.0005,
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Mean positions",
+            "code": "RepetitionCodeCircuit",
+            "distance": 10,
+            "rounds": 10,
+            "resets": false,
+            "logical": 0,
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2024-03-11 05:59:11.587435+01:00"
+        },
+        "job_id": "cqq10q24td0g008cp2ng",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "RepCode Mean Positions",
+            "1e6/d*T"
+        ]
+    },
+    {
+        "creation_date": "2024-03-10 20:56:30.367000+01:00",
+        "notebook_name": "mean_pos_sherbrooke",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 111,
+            "meas_level": 0,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "rep_delay": 0.0005,
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Mean positions",
+            "code": "RepetitionCodeCircuit",
+            "distance": 10,
+            "rounds": 10,
+            "resets": false,
+            "logical": 0,
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2024-03-11 05:59:21.607580+01:00"
+        },
+        "job_id": "cqq10vkv78p00084kpk0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "RepCode Mean Positions",
+            "1e6/d*T"
+        ]
+    },
+    {
+        "creation_date": "2024-03-10 20:56:36.833000+01:00",
+        "notebook_name": "mean_pos_sherbrooke",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 111,
+            "meas_level": 0,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "rep_delay": 0.0005,
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Mean positions",
+            "code": "RepetitionCodeCircuit",
+            "distance": 10,
+            "rounds": 10,
+            "resets": false,
+            "logical": 0,
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2024-03-11 05:59:31.250677+01:00"
+        },
+        "job_id": "cqq10x3jx32g008542r0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "RepCode Mean Positions",
+            "1e6/d*T"
+        ]
+    },
+    {
+        "creation_date": "2024-03-10 20:57:39.190000+01:00",
+        "notebook_name": "mean_pos_sherbrooke",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 1111,
+            "meas_level": 0,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "rep_delay": 0.0005,
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Mean positions",
+            "code": "RepetitionCodeCircuit",
+            "distance": 10,
+            "rounds": 10,
+            "resets": false,
+            "logical": 0,
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2024-03-11 06:01:35.272516+01:00"
+        },
+        "job_id": "cqq11cn4td0g008cp2sg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "RepCode Mean Positions",
+            "10*1e6/d*T"
+        ]
+    },
+    {
+        "creation_date": "2024-03-10 20:57:46.022000+01:00",
+        "notebook_name": "mean_pos_sherbrooke",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 1111,
+            "meas_level": 0,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "rep_delay": 0.0005,
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Mean positions",
+            "code": "RepetitionCodeCircuit",
+            "distance": 10,
+            "rounds": 10,
+            "resets": false,
+            "logical": 0,
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2024-03-11 06:03:18.917308+01:00"
+        },
+        "job_id": "cqq11edjx32g008542s0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "RepCode Mean Positions",
+            "10*1e6/d*T"
+        ]
+    },
+    {
+        "creation_date": "2024-03-10 20:58:28.709000+01:00",
+        "notebook_name": "mean_pos_sherbrooke",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 5555,
+            "meas_level": 0,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "rep_delay": 0.0005,
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Mean positions",
+            "code": "RepetitionCodeCircuit",
+            "distance": 10,
+            "rounds": 10,
+            "resets": false,
+            "logical": 0,
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2024-03-11 06:08:07.970062+01:00"
+        },
+        "job_id": "cqq11s7jx32g008542tg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "50*1e6/d*T",
+            "RepCode Mean Positions"
+        ]
+    },
+    {
+        "creation_date": "2024-03-10 20:59:39.630000+01:00",
+        "notebook_name": "get_IQ_calibration_data_Sherbrooke",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 10000,
+            "meas_level": 1,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "num_qubits": 127,
+            "sampled_state": "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
+            "optimization_level": 0
+        },
+        "job_id": "cqq12a9417q0008ysdx0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "Calibration"
+        ]
+    },
+    {
+        "creation_date": "2024-03-10 20:59:41.763000+01:00",
+        "notebook_name": "get_IQ_calibration_data_Sherbrooke",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 10000,
+            "meas_level": 1,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "num_qubits": 127,
+            "sampled_state": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+            "optimization_level": 0
+        },
+        "job_id": "cqq12b9417q0008ysdxg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "Calibration"
+        ]
+    },
+    {
+        "creation_date": "2024-03-10 21:00:17.300000+01:00",
+        "notebook_name": "mean_pos_sherbrooke",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 19,
+            "meas_level": 0,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "rep_delay": 0.0005,
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Mean positions",
+            "code": "RepetitionCodeCircuit",
+            "distance": 30,
+            "rounds": 35,
+            "resets": false,
+            "logical": 0,
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2024-03-11 06:09:36.900768+01:00"
+        },
+        "job_id": "cqq12m2v78p00084kpqg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "50*1e6/d*T",
+            "RepCode Mean Positions"
+        ]
+    },
+    {
+        "creation_date": "2024-03-10 21:00:55.245000+01:00",
+        "notebook_name": "mean_pos_sherbrooke",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 19,
+            "meas_level": 0,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "rep_delay": 0.0005,
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Mean positions",
+            "code": "RepetitionCodeCircuit",
+            "distance": 30,
+            "rounds": 35,
+            "resets": false,
+            "logical": 0,
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2024-03-11 06:09:46.636772+01:00"
+        },
+        "job_id": "cqq12xk4td0g008cp310",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "50*1e6/d*T",
+            "RepCode Mean Positions"
+        ]
+    },
+    {
+        "creation_date": "2024-03-10 21:02:01.873000+01:00",
+        "notebook_name": "mean_pos_sherbrooke",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 19,
+            "meas_level": 0,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "rep_delay": 0.0005,
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Mean positions",
+            "code": "RepetitionCodeCircuit",
+            "distance": 30,
+            "rounds": 35,
+            "resets": false,
+            "logical": 0,
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2024-03-11 06:12:49.997003+01:00"
+        },
+        "job_id": "cqq13edv78p00084kptg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "1*1e6/d*T",
+            "RepCode Mean Positions"
+        ]
+    },
+    {
+        "creation_date": "2024-03-10 21:02:35.017000+01:00",
+        "notebook_name": "mean_pos_sherbrooke",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 19,
+            "meas_level": 0,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "rep_delay": 0.0005,
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Mean positions",
+            "code": "RepetitionCodeCircuit",
+            "distance": 30,
+            "rounds": 35,
+            "resets": false,
+            "logical": 0,
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2024-03-11 06:12:59.424759+01:00"
+        },
+        "job_id": "cqq13pp417q0008yse20",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "1*1e6/d*T",
+            "RepCode Mean Positions"
+        ]
+    },
+    {
+        "creation_date": "2024-03-10 21:03:09.096000+01:00",
+        "notebook_name": "mean_pos_sherbrooke",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 19,
+            "meas_level": 0,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "rep_delay": 0.0005,
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Mean positions",
+            "code": "RepetitionCodeCircuit",
+            "distance": 30,
+            "rounds": 35,
+            "resets": false,
+            "logical": 0,
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2024-03-11 06:13:09.167657+01:00"
+        },
+        "job_id": "cqq13z7v78p00084kpwg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "1*1e6/d*T",
+            "RepCode Mean Positions"
+        ]
+    },
+    {
+        "creation_date": "2024-03-10 21:03:43.878000+01:00",
+        "notebook_name": "mean_pos_sherbrooke",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 19,
+            "meas_level": 0,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "rep_delay": 0.0005,
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Mean positions",
+            "code": "RepetitionCodeCircuit",
+            "distance": 30,
+            "rounds": 35,
+            "resets": false,
+            "logical": 0,
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2024-03-11 06:13:18.029025+01:00"
+        },
+        "job_id": "cqq147r4td0g008cp34g",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "1*1e6/d*T",
+            "RepCode Mean Positions"
+        ]
+    },
+    {
+        "creation_date": "2024-03-10 21:04:22.923000+01:00",
+        "notebook_name": "mean_pos_sherbrooke",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 19,
+            "meas_level": 0,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "rep_delay": 0.0005,
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Mean positions",
+            "code": "RepetitionCodeCircuit",
+            "distance": 30,
+            "rounds": 35,
+            "resets": false,
+            "logical": 0,
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2024-03-11 06:13:47.947927+01:00"
+        },
+        "job_id": "cqq14hjjx32g00854330",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "1*1e6/d*T",
+            "RepCode Mean Positions"
+        ]
+    },
+    {
+        "creation_date": "2024-03-10 21:04:59.103000+01:00",
+        "notebook_name": "mean_pos_sherbrooke",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 19,
+            "meas_level": 0,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "rep_delay": 0.0005,
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Mean positions",
+            "code": "RepetitionCodeCircuit",
+            "distance": 30,
+            "rounds": 35,
+            "resets": false,
+            "logical": 0,
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2024-03-11 06:15:39.453852+01:00"
+        },
+        "job_id": "cqq14tk4td0g008cp360",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "1*1e6/d*T",
+            "RepCode Mean Positions"
+        ]
+    },
+    {
+        "creation_date": "2024-03-11 08:40:47.905000+01:00",
+        "notebook_name": "mean_pos_sherbrooke",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 952,
+            "meas_level": 1,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "rep_delay": 0.0005,
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Mean positions",
+            "code": "RepetitionCodeCircuit",
+            "distance": 30,
+            "rounds": 35,
+            "resets": false,
+            "logical": 0
+        },
+        "job_id": "cqqbazvjx32g0085507g",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "10*1e6/d*T",
+            "RepCode Mean Positions"
+        ]
+    },
+    {
+        "creation_date": "2024-03-11 08:41:36.342000+01:00",
+        "notebook_name": "mean_pos_sherbrooke",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 190,
+            "meas_level": 1,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "rep_delay": 0.0005,
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Mean positions",
+            "code": "RepetitionCodeCircuit",
+            "distance": 30,
+            "rounds": 35,
+            "resets": false,
+            "logical": 0
+        },
+        "job_id": "cqqbbc5267h0008gcza0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "10*1e6/d*T",
+            "RepCode Mean Positions"
+        ]
+    },
+    {
+        "creation_date": "2024-03-11 08:42:20.780000+01:00",
+        "notebook_name": "mean_pos_sherbrooke",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 19,
+            "meas_level": 1,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "rep_delay": 0.0005,
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Mean positions",
+            "code": "RepetitionCodeCircuit",
+            "distance": 30,
+            "rounds": 35,
+            "resets": false,
+            "logical": 0
+        },
+        "job_id": "cqqbbq6v78p0008md9f0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "1*1e6/d*T",
+            "RepCode Mean Positions"
+        ]
+    },
+    {
+        "creation_date": "2024-03-11 08:43:19.731000+01:00",
+        "notebook_name": "mean_pos_sherbrooke",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 19,
+            "meas_level": 1,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "rep_delay": 0.0005,
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Mean positions",
+            "code": "RepetitionCodeCircuit",
+            "distance": 30,
+            "rounds": 35,
+            "resets": false,
+            "logical": 0
+        },
+        "job_id": "cqqbc5rjx32g008550p0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "1*1e6/d*T",
+            "RepCode Mean Positions"
+        ]
+    },
+    {
+        "creation_date": "2024-03-11 08:43:52.939000+01:00",
+        "notebook_name": "mean_pos_sherbrooke",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 19,
+            "meas_level": 1,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "rep_delay": 0.0005,
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Mean positions",
+            "code": "RepetitionCodeCircuit",
+            "distance": 30,
+            "rounds": 35,
+            "resets": false,
+            "logical": 0
+        },
+        "job_id": "cqqbce1267h0008gczv0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "1*1e6/d*T",
+            "RepCode Mean Positions"
+        ]
+    },
+    {
+        "creation_date": "2024-03-11 08:44:24.856000+01:00",
+        "notebook_name": "get_IQ_calibration_data_Sherbrooke",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 10000,
+            "meas_level": 1,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "num_qubits": 127,
+            "sampled_state": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+            "optimization_level": 0
+        },
+        "job_id": "cqqbcp2417q0008yteqg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "Calibration"
+        ]
+    },
+    {
+        "creation_date": "2024-03-11 08:44:25.985000+01:00",
+        "notebook_name": "mean_pos_sherbrooke",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 19,
+            "meas_level": 1,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "rep_delay": 0.0005,
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Mean positions",
+            "code": "RepetitionCodeCircuit",
+            "distance": 30,
+            "rounds": 35,
+            "resets": false,
+            "logical": 0
+        },
+        "job_id": "cqqbcpajx32g008550y0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "1*1e6/d*T",
+            "RepCode Mean Positions"
+        ]
+    },
+    {
+        "creation_date": "2024-03-11 08:45:00.455000+01:00",
+        "notebook_name": "mean_pos_sherbrooke",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 19,
+            "meas_level": 1,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "rep_delay": 0.0005,
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Mean positions",
+            "code": "RepetitionCodeCircuit",
+            "distance": 30,
+            "rounds": 35,
+            "resets": false,
+            "logical": 0
+        },
+        "job_id": "cqqbcz3r43fg008x59s0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "1*1e6/d*T",
+            "RepCode Mean Positions"
+        ]
+    },
+    {
+        "creation_date": "2024-03-11 08:45:35.317000+01:00",
+        "notebook_name": "mean_pos_sherbrooke",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 19,
+            "meas_level": 1,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "rep_delay": 0.0005,
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Mean positions",
+            "code": "RepetitionCodeCircuit",
+            "distance": 30,
+            "rounds": 35,
+            "resets": false,
+            "logical": 0
+        },
+        "job_id": "cqqbd7mjx32g0085515g",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "1*1e6/d*T",
+            "RepCode Mean Positions"
+        ]
+    },
+    {
+        "creation_date": "2024-03-11 08:46:13.874000+01:00",
+        "notebook_name": "mean_pos_sherbrooke",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 19,
+            "meas_level": 1,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "rep_delay": 0.0005,
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Mean positions",
+            "code": "RepetitionCodeCircuit",
+            "distance": 30,
+            "rounds": 35,
+            "resets": false,
+            "logical": 0
+        },
+        "job_id": "cqqbdhe267h0008gd0bg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "1*1e6/d*T",
+            "RepCode Mean Positions"
+        ]
+    },
+    {
+        "creation_date": "2024-03-11 08:46:48.682000+01:00",
+        "notebook_name": "mean_pos_sherbrooke",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 19,
+            "meas_level": 1,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "rep_delay": 0.0005,
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Mean positions",
+            "code": "RepetitionCodeCircuit",
+            "distance": 30,
+            "rounds": 35,
+            "resets": false,
+            "logical": 0
+        },
+        "job_id": "cqqbdt7267h0008gd0kg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "1*1e6/d*T",
+            "RepCode Mean Positions"
+        ]
+    },
+    {
+        "creation_date": "2024-03-11 08:47:22.538000+01:00",
+        "notebook_name": "mean_pos_sherbrooke",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 19,
+            "meas_level": 1,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "rep_delay": 0.0005,
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Mean positions",
+            "code": "RepetitionCodeCircuit",
+            "distance": 30,
+            "rounds": 35,
+            "resets": false,
+            "logical": 0
+        },
+        "job_id": "cqqbe2g417q0008ytfag",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "1*1e6/d*T",
+            "RepCode Mean Positions"
+        ]
+    },
+    {
+        "creation_date": "2024-03-11 08:47:56.653000+01:00",
+        "notebook_name": "mean_pos_sherbrooke",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 19,
+            "meas_level": 1,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "rep_delay": 0.0005,
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Mean positions",
+            "code": "RepetitionCodeCircuit",
+            "distance": 30,
+            "rounds": 35,
+            "resets": false,
+            "logical": 0
+        },
+        "job_id": "cqqbeb1r43fg008x5ab0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "1*1e6/d*T",
+            "RepCode Mean Positions"
+        ]
+    },
+    {
+        "creation_date": "2024-03-11 08:48:32.292000+01:00",
+        "notebook_name": "mean_pos_sherbrooke",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 19,
+            "meas_level": 1,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "rep_delay": 0.0005,
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Mean positions",
+            "code": "RepetitionCodeCircuit",
+            "distance": 30,
+            "rounds": 35,
+            "resets": false,
+            "logical": 0
+        },
+        "job_id": "cqqbekt4td0g008cq2gg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "1*1e6/d*T",
+            "RepCode Mean Positions"
+        ]
+    },
+    {
+        "creation_date": "2024-03-11 08:49:28.104000+01:00",
+        "notebook_name": "mean_pos_sherbrooke",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 1111,
+            "meas_level": 1,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "rep_delay": 0.0005,
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Mean positions",
+            "code": "RepetitionCodeCircuit",
+            "distance": 10,
+            "rounds": 10,
+            "resets": false,
+            "logical": 0
+        },
+        "job_id": "cqqbf1w4td0g008cq2ng",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "10*1e6/d*T",
+            "RepCode Mean Positions"
+        ]
+    },
+    {
+        "creation_date": "2024-03-11 08:49:36.362000+01:00",
+        "notebook_name": "mean_pos_sherbrooke",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 1111,
+            "meas_level": 1,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "rep_delay": 0.0005,
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Mean positions",
+            "code": "RepetitionCodeCircuit",
+            "distance": 10,
+            "rounds": 10,
+            "resets": false,
+            "logical": 0
+        },
+        "job_id": "cqqbf44v78p0008mdazg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "50*1e6/d*T",
+            "RepCode Mean Positions"
+        ]
+    },
+    {
+        "creation_date": "2024-03-11 08:49:45.093000+01:00",
+        "notebook_name": "mean_pos_sherbrooke",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 1111,
+            "meas_level": 1,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "rep_delay": 0.0005,
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Mean positions",
+            "code": "RepetitionCodeCircuit",
+            "distance": 10,
+            "rounds": 10,
+            "resets": false,
+            "logical": 0
+        },
+        "job_id": "cqqbf64r43fg008x5apg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "1*1e6/d*T",
+            "RepCode Mean Positions"
+        ]
+    },
+    {
+        "creation_date": "2024-03-11 08:49:49.917000+01:00",
+        "notebook_name": "mean_pos_sherbrooke",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 1111,
+            "meas_level": 1,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "rep_delay": 0.0005,
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Mean positions",
+            "code": "RepetitionCodeCircuit",
+            "distance": 10,
+            "rounds": 10,
+            "resets": false,
+            "logical": 0
+        },
+        "job_id": "cqqbf7cjx32g0085529g",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "1*1e6/d*T",
+            "RepCode Mean Positions"
+        ]
+    },
+    {
+        "creation_date": "2024-03-11 08:49:57.162000+01:00",
+        "notebook_name": "mean_pos_sherbrooke",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 1111,
+            "meas_level": 1,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "rep_delay": 0.0005,
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Mean positions",
+            "code": "RepetitionCodeCircuit",
+            "distance": 10,
+            "rounds": 10,
+            "resets": false,
+            "logical": 0
+        },
+        "job_id": "cqqbf95267h0008gd1eg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "1*1e6/d*T",
+            "RepCode Mean Positions"
+        ]
+    },
+    {
+        "creation_date": "2024-03-11 08:50:01.869000+01:00",
+        "notebook_name": "mean_pos_sherbrooke",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 1111,
+            "meas_level": 1,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "rep_delay": 0.0005,
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Mean positions",
+            "code": "RepetitionCodeCircuit",
+            "distance": 10,
+            "rounds": 10,
+            "resets": false,
+            "logical": 0
+        },
+        "job_id": "cqqbfad267h0008gd1g0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "1*1e6/d*T",
+            "RepCode Mean Positions"
+        ]
+    },
+    {
+        "creation_date": "2024-03-11 08:50:06.924000+01:00",
+        "notebook_name": "mean_pos_sherbrooke",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 1111,
+            "meas_level": 1,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "rep_delay": 0.0005,
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Mean positions",
+            "code": "RepetitionCodeCircuit",
+            "distance": 10,
+            "rounds": 10,
+            "resets": false,
+            "logical": 0
+        },
+        "job_id": "cqqbfbn4td0g008cq2tg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "1*1e6/d*T",
+            "RepCode Mean Positions"
+        ]
+    },
+    {
+        "creation_date": "2024-03-11 08:50:12.369000+01:00",
+        "notebook_name": "mean_pos_sherbrooke",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 1111,
+            "meas_level": 1,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "rep_delay": 0.0005,
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Mean positions",
+            "code": "RepetitionCodeCircuit",
+            "distance": 10,
+            "rounds": 10,
+            "resets": false,
+            "logical": 0
+        },
+        "job_id": "cqqbfd54td0g008cq2vg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "1*1e6/d*T",
+            "RepCode Mean Positions"
+        ]
+    },
+    {
+        "creation_date": "2024-03-11 08:50:17.790000+01:00",
+        "notebook_name": "mean_pos_sherbrooke",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 1111,
+            "meas_level": 1,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "rep_delay": 0.0005,
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Mean positions",
+            "code": "RepetitionCodeCircuit",
+            "distance": 10,
+            "rounds": 10,
+            "resets": false,
+            "logical": 0
+        },
+        "job_id": "cqqbfed4td0g008cq2x0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "1*1e6/d*T",
+            "RepCode Mean Positions"
+        ]
+    },
+    {
+        "creation_date": "2024-03-11 08:50:22.534000+01:00",
+        "notebook_name": "mean_pos_sherbrooke",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 1111,
+            "meas_level": 1,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "rep_delay": 0.0005,
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Mean positions",
+            "code": "RepetitionCodeCircuit",
+            "distance": 10,
+            "rounds": 10,
+            "resets": false,
+            "logical": 0,
+            "job_status": "JobStatus.QUEUED"
+        },
+        "job_id": "cqqbffn267h0008gd1j0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "1*1e6/d*T",
+            "RepCode Mean Positions"
+        ]
+    },
+    {
+        "creation_date": "2024-03-11 08:50:27.226000+01:00",
+        "notebook_name": "mean_pos_sherbrooke",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 1111,
+            "meas_level": 1,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "rep_delay": 0.0005,
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Mean positions",
+            "code": "RepetitionCodeCircuit",
+            "distance": 10,
+            "rounds": 10,
+            "resets": false,
+            "logical": 0,
+            "job_status": "JobStatus.QUEUED"
+        },
+        "job_id": "cqqbfgpjx32g008552g0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "1*1e6/d*T",
+            "RepCode Mean Positions"
+        ]
+    },
+    {
+        "creation_date": "2024-03-11 08:50:32.915000+01:00",
+        "notebook_name": "mean_pos_sherbrooke",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 1111,
+            "meas_level": 1,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "rep_delay": 0.0005,
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Mean positions",
+            "code": "RepetitionCodeCircuit",
+            "distance": 10,
+            "rounds": 10,
+            "resets": false,
+            "logical": 0,
+            "job_status": "JobStatus.QUEUED"
+        },
+        "job_id": "cqqbfj64td0g008cq2zg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "1*1e6/d*T",
+            "RepCode Mean Positions"
+        ]
     }
 ]
