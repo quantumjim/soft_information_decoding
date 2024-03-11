@@ -58,7 +58,7 @@ def get_calib_jobs(backend_name: str, needed_calib_date = None):
     date_1 = execution_dates['1']
 
     if not (date_0.year == date_1.year and date_0.day == date_1.day and date_0.hour == date_1.hour):
-        raise ValueError("Year, day, and hour of creation dates for the closest jobs are different for each state.")
+        raise ValueError(f"Year, day, and hour of exectution dates for the closest jobs are different for each state. Execution dates: {execution_dates}. Job IDs: {job_ids}.")
 
     return job_ids, execution_dates, creation_dates
 
