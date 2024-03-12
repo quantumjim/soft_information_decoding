@@ -45,12 +45,10 @@ std::map<int, KDE_Result> get_KDEs(const std::map<int, std::map<std::string, std
     std::map<int, KDE_Result> results;
 
     // Checks
-    if (bandwidths.size() < 2) {
-        throw std::invalid_argument("bandwidths must have at least 2 element");
+    if (num_points < 4) {
+        throw std::invalid_argument("num_points must be at least 3 for numerical stability and !=1 for devision by 0. AT 2 normalization sometimes not defined.");
     }
-    if (num_points < 2) {
-        throw std::invalid_argument("num_points must be at least 2.");
-    }
+
 
     double num_std_dev = 5;
     // int num_points = 51; // roughly 0.1 std dev per point
@@ -125,28 +123,22 @@ std::map<int, KDE_Result> get_KDEs(const std::map<int, std::map<std::string, std
             double normalization0 = arma::accu(all_estimates0) * (dx*dx); // dx*dx is the area of each grid cell
             double normalization1 = arma::accu(all_estimates1) * (dx*dx);
 
+            std::cout << "normalization0: " << normalization0 << std::endl;
+            std::cout << "normalization1: " << normalization1 << std::endl;
+            std::cout << "dx: " << dx << std::endl;
+
             // Evaluate on the test data and calculate a score
             arma::vec estimations0, estimations1;
             kde0.Evaluate(mmr_0_test, estimations0);
             kde1.Evaluate(mmr_1_test, estimations1);
 
-
             // Normalize the estimations
             estimations0 /= normalization0;
             estimations1 /= normalization1;
 
-
             estimations0 = arma::log(estimations0 + 1e-8);
             estimations1 = arma::log(estimations1 + 1e-8);
             double score = arma::accu(estimations0) + arma::accu(estimations1);
-
-            // #pragma omp critical
-            // std::cout << "dx: " << dx << std::endl; 
-            // std::cout << "qubit_idx: " << qubit_idx << std::endl;
-            // std::cout << "bandwidth: " << bandwidth << std::endl;
-            // std::cout << "Normalization0: " << normalization0 << ", Normalization1: " << normalization1 << std::endl;
-            // std::cout << "Score: " << score << std::endl;
-            // std::cout << std::endl;
 
             if (score > bestScore) {
                 bestScore = score;
@@ -158,9 +150,10 @@ std::map<int, KDE_Result> get_KDEs(const std::map<int, std::map<std::string, std
             }
         }
         
-        // std::cout << "qubit_idx" << qubit_idx << std::endl;
-        // std::cout << "scaler_mean" << mean << std::endl;
-        // std::cout << "stddev" << stddev << std::endl;
+        if (bestResult.scaler_mean.empty() || bestResult.scaler_stddev.empty()) {
+            std::cout << "!!! Error at qubit_idx: " << qubit_idx << std::endl;
+            throw std::runtime_error("Mean or scaler_stddev is an empty arma::vec."); // probably because score was NaN
+        }
 
         #pragma omp critical
         results[qubit_idx] = bestResult;
@@ -176,8 +169,6 @@ Eigen::VectorXd armaVecToEigenVec(const arma::vec& armaVec) {
     std::memcpy(eigenVec.data(), armaVec.memptr(), armaVec.n_elem * sizeof(double));
     return eigenVec;
 }
-
-
 
 
 std::map<int, std::tuple<Eigen::VectorXd, Eigen::VectorXd>> GenerateGridAndEstimateDensity(

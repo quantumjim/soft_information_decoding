@@ -111,16 +111,20 @@ def load_calibration_memory(provider, tobecalib_job: Optional[str] = None, tobec
     all_memories = {}
     for state, job_id in closest_job_ids.items():
         mmr_name = f"mmr_{state}"
-        job = provider.retrieve_job(job_id)
+        # job = provider.retrieve_job(job_id, overwrite = True)
+        job = provider.retrieve_job(job_id, overwrite = False)
         memory = job.result().get_memory()
 
         # Getting the layouts
-        final_layout = job.final_layouts()[0] # HARDCODED: Assuming only 1 circuit
-        initial_layout = job.initial_layouts()[0] # HARDCODED: Assuming only 1 circuit
-        layout = initial_layout if final_layout is None else final_layout
-        warnings.warn(f"Using initial layout {layout} for job {job_id}.") if final_layout is None else None
+        final_layout = job.final_layouts() 
+        initial_layout = job.initial_layouts() 
+        if final_layout is None or None in final_layout:
+            layout = initial_layout[0]
+        else:
+            layout = final_layout[0]   
+            warnings.warn(f"Using final layout {layout} for job {job_id}. Meaning that there was an optimization")
+        layout_dict = job.deserialize_layout(layout)['q'] # {virtual qubit index: physical qubit index} HARDCODED for register name 'q'
 
-        layout_dict = job.deserialize_layout(layout)['q'] # {virtual qubit index: physical qubit index}
 
         # Reorder memory 
         reordered_memory = np.zeros_like(memory)

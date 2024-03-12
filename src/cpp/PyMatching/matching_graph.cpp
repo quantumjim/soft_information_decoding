@@ -758,8 +758,6 @@ namespace pm
         #pragma omp parallel private(matching)
         {
             matching = detector_error_model_to_user_graph_private(detector_error_model);
-            // DetailedDecodeResult localResult;
-            // localResult.num_errors = 0;
 
             #pragma omp for nowait  
             for (int shot = 0; shot < not_scaled_IQ_data.rows(); ++shot) {
@@ -797,7 +795,7 @@ namespace pm
 
                     double p_small;
                     double p_big;
-
+                    
                     if (estimations0[0] > estimations1[0]) {
                         count_key += "0";    
                         p_small = estimations1[0];
@@ -807,7 +805,6 @@ namespace pm
                         p_small = estimations0[0];
                         p_big = estimations1[0];
                     }
-
                     if (msmt < (distance-1)*synd_rounds) {  
                         double p_soft = 1 / (1 + p_big/p_small);    
 
