@@ -7,6 +7,7 @@ from typing import List, Optional
 
 import pandas as pd
 import json
+import numpy as np
 
 from ..metadata import metadata_loader, find_and_create_scratch
 
@@ -113,14 +114,27 @@ def load_calibration_memory(provider, tobecalib_job: Optional[str] = None, tobec
         job = provider.retrieve_job(job_id)
         memory = job.result().get_memory()
 
+        # Getting the layouts
+        final_layout = job.final_layouts()[0] # HARDCODED: Assuming only 1 circuit
+        initial_layout = job.initial_layouts()[0] # HARDCODED: Assuming only 1 circuit
+        layout = initial_layout if final_layout is None else final_layout
+        warnings.warn(f"Using initial layout {layout} for job {job_id}.") if final_layout is None else None
+
+        layout_dict = job.deserialize_layout(layout)['q'] # {virtual qubit index: physical qubit index}
+
+        # Reorder memory 
+        reordered_memory = np.zeros_like(memory)
+        for virtual_qubit, physical_qubit in layout_dict.items():
+            reordered_memory[:, int(physical_qubit)] = memory[:, int(virtual_qubit)]
+
         if qubits is None:
-            qubits = range(memory.shape[1])  # Assuming all qubits are included
+            qubits = range(reordered_memory.shape[1])  # Assuming all qubits are included
 
         for qubit in qubits:
-            if qubit < memory.shape[1]:  # Check if qubit index is valid
+            if qubit < reordered_memory.shape[1]:  # Check if qubit index is valid
                 if qubit not in all_memories:
                     all_memories[qubit] = {}
-                all_memories[qubit][mmr_name] = memory[:, int(qubit)]
+                all_memories[qubit][mmr_name] = reordered_memory[:, int(qubit)]
 
     return all_memories
 
