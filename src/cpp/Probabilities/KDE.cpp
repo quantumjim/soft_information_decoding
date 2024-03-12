@@ -44,6 +44,14 @@ std::map<int, KDE_Result> get_KDEs(const std::map<int, std::map<std::string, std
                                    const std::vector<double>& bandwidths, double relError, double absError, int num_points) {
     std::map<int, KDE_Result> results;
 
+    // Checks
+    if (bandwidths.size() < 2) {
+        throw std::invalid_argument("bandwidths must have at least 2 element");
+    }
+    if (num_points < 2) {
+        throw std::invalid_argument("num_points must be at least 2.");
+    }
+
     double num_std_dev = 5;
     // int num_points = 51; // roughly 0.1 std dev per point
     double dx = 2 * num_std_dev / (num_points - 1);
@@ -150,9 +158,14 @@ std::map<int, KDE_Result> get_KDEs(const std::map<int, std::map<std::string, std
             }
         }
         
+        // std::cout << "qubit_idx" << qubit_idx << std::endl;
+        // std::cout << "scaler_mean" << mean << std::endl;
+        // std::cout << "stddev" << stddev << std::endl;
+
         #pragma omp critical
         results[qubit_idx] = bestResult;
     }
+
     
     return results;
 }
