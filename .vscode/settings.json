@@ -116,7 +116,10 @@
         "armadillo": "cpp",
         "*.ipp": "cpp",
         "csetjmp": "cpp",
-        "numeric": "cpp"
+        "numeric": "cpp",
+        "cfenv": "cpp",
+        "stdfloat": "cpp",
+        "stop_token": "cpp"
     },
     "cmake.sourceDirectory": "${workspaceFolder}"
 }

@@ -69240,7 +69240,9 @@
         "additional_metadata": {
             "num_qubits": 127,
             "sampled_state": "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
-            "optimization_level": 0
+            "optimization_level": 0,
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2024-03-11 06:02:10.999191+01:00"
         },
         "job_id": "cqq12a9417q0008ysdx0",
         "job_name": null,
@@ -69264,7 +69266,9 @@
         "additional_metadata": {
             "num_qubits": 127,
             "sampled_state": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-            "optimization_level": 0
+            "optimization_level": 0,
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2024-03-11 06:09:14.399089+01:00"
         },
         "job_id": "cqq12b9417q0008ysdxg",
         "job_name": null,
@@ -69540,7 +69544,8 @@
             "distance": 30,
             "rounds": 35,
             "resets": false,
-            "logical": 0
+            "logical": 0,
+            "job_status": "JobStatus.ERROR"
         },
         "job_id": "cqqbazvjx32g0085507g",
         "job_name": null,
@@ -69569,7 +69574,8 @@
             "distance": 30,
             "rounds": 35,
             "resets": false,
-            "logical": 0
+            "logical": 0,
+            "job_status": "JobStatus.ERROR"
         },
         "job_id": "cqqbbc5267h0008gcza0",
         "job_name": null,
@@ -69598,7 +69604,9 @@
             "distance": 30,
             "rounds": 35,
             "resets": false,
-            "logical": 0
+            "logical": 0,
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2024-03-11 11:57:03.913603+01:00"
         },
         "job_id": "cqqbbq6v78p0008md9f0",
         "job_name": null,
@@ -69627,7 +69635,9 @@
             "distance": 30,
             "rounds": 35,
             "resets": false,
-            "logical": 0
+            "logical": 0,
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2024-03-11 11:58:32.920058+01:00"
         },
         "job_id": "cqqbc5rjx32g008550p0",
         "job_name": null,
@@ -69656,7 +69666,9 @@
             "distance": 30,
             "rounds": 35,
             "resets": false,
-            "logical": 0
+            "logical": 0,
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2024-03-11 11:58:47.266180+01:00"
         },
         "job_id": "cqqbce1267h0008gczv0",
         "job_name": null,
@@ -69681,9 +69693,37 @@
         "additional_metadata": {
             "num_qubits": 127,
             "sampled_state": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-            "optimization_level": 0
+            "optimization_level": 0,
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2024-03-11 11:59:11.387273+01:00"
         },
         "job_id": "cqqbcp2417q0008yteqg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "Calibration"
+        ]
+    },
+    {
+        "creation_date": "2024-03-11 08:44:24.856000+01:00",
+        "notebook_name": "get_IQ_calibration_data_Sherbrooke",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 10000,
+            "meas_level": 1,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "num_qubits": 127,
+            "sampled_state": "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
+            "optimization_level": 0,
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2024-03-11 11:58:58.816571+01:00"
+        },
+        "job_id": "cqqbcjar43fg008x59m0",
         "job_name": null,
         "job_metadata": {},
         "tags": [
@@ -69709,7 +69749,9 @@
             "distance": 30,
             "rounds": 35,
             "resets": false,
-            "logical": 0
+            "logical": 0,
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2024-03-11 12:01:08.935637+01:00"
         },
         "job_id": "cqqbcpajx32g008550y0",
         "job_name": null,
@@ -69738,7 +69780,9 @@
             "distance": 30,
             "rounds": 35,
             "resets": false,
-            "logical": 0
+            "logical": 0,
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2024-03-11 12:01:35.701662+01:00"
         },
         "job_id": "cqqbcz3r43fg008x59s0",
         "job_name": null,
@@ -69767,7 +69811,9 @@
             "distance": 30,
             "rounds": 35,
             "resets": false,
-            "logical": 0
+            "logical": 0,
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2024-03-11 12:01:51.152578+01:00"
         },
         "job_id": "cqqbd7mjx32g0085515g",
         "job_name": null,
@@ -69796,7 +69842,9 @@
             "distance": 30,
             "rounds": 35,
             "resets": false,
-            "logical": 0
+            "logical": 0,
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2024-03-11 12:02:05.611585+01:00"
         },
         "job_id": "cqqbdhe267h0008gd0bg",
         "job_name": null,
@@ -69825,7 +69873,9 @@
             "distance": 30,
             "rounds": 35,
             "resets": false,
-            "logical": 0
+            "logical": 0,
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2024-03-11 12:02:19.407378+01:00"
         },
         "job_id": "cqqbdt7267h0008gd0kg",
         "job_name": null,
@@ -69854,7 +69904,9 @@
             "distance": 30,
             "rounds": 35,
             "resets": false,
-            "logical": 0
+            "logical": 0,
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2024-03-11 12:06:52.447320+01:00"
         },
         "job_id": "cqqbe2g417q0008ytfag",
         "job_name": null,
@@ -69883,7 +69935,9 @@
             "distance": 30,
             "rounds": 35,
             "resets": false,
-            "logical": 0
+            "logical": 0,
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2024-03-11 12:07:06.013597+01:00"
         },
         "job_id": "cqqbeb1r43fg008x5ab0",
         "job_name": null,
@@ -69912,7 +69966,9 @@
             "distance": 30,
             "rounds": 35,
             "resets": false,
-            "logical": 0
+            "logical": 0,
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2024-03-11 12:07:20.095948+01:00"
         },
         "job_id": "cqqbekt4td0g008cq2gg",
         "job_name": null,
@@ -69941,7 +69997,8 @@
             "distance": 10,
             "rounds": 10,
             "resets": false,
-            "logical": 0
+            "logical": 0,
+            "job_status": "JobStatus.ERROR"
         },
         "job_id": "cqqbf1w4td0g008cq2ng",
         "job_name": null,
@@ -69970,7 +70027,8 @@
             "distance": 10,
             "rounds": 10,
             "resets": false,
-            "logical": 0
+            "logical": 0,
+            "job_status": "JobStatus.ERROR"
         },
         "job_id": "cqqbf44v78p0008mdazg",
         "job_name": null,
@@ -69999,7 +70057,8 @@
             "distance": 10,
             "rounds": 10,
             "resets": false,
-            "logical": 0
+            "logical": 0,
+            "job_status": "JobStatus.ERROR"
         },
         "job_id": "cqqbf64r43fg008x5apg",
         "job_name": null,
@@ -70028,7 +70087,8 @@
             "distance": 10,
             "rounds": 10,
             "resets": false,
-            "logical": 0
+            "logical": 0,
+            "job_status": "JobStatus.ERROR"
         },
         "job_id": "cqqbf7cjx32g0085529g",
         "job_name": null,
@@ -70057,7 +70117,8 @@
             "distance": 10,
             "rounds": 10,
             "resets": false,
-            "logical": 0
+            "logical": 0,
+            "job_status": "JobStatus.ERROR"
         },
         "job_id": "cqqbf95267h0008gd1eg",
         "job_name": null,
@@ -70086,7 +70147,8 @@
             "distance": 10,
             "rounds": 10,
             "resets": false,
-            "logical": 0
+            "logical": 0,
+            "job_status": "JobStatus.ERROR"
         },
         "job_id": "cqqbfad267h0008gd1g0",
         "job_name": null,
@@ -70115,7 +70177,8 @@
             "distance": 10,
             "rounds": 10,
             "resets": false,
-            "logical": 0
+            "logical": 0,
+            "job_status": "JobStatus.ERROR"
         },
         "job_id": "cqqbfbn4td0g008cq2tg",
         "job_name": null,
@@ -70144,7 +70207,8 @@
             "distance": 10,
             "rounds": 10,
             "resets": false,
-            "logical": 0
+            "logical": 0,
+            "job_status": "JobStatus.ERROR"
         },
         "job_id": "cqqbfd54td0g008cq2vg",
         "job_name": null,
@@ -70173,7 +70237,8 @@
             "distance": 10,
             "rounds": 10,
             "resets": false,
-            "logical": 0
+            "logical": 0,
+            "job_status": "JobStatus.ERROR"
         },
         "job_id": "cqqbfed4td0g008cq2x0",
         "job_name": null,
@@ -70203,7 +70268,7 @@
             "rounds": 10,
             "resets": false,
             "logical": 0,
-            "job_status": "JobStatus.QUEUED"
+            "job_status": "JobStatus.ERROR"
         },
         "job_id": "cqqbffn267h0008gd1j0",
         "job_name": null,
@@ -70233,7 +70298,7 @@
             "rounds": 10,
             "resets": false,
             "logical": 0,
-            "job_status": "JobStatus.QUEUED"
+            "job_status": "JobStatus.ERROR"
         },
         "job_id": "cqqbfgpjx32g008552g0",
         "job_name": null,
@@ -70263,9 +70328,319 @@
             "rounds": 10,
             "resets": false,
             "logical": 0,
-            "job_status": "JobStatus.QUEUED"
+            "job_status": "JobStatus.ERROR"
         },
         "job_id": "cqqbfj64td0g008cq2zg",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "1*1e6/d*T",
+            "RepCode Mean Positions"
+        ]
+    },
+    {
+        "creation_date": "2024-03-11 12:50:16.452000+01:00",
+        "notebook_name": "mean_pos_sherbrooke",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 111,
+            "meas_level": 1,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "rep_delay": 0.0005,
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Mean positions",
+            "code": "RepetitionCodeCircuit",
+            "distance": 10,
+            "rounds": 10,
+            "resets": false,
+            "logical": 0,
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2024-03-11 13:46:55.536114+01:00"
+        },
+        "job_id": "cqqezy7r43fg008x5tc0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "1*1e6/d*T",
+            "RepCode Mean Positions"
+        ]
+    },
+    {
+        "creation_date": "2024-03-11 12:50:22.473000+01:00",
+        "notebook_name": "mean_pos_sherbrooke",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 111,
+            "meas_level": 1,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "rep_delay": 0.0005,
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Mean positions",
+            "code": "RepetitionCodeCircuit",
+            "distance": 10,
+            "rounds": 10,
+            "resets": false,
+            "logical": 0,
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2024-03-11 13:46:24.770841+01:00"
+        },
+        "job_id": "cqqezzq417q0008ytz8g",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "1*1e6/d*T",
+            "RepCode Mean Positions"
+        ]
+    },
+    {
+        "creation_date": "2024-03-11 12:50:29.775000+01:00",
+        "notebook_name": "mean_pos_sherbrooke",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 111,
+            "meas_level": 1,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "rep_delay": 0.0005,
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Mean positions",
+            "code": "RepetitionCodeCircuit",
+            "distance": 10,
+            "rounds": 10,
+            "resets": false,
+            "logical": 0,
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2024-03-11 13:46:39.841299+01:00"
+        },
+        "job_id": "cqqf018v78p0008mdt20",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "1*1e6/d*T",
+            "RepCode Mean Positions"
+        ]
+    },
+    {
+        "creation_date": "2024-03-11 12:50:35.810000+01:00",
+        "notebook_name": "mean_pos_sherbrooke",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 111,
+            "meas_level": 1,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "rep_delay": 0.0005,
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Mean positions",
+            "code": "RepetitionCodeCircuit",
+            "distance": 10,
+            "rounds": 10,
+            "resets": false,
+            "logical": 0,
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2024-03-11 13:47:10.867418+01:00"
+        },
+        "job_id": "cqqf02r417q0008ytz9g",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "1*1e6/d*T",
+            "RepCode Mean Positions"
+        ]
+    },
+    {
+        "creation_date": "2024-03-11 12:50:47.103000+01:00",
+        "notebook_name": "mean_pos_sherbrooke",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 111,
+            "meas_level": 1,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "rep_delay": 0.0005,
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Mean positions",
+            "code": "RepetitionCodeCircuit",
+            "distance": 10,
+            "rounds": 10,
+            "resets": false,
+            "logical": 0,
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2024-03-11 13:47:25.992124+01:00"
+        },
+        "job_id": "cqqf05gv78p0008mdt2g",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "1*1e6/d*T",
+            "RepCode Mean Positions"
+        ]
+    },
+    {
+        "creation_date": "2024-03-11 12:50:53.619000+01:00",
+        "notebook_name": "mean_pos_sherbrooke",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 111,
+            "meas_level": 1,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "rep_delay": 0.0005,
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Mean positions",
+            "code": "RepetitionCodeCircuit",
+            "distance": 10,
+            "rounds": 10,
+            "resets": false,
+            "logical": 0,
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2024-03-11 13:47:41.271622+01:00"
+        },
+        "job_id": "cqqf078267h0008gdks0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "1*1e6/d*T",
+            "RepCode Mean Positions"
+        ]
+    },
+    {
+        "creation_date": "2024-03-11 12:50:59.625000+01:00",
+        "notebook_name": "mean_pos_sherbrooke",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 111,
+            "meas_level": 1,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "rep_delay": 0.0005,
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Mean positions",
+            "code": "RepetitionCodeCircuit",
+            "distance": 10,
+            "rounds": 10,
+            "resets": false,
+            "logical": 0,
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2024-03-11 13:47:56.327659+01:00"
+        },
+        "job_id": "cqqf08s4td0g008cqmk0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "1*1e6/d*T",
+            "RepCode Mean Positions"
+        ]
+    },
+    {
+        "creation_date": "2024-03-11 12:51:05.921000+01:00",
+        "notebook_name": "mean_pos_sherbrooke",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 111,
+            "meas_level": 1,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "rep_delay": 0.0005,
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Mean positions",
+            "code": "RepetitionCodeCircuit",
+            "distance": 10,
+            "rounds": 10,
+            "resets": false,
+            "logical": 0,
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2024-03-11 13:48:11.574345+01:00"
+        },
+        "job_id": "cqqf0a9v78p0008mdt30",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "1*1e6/d*T",
+            "RepCode Mean Positions"
+        ]
+    },
+    {
+        "creation_date": "2024-03-11 12:51:11.681000+01:00",
+        "notebook_name": "mean_pos_sherbrooke",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 111,
+            "meas_level": 1,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "rep_delay": 0.0005,
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Mean positions",
+            "code": "RepetitionCodeCircuit",
+            "distance": 10,
+            "rounds": 10,
+            "resets": false,
+            "logical": 0,
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2024-03-11 13:49:23.236327+01:00"
+        },
+        "job_id": "cqqf0bsr43fg008x5td0",
+        "job_name": null,
+        "job_metadata": {},
+        "tags": [
+            "1*1e6/d*T",
+            "RepCode Mean Positions"
+        ]
+    },
+    {
+        "creation_date": "2024-03-11 12:51:17.882000+01:00",
+        "notebook_name": "mean_pos_sherbrooke",
+        "backend_name": "ibm_sherbrooke",
+        "backend_options": {
+            "shots": 111,
+            "meas_level": 1,
+            "init_qubits": true,
+            "memory": false,
+            "meas_return": "single",
+            "rep_delay": 0.0005,
+            "skip_transpilation": true
+        },
+        "additional_metadata": {
+            "descr": "Mean positions",
+            "code": "RepetitionCodeCircuit",
+            "distance": 10,
+            "rounds": 10,
+            "resets": false,
+            "logical": 0,
+            "job_status": "JobStatus.DONE",
+            "execution_date": "2024-03-11 13:49:38.212792+01:00"
+        },
+        "job_id": "cqqf0d9v78p0008mdt3g",
         "job_name": null,
         "job_metadata": {},
         "tags": [
