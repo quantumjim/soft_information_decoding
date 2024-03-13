@@ -40,7 +40,7 @@ class EvaluateFidelity:
             return 0.0
 
         fidelity = 1.0
-        for edge in zip(path[0:-1], path[1:]):
+        for edge in zip(path[0:-1], path[1:]): # takes the first and second element of the path, then the second and third, and so on
             try:
                 cx_error = self.gate_errors[edge]
 
