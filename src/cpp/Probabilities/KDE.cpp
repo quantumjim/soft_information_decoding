@@ -122,11 +122,7 @@ std::map<int, KDE_Result> get_KDEs(const std::map<int, std::map<std::string, std
          
             double normalization0 = arma::accu(all_estimates0) * (dx*dx); // dx*dx is the area of each grid cell
             double normalization1 = arma::accu(all_estimates1) * (dx*dx);
-
-            std::cout << "normalization0: " << normalization0 << std::endl;
-            std::cout << "normalization1: " << normalization1 << std::endl;
-            std::cout << "dx: " << dx << std::endl;
-
+            
             // Evaluate on the test data and calculate a score
             arma::vec estimations0, estimations1;
             kde0.Evaluate(mmr_0_test, estimations0);
