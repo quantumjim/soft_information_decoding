@@ -14,6 +14,8 @@ from rustworkx import EdgeList
 from .metric_evaluators import EvaluateFidelity, GateLengths
 from .qubit_subset_finders import find_lines
 
+from ..coupling_map import create_coupling_graph_with_positions, highlight_path
+
 
 class BackendEvaluator:
     """
@@ -114,6 +116,7 @@ class BackendEvaluator:
         ) = None,
         metric_eval: Callable[[List[int], EdgeList], Any] | None = None,
         metadata_eval: Callable[[List[int], EdgeList], Dict[str, Any]] | None = None,
+        plot: bool = False,
     ) -> Tuple[List[int] | None, Any, int, Dict[str, Any]]:
         """
         Args:
@@ -156,4 +159,11 @@ class BackendEvaluator:
         best_metadata = metadata_eval(best_subset, self.coupling_map)
         num_subsets = len(qubit_subsets)
 
+        if plot:
+            G = create_coupling_graph_with_positions(self.backend)
+            highlight_path(G, best_subset)
+
         return best_subset, best_score, num_subsets, best_metadata
+    
+    
+
