@@ -37,23 +37,86 @@ def find_lines(
         cutoff=length,
     ).values()
 
-    # TODO This list comprehension is slow. Improve its performance.
-    paths = np.asarray(
-        [
-            # TODO Increase dtype to uint8 once running on devices with more than 256 qubits.
-            np.array((list(c), list(sorted(list(c)))), dtype=np.uint8)
-            for a in iter(all_paths)
-            for b in iter(a)
-            for c in iter(a[b])
-        ]
-    )
+    paths = [list(c) for a in all_paths for b in a for c in a[b]]
+    return paths
 
-    if len(paths) == 0:
-        return []
+    # # TODO This list comprehension is slow. Improve its performance.
+    # paths = np.asarray(
+    #     [
+    #         # TODO Increase dtype to uint8 once running on devices with more than 256 qubits.
+    #         np.array((list(c), list(sorted(list(c)))), dtype=np.uint8)
+    #         for a in iter(all_paths)
+    #         for b in iter(a)
+    #         for c in iter(a[b])
+    #     ]
+    # )
 
-    # filter out duplicated paths
-    _, unique_indices = np.unique(paths[:, 1], return_index=True, axis=0)
+    # if len(paths) == 0:
+    #     return []
 
-    filtered_paths = paths[:, 0][unique_indices].tolist()
+    # # filter out duplicated paths
+    # _, unique_indices = np.unique(paths[:, 1], return_index=True, axis=0)
 
-    return filtered_paths
+    # filtered_paths = paths[:, 0][unique_indices].tolist()
+
+    # return filtered_paths
+
+    # Directly compile list of paths without checking for uniqueness
+
+# def find_lines(length: int, backend: BackendV2, coupling_map: CouplingMap | None = None) -> List[List[int]]:
+#     if coupling_map is None:
+#         coupling_map = CouplingMap(backend.configuration().coupling_map)
+
+#     all_paths_iter = rx.all_pairs_all_simple_paths(
+#         coupling_map.graph,
+#         min_depth=length,
+#         cutoff=length,
+#     ).values()
+
+#     # Function to flatten and listify paths from the iterator
+#     def listify_paths(a):
+#         return [list(c) for b in a for c in a[b]]
+
+#     # Use ThreadPoolExecutor to parallelize the listify operation
+#     paths = []
+#     with ThreadPoolExecutor() as executor:
+#         # Submit tasks
+#         futures = [executor.submit(listify_paths, a) for a in all_paths_iter]
+
+#         # Wait for tasks to complete and collect results
+#         for future in as_completed(futures):
+#             paths.extend(future.result())
+
+#     return paths
+
+
+
+
+
+
+
+# def find_lines(
+#     length: int,
+#     backend: BackendV2,
+#     coupling_map: CouplingMap | None = None,
+# ) -> List[List[int]]:
+#     """Finds all possible lines of length `length` for a specific backend topology.
+
+#     This method can take quite some time to run on large devices since there
+#     are many paths.
+
+#     Returns:
+#         The found paths.
+#     """
+
+#     # might make sense to make backend the only input for simplicity
+#     if coupling_map is None:
+#         coupling_map = CouplingMap(backend.configuration().coupling_map)
+
+#     all_paths = rx.all_pairs_all_simple_paths(
+#         coupling_map.graph,
+#         min_depth=length,
+#         cutoff=length,
+#     )
+
+#     return all_paths.values()
