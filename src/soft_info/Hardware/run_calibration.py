@@ -4,7 +4,7 @@
 from qiskit import QuantumCircuit, transpile
 from qiskit.providers import BackendV2
 
-from ...Scratch.metadata import metadata_helper
+from Scratch import metadata_helper
 
 
 def run_IQ_calibration(backend: BackendV2, shots: int = None) -> None:
