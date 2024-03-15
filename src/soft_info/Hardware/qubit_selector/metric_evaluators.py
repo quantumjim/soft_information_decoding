@@ -15,7 +15,9 @@ from rustworkx import EdgeList
 class EvaluateBottlenecks:
     """Evaluates bottleneck for a given list of qubits based on the two-qubit gate error and readout error of specific qubits"""
 
-    def __init__(self, backend: BackendV2, readout_multiplicator: float = 0.0):
+    def __init__(self, backend: BackendV2, 
+                 readout_multiplicator: float = 0.3, 
+                 fidelity_multiplicator: float = 0.1):
         props: BackendProperties
         props = backend.properties()
 
@@ -42,6 +44,7 @@ class EvaluateBottlenecks:
         }
 
         self.readout_multiplicator = readout_multiplicator
+        self.fidelity_multiplicator = fidelity_multiplicator    
 
     def __call__(self, path: List[int]) -> float:
         if not path or len(path) == 1:
@@ -49,6 +52,7 @@ class EvaluateBottlenecks:
 
         max_gate_error = 0.0
         max_readout_error = 0.0
+        fidelity = 1.0
         for idx, edge in enumerate(zip(path[0:-1], path[1:])):
             cx_error = self.gate_errors[edge]
             max_gate_error = max(max_gate_error, cx_error)
@@ -56,10 +60,12 @@ class EvaluateBottlenecks:
             if (idx+1) % 2 == 0: # only take the odd number (=ancilla) of qubits for the readout error
                 readout_error = self.readout_errors[edge[0]] # we will miss the last qubit
                 max_readout_error = max(max_readout_error, readout_error)
+            
+            fidelity *= 1 - cx_error
 
         # max_readout_error = max(max_readout_error, self.readout_errors[path[-1]]) # this is the last qubit NOT NEEDED BECAUSE CODE QUBIT
         # print(self.readout_multiplicator)
-        return max_gate_error + self.readout_multiplicator * max_readout_error
+        return max_gate_error + self.readout_multiplicator * max_readout_error - self.fidelity_multiplicator*fidelity 
     
     def get_error_info(self, path: List[int]):
         if not path or len(path) == 1:
@@ -68,6 +74,7 @@ class EvaluateBottlenecks:
         gate_errors = []
         readout_errors = []
         ancilla_readout_errors = []
+        fidelity = 1.0
         for idx, edge in enumerate(zip(path[0:-1], path[1:])):
             cx_error = self.gate_errors[edge]
             readout_error = self.readout_errors[edge[0]]
@@ -75,13 +82,15 @@ class EvaluateBottlenecks:
             readout_errors.append(readout_error)
             if (idx+1) % 2 == 0:
                 ancilla_readout_errors.append(readout_error)
+            fidelity *= 1 - cx_error
 
 
         readout_errors.append(self.readout_errors[path[-1]])
 
         return (np.mean(gate_errors), np.min(gate_errors), np.max(gate_errors), 
                 np.mean(readout_errors), np.min(readout_errors), np.max(readout_errors), 
-                np.mean(ancilla_readout_errors), np.min(ancilla_readout_errors), np.max(ancilla_readout_errors))
+                np.mean(ancilla_readout_errors), np.min(ancilla_readout_errors), np.max(ancilla_readout_errors), 
+                fidelity)
 
         
 

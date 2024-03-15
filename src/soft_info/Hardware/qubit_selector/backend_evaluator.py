@@ -44,7 +44,8 @@ class BackendEvaluator:
     ) -> Dict[str, Any]:
         (mean_gate_errors, min_gate_errors, max_gate_errors, 
          mean_readout_errors, min_readout_errors, max_readout_errors,
-         mean_ancilla_errors, min_ancilla_errors, max_ancilla_errors) = metric_evaluator.get_error_info(chain)
+         mean_ancilla_errors, min_ancilla_errors, max_ancilla_errors,
+         fidelity) = metric_evaluator.get_error_info(chain)
         return {
             "mean_gate_error": mean_gate_errors,
             "min_gate_error": min_gate_errors,
@@ -55,6 +56,7 @@ class BackendEvaluator:
             "mean_ancilla_error": mean_ancilla_errors,
             "min_ancilla_error": min_ancilla_errors,
             "max_ancilla_error": max_ancilla_errors,
+            "CX_fidelity": fidelity
         }
 
 
@@ -130,7 +132,8 @@ class BackendEvaluator:
         metric_eval: Callable[[List[int], EdgeList], Any] | None = None,
         metadata_eval: Callable[[List[int], EdgeList], Dict[str, Any]] | None = None,
         plot: bool = False,
-        readout_multiplier: float = 0.1,
+        readout_multiplier: float = 0.3,
+        fidelity_multiplier: float = 0.1,
     ) -> Tuple[List[int] | None, Any, int, Dict[str, Any]]:
         """
         Args:
@@ -147,9 +150,9 @@ class BackendEvaluator:
         """
 
         if metric_eval is None:
-            metric_eval = EvaluateBottlenecks(self.backend, readout_multiplier)
+            metric_eval = EvaluateBottlenecks(self.backend, readout_multiplier, fidelity_multiplier)
         if metadata_eval is None:
-            metadata_metric = EvaluateBottlenecks(self.backend, readout_multiplier)
+            metadata_metric = EvaluateBottlenecks(self.backend, readout_multiplier, fidelity_multiplier)
             def __metadata_eval(subset: List[int]) -> Dict:
                 return self.__metadata_eval(subset, metadata_metric)
 
@@ -181,6 +184,7 @@ class BackendEvaluator:
     def find_longest_good_RepCode_string(
             self,
             readout_multiplicator: float = 0.3,
+            fidelity_multiplier: float = 0.1,
             plot: bool = False, 
             CX_threshold: float = 0.1,
             Ancilla_threshold: float = 0.25,
@@ -200,7 +204,8 @@ class BackendEvaluator:
             print(f"Trying RepCode string of length {longest_length} => distance {longest_length//2 + 1}...")
             best_subset, best_score, num_subsets, best_metadata = self.evaluate(
                 num_qubits=longest_length,
-                readout_multiplier=readout_multiplicator
+                readout_multiplier=readout_multiplicator,
+                fidelity_multiplier=fidelity_multiplier,
             )
             max_CX_error = best_metadata["max_gate_error"]
             max_ancilla_error = best_metadata["max_ancilla_error"]
