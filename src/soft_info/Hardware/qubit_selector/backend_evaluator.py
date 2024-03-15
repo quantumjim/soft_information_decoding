@@ -186,7 +186,11 @@ class BackendEvaluator:
             Ancilla_threshold: float = 0.25,
             longest_length: int = 109
     ) -> Tuple[List[int] | None, Any, int, Dict[str, Any]]:
-        """ Find the longest good (CX error < threshold) RepCode string for the backend."""
+        """ Find the longest good (CX error < threshold) RepCode string for the backend.
+        
+        Returns:
+            (best_subset, best_score, num_subsets, best_metadata)
+        """
 
         assert longest_length % 2 == 1, "longest_length must be odd for RepCodes"
         
