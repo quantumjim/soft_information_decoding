@@ -45,12 +45,12 @@ def run_IQ_calibration(backend: BackendV2, shots: int = None) -> None:
         metadata = metadata_helper(num_qubit=n_qubits, sampled_state=f"{i}"*n_qubits, 
                                    optimization_level=0)
         backend.run(metadata, transpiled_circuits[f"transpile_qc_{i}"], shots=shots, 
-                    meas_level=1, meas_return='single', job_tags=["Calibration"])
+                    meas_level=1, meas_return='single', job_tags=[f"Calibration, shots {shots}"])
 
         metadata = metadata_helper(num_qubit=n_qubits, sampled_state=f"{i}"*n_qubits, 
                                    optimization_level=0, double_msmt=True)
         backend.run(metadata, transpiled_circuits[f"transpile_qc_{i}_double"], shots=shots, 
-                    meas_level=1, meas_return='single', job_tags=["Calibration", "Double_Measurement"])
+                    meas_level=1, meas_return='single', job_tags=[f"Calibration, shots {shots}", "Double_Measurement"])
 
 
 
