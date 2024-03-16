@@ -201,7 +201,7 @@ class BackendEvaluator:
         max_CX_error = 1.0
         max_ancilla_error = 1.0
         while max_CX_error > CX_threshold or max_ancilla_error > Ancilla_threshold:
-            print(f"Trying RepCode string of length {longest_length} => distance {longest_length//2 + 1}...")
+            print(f"Trying RepCode string of length {longest_length} => distance {longest_length//2 + 1}... Current maxs: CX: {max_CX_error}, Ancilla: {max_ancilla_error}")
             best_subset, best_score, num_subsets, best_metadata = self.evaluate(
                 num_qubits=longest_length,
                 readout_multiplier=readout_multiplicator,
