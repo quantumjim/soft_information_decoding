@@ -3,7 +3,8 @@
 to evaluate 2-qubit gate fidelity."""
 
 from __future__ import annotations
-from itertools import tee, islice
+from dateutil import parser
+import pytz
 
 from typing import Dict, List, Tuple, Iterator
 
@@ -17,9 +18,16 @@ class EvaluateBottlenecks:
 
     def __init__(self, backend: BackendV2, 
                  readout_multiplicator: float = 0.3, 
-                 fidelity_multiplicator: float = 0.1):
+                 fidelity_multiplicator: float = 0.1,
+                 date: str = None):
         props: BackendProperties
-        props = backend.properties()
+
+        if date is None:
+            props = backend.properties()
+        else:
+            date = parser.parse(date)
+            date = date.astimezone(pytz.utc)
+            props = backend.properties(datetime=date)
 
         if "cx" in backend.configuration().basis_gates:
             gate_name = "cx"
