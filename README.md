@@ -15,6 +15,7 @@ git clone --recursive https://github.ibm.com/Maurice-Hanisch/Soft-Info.git
 ### Install C++ Dependencies
 For macOS:
 ```bash
+brew install bazel
 brew install armadillo
 brew install mlpack
 brew install llvm # for clang and parrallelism
