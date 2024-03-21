@@ -26,7 +26,7 @@ class RepetitionCodeStimCircuit():
         
 
         assert T > 0, "At least one round of syndrome measurement is required."
-        assert xbasis == False, "X basis not yet supported."
+        # assert xbasis == False, "X basis not yet supported."
         # assert resets == True, "No Resets not yet fully supported."
 
 
@@ -101,7 +101,7 @@ class RepetitionCodeStimCircuit():
             self.circuits[log] += self._X_ent_block if self._xbasis else self._Z_ent_block
             for idx, _ in enumerate(self.link_qubits):
                 self.circuits[log].append(
-                    'DETECTOR', [rec(-(self.d-1)+idx)], [1+idx*2, 0])
+                    'DETECTOR', [rec(-(self.d-1)+idx)], [1+idx*2+1, 0])
             self.circuits[log].append('SHIFT_COORDS', [], (0, 1))
 
     def _subsequent_rounds(self):
@@ -113,23 +113,29 @@ class RepetitionCodeStimCircuit():
     def _final_readout(self):
         rec = stim.target_rec
         for log in ["0", "1"]:
+            self.circuits[log].append('H', self.code_qubits) if self._xbasis else None
             readout = 'MR' if self._resets else 'M'
             self.circuits[log].append('X_ERROR', self.code_qubits, arg=self.hard_err) if self.hard_err > 0 else None
             self.circuits[log].append(readout, self.code_qubits, arg=self.soft_err)
             self.circuits[log].append('X_ERROR', self.code_qubits, arg=self.readout_err) if self.readout_err > 0 and self._resets else None # Active reset error
             for idx, _ in enumerate(self.link_qubits):
-                rec_list = [-self.d+idx, -self.d+idx+1, -self.d +
-                            idx-(self.d-1)]  # [code_1, code_2, link]
-                self.circuits[log].append(
-                    'DETECTOR', [rec(idx) for idx in rec_list], [1+idx*2, 0])
+                if not self._resets:
+                    rec_list = [-self.d+idx, -self.d+idx+1, -self.d+idx-(self.d-1), -self.d+idx-2*(self.d-1)]  # [code_1, code_2, link T-1, link T-2]
+                    self.circuits[log].append(
+                        'DETECTOR', [rec(idx) for idx in rec_list], [1+idx*2+1, 0])
+                else:
+                    rec_list = [-self.d+idx, -self.d+idx+1, -self.d+idx-(self.d-1)]  # [code_1, code_2, link T-1]
+                    self.circuits[log].append(
+                        'DETECTOR', [rec(idx) for idx in rec_list], [1+idx*2+1, 0])
+                
             self.circuits[log].append('OBSERVABLE_INCLUDE', [rec(-1)], 0)
 
     def _create_blocks(self):
         rec = stim.target_rec  # For readability
 
         # Before round depolarization due to idling
-        self._Z_ent_block.append('DEPOLARIZE1', self.qubits, arg=self.idle_err) if self.idle_err > 0 else None
-        self._X_ent_block.append('DEPOLARIZE1', self.qubits, arg=self.idle_err) if self.idle_err > 0 else None
+        self._Z_ent_block.append('DEPOLARIZE1', self.code_qubits, arg=self.idle_err) if self.idle_err > 0 else None
+        self._X_ent_block.append('DEPOLARIZE1', self.code_qubits, arg=self.idle_err) if self.idle_err > 0 else None
 
         # Z Entanglement block
         # L->R CXss
@@ -187,6 +193,6 @@ class RepetitionCodeStimCircuit():
         else: # No Reset detectors
             for idx, _ in enumerate(self.link_qubits):
                 self._det_block.append(
-                    'DETECTOR', [rec(-(self.d-1)+idx), rec(-3*(self.d-1)+idx)], [1+idx*2, 0]) # T-2 msmts
+                    'DETECTOR', [rec(-(self.d-1)+idx), rec(-3*(self.d-1)+idx)], [1+idx*2+1, 0]) # T-2 msmts
         # Shift coords
         self._det_block.append('SHIFT_COORDS', [], (0, 1))
