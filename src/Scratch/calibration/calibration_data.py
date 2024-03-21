@@ -22,7 +22,7 @@ def extract_backend_name(backend_str):
         return None
     
 def get_calib_jobs(backend_name: str, needed_calib_date = None):
-    md = metadata_loader(_extract=True, _drop_inutile=True).dropna(subset=["num_qubits"])
+    md = metadata_loader(_extract=True, _drop_inutile=False).dropna(subset=["num_qubits"])
     mask = (
         (md["backend_name"] == backend_name) &
         (md["job_status"] == "JobStatus.DONE") &
@@ -55,11 +55,12 @@ def get_calib_jobs(backend_name: str, needed_calib_date = None):
         job_ids[state] = closest_job_id
     
     # Check if year, day, and hour are the same for both states
-    date_0 = execution_dates['0']
-    date_1 = execution_dates['1']
+    time_difference = abs(execution_dates['0'] - execution_dates['1']).total_seconds()
 
-    if not (date_0.year == date_1.year and date_0.day == date_1.day and date_0.hour == date_1.hour):
-        raise ValueError(f"Year, day, and hour of exectution dates for the closest jobs are different for each state. Execution dates: {execution_dates}. Job IDs: {job_ids}.")
+    if time_difference > 6 * 3600:
+        raise ValueError(f"Execution dates for the closest calib jobs are different (>6h) for each state. Execution dates: {execution_dates}. Job IDs: {job_ids}.")
+    elif time_difference > 1 * 3600:
+        warnings.warn(f"Execution dates for the closest calib jobs are different (>1h but <6h) for each state. Execution dates: {execution_dates}. Job IDs: {job_ids}.")
 
     return job_ids, execution_dates, creation_dates
 
