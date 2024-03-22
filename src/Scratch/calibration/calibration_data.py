@@ -22,19 +22,23 @@ def extract_backend_name(backend_str):
         return None
     
 def get_calib_jobs(backend_name: str, needed_calib_date = None):
-    md = metadata_loader(_extract=True, _drop_inutile=False).dropna(subset=["num_qubits"])
+    md = metadata_loader(_extract=True, _drop_inutile=False)
+    md = md.dropna(subset=["sampled_state"])
     mask = (
         (md["backend_name"] == backend_name) &
         (md["job_status"] == "JobStatus.DONE") &
-        (md["optimization_level"] == 0)
+        (md["optimization_level"] == 0) &
+        ((md["double_msmt"] == False) | (pd.isna(md["double_msmt"])))
     )
+
     md_filtered = md.loc[mask]
     
     job_ids = {}
     creation_dates = {}
     execution_dates = {}
     for state in ['0', '1']:
-        state_mask = md_filtered["sampled_state"] == md_filtered["num_qubits"].apply(lambda x: state * int(x))
+        # state_mask = md_filtered["sampled_state"] == md_filtered["num_qubits"].apply(lambda x: state * int(x))
+        state_mask = md_filtered["sampled_state"].str.startswith(state)
         md_state_filtered = md_filtered[state_mask].copy()
 
         md_state_filtered['execution_date'] = pd.to_datetime(md_state_filtered['execution_date'], utc=True, format='ISO8601')
@@ -108,7 +112,7 @@ def load_calibration_memory(provider, tobecalib_job: Optional[str] = None, tobec
         raise NotImplementedError("Only loading calibration data for a specific job or a specified backend is currently supported.")
     
     closest_job_ids, _, _ = find_closest_calib_jobs(tobecalib_job, tobecalib_backend, other_date=other_date)
-
+    print(closest_job_ids) 
     all_memories = {}
     for state, job_id in closest_job_ids.items():
         mmr_name = f"mmr_{state}"
@@ -125,7 +129,6 @@ def load_calibration_memory(provider, tobecalib_job: Optional[str] = None, tobec
             layout = final_layout[0]   
             warnings.warn(f"Using final layout {layout} for job {job_id}. Meaning that there was an optimization")
         layout_dict = job.deserialize_layout(layout)['q'] # {virtual qubit index: physical qubit index} HARDCODED for register name 'q'
-
 
         # Reorder memory 
         reordered_memory = np.zeros_like(memory)

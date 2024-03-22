@@ -11,8 +11,8 @@ def run_IQ_calibration(backend: BackendV2, shots: int = None) -> None:
     n_qubits = backend.configuration().n_qubits
     transpiled_circuits = {}
 
-    if shots:
-        assert shots*n_qubits > 1e6, "Too many shots, expect a PAYLOAD error."
+    if shots != None:
+        assert shots*n_qubits < 5e6, "Too many shots, expect a PAYLOAD error."
     else:
         shots = int(1e6//n_qubits)
 
