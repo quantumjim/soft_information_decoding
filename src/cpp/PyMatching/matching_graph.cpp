@@ -883,6 +883,95 @@ namespace pm
         return result;
     }
 
+    DetailedDecodeResult decode_hard_kde(
+        stim::DetectorErrorModel& detector_error_model,
+        const Eigen::MatrixXcd &not_scaled_IQ_data,
+        int synd_rounds,
+        int logical,
+        bool _resets,
+        const std::map<int, int> &qubit_mapping,
+        std::map<int, KDE_Result> kde_dict,
+        bool _detailed,
+        double relError,
+        double absError) {
+
+        DetailedDecodeResult result;
+        result.num_errors = 0;
+        result.error_details.resize(not_scaled_IQ_data.rows());
+
+        std::set<size_t> empty_set;        
+        int distance = (not_scaled_IQ_data.cols() + synd_rounds) / (synd_rounds + 1); // Hardcoded for RepCodes
+
+        UserGraph matching;
+
+        #pragma omp parallel private(matching)
+        {
+            matching = detector_error_model_to_user_graph_private(detector_error_model);
+
+            #pragma omp for nowait  
+            for (int shot = 0; shot < not_scaled_IQ_data.rows(); ++shot) {
+                Eigen::MatrixXcd not_scaled_IQ_shot_matrix = not_scaled_IQ_data.row(shot);
+                std::string count_key;
+
+                for (int msmt = 0; msmt < not_scaled_IQ_shot_matrix.cols(); ++msmt) { 
+                    int qubit_idx = qubit_mapping.at(msmt);
+                    auto &kde_entry = kde_dict.at(qubit_idx);
+                    std::complex<double> not_scaled_point = not_scaled_IQ_data(shot, msmt);   
+
+                    arma::mat query_point(2, 1); // 2 rows, 1 column
+                    query_point(0, 0) = std::real(not_scaled_point); 
+                    query_point(1, 0) = std::imag(not_scaled_point); 
+
+                    query_point.row(0) -= kde_entry.scaler_mean[0]; 
+                    query_point.row(1) -= kde_entry.scaler_mean[1]; 
+                    query_point.row(0) /= kde_entry.scaler_stddev[0]; 
+                    query_point.row(1) /= kde_entry.scaler_stddev[1]; 
+                    
+                    arma::vec estimations0(1);
+                    arma::vec estimations1(1);
+
+                    if (relError != -1) {
+                        kde_entry.kde_0.RelativeError(relError);
+                        kde_entry.kde_1.RelativeError(relError);
+                    }
+                    if (absError != -1) {
+                        kde_entry.kde_0.AbsoluteError(absError);
+                        kde_entry.kde_1.AbsoluteError(absError);
+                    }
+
+                    kde_entry.kde_0.Evaluate(query_point, estimations0);
+                    kde_entry.kde_1.Evaluate(query_point, estimations1);
+                    
+                    if (estimations0[0] > estimations1[0]) {
+                        count_key += "0";    
+                    } else {
+                        count_key += "1";
+                    }
+
+                    if ((msmt + 1) % (distance - 1) == 0 && (msmt + 1) / (distance - 1) <= synd_rounds) {
+                        count_key += " ";
+                    }            
+                }
+                auto det_syndromes = counts_to_det_syndr(count_key, _resets, false, false);
+                auto detectionEvents = syndromeArrayToDetectionEvents(det_syndromes, matching.get_num_detectors(), matching.get_boundary().size());
+                auto [predicted_observables, rescaled_weight] = decode(matching, detectionEvents);
+                int actual_observable = (static_cast<int>(count_key.back()) - logical) % 2;
+                if (_detailed) {
+                    ShotErrorDetails errorDetail = createShotErrorDetails(matching, detectionEvents, det_syndromes);
+                    result.error_details[shot] = errorDetail;
+                }
+                #pragma omp critical
+                {
+                    if (!predicted_observables.empty() && predicted_observables[0] != actual_observable) {
+                        result.num_errors++; // Increment error count if they don't match
+                        result.indices.push_back(shot);
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
 
     DetailedDecodeResult decode_IQ_shots_flat(
         UserGraph &matching,
