@@ -1,0 +1,59 @@
+{
+    "cqt39qp36d60008hyf3g": [
+        {
+            "decoding": "kde",
+            "num_errors": 0,
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.4,
+                    0.7,
+                    20
+                ],
+                "num_points_bandwidths": 51
+            }
+        },
+        {
+            "decoding": "hard",
+            "num_errors": 0
+        }
+    ],
+    "cqt39q636d60008hyf30": [
+        {
+            "decoding": "kde",
+            "num_errors": 0,
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.4,
+                    0.7,
+                    20
+                ],
+                "num_points_bandwidths": 51
+            }
+        },
+        {
+            "decoding": "hard",
+            "num_errors": 0
+        }
+    ],
+    "cqt39pe4x0mg008agq3g": [
+        {
+            "decoding": "kde",
+            "num_errors": 0,
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.4,
+                    0.7,
+                    20
+                ],
+                "num_points_bandwidths": 51
+            }
+        },
+        {
+            "decoding": "hard",
+            "num_errors": 0
+        }
+    ]
+}
