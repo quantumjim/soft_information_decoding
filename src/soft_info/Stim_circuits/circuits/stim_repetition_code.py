@@ -26,9 +26,6 @@ class RepetitionCodeStimCircuit():
         
 
         assert T > 0, "At least one round of syndrome measurement is required."
-        # assert xbasis == False, "X basis not yet supported."
-        # assert resets == True, "No Resets not yet fully supported."
-
 
         # Code parameters
         self.d = d
