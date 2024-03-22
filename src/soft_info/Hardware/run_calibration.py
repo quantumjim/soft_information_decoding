@@ -37,8 +37,8 @@ def run_IQ_calibration(backend: BackendV2, shots: int = None) -> None:
     qcd_1.measure(range(n_qubits), range(n_qubits))
     qcd_1.measure(range(n_qubits), range(n_qubits, 2*n_qubits))
 
-    transpiled_circuits["transpile_qc_0_double"] = transpile(qc_0, backend, optimization_level=0)
-    transpiled_circuits["transpile_qc_1_double"] = transpile(qc_1, backend, optimization_level=0)
+    transpiled_circuits["transpile_qc_0_double"] = transpile(qcd_0, backend, optimization_level=0)
+    transpiled_circuits["transpile_qc_1_double"] = transpile(qcd_1, backend, optimization_level=0)
 
 
     for i in [0, 1]:
@@ -49,7 +49,7 @@ def run_IQ_calibration(backend: BackendV2, shots: int = None) -> None:
 
         metadata = metadata_helper(num_qubits=n_qubits, sampled_state=f"{i}"*n_qubits, 
                                    optimization_level=0, double_msmt=True)
-        backend.run(metadata, transpiled_circuits[f"transpile_qc_{i}_double"], shots=shots, 
+        backend.run(metadata, transpiled_circuits[f"transpile_qc_{i}_double"], shots=shots/2, 
                     meas_level=1, meas_return='single', job_tags=[f"Calibration, shots {shots}", "Double_Measurement"])
 
 
