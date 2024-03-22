@@ -21,7 +21,7 @@ class RepetitionCodeStimCircuit():
             T (int): Number of rounds of ancilla-assisted syndrome measurement.
             xbasis (bool): Whether to use the X basis to use for encoding (Z basis used by default).
             resets (bool): Whether to include a reset gate after mid-circuit measurements.
-            noise_list (list): [twog_err, sglg_err, idle_err, readout_err, hard_err, soft_err]
+            noise_list (list): [twog_err, sglg_err, t1_err, t2_err, readout_err, hard_err, soft_err]
         """
         
 
@@ -38,13 +38,14 @@ class RepetitionCodeStimCircuit():
 
         # Noise parameters
         if noise_list is None:
-            noise_list = [0, 0, 0, 0, 0, 0]
+            noise_list = [0, 0, 0, 0, 0, 0, 0]
         self.twog_err = noise_list[0]
         self.sglg_err = noise_list[1]
-        self.idle_err = noise_list[2]
-        self.readout_err = noise_list[3]
-        self.hard_err = noise_list[4]
-        self.soft_err = noise_list[5]
+        self.t1_err = noise_list[2]
+        self.t2_err = noise_list[3]
+        self.readout_err = noise_list[4]
+        self.hard_err = noise_list[5]
+        self.soft_err = noise_list[6]
         self.subsampling = subsampling
 
         # Qubit indices
@@ -134,8 +135,10 @@ class RepetitionCodeStimCircuit():
         rec = stim.target_rec  # For readability
 
         # Before round depolarization due to idling
-        self._Z_ent_block.append('DEPOLARIZE1', self.code_qubits, arg=self.idle_err) if self.idle_err > 0 else None
-        self._X_ent_block.append('DEPOLARIZE1', self.code_qubits, arg=self.idle_err) if self.idle_err > 0 else None
+        # self._Z_ent_block.append('DEPOLARIZE1', self.code_qubits, arg=self.idle_err) if self.idle_err > 0 else None
+        # self._X_ent_block.append('DEPOLARIZE1', self.code_qubits, arg=self.idle_err) if self.idle_err > 0 else None
+        errs = (self.t1_err/2, self.t1_err/2, self.t2_err)
+        self._Z_ent_block.append('PAULI_CHANNEL_1', self.code_qubits, arg=errs) if self.t1_err > 0 or self.t2_err > 0 else None
 
         # Z Entanglement block
         # L->R CXss
