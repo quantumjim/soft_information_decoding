@@ -119,28 +119,46 @@ def reweight_edges_to_one(matching: pymatching.Matching):
             matching.add_edge(src_node, tgt_node, weight=1, fault_ids=fault_ids,
                               error_probability=error_probability, merge_strategy="replace")
 
-
+            
+def bezier_midpoint_and_tangent(p0, p1, p2, t=0.65):
+    """Calculate point and tangent vector at t on a quadratic Bezier curve."""
+    # Ensure inputs are numpy arrays for element-wise operations
+    p0 = np.array(p0)
+    p1 = np.array(p1)
+    p2 = np.array(p2)
+    
+    point = (1-t)**2 * p0 + 2 * (1-t) * t * p1 + t**2 * p2
+    tangent = 2 * (1-t) * (p1 - p0) + 2 * t * (p2 - p1)
+    return point, tangent
 
 def draw_curved_edge(ax, pos, src_node, tgt_node, color, width, edge_weight, font_size, scale_factor):
     src_pos = pos[src_node]
     tgt_pos = pos[tgt_node]
 
-    # Control points for the Bezier curve
+    # Calculate midpoint and control point for Bezier curve
     mid_pos = np.mean([src_pos, tgt_pos], axis=0)
-    control_point_offset = np.array([0.5, 2]) * scale_factor  
-    control_point = mid_pos + control_point_offset 
+    control_point_offset = np.array([0.5, 2]) * scale_factor
+    control_point = mid_pos + control_point_offset
 
-    # Create a Path and a Patch for the Bezier curve
+
+    # Calculate midpoint and tangent for text positioning and orientation
+    midpoint, tangent = bezier_midpoint_and_tangent(src_pos, control_point, tgt_pos)
+    angle_rad = np.arctan2(tangent[1], tangent[0])
+    angle_deg = np.degrees(angle_rad)
+
+    # Draw Bezier curve
     path = mpatches.Path([src_pos, control_point, tgt_pos], [mpatches.Path.MOVETO, mpatches.Path.CURVE3, mpatches.Path.CURVE3])
     patch = mpatches.PathPatch(path, facecolor='none', lw=width, edgecolor=color)
     ax.add_patch(patch)
 
-    # Position for the weight text (adjust as needed)
-    text_pos = mid_pos + [-0.22*scale_factor, 0.03*scale_factor] 
-    plt.text(text_pos[0], text_pos[1], f"{edge_weight:.2f}", color=color, fontsize=font_size)  # Adjust fontsize as needed
+    # Draw text with rotation aligned with the tangent
+    plt.text(midpoint[0], midpoint[1], f"{edge_weight:.2f}", color=color, fontsize=font_size,
+             ha='center', va='center', rotation=angle_deg,
+             bbox=dict(facecolor='white', edgecolor='none', pad=3*scale_factor, alpha=1))
 
 
-def draw_matching_graph(matching=None, d=3, T=3, syndromes=None, matched_edges=None, figsize=(8, 6), scale_factor=1, edge_list=None, dpi=None):
+
+def draw_matching_graph(matching=None, d=3, T=3, syndromes=None, matched_edges=None, figsize=(8, 6), scale_factor=1, edge_list=None, dpi=150):
     
     try:
         matched_edges = matched_edges.tolist() if matched_edges is not None else None
@@ -209,12 +227,14 @@ def draw_matching_graph(matching=None, d=3, T=3, syndromes=None, matched_edges=N
             if matched_edges is not None and (edge in matched_edges or (edge[1], edge[0]) in matched_edges):
                 color = 'blue'  # Color for matched edges
                 width = highlighted_edge_width*0.5
+                ntnn_fs = font_size
             else:
                 color = 'black'  # Default color for NNN edges
                 width = normal_edge_width*0.5
+                ntnn_fs = font_size*0.8
 
             # Draw an arc for NNN edges
-            draw_curved_edge(ax, pos, src_node, tgt_node, color, width, edge_weight, font_size, scale_factor)
+            draw_curved_edge(ax, pos, src_node, tgt_node, color, width, edge_weight, ntnn_fs, scale_factor)
             continue
 
         #sorted_edge = tuple(sorted([src_node, tgt_node]))
@@ -262,10 +282,14 @@ def draw_matching_graph(matching=None, d=3, T=3, syndromes=None, matched_edges=N
             weight_text = f"{edge_data['weight']:.2f}" if 'weight' in edge_data else ""
             if x_src_old == 0:
                 plt.plot([x_src, x_src - 0.5*scale_factor], [-y_src, -y_src], color=color, lw=lw)
-                plt.text(x_src - 0.45*scale_factor, -y_src + 0.03*scale_factor, weight_text, fontsize=font_size)
+                plt.text(x_src - 0.35*scale_factor, -y_src - 0.015*scale_factor, weight_text, fontsize=font_size,
+                         bbox=dict(facecolor='white', edgecolor='none', pad=3*scale_factor, alpha=1))
             elif x_src_old == d - 2:
                 plt.plot([x_src, x_src + 0.5*scale_factor], [-y_src, -y_src], color=color, lw=lw)
-                plt.text(x_src + 0.2*scale_factor, -y_src + 0.03*scale_factor, weight_text, fontsize=font_size)
+                plt.text(x_src + 0.2*scale_factor, -y_src - 0.015*scale_factor, weight_text, fontsize=font_size,
+                         bbox=dict(facecolor='white', edgecolor='none', pad=3*scale_factor, alpha=1))
+
+
     
     # Create legend handles
     red_node = mlines.Line2D([], [], color='red', marker='o', linestyle='None',
