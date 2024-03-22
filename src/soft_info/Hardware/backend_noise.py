@@ -21,12 +21,17 @@ def get_noise_dict_from_backend(provider, device: str, used_qubits: list = None,
         used_qubits = list(range(backend.configuration().n_qubits))
         # print("Used qubits not specified, using all qubits:", used_qubits)
     noise_dict = {} 
-    round_time = 4000e-9 # HARCODED mean for (10, 10) to (50, 50) RepCodes 
+    # round_time = 4000e-9 # THIS IS WRONG: HARCODED mean for (10, 10) to (50, 50) RepCodes 
     if date is not None and type(date) is str:
         date = parser.parse(date)
         date = date.astimezone(pytz.utc)
 
     properties = backend.properties(datetime=date)
+
+    # Retrieve the readout length
+    readout_length = np.mean([properties.readout_length(qubit) for qubit in used_qubits])
+    idling_time = readout_length # HARDCODED for RepCodes: idling just while ancilla readout
+
     for qubit in used_qubits:
         noise_dict[qubit] = {}
 
@@ -36,8 +41,15 @@ def get_noise_dict_from_backend(provider, device: str, used_qubits: list = None,
         noise_dict[qubit]['T1'] = properties.t1(qubit)
         noise_dict[qubit]['T2'] = properties.t2(qubit)
 
-        idle_error = 1 - np.exp(-round_time / min(properties.t1(qubit), properties.t2(qubit)))
-        noise_dict[qubit]['idle'] = idle_error
+        # idling errors according to arXiv:2306.17786
+        t1_err = (1 - np.exp(-idling_time / properties.t1(qubit)))/4
+        t2_err = (1 - np.exp(-idling_time / properties.t2(qubit)))/2 - t1_err
+        # t2_err = (1 - np.exp(-idling_time**2 / properties.t2(qubit)**2))/2 - t1_err (For spin qubits (n=1 noise))
+        noise_dict[qubit]['t1_err'] = t1_err
+        noise_dict[qubit]['t2_err'] = t2_err 
+
+        # idle_error = 1 - np.exp(-round_time / min(properties.t1(qubit), properties.t2(qubit)))
+        # noise_dict[qubit]['idle'] = idle_error
 
         noise_dict[qubit]['2-gate'] = {}
 
@@ -63,14 +75,18 @@ def get_avgs_from_dict(noise_dict: dict, used_qubits: list):
         list: Dict of averages in order [idle, readout, single_gate, two_gate]
     """
 
-    idle_avg = np.average([noise_dict[qubit]['idle'] for qubit in noise_dict if qubit in used_qubits])
+    # idle_avg = np.average([noise_dict[qubit]['idle'] for qubit in noise_dict if qubit in used_qubits])
+    t1_err_avg = np.average([noise_dict[qubit]['t1_err'] for qubit in noise_dict if qubit in used_qubits])
+    t2_err_avg = np.average([noise_dict[qubit]['t2_err'] for qubit in noise_dict if qubit in used_qubits])
     readout_avg = np.average([noise_dict[qubit]['readout_error'] for qubit in noise_dict if qubit in used_qubits])
     single_gate_avg = np.average([noise_dict[qubit]['gate'] for qubit in noise_dict if qubit in used_qubits])
     two_gate_avg = np.average([noise_dict[qubit]['2-gate'][connection]
                             for qubit in noise_dict if qubit in used_qubits
                             for connection in noise_dict[qubit]['2-gate'] if connection in used_qubits])
     
-    return {'idle': idle_avg,
+    return {'t1_err': t1_err_avg,
+            't2_err': t2_err_avg,
+            # 'idle': idle_avg,
             'readout': readout_avg,
             'single_gate': single_gate_avg,
             'two_gate': two_gate_avg}
