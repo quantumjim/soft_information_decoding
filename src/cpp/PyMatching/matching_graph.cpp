@@ -356,7 +356,11 @@ namespace pm
         UserGraph &matching, float distance,
         float p_data, float p_mixed,
         float p_meas, float common_measure, bool _ntnn_edges)
-    {
+    {      
+        if (_ntnn_edges) {
+            std::cout << "ntnn_edges will take replace/create ntnn edges with msmt edge probability" << std::endl;
+        }
+
         // Get edges
         std::vector<EdgeProperties> edges = pm::get_edges(matching);
 
@@ -770,13 +774,13 @@ namespace pm
                     std::complex<double> not_scaled_point = not_scaled_IQ_data(shot, msmt);   
 
                     arma::mat query_point(2, 1); // 2 rows, 1 column
-                    query_point(0, 0) = std::real(not_scaled_point); // real
-                    query_point(1, 0) = std::imag(not_scaled_point); // imag 
+                    query_point(0, 0) = std::real(not_scaled_point); 
+                    query_point(1, 0) = std::imag(not_scaled_point); 
 
-                    query_point.row(0) -= kde_entry.scaler_mean[0]; // Element-wise subtraction
-                    query_point.row(1) -= kde_entry.scaler_mean[1]; // Element-wise subtraction
-                    query_point.row(0) /= kde_entry.scaler_stddev[0]; // Element-wise division
-                    query_point.row(1) /= kde_entry.scaler_stddev[1]; // Element-wise division
+                    query_point.row(0) -= kde_entry.scaler_mean[0]; 
+                    query_point.row(1) -= kde_entry.scaler_mean[1]; 
+                    query_point.row(0) /= kde_entry.scaler_stddev[0]; 
+                    query_point.row(1) /= kde_entry.scaler_stddev[1]; 
                     
                     arma::vec estimations0(1);
                     arma::vec estimations1(1);
@@ -826,15 +830,8 @@ namespace pm
                                 double error_probability = edge_it->error_probability;
                                 double p_tot = p_soft*(1-error_probability) + (1-p_soft)*error_probability;
 
-                                // std::cout << "" << std::endl;
-                                // std::cout << "weight of edge (before):" << edge_it->weight << std::endl;
-                                // std::cout << "err_proba of edge: " << error_probability << std::endl;
-                                // std::cout << "" << std::endl;
-                                // std::cout << "p_big, p_small" << p_big << ", " << p_small << std::endl;
-                                // std::cout << "p_soft: " << p_soft << std::endl;
-                                // std::cout << "new weight of edge:" << -std::log(p_tot/(1-p_tot)) << std::endl;
-
                                 pm::add_edge(matching, msmt, msmt + (distance-1), empty_set, -std::log(p_tot/(1-p_tot)), error_probability, "replace");
+                                // TODO: retrieve the soft_flip contribution of the time edge and just change it with the new soft flip NOT JUST ADD new p_soft!
                             } else {
                                 throw std::runtime_error("Edge does not exist between:" + std::to_string(msmt) +  " and " + std::to_string(msmt + (distance-1)));
                             }
@@ -850,11 +847,6 @@ namespace pm
 
                                     double error_probability = edge_it->error_probability;
                                     double p_tot = p_soft*(1-error_probability) + (1-p_soft)*error_probability;
-
-                                    // std::cout << "weight of edge (before):" << edge_it->weight << std::endl;
-                                    // std::cout << "err_proba of edge: " << error_probability << std::endl;
-                                    // std::cout << "p_soft: " << p_soft << std::endl;
-                                    // std::cout << "new weight of edge:" << -std::log(p_tot/(1-p_tot)) << std::endl;
 
                                     pm::add_edge(matching, msmt, msmt + (distance-1), empty_set, -std::log(p_tot/(1-p_tot)), error_probability, "replace");
                                 } else {
@@ -887,455 +879,9 @@ namespace pm
                     }
                 }
             }
-
-            // //Combine results
-            // #pragma omp critical
-            // {
-            //     result.num_errors += localResult.num_errors;
-            //     result.indices.insert(result.indices.end(), localResult.indices.begin(), localResult.indices.end());
-            //     result.error_details.insert(result.error_details.end(), localResult.error_details.begin(), localResult.error_details.end());
-            // }
         }
         return result;
     }
-
-    // PBL: varying if repeated
-    // DetailedDecodeResult decode_IQ_kde(
-    //     stim::DetectorErrorModel& detector_error_model,
-    //     const Eigen::MatrixXcd &not_scaled_IQ_data,
-    //     int synd_rounds,
-    //     int logical,
-    //     bool _resets,
-    //     const std::map<int, int> &qubit_mapping,
-    //     std::map<int, KDE_Result> kde_dict,
-    //     bool _detailed) {
-
-    //     DetailedDecodeResult result;
-    //     result.num_errors = 0; 
-
-    //     std::set<size_t> empty_set;        
-    //     int distance = (not_scaled_IQ_data.cols() + synd_rounds) / (synd_rounds + 1); // Hardcoded for RepCodes
-
-    //     #pragma omp parallel
-    //     {
-    //         DetailedDecodeResult localResult;
-    //         localResult.num_errors = 0;
-
-    //         #pragma omp for nowait        
-    //         for (int shot = 0; shot < not_scaled_IQ_data.rows(); ++shot) {
-    //             UserGraph matching = detector_error_model_to_user_graph_private(detector_error_model);
-    //             Eigen::MatrixXcd not_scaled_IQ_shot_matrix = not_scaled_IQ_data.row(shot);
-    //             std::string count_key;
-
-    //             for (int msmt = 0; msmt < not_scaled_IQ_shot_matrix.cols(); ++msmt) { 
-    //                 int qubit_idx = qubit_mapping.at(msmt);
-    //                 auto &kde_entry = kde_dict.at(qubit_idx);
-    //                 std::complex<double> not_scaled_point = not_scaled_IQ_data(shot, msmt);   
-
-    //                 arma::mat query_point(2, 1); // 2 rows, 1 column
-    //                 query_point(0, 0) = std::real(not_scaled_point); // real
-    //                 query_point(1, 0) = std::imag(not_scaled_point); // imag 
-
-    //                 query_point.row(0) -= kde_entry.scaler_mean[0]; // Element-wise subtraction
-    //                 query_point.row(1) -= kde_entry.scaler_mean[1]; // Element-wise subtraction
-    //                 query_point.row(0) /= kde_entry.scaler_stddev[0]; // Element-wise division
-    //                 query_point.row(1) /= kde_entry.scaler_stddev[1]; // Element-wise division
-                    
-    //                 arma::vec estimations0(1);
-    //                 arma::vec estimations1(1);
-    //                 kde_entry.kde_0.Evaluate(query_point, estimations0);
-    //                 kde_entry.kde_1.Evaluate(query_point, estimations1);
-
-    //                 double p_small;
-    //                 double p_big;
-
-    //                 if (estimations0[0] > estimations1[0]) {
-    //                     count_key += "0";    
-    //                     p_big = estimations0[0];
-    //                     p_small = estimations1[0];
-    //                 } else {
-    //                     count_key += "1";
-    //                     p_small = estimations0[0];
-    //                     p_big = estimations1[0];
-    //                 }
-
-    //                 if (msmt < (distance-1)*synd_rounds) {  
-    //                     double p_soft = 1 / (1 + p_big/p_small);                   
-    //                     if (_resets) {                                   
-    //                             pm::add_edge(matching, msmt, msmt + (distance-1), empty_set, -std::log(p_soft/(1-p_soft)), p_soft, "independent");
-    //                     } else {
-    //                         if (msmt < (distance-1)*(synd_rounds-1)) {
-    //                             pm::add_edge(matching, msmt, msmt + 2 * (distance-1), empty_set, -std::log(p_soft/(1-p_soft)), p_soft, "replace");
-    //                         } else {                            
-    //                             pm::add_edge(matching, msmt, msmt + (distance-1), empty_set, -std::log(p_soft/(1-p_soft)), p_soft, "independent");
-    //                         }
-    //                     }
-    //                 }
-    //                 if ((msmt + 1) % (distance - 1) == 0 && (msmt + 1) / (distance - 1) <= synd_rounds) {
-    //                     count_key += " ";
-    //                 }            
-    //             }
-    //             // std::reverse(count_key.begin(), count_key.end()); // Reverse string (NOT NEEDED BECAUSE SLOWS DOWN)
-
-    //             auto det_syndromes = counts_to_det_syndr(count_key, _resets, false, false);
-    //             auto detectionEvents = syndromeArrayToDetectionEvents(det_syndromes, matching.get_num_detectors(), matching.get_boundary().size());
-    //             auto [predicted_observables, rescaled_weight] = decode(matching, detectionEvents);
-    //             int actual_observable = (static_cast<int>(count_key[-1]) - logical) % 2;
-
-    //             if (_detailed) {
-    //                 ShotErrorDetails errorDetail = createShotErrorDetails(matching, detectionEvents, det_syndromes);
-    //                 localResult.error_details.push_back(errorDetail);
-    //             }
-    //             if (!predicted_observables.empty() && predicted_observables[0] != actual_observable) {
-    //                 localResult.num_errors++; // Increment error count if they don't match
-    //                 localResult.indices.push_back(shot);
-    //             }
-    //         }              
-            
-    //         // Combine results
-    //         #pragma omp critical
-    //         {
-    //             result.num_errors += localResult.num_errors;
-    //             result.indices.insert(result.indices.end(), localResult.indices.begin(), localResult.indices.end());
-    //             result.error_details.insert(result.error_details.end(), localResult.error_details.begin(), localResult.error_details.end());
-    //         }
-    //     }
-        
-    //     return result;
-    // }
-
-    // PBL: not parrallelized
-    // DetailedDecodeResult decode_IQ_kde(
-    //     // UserGraph &matching,
-    //     stim::DetectorErrorModel& detector_error_model,
-    //     const Eigen::MatrixXcd &not_scaled_IQ_data,
-    //     int synd_rounds,
-    //     int logical,
-    //     bool _resets,
-    //     const std::map<int, int> &qubit_mapping,
-    //     std::map<int, KDE_Result> kde_dict,
-    //     bool _detailed) {
-
-    //     DetailedDecodeResult result;
-    //     result.num_errors = 0;
-    //     UserGraph matching = detector_error_model_to_user_graph_private(detector_error_model);
-
-    //     std::set<size_t> empty_set;        
-    //     int distance = (not_scaled_IQ_data.cols() + synd_rounds) / (synd_rounds + 1); // Hardcoded for RepCodes
-
-    //     for (int shot = 0; shot < not_scaled_IQ_data.rows(); ++shot) {
-    //         Eigen::MatrixXcd not_scaled_IQ_shot_matrix = not_scaled_IQ_data.row(shot);
-    //         std::string count_key;
-
-    //         for (int msmt = 0; msmt < not_scaled_IQ_shot_matrix.cols(); ++msmt) { 
-    //             int qubit_idx = qubit_mapping.at(msmt);
-    //             auto &kde_entry = kde_dict.at(qubit_idx);
-    //             std::complex<double> not_scaled_point = not_scaled_IQ_data(shot, msmt);   
-
-    //             arma::mat query_point(2, 1); // 2 rows, 1 column
-    //             query_point(0, 0) = std::real(not_scaled_point); // real
-    //             query_point(1, 0) = std::imag(not_scaled_point); // imag 
-
-    //             query_point.row(0) -= kde_entry.scaler_mean[0]; // Element-wise subtraction
-    //             query_point.row(1) -= kde_entry.scaler_mean[1]; // Element-wise subtraction
-    //             query_point.row(0) /= kde_entry.scaler_stddev[0]; // Element-wise division
-    //             query_point.row(1) /= kde_entry.scaler_stddev[1]; // Element-wise division
-                
-    //             arma::vec estimations0(1);
-    //             arma::vec estimations1(1);
-    //             kde_entry.kde_0.Evaluate(query_point, estimations0);
-    //             kde_entry.kde_1.Evaluate(query_point, estimations1);
-
-    //             double p_small;
-    //             double p_big;
-
-    //             if (estimations0[0] > estimations1[0]) {
-    //                 count_key += "0";    
-    //                 p_small = estimations1[0];
-    //                 p_big = estimations0[0];
-    //             } else {
-    //                 count_key += "1";
-    //                 p_small = estimations0[0];
-    //                 p_big = estimations1[0];
-    //             }
-
-    //             if (msmt < (distance-1)*synd_rounds) {  
-    //                 double p_soft = 1 / (1 + p_big/p_small);                   
-    //                 if (_resets) {                                        
-    //                     size_t neighbor_index = matching.nodes[msmt].index_of_neighbor(msmt + (distance-1));
-    //                     if (neighbor_index != SIZE_MAX) {
-    //                         // Edge exists, access its attributes
-    //                         auto edge_it = matching.nodes[msmt].neighbors[neighbor_index].edge_it;
-
-    //                         double error_probability = edge_it->error_probability;
-    //                         double p_tot = p_soft*(1-error_probability) + (1-p_soft)*error_probability;
-
-    //                         pm::add_edge(matching, msmt, msmt + (distance-1), empty_set, -std::log(p_tot/(1-p_tot)), error_probability, "replace");
-    //                     } else {
-    //                         throw std::runtime_error("Edge does not exist between:" + std::to_string(msmt) +  " and " + std::to_string(msmt + (distance-1)));
-    //                     }
-    //                 } else {
-    //                     if (msmt < (distance-1)*(synd_rounds-1)) {
-    //                         double L = -std::log(p_soft/(1-p_soft));
-    //                         pm::add_edge(matching, msmt, msmt + 2 * (distance-1), empty_set, L, 0.5, "replace");
-    //                     } else {
-    //                         size_t neighbor_index = matching.nodes[msmt].index_of_neighbor(msmt + (distance-1));
-    //                         if (neighbor_index != SIZE_MAX) {
-    //                             // Edge exists, access its attributes
-    //                             auto edge_it = matching.nodes[msmt].neighbors[neighbor_index].edge_it;
-
-    //                             double error_probability = edge_it->error_probability;
-    //                             double p_tot = p_soft*(1-error_probability) + (1-p_soft)*error_probability;
-
-    //                             pm::add_edge(matching, msmt, msmt + (distance-1), empty_set, -std::log(p_tot/(1-p_tot)), error_probability, "replace");
-    //                         } else {
-    //                             throw std::runtime_error("Edge does not exist between:" + std::to_string(msmt) +  " and " + std::to_string(msmt + (distance-1)));
-    //                         }
-    //                     }
-    //                 }
-    //             }
-
-    //             if ((msmt + 1) % (distance - 1) == 0 && (msmt + 1) / (distance - 1) <= synd_rounds) {
-    //                 count_key += " ";
-    //             }            
-    //         }
-
-    //         // std::cout << "count_key 1:_" << count_key << "_" << std::endl;
-
-    //         // std::reverse(count_key.begin(), count_key.end()); // Reverse string (NOT NEEDED BECAUSE SLOWS DOWN)
-
-    //         // std::cout << "count_key 2:_" << count_key << "_" << std::endl;
-
-    //         // std::cout << "count_key[0]:_" << count_key[0] << "_" << std::endl;
-    //         // std::cout << "count_key[-1]:_" << count_key.back() << "_" << std::endl;=
-
-    //         auto det_syndromes = counts_to_det_syndr(count_key, _resets, false, false);
-    //         auto detectionEvents = syndromeArrayToDetectionEvents(det_syndromes, matching.get_num_detectors(), matching.get_boundary().size());
-    //         auto [predicted_observables, rescaled_weight] = decode(matching, detectionEvents);
-    //         int actual_observable = (static_cast<int>(count_key.back()) - logical) % 2;
-
-    //         if (_detailed) {
-    //             ShotErrorDetails errorDetail = createShotErrorDetails(matching, detectionEvents, det_syndromes);
-    //             result.error_details.push_back(errorDetail);
-    //         }
-    //         if (!predicted_observables.empty() && predicted_observables[0] != actual_observable) {
-    //             result.num_errors++; // Increment error count if they don't match
-    //             result.indices.push_back(shot);
-    //         }
-    //     }
-
-    //     return result;
-    // }
-
-    // PBL: profiling std::couts
-    // DetailedDecodeResult decode_IQ_kde(
-    //     UserGraph &matching,
-    //     const Eigen::MatrixXcd &not_scaled_IQ_data,
-    //     int synd_rounds,
-    //     int logical,
-    //     bool _resets,
-    //     const std::map<int, int> &qubit_mapping,
-    //     std::map<int, KDE_Result> kde_dict,
-    //     bool _detailed) {
-
-    //     DetailedDecodeResult result;
-    //     result.num_errors = 0;
-
-    //     std::set<size_t> empty_set;
-
-    //     // Start of profiling
-    //     auto start_total = std::chrono::high_resolution_clock::now();
-        
-    //     int distance = (not_scaled_IQ_data.cols() + synd_rounds) / (synd_rounds + 1); // Hardcoded for RepCodes
-
-    //     for (int shot = 0; shot < not_scaled_IQ_data.rows(); ++shot) {
-    //         // Start timing for this shot
-    //         auto start_shot = std::chrono::high_resolution_clock::now();
-
-    //         Eigen::MatrixXcd not_scaled_IQ_shot_matrix = not_scaled_IQ_data.row(shot);
-
-    //         // Measure time for get_counts_kde
-    //         auto start_get_counts = std::chrono::high_resolution_clock::now();
-
-    //         std::string count_key;
-    //         for (int msmt = 0; msmt < not_scaled_IQ_shot_matrix.cols(); ++msmt) { 
-    //             int qubit_idx = qubit_mapping.at(msmt);
-    //             auto &kde_entry = kde_dict.at(qubit_idx);
-    //             std::complex<double> not_scaled_point = not_scaled_IQ_data(shot, msmt);   
-
-    //             arma::mat query_point(2, 1); // 2 rows, 1 column
-    //             query_point(0, 0) = std::real(not_scaled_point); // real
-    //             query_point(1, 0) = std::imag(not_scaled_point); // imag 
-
-    //             query_point.row(0) -= kde_entry.scaler_mean[0]; // Element-wise subtraction
-    //             query_point.row(1) -= kde_entry.scaler_mean[1]; // Element-wise subtraction
-    //             query_point.row(0) /= kde_entry.scaler_stddev[0]; // Element-wise division
-    //             query_point.row(1) /= kde_entry.scaler_stddev[1]; // Element-wise division
-                
-    //             arma::vec estimations0(1);
-    //             arma::vec estimations1(1);
-    //             kde_entry.kde_0.Evaluate(query_point, estimations0);
-    //             kde_entry.kde_1.Evaluate(query_point, estimations1);
-
-    //             double p_small;
-    //             double p_big;
-
-    //             if (estimations0[0] > estimations1[0]) {
-    //                 count_key += "0";    
-    //                 p_small = estimations1[0];
-    //                 p_big = estimations0[0];
-    //             } else {
-    //                 count_key += "1";
-    //                 p_small = estimations0[0];
-    //                 p_big = estimations1[0];
-    //             }
-
-    //             if (msmt < (distance-1)*synd_rounds) {  
-    //                 double p_soft = 1 / (1 + p_big/p_small);                   
-    //                 if (_resets) {                                        
-    //                     size_t neighbor_index = matching.nodes[msmt].index_of_neighbor(msmt + (distance-1));
-    //                     if (neighbor_index != SIZE_MAX) {
-    //                         // Edge exists, access its attributes
-    //                         auto edge_it = matching.nodes[msmt].neighbors[neighbor_index].edge_it;
-
-    //                         double error_probability = edge_it->error_probability;
-    //                         double p_tot = p_soft*(1-error_probability) + (1-p_soft)*error_probability;
-
-    //                         pm::add_edge(matching, msmt, msmt + (distance-1), empty_set, -std::log(p_tot/(1-p_tot)), error_probability, "replace");
-    //                     } else {
-    //                         throw std::runtime_error("Edge does not exist between:" + std::to_string(msmt) +  " and " + std::to_string(msmt + (distance-1)));
-    //                     }
-    //                 } else {
-    //                     if (msmt < (distance-1)*(synd_rounds-1)) {
-    //                         double L = -std::log(p_soft/(1-p_soft));
-    //                         pm::add_edge(matching, msmt, msmt + 2 * (distance-1), empty_set, L, 0.5, "replace");
-    //                     } else {
-    //                         size_t neighbor_index = matching.nodes[msmt].index_of_neighbor(msmt + (distance-1));
-    //                         if (neighbor_index != SIZE_MAX) {
-    //                             // Edge exists, access its attributes
-    //                             auto edge_it = matching.nodes[msmt].neighbors[neighbor_index].edge_it;
-
-    //                             double error_probability = edge_it->error_probability;
-    //                             double p_tot = p_soft*(1-error_probability) + (1-p_soft)*error_probability;
-
-    //                             pm::add_edge(matching, msmt, msmt + (distance-1), empty_set, -std::log(p_tot/(1-p_tot)), error_probability, "replace");
-    //                         } else {
-    //                             throw std::runtime_error("Edge does not exist between:" + std::to_string(msmt) +  " and " + std::to_string(msmt + (distance-1)));
-    //                         }
-    //                     }
-    //                 }
-    //             }
-
-    //             if ((msmt + 1) % (distance - 1) == 0 && (msmt + 1) / (distance - 1) <= synd_rounds) {
-    //                 count_key += " ";
-    //             }            
-    //         }
-    //         // std::reverse(count_key.begin(), count_key.end()); // Reverse string
-
-    //         auto end_get_counts = std::chrono::high_resolution_clock::now();
-    //         auto get_counts_duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_get_counts - start_get_counts);
-
-    //         // Measure time for counts_to_det_syndr
-    //         auto start_counts_to_det_syndr = std::chrono::high_resolution_clock::now();
-    //         auto det_syndromes = counts_to_det_syndr(count_key, _resets, false);
-    //         auto end_counts_to_det_syndr = std::chrono::high_resolution_clock::now();
-    //         auto counts_to_det_syndr_duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_counts_to_det_syndr - start_counts_to_det_syndr);
-
-    //         auto detectionEvents = syndromeArrayToDetectionEvents(det_syndromes, matching.get_num_detectors(), matching.get_boundary().size());
-
-    //         // Measure time for decode
-    //         auto start_decode = std::chrono::high_resolution_clock::now();
-    //         auto [predicted_observables, rescaled_weight] = decode(matching, detectionEvents);
-    //         auto end_decode = std::chrono::high_resolution_clock::now();
-    //         auto decode_duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_decode - start_decode);
-
-    //         int actual_observable = (static_cast<int>(count_key[0]) - logical) % 2;
-
-    //         // Stop timing for this shot
-    //         auto end_shot = std::chrono::high_resolution_clock::now();
-
-    //         // Calculate the time for this shot
-    //         auto shot_duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_shot - start_shot);
-
-    //         // Print the time for each part
-    //         std::cout << "Shot " << shot << " timing:" << std::endl;
-    //         std::cout << "get_counts_kde: " << get_counts_duration.count() << " milliseconds" << std::endl;
-    //         std::cout << "counts_to_det_syndr: " << counts_to_det_syndr_duration.count() << " milliseconds" << std::endl;
-    //         std::cout << "decode: " << decode_duration.count() << " milliseconds" << std::endl;
-    //         std::cout << "Total shot execution time: " << shot_duration.count() << " milliseconds" << std::endl;
-
-    //         if (_detailed) {
-    //             ShotErrorDetails errorDetail = createShotErrorDetails(matching, detectionEvents, det_syndromes);
-    //             result.error_details.push_back(errorDetail);
-    //         }
-    //         if (!predicted_observables.empty() && predicted_observables[0] != actual_observable) {
-    //             result.num_errors++; // Increment error count if they don't match
-    //             result.indices.push_back(shot);
-    //         }
-    //     }
-
-    //     // Stop timing for the entire function
-    //     auto end_total = std::chrono::high_resolution_clock::now();
-
-    //     // Calculate the total time for the function
-    //     auto total_duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_total - start_total);
-
-    //     // Print the total time for the function
-    //     std::cout << "Total execution time: " << total_duration.count() << " milliseconds" << std::endl;
-
-    //     return result;
-    // }
-
-
-    
-    // // has cummulative reweighting problem + extremely slow (slower than python)
-    // DetailedDecodeResult decode_IQ_kde(
-    //     UserGraph &matching,
-    //     const Eigen::MatrixXcd &not_scaled_IQ_data,
-    //     int synd_rounds,
-    //     int logical,
-    //     bool _resets,
-    //     const std::map<int, int> &qubit_mapping, 
-    //     std::map<int, KDE_Result> kde_dict,
-    //     bool _detailed) {
-            
-    //         DetailedDecodeResult result;
-    //         result.num_errors = 0;
-
-    //         // Start of profiling
-    //         auto start_total = std::chrono::high_resolution_clock::now();
-
-    //         for (int shot = 0; shot < not_scaled_IQ_data.rows(); ++shot) {
-    //             Eigen::MatrixXcd not_scaled_IQ_shot_matrix = not_scaled_IQ_data.row(shot);
-
-    //             auto counts = get_counts_kde(not_scaled_IQ_shot_matrix, qubit_mapping, kde_dict, synd_rounds);
-    //             std::string count_key = counts.begin()->first;
-
-    //             soft_reweight_kde(matching, not_scaled_IQ_shot_matrix, synd_rounds,
-    //                                   _resets, qubit_mapping, kde_dict);
-
-    //             auto det_syndromes = counts_to_det_syndr(count_key, _resets, false);
-    //             auto detectionEvents = syndromeArrayToDetectionEvents(det_syndromes, matching.get_num_detectors(), matching.get_boundary().size());
-
-    //             auto [predicted_observables, rescaled_weight] = decode(matching, detectionEvents);
-
-    //             int actual_observable = (static_cast<int>(count_key[0]) - logical) % 2; // Convert first character to int and modulo 2
-    //             // int actual_observable = (static_cast<int>(count_key[0]) - '0') % 2;  // Convert first character to int and modulo 2
-    //             // Check if predicted_observables is not empty and compare the first element
-    //             if (_detailed)
-    //             {
-    //                 ShotErrorDetails errorDetail = createShotErrorDetails(matching, detectionEvents, det_syndromes);
-    //                 result.error_details.push_back(errorDetail);
-    //             }
-    //             if (!predicted_observables.empty() && predicted_observables[0] != actual_observable)
-    //             {
-    //                 result.num_errors++; // Increment error count if they don't match
-    //                 result.indices.push_back(shot);
-    //             }
-    //         }
-    //         return result;
-    //     }
-
 
 
     DetailedDecodeResult decode_IQ_shots_flat(
