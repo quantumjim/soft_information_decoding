@@ -47,7 +47,12 @@ def get_noise_dict_from_backend(provider, device: str, used_qubits: list = None,
         # t2_err = (1 - np.exp(-idling_time**2 / properties.t2(qubit)**2))/2 - t1_err (For spin qubits (n=1 noise))
         noise_dict[qubit]['t1_err'] = t1_err
         noise_dict[qubit]['t2_err'] = t2_err 
-        assert t1_err >= 0 and t2_err >= 0, f"Not positive probabilities. t1_err: {t1_err}, t2_err: {t2_err}, qubit: {qubit}, T1: {properties.t1(qubit)}, T2: {properties.t2(qubit)}"
+        
+        if t2_err < 0 and t2_err > -0.5e-2:
+            warnings.warn(f"Negative T2 error {t2_err*100:.2f} % for qubit {qubit}, setting to 0.")
+            t2_err = 0
+        else:
+            assert t1_err >= 0 and t2_err >= 0, f"Not positive probabilities. t1_err: {t1_err}, t2_err: {t2_err}, qubit: {qubit}, T1: {properties.t1(qubit)}, T2: {properties.t2(qubit)}"
 
         # idle_error = 1 - np.exp(-round_time / min(properties.t1(qubit), properties.t2(qubit)))
         # noise_dict[qubit]['idle'] = idle_error

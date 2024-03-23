@@ -40,6 +40,9 @@ def run_IQ_calibration(backend: BackendV2, shots: int = None) -> None:
     transpiled_circuits["transpile_qc_0_double"] = transpile(qcd_0, backend, optimization_level=0)
     transpiled_circuits["transpile_qc_1_double"] = transpile(qcd_1, backend, optimization_level=0)
 
+    # print(transpiled_circuits["transpile_qc_0_double"].draw(fold=-1))
+    # print(transpiled_circuits["transpile_qc_1_double"].draw(fold=-1))
+
 
     for i in [0, 1]:
         metadata = metadata_helper(num_qubits=n_qubits, sampled_state=f"{i}"*n_qubits, 
