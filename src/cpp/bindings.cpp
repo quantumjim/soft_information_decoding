@@ -221,7 +221,8 @@ PYBIND11_MODULE(cpp_soft_info, m) {
     py::arg("synd_rounds"), py::arg("logical"),
     py::arg("_resets"), py::arg("qubit_mapping"),
     py::arg("kde_dict"), py::arg("_detailed") = false,
-    py::arg("relError") = -1, py::arg("absError") = -1);
+    py::arg("relError") = -1, py::arg("absError") = -1,
+    py::arg("_ntnn_edges")= false);
 
       
     m.def("decode_IQ_shots_flat", &pm::decode_IQ_shots_flat,

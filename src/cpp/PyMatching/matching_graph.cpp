@@ -893,7 +893,8 @@ namespace pm
         std::map<int, KDE_Result> kde_dict,
         bool _detailed,
         double relError,
-        double absError) {
+        double absError,
+        bool _ntnn_edges) {
 
         DetailedDecodeResult result;
         result.num_errors = 0;
@@ -907,6 +908,10 @@ namespace pm
         #pragma omp parallel private(matching)
         {
             matching = detector_error_model_to_user_graph_private(detector_error_model);
+            
+            // if (_ntnn_edges) {
+            //     reweight_edges_informed(matching, distance, -1, -1, -1, -1, _ntnn_edges);
+            // }           
 
             #pragma omp for nowait  
             for (int shot = 0; shot < not_scaled_IQ_data.rows(); ++shot) {
