@@ -48,7 +48,7 @@ def get_noise_dict_from_backend(provider, device: str, used_qubits: list = None,
         noise_dict[qubit]['t1_err'] = t1_err
         noise_dict[qubit]['t2_err'] = t2_err 
         
-        if t2_err < 0 and t2_err > -0.5e-2:
+        if t2_err < 0 and t2_err > -1e-2:
             warnings.warn(f"Negative T2 error {t2_err*100:.2f} % for qubit {qubit}, setting to 0.")
             t2_err = 0
         else:

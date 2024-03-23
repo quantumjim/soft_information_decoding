@@ -105,14 +105,18 @@ def find_closest_calib_jobs(tobecalib_job: Optional[str] = None,
 
 
 
-def load_calibration_memory(provider, tobecalib_job: Optional[str] = None, tobecalib_backend: Optional[str] = None,
-                             qubits: Optional[List[int]] = None, other_date = None): 
+def load_calibration_memory(provider, 
+                            tobecalib_job: Optional[str] = None, 
+                            tobecalib_backend: Optional[str] = None,
+                            qubits: Optional[List[int]] = None, 
+                            other_date = None,
+                            nb_shots: int = None): 
     """Load the calibration memory for the closest calibration jobs for the given job ID."""
     if not tobecalib_job and not tobecalib_backend:
         raise NotImplementedError("Only loading calibration data for a specific job or a specified backend is currently supported.")
     
     closest_job_ids, _, _ = find_closest_calib_jobs(tobecalib_job, tobecalib_backend, other_date=other_date)
-    print(closest_job_ids) 
+    # print(closest_job_ids) 
     all_memories = {}
     for state, job_id in closest_job_ids.items():
         mmr_name = f"mmr_{state}"
@@ -142,7 +146,10 @@ def load_calibration_memory(provider, tobecalib_job: Optional[str] = None, tobec
             if qubit < reordered_memory.shape[1]:  # Check if qubit index is valid
                 if qubit not in all_memories:
                     all_memories[qubit] = {}
-                all_memories[qubit][mmr_name] = reordered_memory[:, int(qubit)]
+                if nb_shots is not None:
+                    all_memories[qubit][mmr_name] = reordered_memory[:nb_shots, int(qubit)]
+                else:
+                    all_memories[qubit][mmr_name] = reordered_memory[:, int(qubit)]
 
     return all_memories
 

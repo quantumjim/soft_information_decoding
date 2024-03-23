@@ -73,3 +73,20 @@ def get_cols_to_keep(subset, T, D):
     cols_to_keep.extend(c_cols_to_keep)
 
     return cols_to_keep
+
+
+def get_subsample_layout(subset, link_qubits, code_qubits):
+    """
+    Args:
+        subset (list): A list of indices of the subset
+        link_qubits (int): The number of link qubits
+        code_qubits (int): The number of code qubits
+
+    Returns:
+        layout (list): the layout = link_qubits + code_qubits
+    """
+    new_links = [link_qubits[i] for i in subset[:-1]]
+    new_codes = [code_qubits[i] for i in subset]
+    layout = new_links + new_codes
+
+    return layout
