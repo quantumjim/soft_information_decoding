@@ -224,6 +224,13 @@ PYBIND11_MODULE(cpp_soft_info, m) {
     py::arg("relError") = -1, py::arg("absError") = -1,
     py::arg("_ntnn_edges")= false);
 
+    m.def("decode_all_kde", &pm::decode_all_kde,
+    py::arg("detector_error_model"), py::arg("not_scaled_IQ_data"),
+    py::arg("synd_rounds"), py::arg("logical"),
+    py::arg("_resets"), py::arg("qubit_mapping"),
+    py::arg("kde_dict"), py::arg("relError") = -1, 
+    py::arg("absError") = -1, py::arg("nb_intervals") = -1,
+    py::arg("interval_offset") = 0.5);
       
     m.def("decode_IQ_shots_flat", &pm::decode_IQ_shots_flat,
       "Decode a matching graph using IQ data but weight edges to 1",

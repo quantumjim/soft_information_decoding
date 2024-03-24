@@ -4,6 +4,7 @@
 
 #include <vector>
 #include <set>
+#include <tuple>
 #include <map>
 #include <cmath>
 #include <stdexcept>
@@ -975,6 +976,161 @@ namespace pm
             }
         }
         return result;
+    }
+
+    std::tuple<DetailedDecodeResult, DetailedDecodeResult> decode_all_kde(
+        stim::DetectorErrorModel& detector_error_model,
+        const Eigen::MatrixXcd &not_scaled_IQ_data,
+        int synd_rounds,
+        int logical,
+        bool _resets,
+        const std::map<int, int> &qubit_mapping,
+        std::map<int, KDE_Result> kde_dict,
+        double relError,
+        double absError,
+        float nb_intervals,
+        float interval_offset) {
+
+        DetailedDecodeResult result_soft;
+        result_soft.num_errors = 0;
+        result_soft.error_details.resize(not_scaled_IQ_data.rows());
+
+        DetailedDecodeResult result_hard;
+        result_hard.num_errors = 0;
+        result_hard.error_details.resize(not_scaled_IQ_data.rows());
+
+        std::set<size_t> empty_set;        
+        int distance = (not_scaled_IQ_data.cols() + synd_rounds) / (synd_rounds + 1); // Hardcoded for RepCodes
+
+        UserGraph matching;
+
+        #pragma omp parallel private(matching)
+        {
+            matching = detector_error_model_to_user_graph_private(detector_error_model);
+
+            #pragma omp for nowait  
+            for (int shot = 0; shot < not_scaled_IQ_data.rows(); ++shot) {
+                Eigen::MatrixXcd not_scaled_IQ_shot_matrix = not_scaled_IQ_data.row(shot);
+                std::string count_key;
+
+                for (int msmt = 0; msmt < not_scaled_IQ_shot_matrix.cols(); ++msmt) { 
+                    int qubit_idx = qubit_mapping.at(msmt);
+                    auto &kde_entry = kde_dict.at(qubit_idx);
+                    std::complex<double> not_scaled_point = not_scaled_IQ_data(shot, msmt);   
+
+                    arma::mat query_point(2, 1); // 2 rows, 1 column
+                    query_point(0, 0) = std::real(not_scaled_point); 
+                    query_point(1, 0) = std::imag(not_scaled_point); 
+
+                    query_point.row(0) -= kde_entry.scaler_mean[0]; 
+                    query_point.row(1) -= kde_entry.scaler_mean[1]; 
+                    query_point.row(0) /= kde_entry.scaler_stddev[0]; 
+                    query_point.row(1) /= kde_entry.scaler_stddev[1]; 
+                    
+                    arma::vec estimations0(1);
+                    arma::vec estimations1(1);
+
+                    if (relError != -1) {
+                        kde_entry.kde_0.RelativeError(relError);
+                        kde_entry.kde_1.RelativeError(relError);
+                    }
+                    if (absError != -1) {
+                        kde_entry.kde_0.AbsoluteError(absError);
+                        kde_entry.kde_1.AbsoluteError(absError);
+                    }
+
+                    kde_entry.kde_0.Evaluate(query_point, estimations0);
+                    kde_entry.kde_1.Evaluate(query_point, estimations1);
+
+                    double p_small;
+                    double p_big;
+                    
+                    if (estimations0[0] > estimations1[0]) {
+                        count_key += "0";    
+                        p_small = estimations1[0];
+                        p_big = estimations0[0];
+                    } else {
+                        count_key += "1";
+                        p_small = estimations0[0];
+                        p_big = estimations1[0];
+                    }
+                    if (msmt < (distance-1)*synd_rounds) {  
+                        double p_soft = 1 / (1 + p_big/p_small);    
+
+                        // round p_soft
+                        if (nb_intervals != -1) {
+                            double intervalSize = 0.5 / nb_intervals;
+                            int intervalIndex = static_cast<int>(p_soft / intervalSize);
+                            p_soft = (intervalIndex + interval_offset) * intervalSize;
+                            if (p_soft > 0.5) {
+                                p_soft = 0.5;
+                            }
+                        }               
+                        if (_resets) {                                        
+                            size_t neighbor_index = matching.nodes[msmt].index_of_neighbor(msmt + (distance-1));
+                            if (neighbor_index != SIZE_MAX) {
+                                // Edge exists, access its attributes
+                                auto edge_it = matching.nodes[msmt].neighbors[neighbor_index].edge_it;
+
+                                double error_probability = edge_it->error_probability;
+                                double p_tot = p_soft*(1-error_probability) + (1-p_soft)*error_probability;
+
+                                pm::add_edge(matching, msmt, msmt + (distance-1), empty_set, -std::log(p_tot/(1-p_tot)), error_probability, "replace");
+                                // TODO: retrieve the soft_flip contribution of the time edge and just change it with the new soft flip NOT JUST ADD new p_soft!
+                            } else {
+                                throw std::runtime_error("Edge does not exist between:" + std::to_string(msmt) +  " and " + std::to_string(msmt + (distance-1)));
+                            }
+                        } else {
+                            if (msmt < (distance-1)*(synd_rounds-1)) {
+                                double L = -std::log(p_soft/(1-p_soft));
+                                pm::add_edge(matching, msmt, msmt + 2 * (distance-1), empty_set, L, 0.5, "replace");
+                            } else {
+                                size_t neighbor_index = matching.nodes[msmt].index_of_neighbor(msmt + (distance-1));
+                                if (neighbor_index != SIZE_MAX) {
+                                    // Edge exists, access its attributes
+                                    auto edge_it = matching.nodes[msmt].neighbors[neighbor_index].edge_it;
+
+                                    double error_probability = edge_it->error_probability;
+                                    double p_tot = p_soft*(1-error_probability) + (1-p_soft)*error_probability;
+
+                                    pm::add_edge(matching, msmt, msmt + (distance-1), empty_set, -std::log(p_tot/(1-p_tot)), error_probability, "replace");
+                                } else {
+                                    throw std::runtime_error("Edge does not exist between:" + std::to_string(msmt) +  " and " + std::to_string(msmt + (distance-1)));
+                                }
+                            }
+                        }
+                    }
+
+                    if ((msmt + 1) % (distance - 1) == 0 && (msmt + 1) / (distance - 1) <= synd_rounds) {
+                        count_key += " ";
+                    }            
+                }
+
+                auto det_syndromes = counts_to_det_syndr(count_key, _resets, false, false);
+                auto detectionEvents = syndromeArrayToDetectionEvents(det_syndromes, matching.get_num_detectors(), matching.get_boundary().size());
+                auto [predicted_observables_soft, rescaled_weight] = decode(matching, detectionEvents);
+
+                // Reset the graph and redecode
+                matching = detector_error_model_to_user_graph_private(detector_error_model); 
+                auto [predicted_observables_hard, rescaled_weight_hard] = decode(matching, detectionEvents);
+                
+                // Actual observable
+                int actual_observable = (static_cast<int>(count_key.back()) - logical) % 2;
+
+                #pragma omp critical
+                {
+                    if (!predicted_observables_soft.empty() && predicted_observables_soft[0] != actual_observable) {
+                        result_soft.num_errors++; // Increment error count if they don't match
+                        result_soft.indices.push_back(shot);
+                    }
+                    if (!predicted_observables_hard.empty() && predicted_observables_hard[0] != actual_observable) {
+                        result_hard.num_errors++; // Increment error count if they don't match
+                        result_hard.indices.push_back(shot);
+                    }
+                }
+            }
+        }
+        return std::make_tuple(result_soft, result_hard);
     }
 
 

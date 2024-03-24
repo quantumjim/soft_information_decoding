@@ -128,6 +128,19 @@ namespace pm {
         double relError = -1,
         double absError = -1,
         bool _ntnn_edges = false);
+
+    std::tuple<DetailedDecodeResult, DetailedDecodeResult> decode_all_kde(
+        stim::DetectorErrorModel& detector_error_model,
+        const Eigen::MatrixXcd &not_scaled_IQ_data,
+        int synd_rounds,
+        int logical,
+        bool _resets,
+        const std::map<int, int> &qubit_mapping,
+        std::map<int, KDE_Result> kde_dict,
+        double relError = -1,
+        double absError = -1,
+        float nb_intervals = -1,
+        float interval_offset = 0.5);
     
     DetailedDecodeResult decode_IQ_shots_flat(
         UserGraph &matching,
