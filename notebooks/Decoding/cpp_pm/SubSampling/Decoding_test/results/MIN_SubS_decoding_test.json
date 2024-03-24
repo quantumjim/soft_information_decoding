@@ -2604,5 +2604,1072 @@
                 0.025626857142857125
             ]
         }
+    ],
+    "cqtcp0r36d60008hyr80": [
+        "X0",
+        {
+            "decoding": "kde",
+            "num_errors": 0.0,
+            "error_list": [
+                0,
+                0
+            ],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.4,
+                    0.7,
+                    20
+                ],
+                "num_points_bandwidths": 51
+            }
+        },
+        {
+            "decoding": "hard",
+            "num_errors": 1.0,
+            "error_list": [
+                1,
+                1
+            ],
+            "noise_list": [
+                0.008613660087167675,
+                0.0006166850032729678,
+                0.0013158765735089956,
+                0.005830462125917879,
+                0.024692655367231635,
+                0.006173163841807909,
+                0.018519491525423724
+            ]
+        },
+        {
+            "decoding": "kde",
+            "num_errors": 0.0,
+            "error_list": [
+                0,
+                0
+            ],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.4,
+                    0.7,
+                    20
+                ],
+                "num_points_bandwidths": 51
+            }
+        },
+        {
+            "decoding": "hard",
+            "num_errors": 1.0,
+            "error_list": [
+                0,
+                2
+            ],
+            "noise_list": [
+                0.008613660087167675,
+                0.0006166850032729678,
+                0.0013158765735089956,
+                0.005830462125917879,
+                0.024692655367231635,
+                0.006173163841807909,
+                0.018519491525423724
+            ]
+        },
+        {
+            "decoding": "kde",
+            "num_errors": 0.0,
+            "error_list": [
+                0,
+                0
+            ],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.4,
+                    0.7,
+                    20
+                ],
+                "num_points_bandwidths": 51
+            }
+        },
+        {
+            "decoding": "hard",
+            "num_errors": NaN,
+            "error_list": [],
+            "noise_list": [
+                0.008613660087167675,
+                0.0006166850032729678,
+                0.0013158765735089956,
+                0.005830462125917879,
+                0.024692655367231635,
+                0.006173163841807909,
+                0.018519491525423724
+            ]
+        },
+        {
+            "decoding": "kde",
+            "num_errors": NaN,
+            "error_list": [],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.4,
+                    0.7,
+                    20
+                ],
+                "num_points_bandwidths": 51
+            }
+        },
+        {
+            "decoding": "hard",
+            "num_errors": NaN,
+            "error_list": [],
+            "noise_list": [
+                0.008613660087167675,
+                0.0006166850032729678,
+                0.0013158765735089956,
+                0.005830462125917879,
+                0.024692655367231635,
+                0.006173163841807909,
+                0.018519491525423724
+            ]
+        },
+        {
+            "decoding": "kde",
+            "num_errors": 0.0,
+            "error_list": [
+                0,
+                0
+            ],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.4,
+                    0.7,
+                    20
+                ],
+                "num_points_bandwidths": 51
+            }
+        },
+        {
+            "decoding": "hard",
+            "num_errors": NaN,
+            "error_list": [],
+            "noise_list": [
+                0.008613660087167675,
+                0.0006166850032729678,
+                0.0013158765735089956,
+                0.005830462125917879,
+                0.024692655367231635,
+                0.006173163841807909,
+                0.018519491525423724
+            ]
+        },
+        {
+            "decoding": "kde",
+            "num_errors": NaN,
+            "error_list": [],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.4,
+                    0.7,
+                    20
+                ],
+                "num_points_bandwidths": 51
+            }
+        },
+        {
+            "decoding": "hard",
+            "num_errors": 1.0,
+            "error_list": [
+                0,
+                2
+            ],
+            "noise_list": [
+                0.008613660087167675,
+                0.0006166850032729678,
+                0.0013158765735089956,
+                0.005830462125917879,
+                0.024692655367231635,
+                0.006173163841807909,
+                0.018519491525423724
+            ]
+        }
+    ],
+    "cqtcnzz88ev000811ygg": [
+        "X0",
+        {
+            "decoding": "kde",
+            "num_errors": 2.5,
+            "error_list": [
+                3,
+                2
+            ],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.4,
+                    0.7,
+                    20
+                ],
+                "num_points_bandwidths": 51
+            }
+        },
+        {
+            "decoding": "hard",
+            "num_errors": NaN,
+            "error_list": [],
+            "noise_list": [
+                0.008613660087167675,
+                0.0006166850032729678,
+                0.0013158765735089956,
+                0.005830462125917879,
+                0.024692655367231635,
+                0.006173163841807909,
+                0.018519491525423724
+            ]
+        },
+        {
+            "decoding": "kde",
+            "num_errors": NaN,
+            "error_list": [],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.4,
+                    0.7,
+                    20
+                ],
+                "num_points_bandwidths": 51
+            }
+        },
+        {
+            "decoding": "hard",
+            "num_errors": NaN,
+            "error_list": [],
+            "noise_list": [
+                0.008613660087167675,
+                0.0006166850032729678,
+                0.0013158765735089956,
+                0.005830462125917879,
+                0.024692655367231635,
+                0.006173163841807909,
+                0.018519491525423724
+            ]
+        },
+        {
+            "decoding": "kde",
+            "num_errors": 2.5,
+            "error_list": [
+                3,
+                2
+            ],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.4,
+                    0.7,
+                    20
+                ],
+                "num_points_bandwidths": 51
+            }
+        },
+        {
+            "decoding": "hard",
+            "num_errors": NaN,
+            "error_list": [],
+            "noise_list": [
+                0.008613660087167675,
+                0.0006166850032729678,
+                0.0013158765735089956,
+                0.005830462125917879,
+                0.024692655367231635,
+                0.006173163841807909,
+                0.018519491525423724
+            ]
+        },
+        {
+            "decoding": "kde",
+            "num_errors": NaN,
+            "error_list": [],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.4,
+                    0.7,
+                    20
+                ],
+                "num_points_bandwidths": 51
+            }
+        },
+        {
+            "decoding": "hard",
+            "num_errors": 2.5,
+            "error_list": [
+                1,
+                4
+            ],
+            "noise_list": [
+                0.008613660087167675,
+                0.0006166850032729678,
+                0.0013158765735089956,
+                0.005830462125917879,
+                0.024692655367231635,
+                0.006173163841807909,
+                0.018519491525423724
+            ]
+        }
+    ],
+    "cqtcnyz88ev000811yg0": [
+        "X0",
+        {
+            "decoding": "kde",
+            "num_errors": 0.5,
+            "error_list": [
+                0,
+                1
+            ],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.4,
+                    0.7,
+                    20
+                ],
+                "num_points_bandwidths": 51
+            }
+        },
+        {
+            "decoding": "hard",
+            "num_errors": NaN,
+            "error_list": [],
+            "noise_list": [
+                0.008613660087167675,
+                0.0006166850032729678,
+                0.0013158765735089956,
+                0.005830462125917879,
+                0.024692655367231635,
+                0.006173163841807909,
+                0.018519491525423724
+            ]
+        },
+        {
+            "decoding": "kde",
+            "num_errors": NaN,
+            "error_list": [],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.4,
+                    0.7,
+                    20
+                ],
+                "num_points_bandwidths": 51
+            }
+        },
+        {
+            "decoding": "hard",
+            "num_errors": NaN,
+            "error_list": [],
+            "noise_list": [
+                0.008613660087167675,
+                0.0006166850032729678,
+                0.0013158765735089956,
+                0.005830462125917879,
+                0.024692655367231635,
+                0.006173163841807909,
+                0.018519491525423724
+            ]
+        },
+        {
+            "decoding": "kde",
+            "num_errors": NaN,
+            "error_list": [],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.4,
+                    0.7,
+                    20
+                ],
+                "num_points_bandwidths": 51
+            }
+        },
+        {
+            "decoding": "hard",
+            "num_errors": 1.5,
+            "error_list": [
+                0,
+                3
+            ],
+            "noise_list": [
+                0.008613660087167675,
+                0.0006166850032729678,
+                0.0013158765735089956,
+                0.005830462125917879,
+                0.024692655367231635,
+                0.006173163841807909,
+                0.018519491525423724
+            ]
+        }
+    ],
+    "cqtcnxq4x0mg008ah0j0": [
+        "X0",
+        {
+            "decoding": "kde",
+            "num_errors": 1.0,
+            "error_list": [
+                0,
+                2
+            ],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.4,
+                    0.7,
+                    20
+                ],
+                "num_points_bandwidths": 51
+            }
+        },
+        {
+            "decoding": "hard",
+            "num_errors": NaN,
+            "error_list": [],
+            "noise_list": [
+                0.008613660087167675,
+                0.0006166850032729678,
+                0.0013158765735089956,
+                0.005830462125917879,
+                0.024692655367231635,
+                0.006173163841807909,
+                0.018519491525423724
+            ]
+        },
+        {
+            "decoding": "kde",
+            "num_errors": NaN,
+            "error_list": [],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.4,
+                    0.7,
+                    20
+                ],
+                "num_points_bandwidths": 51
+            }
+        },
+        {
+            "decoding": "hard",
+            "num_errors": NaN,
+            "error_list": [],
+            "noise_list": [
+                0.008613660087167675,
+                0.0006166850032729678,
+                0.0013158765735089956,
+                0.005830462125917879,
+                0.024692655367231635,
+                0.006173163841807909,
+                0.018519491525423724
+            ]
+        },
+        {
+            "decoding": "kde",
+            "num_errors": NaN,
+            "error_list": [],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.4,
+                    0.7,
+                    20
+                ],
+                "num_points_bandwidths": 51
+            }
+        },
+        {
+            "decoding": "hard",
+            "num_errors": 1.0,
+            "error_list": [
+                0,
+                2
+            ],
+            "noise_list": [
+                0.008613660087167675,
+                0.0006166850032729678,
+                0.0013158765735089956,
+                0.005830462125917879,
+                0.024692655367231635,
+                0.006173163841807909,
+                0.018519491525423724
+            ]
+        }
+    ],
+    "cqtcnwq36d60008hyr7g": [
+        "X0",
+        {
+            "decoding": "kde",
+            "num_errors": 0.5,
+            "error_list": [
+                0,
+                1
+            ],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.4,
+                    0.7,
+                    20
+                ],
+                "num_points_bandwidths": 51
+            }
+        },
+        {
+            "decoding": "hard",
+            "num_errors": NaN,
+            "error_list": [],
+            "noise_list": [
+                0.008613660087167675,
+                0.0006166850032729678,
+                0.0013158765735089956,
+                0.005830462125917879,
+                0.024692655367231635,
+                0.006173163841807909,
+                0.018519491525423724
+            ]
+        },
+        {
+            "decoding": "kde",
+            "num_errors": NaN,
+            "error_list": [],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.4,
+                    0.7,
+                    20
+                ],
+                "num_points_bandwidths": 51
+            }
+        },
+        {
+            "decoding": "hard",
+            "num_errors": NaN,
+            "error_list": [],
+            "noise_list": [
+                0.008613660087167675,
+                0.0006166850032729678,
+                0.0013158765735089956,
+                0.005830462125917879,
+                0.024692655367231635,
+                0.006173163841807909,
+                0.018519491525423724
+            ]
+        }
+    ],
+    "cqtcnvf9nfw0008hrvvg": [
+        "X0",
+        {
+            "decoding": "kde",
+            "num_errors": NaN,
+            "error_list": [],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.4,
+                    0.7,
+                    20
+                ],
+                "num_points_bandwidths": 51
+            }
+        },
+        {
+            "decoding": "hard",
+            "num_errors": NaN,
+            "error_list": [],
+            "noise_list": [
+                0.008613660087167675,
+                0.0006166850032729678,
+                0.0013158765735089956,
+                0.005830462125917879,
+                0.024692655367231635,
+                0.006173163841807909,
+                0.018519491525423724
+            ]
+        }
+    ],
+    "cqtcntftxzj0008xz2k0": [
+        "X0",
+        {
+            "decoding": "kde",
+            "num_errors": NaN,
+            "error_list": [],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.4,
+                    0.7,
+                    20
+                ],
+                "num_points_bandwidths": 51
+            }
+        },
+        {
+            "decoding": "hard",
+            "num_errors": NaN,
+            "error_list": [],
+            "noise_list": [
+                0.008613660087167675,
+                0.0006166850032729678,
+                0.0013158765735089956,
+                0.005830462125917879,
+                0.024692655367231635,
+                0.006173163841807909,
+                0.018519491525423724
+            ]
+        }
+    ],
+    "cqtcnsf88ev000811yfg": [
+        "X0",
+        {
+            "decoding": "kde",
+            "num_errors": NaN,
+            "error_list": [],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.4,
+                    0.7,
+                    20
+                ],
+                "num_points_bandwidths": 51
+            }
+        },
+        {
+            "decoding": "hard",
+            "num_errors": NaN,
+            "error_list": [],
+            "noise_list": [
+                0.008613660087167675,
+                0.0006166850032729678,
+                0.0013158765735089956,
+                0.005830462125917879,
+                0.024692655367231635,
+                0.006173163841807909,
+                0.018519491525423724
+            ]
+        }
+    ],
+    "cqtcnr736d60008hyr60": [
+        "X0",
+        {
+            "decoding": "kde",
+            "num_errors": NaN,
+            "error_list": [],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.4,
+                    0.7,
+                    20
+                ],
+                "num_points_bandwidths": 51
+            }
+        },
+        {
+            "decoding": "hard",
+            "num_errors": NaN,
+            "error_list": [],
+            "noise_list": [
+                0.008613660087167675,
+                0.0006166850032729678,
+                0.0013158765735089956,
+                0.005830462125917879,
+                0.024692655367231635,
+                0.006173163841807909,
+                0.018519491525423724
+            ]
+        }
+    ],
+    "cqtcnq69nfw0008hrvv0": [
+        "X0",
+        {
+            "decoding": "kde",
+            "num_errors": NaN,
+            "error_list": [],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.4,
+                    0.7,
+                    20
+                ],
+                "num_points_bandwidths": 51
+            }
+        },
+        {
+            "decoding": "hard",
+            "num_errors": NaN,
+            "error_list": [],
+            "noise_list": [
+                0.008613660087167675,
+                0.0006166850032729678,
+                0.0013158765735089956,
+                0.005830462125917879,
+                0.024692655367231635,
+                0.006173163841807909,
+                0.018519491525423724
+            ]
+        }
+    ],
+    "cqtwkpy88ev000813d9g": [
+        "X0",
+        {
+            "decoding": "kde",
+            "num_errors": 204.66666666666666,
+            "error_list": [
+                310,
+                151,
+                223,
+                7,
+                236,
+                201,
+                274,
+                308,
+                132
+            ],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.4,
+                    0.7,
+                    20
+                ],
+                "num_points_bandwidths": 51
+            }
+        },
+        {
+            "decoding": "hard",
+            "num_errors": 216.88888888888889,
+            "error_list": [
+                335,
+                224,
+                234,
+                10,
+                231,
+                207,
+                272,
+                311,
+                128
+            ],
+            "noise_list": [
+                0.008859297098214862,
+                0.00027459750829477456,
+                0.001824833358063645,
+                0.0021688591869589435,
+                0.03474615384615384,
+                0.00868653846153846,
+                0.026059615384615382
+            ]
+        },
+        {
+            "decoding": "kde",
+            "num_errors": 204.33333333333334,
+            "error_list": [
+                313,
+                153,
+                220,
+                9,
+                230,
+                201,
+                272,
+                308,
+                133
+            ],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.4,
+                    0.7,
+                    20
+                ],
+                "num_points_bandwidths": 51
+            }
+        },
+        {
+            "decoding": "hard",
+            "num_errors": 216.88888888888889,
+            "error_list": [
+                335,
+                224,
+                234,
+                10,
+                231,
+                207,
+                272,
+                311,
+                128
+            ],
+            "noise_list": [
+                0.008859297098214862,
+                0.00027459750829477456,
+                0.001824833358063645,
+                0.0021688591869589435,
+                0.03474615384615384,
+                0.00868653846153846,
+                0.026059615384615382
+            ]
+        }
+    ],
+    "cqtwkk64x0mg008acts0": [
+        "X0",
+        {
+            "decoding": "kde",
+            "num_errors": 202.77777777777777,
+            "error_list": [
+                268,
+                157,
+                249,
+                8,
+                199,
+                219,
+                272,
+                287,
+                166
+            ],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.4,
+                    0.7,
+                    20
+                ],
+                "num_points_bandwidths": 51
+            }
+        },
+        {
+            "decoding": "hard",
+            "num_errors": 224.88888888888889,
+            "error_list": [
+                305,
+                248,
+                274,
+                18,
+                205,
+                217,
+                303,
+                309,
+                145
+            ],
+            "noise_list": [
+                0.008859297098214862,
+                0.00027459750829477456,
+                0.001824833358063645,
+                0.0021688591869589435,
+                0.03474615384615384,
+                0.00868653846153846,
+                0.026059615384615382
+            ]
+        },
+        {
+            "decoding": "kde",
+            "num_errors": 202.11111111111111,
+            "error_list": [
+                275,
+                156,
+                250,
+                10,
+                189,
+                215,
+                271,
+                286,
+                167
+            ],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.4,
+                    0.7,
+                    20
+                ],
+                "num_points_bandwidths": 51
+            }
+        },
+        {
+            "decoding": "hard",
+            "num_errors": 224.88888888888889,
+            "error_list": [
+                305,
+                248,
+                274,
+                18,
+                205,
+                217,
+                303,
+                309,
+                145
+            ],
+            "noise_list": [
+                0.008859297098214862,
+                0.00027459750829477456,
+                0.001824833358063645,
+                0.0021688591869589435,
+                0.03474615384615384,
+                0.00868653846153846,
+                0.026059615384615382
+            ]
+        }
+    ],
+    "cqtwkfd4x0mg008actrg": [
+        "X0",
+        {
+            "decoding": "kde",
+            "num_errors": 198.0,
+            "error_list": [
+                271,
+                163,
+                252,
+                15,
+                188,
+                210,
+                254,
+                311,
+                118
+            ],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.4,
+                    0.7,
+                    20
+                ],
+                "num_points_bandwidths": 51
+            }
+        },
+        {
+            "decoding": "hard",
+            "num_errors": 217.0,
+            "error_list": [
+                306,
+                244,
+                248,
+                12,
+                216,
+                209,
+                292,
+                297,
+                129
+            ],
+            "noise_list": [
+                0.008859297098214862,
+                0.00027459750829477456,
+                0.001824833358063645,
+                0.0021688591869589435,
+                0.03474615384615384,
+                0.00868653846153846,
+                0.026059615384615382
+            ]
+        },
+        {
+            "decoding": "kde",
+            "num_errors": 195.77777777777777,
+            "error_list": [
+                266,
+                166,
+                253,
+                13,
+                175,
+                209,
+                254,
+                308,
+                118
+            ],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.4,
+                    0.7,
+                    20
+                ],
+                "num_points_bandwidths": 51
+            }
+        },
+        {
+            "decoding": "hard",
+            "num_errors": 217.0,
+            "error_list": [
+                306,
+                244,
+                248,
+                12,
+                216,
+                209,
+                292,
+                297,
+                129
+            ],
+            "noise_list": [
+                0.008859297098214862,
+                0.00027459750829477456,
+                0.001824833358063645,
+                0.0021688591869589435,
+                0.03474615384615384,
+                0.00868653846153846,
+                0.026059615384615382
+            ]
+        }
+    ],
+    "cqtwk4m88ev000813d90": [
+        "X0",
+        {
+            "decoding": "kde",
+            "num_errors": 209.22222222222223,
+            "error_list": [
+                289,
+                166,
+                238,
+                19,
+                207,
+                223,
+                310,
+                285,
+                146
+            ],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.4,
+                    0.7,
+                    20
+                ],
+                "num_points_bandwidths": 51
+            }
+        },
+        {
+            "decoding": "hard",
+            "num_errors": 225.55555555555554,
+            "error_list": [
+                312,
+                242,
+                250,
+                30,
+                238,
+                200,
+                320,
+                312,
+                126
+            ],
+            "noise_list": [
+                0.008859297098214862,
+                0.00027459750829477456,
+                0.001824833358063645,
+                0.0021688591869589435,
+                0.03474615384615384,
+                0.00868653846153846,
+                0.026059615384615382
+            ]
+        }
     ]
 }
