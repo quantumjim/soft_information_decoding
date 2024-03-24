@@ -48,8 +48,8 @@ def get_noise_dict_from_backend(provider, device: str, used_qubits: list = None,
         noise_dict[qubit]['t1_err'] = t1_err
         noise_dict[qubit]['t2_err'] = t2_err 
         
-        if t2_err < 0 and t2_err > -1e-2:
-            warnings.warn(f"Negative T2 error {t2_err*100:.2f} % for qubit {qubit}, setting to 0.")
+        if t2_err < 0 and t2_err > -10e-2: # TODO: change that because this means that the T2 error is higher (Z0) decoding
+            warnings.warn(f"Z0 decoding. Negative T2 error {t2_err*100:.2f} % for qubit {qubit}, setting to 0.")
             t2_err = 0
         else:
             assert t1_err >= 0 and t2_err >= 0, f"Not positive probabilities. t1_err: {t1_err}, t2_err: {t2_err}, qubit: {qubit}, T1: {properties.t1(qubit)}, T2: {properties.t2(qubit)}"
@@ -65,7 +65,11 @@ def get_noise_dict_from_backend(provider, device: str, used_qubits: list = None,
                 two_gate_error = properties.gate_error('ecr', pair)
             except Exception as e:
                 warnings.warn(f"Could not get two gate error of ECR due to {e}, taking CX instead.")
-                two_gate_error = properties.gate_error('cx', pair)
+                try:
+                    two_gate_error = properties.gate_error('cx', pair)
+                except Exception as e:
+                    warnings.warn(f"Could not get two gate error of CX due to {e}, taking 0.5 instead.")
+                    two_gate_error = properties.gate_error('cz', pair)
             if two_gate_error > .5:
                 two_gate_error = .5
             noise_dict[pair[0]]['2-gate'][pair[1]] = two_gate_error

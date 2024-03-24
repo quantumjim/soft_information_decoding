@@ -19,6 +19,9 @@ def generate_subsets_with_center(D, d, verbose=False):
     if verbose:
         print(f"D = {D}, d = {d}")
 
+    if D == d: 
+        return [list(range(D))]
+    
     Q = (D // 2 - d) // (d - 1)
     R = D - 2 * d - 2 * Q * (d - 1)
     if verbose:
