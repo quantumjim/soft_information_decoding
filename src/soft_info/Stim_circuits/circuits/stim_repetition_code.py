@@ -132,10 +132,12 @@ class RepetitionCodeStimCircuit():
         rec = stim.target_rec  # For readability
 
         # Before round depolarization due to idling
-        # self._Z_ent_block.append('DEPOLARIZE1', self.code_qubits, arg=self.idle_err) if self.idle_err > 0 else None
-        # self._X_ent_block.append('DEPOLARIZE1', self.code_qubits, arg=self.idle_err) if self.idle_err > 0 else None
-        errs = (self.t1_err/2, self.t1_err/2, self.t2_err)
-        self._Z_ent_block.append('PAULI_CHANNEL_1', self.code_qubits, arg=errs) if self.t1_err > 0 or self.t2_err > 0 else None
+        self._Z_ent_block.append('X_ERROR', self.code_qubits, arg=self.t1_err/2) if self.t1_err > 0 else None
+        self._Z_ent_block.append('Y_ERROR', self.code_qubits, arg=self.t1_err/2) if self.t1_err > 0 else None
+        self._Z_ent_block.append('Z_ERROR', self.code_qubits, arg=self.t2_err) if self.t2_err > 0 else None
+        self._X_ent_block.append('X_ERROR', self.code_qubits, arg=self.t1_err/2) if self.t1_err > 0 else None
+        self._X_ent_block.append('Y_ERROR', self.code_qubits, arg=self.t1_err/2) if self.t1_err > 0 else None
+        self._X_ent_block.append('Z_ERROR', self.code_qubits, arg=self.t2_err) if self.t2_err > 0 else None
 
         # Z Entanglement block
         # L->R CXss

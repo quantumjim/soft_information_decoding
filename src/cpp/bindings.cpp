@@ -319,6 +319,10 @@ PYBIND11_MODULE(cpp_soft_info, m) {
       py::arg("relError") = -1.0, 
       py::arg("absError") = -1.0);
 
+    m.def("quantizeMatrixVectorized", &quantizeMatrixVectorized, 
+      py::arg("matrix"), 
+      py::arg("nBits"));
+
     m.def("decodeConvertorSoft", &decodeConvertorSoft, 
       py::arg("detector_error_model"), 
       py::arg("comparisonMatrix"),
@@ -327,5 +331,32 @@ PYBIND11_MODULE(cpp_soft_info, m) {
       py::arg("logical"),
       py::arg("_resets"),
       py::arg("_detailed"));
+
+    //////////// STIM ////////////
+
+    m.def("modify_circuit", &pm::modify_circuit, 
+      "Modify a STIM circuit",
+      py::arg("og_circuit"));
+
+    m.def("append_custom", &pm::append_custom, 
+      "Append a custom gate to a STIM circuit",
+      py::arg("self"), py::arg("gate_name"), 
+      py::arg("targets"), py::arg("args"));
+
+    m.def("circuit_append", &pm::circuit_append, 
+      "Append a gate to a STIM circuit",
+      py::arg("self"), py::arg("gate_name"), 
+      py::arg("targets"), py::arg("args"), 
+      py::arg("backwards_compat") = true);
+
+    m.def("createDetectorErrorModel", &pm::createDetectorErrorModel, 
+      "Create a detector error model",
+      py::arg("circuit"),
+      py::arg("decompose_errors") = false,
+      py::arg("flatten_loops") = false,
+      py::arg("allow_gauge_detectors") = false,
+      py::arg("approximate_disjoint_errors") = false,
+      py::arg("ignore_decomposition_failures") = false,
+      py::arg("block_decomposition_from_introducing_remnant_edges") = false);
 
 }

@@ -1,3 +1,6 @@
+#ifndef USER_GRAPH_UTILS_H
+#define USER_GRAPH_UTILS_H
+
 #include <set>
 #include <vector>
 #include <utility> // For std::pair
@@ -5,11 +8,6 @@
 #include <unordered_map>
 #include <utility> 
 #include "pymatching/sparse_blossom/driver/user_graph.h" // Include necessary headers for declarations
-
-
-#ifndef USER_GRAPH_UTILS_H
-#define USER_GRAPH_UTILS_H
-
 
 struct EdgeAttributes {
     std::set<size_t> fault_ids;
@@ -47,7 +45,34 @@ namespace pm {
     std::vector<std::pair<int64_t, int64_t>> decode_to_edges_array(UserGraph &self, const std::vector<uint64_t> &detection_events);
 
     UserGraph detector_error_model_to_user_graph_private(const stim::DetectorErrorModel& detector_error_model);
+
+    void append_custom(
+        stim::Circuit &self,
+        const std::string &gate_name,
+        const std::vector<uint32_t> &targets,
+        const std::vector<double> &args);
+
+    void circuit_append(
+        stim::Circuit &self,
+        const std::string &gate_name,
+        const std::vector<uint32_t> &targets,
+        const std::vector<double> &args,
+        bool backwards_compat = true);
+
+    stim::Circuit modify_circuit(const stim::Circuit& og_circuit);
+
+    stim::DetectorErrorModel createDetectorErrorModel(const stim::Circuit& circuit,
+                                            bool decompose_errors = false,
+                                            bool flatten_loops = false,
+                                            bool allow_gauge_detectors = false,
+                                            double approximate_disjoint_errors = false,
+                                            bool ignore_decomposition_failures = false,
+                                            bool block_decomposition_from_introducing_remnant_edges = false);
 }
+
+std::string gateTypeToString(stim::GateType gate_type);
+
+stim::GateType stringToGateType(const std::string &gate_string);
 
 std::vector<int> counts_to_det_syndr(const std::string& input_str, bool _resets = false, bool verbose = false, bool reverse = true);
 

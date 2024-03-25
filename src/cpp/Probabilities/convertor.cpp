@@ -6,6 +6,26 @@
 #include <omp.h>
 
 
+Eigen::MatrixXd quantizeMatrixVectorized(const Eigen::MatrixXd& matrix, unsigned int nBits) {
+    // Fixed range
+    double minVal = 0.0;
+    double maxVal = 0.5;
+    
+    // Calculate quantization parameters
+    unsigned int levels = 1 << nBits; // 2^nBits
+    double quantStep = (maxVal - minVal) / (levels - 1);
+
+    // Vectorized quantization
+    // Eigen::MatrixXd normalizedMatrix = (matrix - Eigen::MatrixXd::Constant(matrix.rows(), matrix.cols(), minVal)) / (maxVal - minVal);
+    Eigen::MatrixXd normalizedMatrix = matrix / maxVal;
+    Eigen::MatrixXd scaledMatrix = normalizedMatrix * (levels - 1);
+    Eigen::MatrixXd quantizedMatrix = (scaledMatrix.array().round()) / (levels - 1);
+
+    // Scale back to original range
+    return quantizedMatrix * maxVal;
+}
+
+
 
 std::tuple<Eigen::MatrixXd, Eigen::MatrixXi> iqConvertor(
     const Eigen::MatrixXcd &not_scaled_IQ_data,
