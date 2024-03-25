@@ -1,0 +1,78 @@
+{
+    "cqvartbtxzj0008y1g0g": [
+        {
+            "decoding": "kde",
+            "d_new": "55",
+            "num_errors": 83.0,
+            "error_list": [
+                74,
+                92
+            ],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.4,
+                    0.7,
+                    20
+                ],
+                "num_points_bandwidths": 51,
+                "soft_multiplicator": 0.5
+            }
+        },
+        {
+            "decoding": "hard",
+            "d_new": "55",
+            "num_errors": 172.0,
+            "error_list": [
+                163,
+                181
+            ],
+            "noise_list": [
+                0.006544784094966272,
+                0.00047780429758166365,
+                0.0035807464110228305,
+                0.005024233220258035,
+                0.02741834862385321,
+                0.013709174311926605,
+                0.013709174311926605
+            ]
+        },
+        {
+            "decoding": "kde",
+            "d_new": "51",
+            "num_errors": 93.5,
+            "error_list": [
+                76,
+                111
+            ],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.4,
+                    0.7,
+                    20
+                ],
+                "num_points_bandwidths": 51,
+                "soft_multiplicator": 0.5
+            }
+        },
+        {
+            "decoding": "hard",
+            "d_new": "51",
+            "num_errors": 175.0,
+            "error_list": [
+                159,
+                191
+            ],
+            "noise_list": [
+                0.006574751389574812,
+                0.0004908348779738679,
+                0.0035924754605730484,
+                0.0049850327521795525,
+                0.027581188118811877,
+                0.013790594059405938,
+                0.013790594059405938
+            ]
+        }
+    ]
+}
