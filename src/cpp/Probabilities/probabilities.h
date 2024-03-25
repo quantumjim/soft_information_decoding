@@ -90,4 +90,13 @@ std::map<int, std::tuple<Eigen::VectorXd, Eigen::VectorXd>> GenerateGridAndEstim
                                                        int num_points, double num_std_dev);
 
 
+////////// Convertor //////////
+
+std::tuple<Eigen::MatrixXd, Eigen::MatrixXi> iqConvertor(
+    const Eigen::MatrixXcd &not_scaled_IQ_data,
+    const std::map<int, std::vector<int>> &inv_qubit_mapping,
+    std::map<int, KDE_Result> &kde_dict,
+    double relError = -1.0, double absError = -1.0);
+
+
 #endif // PROBABILITIES_H

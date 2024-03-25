@@ -309,4 +309,13 @@ PYBIND11_MODULE(cpp_soft_info, m) {
       py::arg("threshold"),
       py::arg("_ntnn_edges"));
 
+    //////////// Convertor ////////////
+
+    m.def("iqConvertor", &iqConvertor, 
+      py::arg("not_scaled_IQ_data"), 
+      py::arg("inv_qubit_mapping"), 
+      py::arg("kde_dict"), 
+      py::arg("relError") = -1.0, 
+      py::arg("absError") = -1.0);
+
 }
