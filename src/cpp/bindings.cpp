@@ -2,10 +2,11 @@
 #include <pybind11/stl.h>
 #include <pybind11/eigen.h>
 
-#include "Probabilities/probabilities.h"  // Include probabilities header
-#include "PyMatching/matching_graph.h"  // Include matching header
-#include "PyMatching/user_graph_utils.h"  // Include user graph utils header
-#include "PyMatching/predecoders.h"  // Include predecoders header
+#include "Probabilities/probabilities.h"  
+#include "PyMatching/matching_graph.h"  
+#include "PyMatching/user_graph_utils.h"  
+#include "PyMatching/predecoders.h"  
+#include "PyMatching/convdecoders.h"
 
 #include "pymatching/sparse_blossom/driver/user_graph.h" // Include necessary headers for declarations
 
@@ -317,5 +318,14 @@ PYBIND11_MODULE(cpp_soft_info, m) {
       py::arg("kde_dict"), 
       py::arg("relError") = -1.0, 
       py::arg("absError") = -1.0);
+
+    m.def("decodeConvertorSoft", &decodeConvertorSoft, 
+      py::arg("detector_error_model"), 
+      py::arg("comparisonMatrix"),
+      py::arg("pSoftMatrix"),
+      py::arg("synd_rounds"),
+      py::arg("logical"),
+      py::arg("_resets"),
+      py::arg("_detailed"));
 
 }

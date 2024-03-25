@@ -3,6 +3,7 @@
 #include <iostream>
 #include <limits>
 
+#include <omp.h>
 
 
 
@@ -17,9 +18,16 @@ std::tuple<Eigen::MatrixXd, Eigen::MatrixXi> iqConvertor(
 
     double epsilon = std::numeric_limits<double>::epsilon();
 
-    for (const auto &entry : inv_qubit_mapping) {
-        const auto &qubitIdx = entry.first;
-        const auto &columnIndices = entry.second;
+    // Extracting keys from inv_qubit_mapping to a vector for OpenMP compatibility
+    std::vector<int> keys;
+    for (const auto& entry : inv_qubit_mapping) {
+        keys.push_back(entry.first);
+    }
+
+    #pragma omp parallel for schedule(static) 
+    for (size_t idx = 0; idx < keys.size(); ++idx) {
+        int qubitIdx = keys[idx];
+        const auto& columnIndices = inv_qubit_mapping.at(qubitIdx);
         auto &kde_entry = kde_dict.at(qubitIdx);
 
         // Initialize an Armadillo matrix to hold all query points for this qubit index
