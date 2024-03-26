@@ -46,20 +46,11 @@ namespace pm {
 
     UserGraph detector_error_model_to_user_graph_private(const stim::DetectorErrorModel& detector_error_model);
 
-    void append_custom(
-        stim::Circuit &self,
-        const std::string &gate_name,
-        const std::vector<uint32_t> &targets,
-        const std::vector<double> &args);
+    bool needs_modification(const stim::CircuitInstruction& instruction);
 
-    void circuit_append(
-        stim::Circuit &self,
-        const std::string &gate_name,
-        const std::vector<uint32_t> &targets,
-        const std::vector<double> &args,
-        bool backwards_compat = true);
+    stim::SpanRef<double> allocate_args_in_buffer(stim::MonotonicBuffer<double>& arg_buf, const std::vector<double>& new_args);
 
-    stim::Circuit modify_circuit(const stim::Circuit& og_circuit);
+    void modify_circuit(stim::Circuit& circuit);
 
     stim::DetectorErrorModel createDetectorErrorModel(const stim::Circuit& circuit,
                                             bool decompose_errors = false,
@@ -70,9 +61,6 @@ namespace pm {
                                             bool block_decomposition_from_introducing_remnant_edges = false);
 }
 
-std::string gateTypeToString(stim::GateType gate_type);
-
-stim::GateType stringToGateType(const std::string &gate_string);
 
 std::vector<int> counts_to_det_syndr(const std::string& input_str, bool _resets = false, bool verbose = false, bool reverse = true);
 

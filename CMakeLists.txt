@@ -29,9 +29,11 @@ pybind11_add_module(cpp_soft_info
     ${CMAKE_SOURCE_DIR}/src/cpp/bindings.cpp
     ${CMAKE_SOURCE_DIR}/src/cpp/Probabilities/probabilities.cpp
     ${CMAKE_SOURCE_DIR}/src/cpp/Probabilities/KDE.cpp
+    ${CMAKE_SOURCE_DIR}/src/cpp/Probabilities/convertor.cpp
     ${CMAKE_SOURCE_DIR}/src/cpp/PyMatching/matching_graph.cpp
     ${CMAKE_SOURCE_DIR}/src/cpp/PyMatching/user_graph_utils.cpp
-    ${CMAKE_SOURCE_DIR}/src/cpp/PyMatching/predecoders.cpp)  
+    ${CMAKE_SOURCE_DIR}/src/cpp/PyMatching/predecoders.cpp
+    ${CMAKE_SOURCE_DIR}/src/cpp/PyMatching/convdecoders.cpp)  
 
 # Link the PyMatching library
 set(PYMATCHING_LIB "${CMAKE_SOURCE_DIR}/libs/PyMatching/bazel-bin")
