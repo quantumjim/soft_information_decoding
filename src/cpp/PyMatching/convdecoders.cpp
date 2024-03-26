@@ -93,6 +93,104 @@ pm::DetailedDecodeResult decodeConvertorSoft(
     return result;
 }
 
+std::tuple<pm::DetailedDecodeResult, pm::DetailedDecodeResult> decodeConvertorAll(
+    stim::DetectorErrorModel& detector_error_model,
+    Eigen::MatrixXi comparisonMatrix,
+    Eigen::MatrixXd pSoftMatrix,
+    int synd_rounds,
+    int logical,
+    bool _resets) {
+        
+    pm::DetailedDecodeResult result_soft;
+    result_soft.num_errors = 0;
+
+    pm::DetailedDecodeResult result_hard;
+    result_hard.num_errors = 0;
+
+    std::set<size_t> empty_set;        
+    int distance = (comparisonMatrix.cols() + synd_rounds) / (synd_rounds + 1); // Adapted for RepCodes
+
+    pm::UserGraph matching;
+
+    #pragma omp parallel private(matching)
+    {
+        matching = pm::detector_error_model_to_user_graph_private(detector_error_model);
+
+        #pragma omp for nowait  
+        for (int shot = 0; shot < comparisonMatrix.rows(); ++shot) {
+            std::string count_key;
+            for (int msmt = 0; msmt < comparisonMatrix.cols(); ++msmt) {
+
+                // Counts
+                int measurementResult = comparisonMatrix(shot, msmt);
+                if (measurementResult == 1) {
+                    count_key += "1";
+                } else {
+                    count_key += "0";
+                }
+                if ((msmt + 1) % (distance - 1) == 0 && (msmt + 1) / (distance - 1) <= synd_rounds) {
+                    count_key += " ";
+                }  
+
+                // Reweighting
+                if (msmt < (distance-1)*synd_rounds) {
+                    double p_soft = pSoftMatrix(shot, msmt);
+                    if (_resets) {
+                        size_t neighbor_index = matching.nodes[msmt].index_of_neighbor(msmt + (distance-1));
+                        if (neighbor_index != SIZE_MAX) {
+                            auto edge_it = matching.nodes[msmt].neighbors[neighbor_index].edge_it;
+                            double error_probability = edge_it->error_probability;
+                            double p_tot = p_soft * (1-error_probability) + (1-p_soft) * error_probability;
+                            pm::add_edge(matching, msmt, msmt + (distance-1), empty_set, -std::log(p_tot/(1-p_tot)), error_probability, "replace");
+                        } else {
+                            throw std::runtime_error("Edge does not exist between: " + std::to_string(msmt) + " and " + std::to_string(msmt + (distance-1)));
+                        }
+                    } else {
+                        if (msmt < (distance-1)*(synd_rounds-1)) {
+                            double L = -std::log(p_soft/(1-p_soft));
+                            pm::add_edge(matching, msmt, msmt + 2 * (distance-1), empty_set, L, 0.5, "replace");
+                        } else {
+                            size_t neighbor_index = matching.nodes[msmt].index_of_neighbor(msmt + (distance-1));
+                            if (neighbor_index != SIZE_MAX) {
+                                auto edge_it = matching.nodes[msmt].neighbors[neighbor_index].edge_it;
+                                double error_probability = edge_it->error_probability;
+                                double p_tot = p_soft*(1-error_probability) + (1-p_soft)*error_probability;
+                                pm::add_edge(matching, msmt, msmt + (distance-1), empty_set, -std::log(p_tot/(1-p_tot)), error_probability, "replace");
+                            } else {
+                                throw std::runtime_error("Edge does not exist between:" + std::to_string(msmt) +  " and " + std::to_string(msmt + (distance-1)));
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Decoding
+            auto det_syndromes = counts_to_det_syndr(count_key, _resets, false, false);
+            auto detectionEvents = syndromeArrayToDetectionEvents(det_syndromes, matching.get_num_detectors(), matching.get_boundary().size());
+            auto [predicted_observables_soft, rescaled_weight] = decode(matching, detectionEvents);
+
+            // Reset the graph and redecode
+            matching = pm::detector_error_model_to_user_graph_private(detector_error_model); 
+            auto [predicted_observables_hard, rescaled_weight_hard] = decode(matching, detectionEvents);
+
+            int actual_observable = (static_cast<int>(count_key.back()) - logical) % 2;
+
+            // Result saving
+            #pragma omp critical
+            {
+                if (!predicted_observables_soft.empty() && predicted_observables_soft[0] != actual_observable) {
+                    result_soft.num_errors++; // Increment error count if they don't match
+                    result_soft.indices.push_back(shot);
+                }
+                if (!predicted_observables_hard.empty() && predicted_observables_hard[0] != actual_observable) {
+                    result_hard.num_errors++; // Increment error count if they don't match
+                    result_hard.indices.push_back(shot);
+                }
+            }
+        }
+    }
+    return std::make_tuple(result_soft, result_hard);
+}
 
 
 

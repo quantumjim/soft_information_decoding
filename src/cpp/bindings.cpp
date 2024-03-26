@@ -332,22 +332,19 @@ PYBIND11_MODULE(cpp_soft_info, m) {
       py::arg("_resets"),
       py::arg("_detailed"));
 
+    m.def("decodeConvertorAll", &decodeConvertorAll, 
+      py::arg("detector_error_model"), 
+      py::arg("comparisonMatrix"),
+      py::arg("pSoftMatrix"),
+      py::arg("synd_rounds"),
+      py::arg("logical"),
+      py::arg("_resets"));
+
     //////////// STIM ////////////
 
     m.def("modify_circuit", &pm::modify_circuit, 
       "Modify a STIM circuit",
-      py::arg("og_circuit"));
-
-    m.def("append_custom", &pm::append_custom, 
-      "Append a custom gate to a STIM circuit",
-      py::arg("self"), py::arg("gate_name"), 
-      py::arg("targets"), py::arg("args"));
-
-    m.def("circuit_append", &pm::circuit_append, 
-      "Append a gate to a STIM circuit",
-      py::arg("self"), py::arg("gate_name"), 
-      py::arg("targets"), py::arg("args"), 
-      py::arg("backwards_compat") = true);
+      py::arg("circuit"));
 
     m.def("createDetectorErrorModel", &pm::createDetectorErrorModel, 
       "Create a detector error model",
