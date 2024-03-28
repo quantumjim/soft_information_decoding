@@ -7,6 +7,7 @@
 #include "PyMatching/user_graph_utils.h"  
 #include "PyMatching/predecoders.h"  
 #include "PyMatching/convdecoders.h"
+#include "StimUtils/StimUtils.h"
 
 #include "pymatching/sparse_blossom/driver/user_graph.h" // Include necessary headers for declarations
 
@@ -346,11 +347,22 @@ PYBIND11_MODULE(cpp_soft_info, m) {
 
     //////////// STIM ////////////
 
-    m.def("modify_circuit", &pm::modify_circuit, 
-      "Modify a STIM circuit",
-      py::arg("circuit"));
+    m.def("decodeStimSoft", &decodeStimSoft, 
+      "Decode a STIM circuit",
+      py::arg("circuit"),
+      py::arg("comparisonMatrix"),
+      py::arg("pSoftMatrix"),
+      py::arg("synd_rounds"),
+      py::arg("logical"),
+      py::arg("_resets"),
+      py::arg("_detailed") = false);
 
-    m.def("createDetectorErrorModel", &pm::createDetectorErrorModel, 
+    m.def("softenCircuit", &softenCircuit, 
+      "Modify a STIM circuit",
+      py::arg("circuit"),
+      py::arg("pSoftRow"));
+
+    m.def("createDetectorErrorModel", &createDetectorErrorModel, 
       "Create a detector error model",
       py::arg("circuit"),
       py::arg("decompose_errors") = false,

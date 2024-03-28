@@ -118,63 +118,6 @@ namespace pm {
         return user_graph;
     }
 
-    bool needs_modification(const stim::CircuitInstruction& instruction) {
-        // Check if the gate type of the instruction is either M or MR
-        return instruction.gate_type == stim::GateType::M || instruction.gate_type == stim::GateType::MR;
-    }
-
-    stim::SpanRef<double> allocate_args_in_buffer(stim::MonotonicBuffer<double>& arg_buf, const std::vector<double>& new_args) {
-        // Append each argument value to the buffer's tail and then commit.
-        for (const double& arg : new_args) {
-            arg_buf.append_tail(arg);
-        }
-        // Commit the tail to the buffer and return a SpanRef to this committed segment.
-        return arg_buf.commit_tail();
-    }
-
-    void modify_circuit(stim::Circuit& circuit) {
-        for (size_t i = 0; i < circuit.operations.size(); ++i) {
-            stim::CircuitInstruction& instruction = circuit.operations[i];
-            
-            // Determine if this instruction's args need modification
-            if (needs_modification(instruction)) {
-                // Define new arguments for the instruction
-                std::vector<double> new_args = {0.4};
-
-                // Allocate new arguments in the circuit's arg_buf and get a SpanRef to them
-                stim::SpanRef<double> new_args_ref = allocate_args_in_buffer(circuit.arg_buf, new_args);
-
-                // Create a new instruction with the updated arguments
-                stim::CircuitInstruction new_instruction(instruction.gate_type, new_args_ref, instruction.targets);
-
-                // Replace the old instruction with the new one
-                circuit.operations[i] = new_instruction;
-            }
-        }
-    }
-
-
-    stim::DetectorErrorModel createDetectorErrorModel(const stim::Circuit& circuit,
-                                            bool decompose_errors,
-                                            bool flatten_loops,
-                                            bool allow_gauge_detectors,
-                                            double approximate_disjoint_errors,
-                                            bool ignore_decomposition_failures,
-                                            bool block_decomposition_from_introducing_remnant_edges) {
-    // Call the ErrorAnalyzer::circuit_to_detector_error_model function
-    return stim::ErrorAnalyzer::circuit_to_detector_error_model(
-                circuit,
-                decompose_errors,
-                !flatten_loops,
-                allow_gauge_detectors,
-                approximate_disjoint_errors,
-                ignore_decomposition_failures,
-                block_decomposition_from_introducing_remnant_edges);
-}
-
-
-
-
 }
 
 

@@ -45,20 +45,6 @@ namespace pm {
     std::vector<std::pair<int64_t, int64_t>> decode_to_edges_array(UserGraph &self, const std::vector<uint64_t> &detection_events);
 
     UserGraph detector_error_model_to_user_graph_private(const stim::DetectorErrorModel& detector_error_model);
-
-    bool needs_modification(const stim::CircuitInstruction& instruction);
-
-    stim::SpanRef<double> allocate_args_in_buffer(stim::MonotonicBuffer<double>& arg_buf, const std::vector<double>& new_args);
-
-    void modify_circuit(stim::Circuit& circuit);
-
-    stim::DetectorErrorModel createDetectorErrorModel(const stim::Circuit& circuit,
-                                            bool decompose_errors = false,
-                                            bool flatten_loops = false,
-                                            bool allow_gauge_detectors = false,
-                                            double approximate_disjoint_errors = false,
-                                            bool ignore_decomposition_failures = false,
-                                            bool block_decomposition_from_introducing_remnant_edges = false);
 }
 
 

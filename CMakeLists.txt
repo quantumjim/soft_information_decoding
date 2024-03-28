@@ -19,10 +19,11 @@ add_definitions(${MLPACK_CFLAGS_OTHER})
 
 include_directories(${CMAKE_SOURCE_DIR}/libs/Stim/src)
 include_directories(${CMAKE_SOURCE_DIR}/libs/PyMatching/src)
-# include_directories(${CMAKE_SOURCE_DIR}/libs/PyMatching/Stim/src) # Add this line
 
 include_directories(${CMAKE_SOURCE_DIR}/src/cpp/Probabilities)
 include_directories(${CMAKE_SOURCE_DIR}/src/cpp/PyMatching)
+include_directories(${CMAKE_SOURCE_DIR}/src/cpp/StimUtils)
+
 
 # Pybind11 module for the cpp_soft_info
 pybind11_add_module(cpp_soft_info
@@ -33,7 +34,9 @@ pybind11_add_module(cpp_soft_info
     ${CMAKE_SOURCE_DIR}/src/cpp/PyMatching/matching_graph.cpp
     ${CMAKE_SOURCE_DIR}/src/cpp/PyMatching/user_graph_utils.cpp
     ${CMAKE_SOURCE_DIR}/src/cpp/PyMatching/predecoders.cpp
-    ${CMAKE_SOURCE_DIR}/src/cpp/PyMatching/convdecoders.cpp)  
+    ${CMAKE_SOURCE_DIR}/src/cpp/PyMatching/convdecoders.cpp  
+    ${CMAKE_SOURCE_DIR}/src/cpp/StimUtils/utils.cpp
+    ${CMAKE_SOURCE_DIR}/src/cpp/StimUtils/StimDecoder.cpp)  
 
 # Link the PyMatching library
 set(PYMATCHING_LIB "${CMAKE_SOURCE_DIR}/libs/PyMatching/bazel-bin")
