@@ -22,7 +22,7 @@ class CMakeBuild(build_ext):
 
         num_cores = os.cpu_count()
 
-        if os.environ.get('SKIP_BAZEL_BUILD') != '1':
+        if os.environ.get('BAZEL_BUILD') == '1':
             try:
                 out = subprocess.check_output(['bazel', '--version'])
             except OSError:
