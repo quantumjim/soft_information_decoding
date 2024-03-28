@@ -43,3 +43,9 @@ If you wish to change C++ parts, even if the soft_information_decoding package i
 ```bash
 pip install .
 ```
+
+### Install stim wheel
+Install the stim wheel using pip. It is located in 'libs/PyMatching/bazel-bin/external/stim'.
+```bash
+pip install /path/to/stim-0.0.dev0-py3-none-any.whl
+```

@@ -30,8 +30,15 @@ class CMakeBuild(build_ext):
 
     def build_pymatching_with_bazel(self, num_cores):
         pymatching_dir = os.path.abspath('libs/PyMatching')
-        subprocess.check_call(['bazel', 'build', '--jobs', str(num_cores), '//:pymatching', '//:libpymatching', '@stim//:stim_lib'], cwd=pymatching_dir)
+        # subprocess.check_call(['bazel', 'build', '--jobs', str(num_cores), '//:pymatching', '//:libpymatching', '@stim//:stim_lib'], cwd=pymatching_dir)
+        subprocess.check_call(['bazel', 'build', '--jobs', str(num_cores), '//:pymatching', '//:libpymatching', '@stim//:stim_dev_wheel'], cwd=pymatching_dir)
 
+        # # # After building, install the Stim wheel
+        # subprocess.check_call([sys.executable, '-m', 'ensurepip'])
+        # stim_wheel_path = os.path.join(pymatching_dir, 'bazel-bin', 'external', 'stim', 'stim-0.0.dev0-py3-none-any.whl')
+        # subprocess.check_call([sys.executable, '-m', 'pip', 'install', stim_wheel_path])
+
+        
     def build_extension(self, ext, num_cores):
         extdir = os.path.abspath(os.path.dirname(self.get_ext_fullpath(ext.name)))
         cmake_args = [
@@ -39,7 +46,7 @@ class CMakeBuild(build_ext):
         '-DPYTHON_EXECUTABLE=' + sys.executable,
         '-DCMAKE_C_COMPILER=/opt/homebrew/opt/llvm/bin/clang',  # Path to C compiler
         '-DCMAKE_CXX_COMPILER=/opt/homebrew/opt/llvm/bin/clang++',
-        '-DCMAKE_CXX_FLAGS=-fopenmp'  # for omp compiling
+        # '-DCMAKE_CXX_FLAGS=-fopenmp'  # for omp compiling
     ] # for omp compiling
 
 
