@@ -323,6 +323,10 @@ PYBIND11_MODULE(cpp_soft_info, m) {
       py::arg("matrix"), 
       py::arg("nBits"));
 
+    m.def("quantizeMatrixEntrywise", &quantizeMatrixEntrywise, 
+      py::arg("matrix"), 
+      py::arg("nBits"));
+      
     m.def("decodeConvertorSoft", &decodeConvertorSoft, 
       py::arg("detector_error_model"), 
       py::arg("comparisonMatrix"),

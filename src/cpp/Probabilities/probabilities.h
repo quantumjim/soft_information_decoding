@@ -99,6 +99,7 @@ std::tuple<Eigen::MatrixXd, Eigen::MatrixXi> iqConvertor(
     double relError = -1.0, double absError = -1.0);
 
 Eigen::MatrixXd quantizeMatrixVectorized(const Eigen::MatrixXd& matrix, unsigned int nBits);
+Eigen::MatrixXd quantizeMatrixEntrywise(const Eigen::MatrixXd& matrix, unsigned int nBits);
 
 
 #endif // PROBABILITIES_H

@@ -26,6 +26,41 @@ Eigen::MatrixXd quantizeMatrixVectorized(const Eigen::MatrixXd& matrix, unsigned
 }
 
 
+Eigen::MatrixXd quantizeMatrixEntrywise(const Eigen::MatrixXd& matrix, unsigned int nBits) {
+    // Fixed range and interval offset
+    double maxVal = 0.5;
+    double intervalOffset = 0.5; // Assuming intervalOffset should be applied in some way; adjust as needed
+    unsigned int nb_intervals = 1 << nBits; // 2^nBits, as in the previous example
+
+    // Compute the size of each interval
+    double intervalSize = maxVal / nb_intervals;
+
+    // Initialize the quantized matrix with the same dimensions as the input matrix
+    Eigen::MatrixXd quantizedMatrix = Eigen::MatrixXd::Zero(matrix.rows(), matrix.cols());
+
+    // Process each element
+    for (int i = 0; i < matrix.rows(); ++i) {
+        for (int j = 0; j < matrix.cols(); ++j) {
+            double value = matrix(i, j);
+
+            // Calculate the interval index; this operation is equivalent to flooring
+            int intervalIndex = static_cast<int>(value / intervalSize);
+            // Apply the interval offset if necessary (adjust the calculation as needed)
+            double quantizedValue = (intervalIndex + intervalOffset) * intervalSize;
+
+            // Check and correct if the value is above 0.5
+            if (quantizedValue > maxVal) {
+                quantizedValue = maxVal;
+            }
+
+            // Assign the quantized value back to the matrix
+            quantizedMatrix(i, j) = quantizedValue;
+        }
+    }
+
+    return quantizedMatrix;
+}
+
 
 std::tuple<Eigen::MatrixXd, Eigen::MatrixXi> iqConvertor(
     const Eigen::MatrixXcd &not_scaled_IQ_data,
