@@ -56,4 +56,17 @@ def get_repcode_IQ_map(layout, synd_rounds):
 
     return iq_map
 
+def inv_qubit_mapping(qubit_mapping) -> dict:
+    """Invert the qubit mapping.
 
+    Args:
+        qubit_mapping (dict): A dictionary mapping the index of IQ data to the corresponding physical qubit. i. e. {IQ_idx: qubit_idx}.
+
+    Returns:
+        dict: A dictionary mapping the index of physical qubit to the corresponding IQ data collumns. i. e. {qubit_idx: [IQ_idx]}.
+    """
+    inv_qubit_mapping = {v: [] for v in qubit_mapping.values()}
+    for k, v in qubit_mapping.items():
+        inv_qubit_mapping[v].append(k)
+
+    return inv_qubit_mapping

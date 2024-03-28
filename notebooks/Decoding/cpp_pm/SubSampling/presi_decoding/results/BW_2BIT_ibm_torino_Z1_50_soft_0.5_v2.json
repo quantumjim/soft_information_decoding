@@ -1,0 +1,632 @@
+{
+    "cqtvb5m88ev000813agg": [
+        {
+            "totshots": 15378
+        },
+        {
+            "decoding": "kde",
+            "d_new": "55",
+            "error_list": [
+                8523,
+                8534
+            ],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.1,
+                    0.7,
+                    30
+                ],
+                "num_points_bandwidths": 51,
+                "soft_multiplicator": 0.5,
+                "nBits": 2
+            }
+        },
+        {
+            "decoding": "kde",
+            "d_new": "51",
+            "error_list": [
+                8318,
+                8359
+            ],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.1,
+                    0.7,
+                    30
+                ],
+                "num_points_bandwidths": 51,
+                "soft_multiplicator": 0.5,
+                "nBits": 2
+            }
+        },
+        {
+            "decoding": "kde",
+            "d_new": "47",
+            "error_list": [
+                8106,
+                9611
+            ],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.1,
+                    0.7,
+                    30
+                ],
+                "num_points_bandwidths": 51,
+                "soft_multiplicator": 0.5,
+                "nBits": 2
+            }
+        },
+        {
+            "decoding": "kde",
+            "d_new": "43",
+            "error_list": [
+                7863,
+                9788
+            ],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.1,
+                    0.7,
+                    30
+                ],
+                "num_points_bandwidths": 51,
+                "soft_multiplicator": 0.5,
+                "nBits": 2
+            }
+        },
+        {
+            "decoding": "kde",
+            "d_new": "39",
+            "error_list": [
+                7377,
+                9853
+            ],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.1,
+                    0.7,
+                    30
+                ],
+                "num_points_bandwidths": 51,
+                "soft_multiplicator": 0.5,
+                "nBits": 2
+            }
+        },
+        {
+            "decoding": "kde",
+            "d_new": "35",
+            "error_list": [
+                7700,
+                9840
+            ],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.1,
+                    0.7,
+                    30
+                ],
+                "num_points_bandwidths": 51,
+                "soft_multiplicator": 0.5,
+                "nBits": 2
+            }
+        },
+        {
+            "decoding": "kde",
+            "d_new": "31",
+            "error_list": [
+                7166,
+                9738
+            ],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.1,
+                    0.7,
+                    30
+                ],
+                "num_points_bandwidths": 51,
+                "soft_multiplicator": 0.5,
+                "nBits": 2
+            }
+        },
+        {
+            "decoding": "kde",
+            "d_new": "27",
+            "error_list": [
+                7204,
+                8936,
+                10108
+            ],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.1,
+                    0.7,
+                    30
+                ],
+                "num_points_bandwidths": 51,
+                "soft_multiplicator": 0.5,
+                "nBits": 2
+            }
+        },
+        {
+            "decoding": "kde",
+            "d_new": "23",
+            "error_list": [
+                7127,
+                8892,
+                9941
+            ],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.1,
+                    0.7,
+                    30
+                ],
+                "num_points_bandwidths": 51,
+                "soft_multiplicator": 0.5,
+                "nBits": 2
+            }
+        },
+        {
+            "decoding": "kde",
+            "d_new": "19",
+            "error_list": [
+                7160,
+                9283,
+                9247,
+                10479
+            ],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.1,
+                    0.7,
+                    30
+                ],
+                "num_points_bandwidths": 51,
+                "soft_multiplicator": 0.5,
+                "nBits": 2
+            }
+        },
+        {
+            "decoding": "kde",
+            "d_new": "15",
+            "error_list": [
+                6971,
+                8267,
+                9598,
+                10158
+            ],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.1,
+                    0.7,
+                    30
+                ],
+                "num_points_bandwidths": 51,
+                "soft_multiplicator": 0.5,
+                "nBits": 2
+            }
+        },
+        {
+            "decoding": "kde",
+            "d_new": "11",
+            "error_list": [
+                6532,
+                8974,
+                9024,
+                9523,
+                10068,
+                9230
+            ],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.1,
+                    0.7,
+                    30
+                ],
+                "num_points_bandwidths": 51,
+                "soft_multiplicator": 0.5,
+                "nBits": 2
+            }
+        },
+        {
+            "decoding": "kde",
+            "d_new": "7",
+            "error_list": [
+                8915,
+                5857,
+                9587,
+                9592,
+                8508,
+                8559,
+                9253,
+                10530,
+                10570,
+                9094
+            ],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.1,
+                    0.7,
+                    30
+                ],
+                "num_points_bandwidths": 51,
+                "soft_multiplicator": 0.5,
+                "nBits": 2
+            }
+        },
+        {
+            "decoding": "kde",
+            "d_new": "3",
+            "error_list": [
+                10145,
+                10239,
+                9321,
+                6034,
+                7744,
+                8971,
+                10601,
+                8795,
+                9576,
+                9494,
+                9966,
+                9581,
+                8734,
+                9041,
+                9703,
+                9469,
+                10822,
+                11020,
+                9343,
+                9650,
+                10328,
+                10468,
+                10395,
+                8967,
+                10430,
+                9023,
+                9619,
+                8977
+            ],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.1,
+                    0.7,
+                    30
+                ],
+                "num_points_bandwidths": 51,
+                "soft_multiplicator": 0.5,
+                "nBits": 2
+            }
+        }
+    ],
+    "cqtvas3txzj0008y0a50": [
+        {
+            "totshots": 12582
+        },
+        {
+            "decoding": "kde",
+            "d_new": "55",
+            "error_list": [
+                6475,
+                6587
+            ],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.1,
+                    0.7,
+                    30
+                ],
+                "num_points_bandwidths": 51,
+                "soft_multiplicator": 0.5,
+                "nBits": 2
+            }
+        },
+        {
+            "decoding": "kde",
+            "d_new": "51",
+            "error_list": [
+                6261,
+                6559
+            ],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.1,
+                    0.7,
+                    30
+                ],
+                "num_points_bandwidths": 51,
+                "soft_multiplicator": 0.5,
+                "nBits": 2
+            }
+        },
+        {
+            "decoding": "kde",
+            "d_new": "47",
+            "error_list": [
+                6173,
+                8120
+            ],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.1,
+                    0.7,
+                    30
+                ],
+                "num_points_bandwidths": 51,
+                "soft_multiplicator": 0.5,
+                "nBits": 2
+            }
+        },
+        {
+            "decoding": "kde",
+            "d_new": "43",
+            "error_list": [
+                5870,
+                8355
+            ],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.1,
+                    0.7,
+                    30
+                ],
+                "num_points_bandwidths": 51,
+                "soft_multiplicator": 0.5,
+                "nBits": 2
+            }
+        },
+        {
+            "decoding": "kde",
+            "d_new": "39",
+            "error_list": [
+                5473,
+                8486
+            ],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.1,
+                    0.7,
+                    30
+                ],
+                "num_points_bandwidths": 51,
+                "soft_multiplicator": 0.5,
+                "nBits": 2
+            }
+        },
+        {
+            "decoding": "kde",
+            "d_new": "35",
+            "error_list": [
+                5517,
+                8358
+            ],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.1,
+                    0.7,
+                    30
+                ],
+                "num_points_bandwidths": 51,
+                "soft_multiplicator": 0.5,
+                "nBits": 2
+            }
+        },
+        {
+            "decoding": "kde",
+            "d_new": "31",
+            "error_list": [
+                5041,
+                8327
+            ],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.1,
+                    0.7,
+                    30
+                ],
+                "num_points_bandwidths": 51,
+                "soft_multiplicator": 0.5,
+                "nBits": 2
+            }
+        },
+        {
+            "decoding": "kde",
+            "d_new": "27",
+            "error_list": [
+                4990,
+                7696,
+                8561
+            ],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.1,
+                    0.7,
+                    30
+                ],
+                "num_points_bandwidths": 51,
+                "soft_multiplicator": 0.5,
+                "nBits": 2
+            }
+        },
+        {
+            "decoding": "kde",
+            "d_new": "23",
+            "error_list": [
+                4849,
+                7733,
+                8542
+            ],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.1,
+                    0.7,
+                    30
+                ],
+                "num_points_bandwidths": 51,
+                "soft_multiplicator": 0.5,
+                "nBits": 2
+            }
+        },
+        {
+            "decoding": "kde",
+            "d_new": "19",
+            "error_list": [
+                4825,
+                7914,
+                8013,
+                8721
+            ],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.1,
+                    0.7,
+                    30
+                ],
+                "num_points_bandwidths": 51,
+                "soft_multiplicator": 0.5,
+                "nBits": 2
+            }
+        },
+        {
+            "decoding": "kde",
+            "d_new": "15",
+            "error_list": [
+                4548,
+                7018,
+                8125,
+                8357
+            ],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.1,
+                    0.7,
+                    30
+                ],
+                "num_points_bandwidths": 51,
+                "soft_multiplicator": 0.5,
+                "nBits": 2
+            }
+        },
+        {
+            "decoding": "kde",
+            "d_new": "11",
+            "error_list": [
+                4124,
+                7387,
+                7632,
+                7913,
+                8660,
+                7548
+            ],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.1,
+                    0.7,
+                    30
+                ],
+                "num_points_bandwidths": 51,
+                "soft_multiplicator": 0.5,
+                "nBits": 2
+            }
+        },
+        {
+            "decoding": "kde",
+            "d_new": "7",
+            "error_list": [
+                6639,
+                3898,
+                7917,
+                7947,
+                7119,
+                7193,
+                7857,
+                8835,
+                8610,
+                7501
+            ],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.1,
+                    0.7,
+                    30
+                ],
+                "num_points_bandwidths": 51,
+                "soft_multiplicator": 0.5,
+                "nBits": 2
+            }
+        },
+        {
+            "decoding": "kde",
+            "d_new": "3",
+            "error_list": [
+                8070,
+                8315,
+                6873,
+                4021,
+                6053,
+                7280,
+                8592,
+                7178,
+                7810,
+                7762,
+                8387,
+                7854,
+                7337,
+                7507,
+                7967,
+                7921,
+                8776,
+                8982,
+                8051,
+                7906,
+                8455,
+                8808,
+                8562,
+                7382,
+                8348,
+                7373,
+                7808,
+                7480
+            ],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.1,
+                    0.7,
+                    30
+                ],
+                "num_points_bandwidths": 51,
+                "soft_multiplicator": 0.5,
+                "nBits": 2
+            }
+        }
+    ]
+}

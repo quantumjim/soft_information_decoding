@@ -1,0 +1,317 @@
+{
+    "cr03ywk8gdp0008fxbqg": [
+        {
+            "totshots": 27960
+        },
+        {
+            "decoding": "kde",
+            "d_new": "55",
+            "error_list": [
+                7,
+                7
+            ],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.1,
+                    0.5,
+                    30
+                ],
+                "num_points_bandwidths": 51,
+                "soft_multiplicator": 0.5,
+                "nBits": 2
+            }
+        },
+        {
+            "decoding": "kde",
+            "d_new": "51",
+            "error_list": [
+                11,
+                6
+            ],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.1,
+                    0.5,
+                    30
+                ],
+                "num_points_bandwidths": 51,
+                "soft_multiplicator": 0.5,
+                "nBits": 2
+            }
+        },
+        {
+            "decoding": "kde",
+            "d_new": "47",
+            "error_list": [
+                31,
+                14
+            ],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.1,
+                    0.5,
+                    30
+                ],
+                "num_points_bandwidths": 51,
+                "soft_multiplicator": 0.5,
+                "nBits": 2
+            }
+        },
+        {
+            "decoding": "kde",
+            "d_new": "43",
+            "error_list": [
+                68,
+                11
+            ],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.1,
+                    0.5,
+                    30
+                ],
+                "num_points_bandwidths": 51,
+                "soft_multiplicator": 0.5,
+                "nBits": 2
+            }
+        },
+        {
+            "decoding": "kde",
+            "d_new": "39",
+            "error_list": [
+                128,
+                6
+            ],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.1,
+                    0.5,
+                    30
+                ],
+                "num_points_bandwidths": 51,
+                "soft_multiplicator": 0.5,
+                "nBits": 2
+            }
+        },
+        {
+            "decoding": "kde",
+            "d_new": "35",
+            "error_list": [
+                161,
+                23
+            ],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.1,
+                    0.5,
+                    30
+                ],
+                "num_points_bandwidths": 51,
+                "soft_multiplicator": 0.5,
+                "nBits": 2
+            }
+        },
+        {
+            "decoding": "kde",
+            "d_new": "31",
+            "error_list": [
+                247,
+                27
+            ],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.1,
+                    0.5,
+                    30
+                ],
+                "num_points_bandwidths": 51,
+                "soft_multiplicator": 0.5,
+                "nBits": 2
+            }
+        },
+        {
+            "decoding": "kde",
+            "d_new": "27",
+            "error_list": [
+                494,
+                253,
+                34
+            ],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.1,
+                    0.5,
+                    30
+                ],
+                "num_points_bandwidths": 51,
+                "soft_multiplicator": 0.5,
+                "nBits": 2
+            }
+        },
+        {
+            "decoding": "kde",
+            "d_new": "23",
+            "error_list": [
+                617,
+                328,
+                78
+            ],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.1,
+                    0.5,
+                    30
+                ],
+                "num_points_bandwidths": 51,
+                "soft_multiplicator": 0.5,
+                "nBits": 2
+            }
+        },
+        {
+            "decoding": "kde",
+            "d_new": "19",
+            "error_list": [
+                1601,
+                496,
+                686,
+                107
+            ],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.1,
+                    0.5,
+                    30
+                ],
+                "num_points_bandwidths": 51,
+                "soft_multiplicator": 0.5,
+                "nBits": 2
+            }
+        },
+        {
+            "decoding": "kde",
+            "d_new": "15",
+            "error_list": [
+                2215,
+                1185,
+                950,
+                193
+            ],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.1,
+                    0.5,
+                    30
+                ],
+                "num_points_bandwidths": 51,
+                "soft_multiplicator": 0.5,
+                "nBits": 2
+            }
+        },
+        {
+            "decoding": "kde",
+            "d_new": "11",
+            "error_list": [
+                2730,
+                2104,
+                1837,
+                1853,
+                1042,
+                491
+            ],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.1,
+                    0.5,
+                    30
+                ],
+                "num_points_bandwidths": 51,
+                "soft_multiplicator": 0.5,
+                "nBits": 2
+            }
+        },
+        {
+            "decoding": "kde",
+            "d_new": "7",
+            "error_list": [
+                3077,
+                5227,
+                5159,
+                1840,
+                3067,
+                2412,
+                3649,
+                2235,
+                1086,
+                1337
+            ],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.1,
+                    0.5,
+                    30
+                ],
+                "num_points_bandwidths": 51,
+                "soft_multiplicator": 0.5,
+                "nBits": 2
+            }
+        },
+        {
+            "decoding": "kde",
+            "d_new": "3",
+            "error_list": [
+                4538,
+                6428,
+                3788,
+                5526,
+                9914,
+                7688,
+                8368,
+                8024,
+                5771,
+                2055,
+                4209,
+                5798,
+                6850,
+                6091,
+                4788,
+                3012,
+                5384,
+                5751,
+                5811,
+                6085,
+                4295,
+                3684,
+                3657,
+                3222,
+                2119,
+                3620,
+                3936,
+                1922
+            ],
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.1,
+                    0.5,
+                    30
+                ],
+                "num_points_bandwidths": 51,
+                "soft_multiplicator": 0.5,
+                "nBits": 2
+            }
+        }
+    ]
+}

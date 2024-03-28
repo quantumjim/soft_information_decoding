@@ -119,7 +119,11 @@
         "numeric": "cpp",
         "cfenv": "cpp",
         "stdfloat": "cpp",
-        "stop_token": "cpp"
+        "stop_token": "cpp",
+        "format": "cpp",
+        "__availability": "cpp",
+        "sparsecore": "cpp",
+        "filesystem": "cpp"
     },
     "cmake.sourceDirectory": "${workspaceFolder}"
 }
