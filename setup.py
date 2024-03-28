@@ -22,8 +22,20 @@ class CMakeBuild(build_ext):
 
         num_cores = os.cpu_count()
 
-        # Build PyMatching with Bazel
-        self.build_pymatching_with_bazel(num_cores)
+        if os.environ.get('SKIP_BAZEL_BUILD') != '1':
+            try:
+                out = subprocess.check_output(['bazel', '--version'])
+            except OSError:
+                raise RuntimeError(
+                    "Bazel must be installed to build the following extensions: " +
+                    ", ".join(e.name for e in self.extensions)
+                )
+            num_cores = os.cpu_count()
+            # Build PyMatching with Bazel
+            self.build_pymatching_with_bazel(num_cores)
+        else:
+            print("Skipping Bazel build due to SKIP_BAZEL_BUILD flag.")
+
 
         for ext in self.extensions:
             self.build_extension(ext, num_cores)
@@ -32,11 +44,6 @@ class CMakeBuild(build_ext):
         pymatching_dir = os.path.abspath('libs/PyMatching')
         # subprocess.check_call(['bazel', 'build', '--jobs', str(num_cores), '//:pymatching', '//:libpymatching', '@stim//:stim_lib'], cwd=pymatching_dir)
         subprocess.check_call(['bazel', 'build', '--jobs', str(num_cores), '//:pymatching', '//:libpymatching', '@stim//:stim_dev_wheel'], cwd=pymatching_dir)
-
-        # # # After building, install the Stim wheel
-        # subprocess.check_call([sys.executable, '-m', 'ensurepip'])
-        # stim_wheel_path = os.path.join(pymatching_dir, 'bazel-bin', 'external', 'stim', 'stim-0.0.dev0-py3-none-any.whl')
-        # subprocess.check_call([sys.executable, '-m', 'pip', 'install', stim_wheel_path])
 
         
     def build_extension(self, ext, num_cores):
