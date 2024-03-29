@@ -12,6 +12,7 @@ import numpy as np
 from ..metadata import metadata_loader, find_and_create_scratch
 
 
+
 def extract_backend_name(backend_str):
     match = re.search(r"IBMBackend\('([^']+)'\)", backend_str)
     if match:
@@ -21,15 +22,17 @@ def extract_backend_name(backend_str):
         # Return None or raise an error if the pattern is not found
         return None
     
-def get_calib_jobs(backend_name: str, needed_calib_date = None):
+def get_calib_jobs(backend_name: str, needed_calib_date = None, double_msmt = False):
     md = metadata_loader(_extract=True, _drop_inutile=False)
     md = md.dropna(subset=["sampled_state"])
+
     mask = (
         (md["backend_name"] == backend_name) &
         (md["job_status"] == "JobStatus.DONE") &
-        (md["optimization_level"] == 0) &
-        ((md["double_msmt"] == False) | (pd.isna(md["double_msmt"])))
+        (md["optimization_level"] == 0)
     )
+    additional_mask = (md["double_msmt"] == double_msmt) if double_msmt else ( md["double_msmt"] == False | pd.isna(md["double_msmt"]))
+    mask = mask & additional_mask
 
     md_filtered = md.loc[mask]
     
@@ -70,7 +73,8 @@ def get_calib_jobs(backend_name: str, needed_calib_date = None):
 
 def find_closest_calib_jobs(tobecalib_job: Optional[str] = None,
                             tobecalib_backend: Optional[str] = None,
-                            other_date = None, verbose = True):
+                            other_date = None, verbose = True,
+                            double_msmt = False):
     """Find the closest calibration jobs for the given job ID."""
     if tobecalib_job is None and tobecalib_backend is None:
         raise NotImplementedError("Only loading calibration data for a specific job or a specified backend is currently supported.")
@@ -98,7 +102,7 @@ def find_closest_calib_jobs(tobecalib_job: Optional[str] = None,
     if other_date is not None: # if specified, use other date as closest date
             needed_calib_date = pd.to_datetime(other_date, utc=True)
 
-    job_ids, execution_dates, creation_dates = get_calib_jobs(tobecalib_backend, needed_calib_date)
+    job_ids, execution_dates, creation_dates = get_calib_jobs(tobecalib_backend, needed_calib_date, double_msmt)
 
     print(f"Found jobs for backend {tobecalib_backend} with closest execution date {execution_dates['0']}.") if verbose else None
     return job_ids, tobecalib_backend, creation_dates['0']
@@ -110,12 +114,15 @@ def load_calibration_memory(provider,
                             tobecalib_backend: Optional[str] = None,
                             qubits: Optional[List[int]] = None, 
                             other_date = None,
-                            nb_shots: int = None): 
+                            nb_shots: int = None,
+                            double_msmt = False,
+                            post_process = False): 
     """Load the calibration memory for the closest calibration jobs for the given job ID."""
+
     if not tobecalib_job and not tobecalib_backend:
         raise NotImplementedError("Only loading calibration data for a specific job or a specified backend is currently supported.")
     
-    closest_job_ids, _, _ = find_closest_calib_jobs(tobecalib_job, tobecalib_backend, other_date=other_date)
+    closest_job_ids, _, _ = find_closest_calib_jobs(tobecalib_job, tobecalib_backend, other_date=other_date, double_msmt=double_msmt)
     # print(closest_job_ids) 
     all_memories = {}
     for state, job_id in closest_job_ids.items():
@@ -139,17 +146,38 @@ def load_calibration_memory(provider,
         for virtual_qubit, physical_qubit in layout_dict.items():
             reordered_memory[:, int(physical_qubit)] = memory[:, int(virtual_qubit)]
 
+        # Reorder memory for double measurement
+        if double_msmt is True:
+            assert reordered_memory.shape[1] % 2 == 0, "Memory shape is not divisible by 2."
+            for virtual_qubit, physical_qubit in layout_dict.items():
+                reordered_memory[:, int(physical_qubit) + reordered_memory.shape[1]//2] = memory[:, int(virtual_qubit) + memory.shape[1]//2]
+
         if qubits is None:
-            qubits = range(reordered_memory.shape[1])  # Assuming all qubits are included
+            if double_msmt is True:
+                assert reordered_memory.shape[1] % 2 == 0, "Memory shape is not divisible by 2."
+                qubits = range(reordered_memory.shape[1]//2)
+            else: 
+                qubits = range(reordered_memory.shape[1])  # Assuming all qubits are included
 
         for qubit in qubits:
-            if qubit < reordered_memory.shape[1]:  # Check if qubit index is valid
-                if qubit not in all_memories:
-                    all_memories[qubit] = {}
+            if double_msmt:
+                assert qubit < reordered_memory.shape[1]//2, f"Qubit {qubit} is not in the memory."
+            else:
+                assert qubit < reordered_memory.shape[1], f"Qubit {qubit} is not in the memory."
+
+            if qubit not in all_memories:
+                all_memories[qubit] = {}
+            if nb_shots is not None:
+                all_memories[qubit][mmr_name] = reordered_memory[:nb_shots, int(qubit)]
+            else:
+                all_memories[qubit][mmr_name] = reordered_memory[:, int(qubit)]
+            
+            if double_msmt is True:
                 if nb_shots is not None:
-                    all_memories[qubit][mmr_name] = reordered_memory[:nb_shots, int(qubit)]
+                    all_memories[qubit][mmr_name + "_scnd"] = reordered_memory[:nb_shots, int(qubit) + reordered_memory.shape[1]//2]
                 else:
-                    all_memories[qubit][mmr_name] = reordered_memory[:, int(qubit)]
+                    all_memories[qubit][mmr_name + "_scnd"] = reordered_memory[:, int(qubit) + reordered_memory.shape[1]//2]
+
 
     return all_memories
 
