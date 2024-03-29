@@ -9,6 +9,7 @@ import pandas as pd
 import json
 import numpy as np
 
+from .dbl_msmt import postselect_calib_data, calculate_filtered_ratios, get_msmt_err_probs
 from ..metadata import metadata_loader, find_and_create_scratch
 
 
@@ -117,13 +118,46 @@ def load_calibration_memory(provider,
                             nb_shots: int = None,
                             double_msmt = False,
                             post_process = False): 
-    """Load the calibration memory for the closest calibration jobs for the given job ID."""
+    """
+    Retrieves and processes calibration memory data for specified qubits from the closest calibration 
+    jobs related to a given job ID or backend. Supports additional options for double measurement 
+    and post-processing of the data.
 
+    Args:
+    - provider: The provider from which to retrieve calibration jobs.
+    - tobecalib_job (Optional[str]): Job ID for which to find the closest calibration jobs.
+    - tobecalib_backend (Optional[str]): Backend name for which to find the closest calibration jobs.
+    - qubits (Optional[List[int]]): List of qubit indices for which to retrieve calibration data.
+    - other_date: Not used.
+    - nb_shots (int): Number of shots to retrieve for each qubit's measurement.
+    - double_msmt (bool): Indicates if double measurement correction should be applied.
+    - post_process (bool): If True, post-processes the data to filter out likely incorrect measurements.
+
+    Returns:
+    - dict: Calibration data for each qubit, optionally post-processed.
+      Format: {qubit_index: {'mmr_0': ..., 'mmr_1': ..., 'mmr_0_scnd': ..., 'mmr_1_scnd': ...}}
+      or, if post_process=True, (all_memories, msmt_err_dict) where:
+      - all_memories is the post-processed memories in the same format as above.
+      - msmt_err_dict: {qubit_index: {'p_hard': ..., 'p_soft': ...}} representing measurement error probabilities.
+
+    Example:
+    - Calling function without post-processing:
+      >>> memories = load_calibration_memory(provider, tobecalib_backend='ibmq_montreal')
+      >>> print(memories[0])
+      {'mmr_0': array([...]), 'mmr_1': array([...])}
+
+    - Calling function with post-processing:
+      >>> memories, err_probs = load_calibration_memory(provider, tobecalib_backend='ibmq_montreal', post_process=True)
+      >>> print(memories[0], err_probs[0])
+      {'mmr_0': array([...]), 'mmr_1': array([...])}, {'p_hard': 0.05, 'p_soft': 0.1}
+
+    Raises:
+    - NotImplementedError: If neither tobecalib_job nor tobecalib_backend is specified.
+    """
     if not tobecalib_job and not tobecalib_backend:
         raise NotImplementedError("Only loading calibration data for a specific job or a specified backend is currently supported.")
     
     closest_job_ids, _, _ = find_closest_calib_jobs(tobecalib_job, tobecalib_backend, other_date=other_date, double_msmt=double_msmt)
-    # print(closest_job_ids) 
     all_memories = {}
     for state, job_id in closest_job_ids.items():
         mmr_name = f"mmr_{state}"
@@ -177,6 +211,10 @@ def load_calibration_memory(provider,
                     all_memories[qubit][mmr_name + "_scnd"] = reordered_memory[:nb_shots, int(qubit) + reordered_memory.shape[1]//2]
                 else:
                     all_memories[qubit][mmr_name + "_scnd"] = reordered_memory[:, int(qubit) + reordered_memory.shape[1]//2]
+
+    if post_process:
+        all_memories, msmt_err_dict = postselect_calib_data(all_memories)
+        return all_memories, msmt_err_dict
 
 
     return all_memories

@@ -1,29 +1,38 @@
+from typing import Tuple
+
 from sklearn.mixture import GaussianMixture
 from sklearn.preprocessing import StandardScaler
 import numpy as np
 
 
-def postselect_calib_data(qubit_data_dict: dict):
+def postselect_calib_data(qubit_data_dict: dict) -> Tuple[dict, dict]:
     """
     Processes and postselects qubit calibration data based on Gaussian Mixture Model (GMM) predictions,
     excluding instances where both initial and final measurements are incorrect. The function fits a GMM
     to rescaled measurement data, predicts labels for both initial and second measurements, and retains
-    data except where both measurements are classified as incorrect for each qubit state.
+    data except where both measurements are classified as incorrect for each qubit state. Additionally,
+    it calculates hard and soft measurement error probabilities for each qubit based on the GMM predictions.
 
     Parameters:
     - qubit_data_dict (dict): Dictionary with qubit indices as keys and values being another dictionary
       containing arrays of initial and second measurements ('mmr_0', 'mmr_1', 'mmr_0_scnd', 'mmr_1_scnd').
 
     Returns:
-    - dict: Processed data for each qubit including postselected measurements ('mmr_0', 'mmr_1') and the
-      original second measurements ('mmr_0_scnd', 'mmr_1_scnd'), along with the fitted GMM object and scaler.
-      I. e., {qubit_idx: {'mmr_0': ..., 'mmr_1': ..., 'mmr_0_scnd': ..., 'mmr_1_scnd': ..., 'gmm': ..., 'scaler': ...}}
+    - tuple of (dict, dict):
+        - First dict: Processed data for each qubit including postselected measurements ('mmr_0', 'mmr_1') and the
+          original second measurements ('mmr_0_scnd', 'mmr_1_scnd'), along with the fitted GMM object and scaler.
+          I.e., {qubit_idx: {'mmr_0': ..., 'mmr_1': ..., 'mmr_0_scnd': ..., 'mmr_1_scnd': ..., 'gmm': ..., 'scaler': ...}}
+        
+        - Second dict: Measurement error probabilities for each qubit, including 'p_hard' (probability of both
+          measurements being incorrect) and 'p_soft' (probability of only one measurement being incorrect).
+          I.e., {qubit_idx: {'p_hard': ..., 'p_soft': ...}}
 
-    This method aims to improve measurement reliability by filtering out likely incorrect measurement
+    The method aims to improve measurement reliability by filtering out likely incorrect measurement
     outcomes, based on the assumption that errors in both initial and final measurements are less common.
-    """    
+    It further quantifies the measurement reliability through hard and soft error probabilities.
+    """ 
     processed_data = {}
-    
+    msmt_err_probs = {}    
     for qubit_idx, data in qubit_data_dict.items():
         mmr_tot = np.concatenate([data['mmr_0'].real, data['mmr_1'].real, 
                                     data['mmr_0_scnd'].real, data['mmr_1_scnd'].real])
@@ -65,8 +74,20 @@ def postselect_calib_data(qubit_data_dict: dict):
             'gmm': gmm,
             'scaler': scaler,
         }
+
+        # Get the error probabilities
+        hard_prob_0 = ((labels_0 == 1) & (labels_0_scnd == 1)).sum() / len(labels_0)
+        hard_prob_1 = ((labels_1 == 0) & (labels_1_scnd == 0)).sum() / len(labels_1)
+        soft_prob_0 = ((labels_0 == 1) & (labels_0_scnd == 0)).sum() / len(labels_0)
+        soft_prb_1 = ((labels_1 == 0) & (labels_1_scnd == 1)).sum() / len(labels_1)
+
+        msmt_err_probs[qubit_idx] = {
+            'p_hard': (hard_prob_0 + hard_prob_1) / 2,
+            'p_soft': (soft_prob_0 + soft_prb_1) / 2
+        }
+             
     
-    return processed_data
+    return processed_data, msmt_err_probs
 
 
 def soft_postselect_calib_data(qubit_data_dict: dict, threshold: float):
@@ -271,9 +292,6 @@ def get_msmt_err_probs(ratio_results):
         }
 
     return msmt_err_probs
-
-
-
 
 
 
