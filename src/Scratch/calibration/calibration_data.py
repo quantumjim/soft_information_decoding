@@ -9,7 +9,7 @@ import pandas as pd
 import json
 import numpy as np
 
-from .dbl_msmt import postselect_calib_data, calculate_filtered_ratios, get_msmt_err_probs
+from .dbl_msmt import postselect_calib_data, get_gmm_dict
 from ..metadata import metadata_loader, find_and_create_scratch
 
 
@@ -214,9 +214,11 @@ def load_calibration_memory(provider,
                     all_memories[qubit][mmr_name + "_scnd"] = reordered_memory[:, int(qubit) + reordered_memory.shape[1]//2]
 
     if post_process:
-        all_memories, gmm_dict, msmt_err_dict = postselect_calib_data(all_memories)
-        return all_memories, gmm_dict, msmt_err_dict
-
+        if double_msmt is True:
+            all_memories, gmm_dict, msmt_err_dict = postselect_calib_data(all_memories)
+            return all_memories, gmm_dict, msmt_err_dict
+        else:
+            return all_memories, get_gmm_dict(all_memories), None
 
     return all_memories
 

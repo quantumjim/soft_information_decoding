@@ -18,11 +18,11 @@ def gaussianIQConvertor(IQ_data: np.ndarray, inverted_q_map: dict, gmm_dict: dic
         class_labels = class_1_greater.astype(int)
 
         # Calculate misassignment probabilities (pSoft)
-        pSoft = 1 / (1 + np.max(probas, axis=1) / np.min(probas, axis=1))
+        pSoftValues = 1 / (1 + np.max(probas, axis=1) / np.min(probas, axis=1))
 
         # Assign the computed labels and misassignment probabilities into the matrices
         for i, phys_idx in enumerate(phys_indices):
             countMat[:, phys_idx] = class_labels[i*nb_shots:(i+1)*nb_shots]
-            pSoft[:, phys_idx] = pSoft[i*nb_shots:(i+1)*nb_shots]
+            pSoft[:, phys_idx] = pSoftValues[i*nb_shots:(i+1)*nb_shots]
 
     return countMat, pSoft

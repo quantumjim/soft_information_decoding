@@ -98,6 +98,35 @@ def postselect_calib_data(qubit_data_dict: dict) -> Tuple[dict, dict]:
     return processed_data, gmm_dict, msmt_err_probs
 
 
+
+def get_gmm_dict(qubit_data_dict: dict) -> Tuple[dict, dict]:
+
+    gmm_dict = {}
+    for qubit_idx, data in qubit_data_dict.items():
+        mmr_tot = np.concatenate([data['mmr_0'].real, data['mmr_1'].real])
+        
+        # Rescale the data
+        scaler = StandardScaler()
+        mmr_tot_s = scaler.fit_transform(mmr_tot.reshape(-1, 1))
+        
+        # Fit the GMM
+        gmm = GaussianMixture(n_components=2, covariance_type='tied', random_state=42)
+        gmm.fit(mmr_tot_s)
+
+        # Reorder the labels
+        if gmm.means_[0] > gmm.means_[1]:
+            gmm.means_ = gmm.means_[::-1]
+            gmm.weights_ = gmm.weights_[::-1]
+        
+        gmm_dict[qubit_idx] = {
+            'gmm': gmm,
+            'scaler': scaler
+        }
+
+    return gmm_dict
+
+
+
 def soft_postselect_calib_data(qubit_data_dict: dict, threshold: float):
     """
     Processes qubit calibration data by applying a Gaussian Mixture Model (GMM) for misassignment probability
