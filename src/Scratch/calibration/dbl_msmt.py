@@ -20,10 +20,13 @@ def postselect_calib_data(qubit_data_dict: dict) -> Tuple[dict, dict]:
     Returns:
     - tuple of (dict, dict):
         - First dict: Processed data for each qubit including postselected measurements ('mmr_0', 'mmr_1') and the
-          original second measurements ('mmr_0_scnd', 'mmr_1_scnd'), along with the fitted GMM object and scaler.
-          I.e., {qubit_idx: {'mmr_0': ..., 'mmr_1': ..., 'mmr_0_scnd': ..., 'mmr_1_scnd': ..., 'gmm': ..., 'scaler': ...}}
+          original second measurements ('mmr_0_scnd', 'mmr_1_scnd').
+          I.e., {qubit_idx: {'mmr_0': ..., 'mmr_1': ..., 'mmr_0_scnd': ..., 'mmr_1_scnd': ...}}
+
+        - Second dict: GMM objects and scalers used for data standardization for each qubit.
+            I.e., {qubit_idx: {'gmm': ..., 'scaler': ...}}
         
-        - Second dict: Measurement error probabilities for each qubit, including 'p_hard' (probability of both
+        - Third dict: Measurement error probabilities for each qubit, including 'p_hard' (probability of both
           measurements being incorrect) and 'p_soft' (probability of only one measurement being incorrect).
           I.e., {qubit_idx: {'p_hard': ..., 'p_soft': ...}}
 
@@ -32,6 +35,7 @@ def postselect_calib_data(qubit_data_dict: dict) -> Tuple[dict, dict]:
     It further quantifies the measurement reliability through hard and soft error probabilities.
     """ 
     processed_data = {}
+    gmm_dict = {}
     msmt_err_probs = {}    
     for qubit_idx, data in qubit_data_dict.items():
         mmr_tot = np.concatenate([data['mmr_0'].real, data['mmr_1'].real, 
@@ -71,8 +75,12 @@ def postselect_calib_data(qubit_data_dict: dict) -> Tuple[dict, dict]:
             'mmr_1': mmr_1,
             'mmr_0_scnd': data['mmr_0_scnd'],
             'mmr_1_scnd': data['mmr_1_scnd'],
+        }
+
+        # store the gmm object
+        gmm_dict[qubit_idx] = {
             'gmm': gmm,
-            'scaler': scaler,
+            'scaler': scaler
         }
 
         # Get the error probabilities
@@ -87,7 +95,7 @@ def postselect_calib_data(qubit_data_dict: dict) -> Tuple[dict, dict]:
         }
              
     
-    return processed_data, msmt_err_probs
+    return processed_data, gmm_dict, msmt_err_probs
 
 
 def soft_postselect_calib_data(qubit_data_dict: dict, threshold: float):

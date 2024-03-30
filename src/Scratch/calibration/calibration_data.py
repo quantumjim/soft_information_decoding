@@ -136,8 +136,9 @@ def load_calibration_memory(provider,
     Returns:
     - dict: Calibration data for each qubit, optionally post-processed.
       Format: {qubit_index: {'mmr_0': ..., 'mmr_1': ..., 'mmr_0_scnd': ..., 'mmr_1_scnd': ...}}
-      or, if post_process=True, (all_memories, msmt_err_dict) where:
+      or, if post_process=True, (all_memories, gmm_dict, msmt_err_dict) where:
       - all_memories is the post-processed memories in the same format as above.
+      - gmm_dict: {qubit_index: {'gmm': ..., 'scaler': ...}} representing Gaussian Mixture Models and scalers.
       - msmt_err_dict: {qubit_index: {'p_hard': ..., 'p_soft': ...}} representing measurement error probabilities.
 
     Example:
@@ -147,9 +148,9 @@ def load_calibration_memory(provider,
       {'mmr_0': array([...]), 'mmr_1': array([...])}
 
     - Calling function with post-processing:
-      >>> memories, err_probs = load_calibration_memory(provider, tobecalib_backend='ibmq_montreal', post_process=True)
-      >>> print(memories[0], err_probs[0])
-      {'mmr_0': array([...]), 'mmr_1': array([...])}, {'p_hard': 0.05, 'p_soft': 0.1}
+      >>> memories, gmm_dict, err_probs = load_calibration_memory(provider, tobecalib_backend='ibmq_montreal', post_process=True)
+      >>> print(memories[0], gmm_dict[0], err_probs[0])
+      {'mmr_0': array([...]), 'mmr_1': array([...])}, {'gmm': gmm, 'scaler': scaler} {'p_hard': 0.05, 'p_soft': 0.1}
 
     Raises:
     - NotImplementedError: If neither tobecalib_job nor tobecalib_backend is specified.
@@ -213,8 +214,8 @@ def load_calibration_memory(provider,
                     all_memories[qubit][mmr_name + "_scnd"] = reordered_memory[:, int(qubit) + reordered_memory.shape[1]//2]
 
     if post_process:
-        all_memories, msmt_err_dict = postselect_calib_data(all_memories)
-        return all_memories, msmt_err_dict
+        all_memories, gmm_dict, msmt_err_dict = postselect_calib_data(all_memories)
+        return all_memories, gmm_dict, msmt_err_dict
 
 
     return all_memories
