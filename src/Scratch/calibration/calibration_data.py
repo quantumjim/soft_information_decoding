@@ -32,7 +32,7 @@ def get_calib_jobs(backend_name: str, needed_calib_date = None, double_msmt = Fa
         (md["job_status"] == "JobStatus.DONE") &
         (md["optimization_level"] == 0)
     )
-    additional_mask = (md["double_msmt"] == double_msmt) if double_msmt else ( md["double_msmt"] == False | pd.isna(md["double_msmt"]))
+    additional_mask = (md["double_msmt"] == double_msmt) if double_msmt is True else ((md["double_msmt"] == False) | pd.isna(md["double_msmt"]))
     mask = mask & additional_mask
 
     md_filtered = md.loc[mask]
