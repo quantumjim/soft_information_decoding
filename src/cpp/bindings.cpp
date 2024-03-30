@@ -76,7 +76,11 @@ PYBIND11_MODULE(cpp_soft_info, m) {
         .def_readwrite("kde_1", &KDE_Result::kde_1)
         .def_readwrite("bestBandwidth", &KDE_Result::bestBandwidth)
         .def_readwrite("scaler_mean", &KDE_Result::scaler_mean)
-        .def_readwrite("scaler_stddev", &KDE_Result::scaler_stddev);
+        .def_readwrite("scaler_stddev", &KDE_Result::scaler_stddev)
+        .def_readwrite("mean_mmr_0", &KDE_Result::mean_mmr_0)
+        .def_readwrite("mean_mmr_1", &KDE_Result::mean_mmr_1)
+        .def_readwrite("stddev_mmr_0", &KDE_Result::stddev_mmr_0)
+        .def_readwrite("stddev_mmr_1", &KDE_Result::stddev_mmr_1);
 
     py::class_<pd::PreDecodeResult>(m, "PreDecodeResult")
         .def(py::init<>())
@@ -318,7 +322,8 @@ PYBIND11_MODULE(cpp_soft_info, m) {
       py::arg("inv_qubit_mapping"), 
       py::arg("kde_dict"), 
       py::arg("relError") = -1.0, 
-      py::arg("absError") = -1.0);
+      py::arg("absError") = -1.0,
+      py::arg("handleOutliers") = false);
 
     m.def("quantizeMatrixVectorized", &quantizeMatrixVectorized, 
       py::arg("matrix"), 

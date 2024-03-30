@@ -84,6 +84,12 @@ std::map<int, KDE_Result> get_KDEs(const std::map<int, std::map<std::string, std
         arma::mat mmr_1_data = ComplexTo2DMatrix(memories.at("mmr_1"));
         StandardizeData(mmr_1_data, mean, stddev);
 
+        // Calculate the mean and std of the mmr_0 and mmr_1 data
+        arma::vec mean_mmr_0 = arma::mean(mmr_0_data, 1);
+        arma::vec mean_mmr_1 = arma::mean(mmr_1_data, 1);
+        arma::vec stddev_mmr_0 = arma::stddev(mmr_0_data, 0, 1);
+        arma::vec stddev_mmr_1 = arma::stddev(mmr_1_data, 0, 1);
+
         // Split data into 80% train and 20% test
         size_t splitIndex0 = static_cast<size_t>(mmr_0_data.n_cols * 0.99); // Hardcoded 99/1 split
         size_t splitIndex1 = static_cast<size_t>(mmr_1_data.n_cols * 0.99); // Hardcoded 99/1 split
@@ -145,6 +151,10 @@ std::map<int, KDE_Result> get_KDEs(const std::map<int, std::map<std::string, std
                 bestResult.kde_1 = kde1;
                 bestResult.scaler_mean = mean;
                 bestResult.scaler_stddev = stddev;
+                bestResult.mean_mmr_0 = mean_mmr_0;
+                bestResult.mean_mmr_1 = mean_mmr_1;
+                bestResult.stddev_mmr_0 = stddev_mmr_0;
+                bestResult.stddev_mmr_1 = stddev_mmr_1;
             }
         }
         

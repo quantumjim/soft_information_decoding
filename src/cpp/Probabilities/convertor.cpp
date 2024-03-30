@@ -66,7 +66,8 @@ std::tuple<Eigen::MatrixXd, Eigen::MatrixXi> iqConvertor(
     const Eigen::MatrixXcd &not_scaled_IQ_data,
     const std::map<int, std::vector<int>> &inv_qubit_mapping,
     std::map<int, KDE_Result> &kde_dict,
-    double relError, double absError) {
+    double relError, double absError,
+    bool handleOutliers) {
 
     Eigen::MatrixXd pSoftMatrix(not_scaled_IQ_data.rows(), not_scaled_IQ_data.cols());
     Eigen::MatrixXi comparisonMatrix(not_scaled_IQ_data.rows(), not_scaled_IQ_data.cols());
@@ -134,6 +135,46 @@ std::tuple<Eigen::MatrixXd, Eigen::MatrixXi> iqConvertor(
 
                 // Determine the smaller (p_small) and larger (p_big) of the two estimations
                 double p_small, p_big;
+
+                 if (handleOutliers && estim0 == epsilon && estim1 == epsilon) { // Outlier point (works bcs estim is pos)
+                    double x = all_query_points(0, row + i * not_scaled_IQ_data.rows());
+                    double mean_0 = kde_entry.mean_mmr_0[0];
+                    double mean_1 = kde_entry.mean_mmr_1[0];
+                    double m_std = (kde_entry.stddev_mmr_0[0] + kde_entry.stddev_mmr_1[0])/2; // taking the mean of the std 
+
+                    // std::cout << "Mean 0: " << mean_0 << "\n";
+                    // std::cout << "Mean 1: " << mean_1 << "\n";
+                    // std::cout << "meant Std: " << m_std << "\n";
+                    // std::cout << "std 0: " << kde_entry.stddev_mmr_0[0] << "\n";
+                    // std::cout << "std 1: " << kde_entry.stddev_mmr_1[0] << "\n";
+
+                    double d_m_sq = std::pow(mean_1, 2) - std::pow(mean_0, 2);
+                    double d_m = mean_1 - mean_0;
+                    double threshold = d_m_sq / (2*d_m);
+                    
+                    double exponent = -1*d_m_sq/2*m_std + x*d_m/(2*m_std); 
+
+                    if (x > threshold) {
+                        comparisonMatrix(row, colIndex) = 0;
+                        pSoftMatrix(row, colIndex) = 1/(1 + std::exp(exponent));
+                        // std::cout << "pSoft: " << pSoftMatrix(row, colIndex) << "\n";
+                    } else {
+                        comparisonMatrix(row, colIndex) = 1;
+                        pSoftMatrix(row, colIndex) = 1/(1 + std::exp(-1*exponent));
+                        // std::cout << "pSoft: " << pSoftMatrix(row, colIndex) << "\n";
+                    }
+
+                    // std::cout << "Outlier IQ point: ("
+                    //           << not_scaled_IQ_data(row, colIndex).real() << ", "
+                    //           << not_scaled_IQ_data(row, colIndex).imag() << ")\n";
+
+                    // std::cout << "Scaled coordinates: ("
+                    //           << all_query_points(0, row + i * not_scaled_IQ_data.rows()) << ", "
+                    //           << all_query_points(1, row + i * not_scaled_IQ_data.rows()) << ")\n";
+
+                    continue;
+                }
+
                 if (estim1 > estim0) {
                     p_small = estim0;
                     p_big = estim1;
