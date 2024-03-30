@@ -134,14 +134,14 @@ std::tuple<Eigen::MatrixXd, Eigen::MatrixXi> iqConvertor(
 
                 // Determine the smaller (p_small) and larger (p_big) of the two estimations
                 double p_small, p_big;
-                if (estim0 > estim1) {
-                    p_small = estim1;
-                    p_big = estim0;
-                    comparisonMatrix(row, colIndex) = 0; // Estimation0 is greater, so assign 0
-                } else {
+                if (estim1 > estim0) {
                     p_small = estim0;
                     p_big = estim1;
-                    comparisonMatrix(row, colIndex) = 1; // Estimation1 is greater or equal, so assign 1
+                    comparisonMatrix(row, colIndex) = 1; // Estimation0 is greater, so assign 0
+                } else { // Defaults to setting the count to 0
+                    p_small = estim1;
+                    p_big = estim0;
+                    comparisonMatrix(row, colIndex) = 0; // Estimation1 is greater or equal, so assign 1
                 }
 
                 // Calculate p_soft using the smaller (p_small) and larger (p_big) values for every element
