@@ -45,8 +45,8 @@ std::map<int, KDE_Result> get_KDEs(const std::map<int, std::map<std::string, std
     std::map<int, KDE_Result> results;
 
     // Checks
-    if (num_points < 4) {
-        throw std::invalid_argument("num_points must be at least 3 for numerical stability and !=1 for devision by 0. AT 2 normalization sometimes not defined.");
+    if (num_points < 5) {
+        throw std::invalid_argument("num_points must be at least 3 for numerical stability and !=1 for devision by 0. At 4 normalization sometimes not defined.");
     }
 
 
@@ -85,11 +85,13 @@ std::map<int, KDE_Result> get_KDEs(const std::map<int, std::map<std::string, std
         StandardizeData(mmr_1_data, mean, stddev);
 
         // Split data into 80% train and 20% test
-        size_t splitIndex = static_cast<size_t>(mmr_0_data.n_cols * 0.99); // Hardcoded 80/20 split
-        arma::mat mmr_0_train = mmr_0_data.cols(0, splitIndex - 1);
-        arma::mat mmr_0_test = mmr_0_data.cols(splitIndex, mmr_0_data.n_cols - 1);
-        arma::mat mmr_1_train = mmr_1_data.cols(0, splitIndex - 1);
-        arma::mat mmr_1_test = mmr_1_data.cols(splitIndex, mmr_1_data.n_cols - 1);
+        size_t splitIndex0 = static_cast<size_t>(mmr_0_data.n_cols * 0.99); // Hardcoded 99/1 split
+        size_t splitIndex1 = static_cast<size_t>(mmr_1_data.n_cols * 0.99); // Hardcoded 99/1 split
+
+        arma::mat mmr_0_train = mmr_0_data.cols(0, splitIndex0 - 1);
+        arma::mat mmr_0_test = mmr_0_data.cols(splitIndex0, mmr_0_data.n_cols - 1);
+        arma::mat mmr_1_train = mmr_1_data.cols(0, splitIndex1 - 1);
+        arma::mat mmr_1_test = mmr_1_data.cols(splitIndex1, mmr_1_data.n_cols - 1);
 
         double bestScore = -std::numeric_limits<double>::infinity();
         KDE_Result bestResult;
