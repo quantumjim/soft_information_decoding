@@ -13,16 +13,17 @@ pm::DetailedDecodeResult decodeConvertorSoft(
     int synd_rounds,
     int logical,
     bool _resets,
-    bool _detailed);
+    bool _detailed = false);
 
-std::tuple<pm::DetailedDecodeResult, pm::DetailedDecodeResult> decodeConvertorAll(
+pm::DetailedDecodeResult decodeConvertorAll(
     stim::DetectorErrorModel& detector_error_model,
     Eigen::MatrixXi comparisonMatrix,
     Eigen::MatrixXd pSoftMatrix,
     int synd_rounds,
     int logical,
-    bool _resets); 
-
+    bool _resets,
+    bool _detailed = false,
+    bool decode_hard = false); 
 
 
 

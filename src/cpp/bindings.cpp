@@ -348,7 +348,9 @@ PYBIND11_MODULE(cpp_soft_info, m) {
       py::arg("pSoftMatrix"),
       py::arg("synd_rounds"),
       py::arg("logical"),
-      py::arg("_resets"));
+      py::arg("_resets"),
+      py::arg("_detailed")=false,
+      py::arg("decode_hard")=false);
 
     //////////// STIM ////////////
 

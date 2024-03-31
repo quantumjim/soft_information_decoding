@@ -511,7 +511,7 @@ namespace pm
 
         ShotErrorDetails errorDetail;
         errorDetail.matched_edges = decode_to_edges_array(matching, detectionEvents);
-        errorDetail.detection_syndromes = det_syndromes; // Assuming det_syndromes is available here
+        errorDetail.detection_syndromes = det_syndromes; 
         errorDetail.edges = get_edges(matching);
 
         return errorDetail;

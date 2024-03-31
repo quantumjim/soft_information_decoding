@@ -1,28 +1,38 @@
 #include "convdecoders.h"
     
 
-pm::DetailedDecodeResult decodeConvertorSoft(
+pm::DetailedDecodeResult decodeConvertorAll(
     stim::DetectorErrorModel& detector_error_model,
     Eigen::MatrixXi comparisonMatrix,
     Eigen::MatrixXd pSoftMatrix,
     int synd_rounds,
     int logical,
     bool _resets,
-    bool _detailed) {
+    bool _detailed,
+    bool decode_hard) {
+
+    if (_resets == true) {
+        throw std::runtime_error("RepCodes with resets not supported yet.");
+    }
+
+    if (comparisonMatrix.rows() != pSoftMatrix.rows() || comparisonMatrix.cols() != pSoftMatrix.cols()) {
+        throw std::runtime_error("comparisonMatrix and pSoftMatrix must have the same dimensions.");
+    }
         
     pm::DetailedDecodeResult result;
     result.num_errors = 0;
+    result.error_details.resize(comparisonMatrix.rows());
 
-    std::set<size_t> empty_set;        
+    std::set<size_t> empty_set;    
+    double epsilon = std::numeric_limits<double>::epsilon();    
     int distance = (comparisonMatrix.cols() + synd_rounds) / (synd_rounds + 1); // Adapted for RepCodes
 
-    pm::UserGraph matching;
-
+    pm::UserGraph matching;    
     #pragma omp parallel private(matching)
     {
         matching = pm::detector_error_model_to_user_graph_private(detector_error_model);
 
-        #pragma omp for nowait  
+        #pragma omp for
         for (int shot = 0; shot < comparisonMatrix.rows(); ++shot) {
             std::string count_key;
             for (int msmt = 0; msmt < comparisonMatrix.cols(); ++msmt) {
@@ -39,8 +49,16 @@ pm::DetailedDecodeResult decodeConvertorSoft(
                 }  
 
                 // Reweighting
+
+                if (decode_hard == true) {
+                    continue;
+                }
+
+                double p_soft = pSoftMatrix(shot, msmt);
+                    if (p_soft == 0) {
+                        p_soft = epsilon;
+                    }
                 if (msmt < (distance-1)*synd_rounds) {
-                    double p_soft = pSoftMatrix(shot, msmt);
                     if (_resets) {
                         size_t neighbor_index = matching.nodes[msmt].index_of_neighbor(msmt + (distance-1));
                         if (neighbor_index != SIZE_MAX) {
@@ -54,7 +72,7 @@ pm::DetailedDecodeResult decodeConvertorSoft(
                     } else {
                         if (msmt < (distance-1)*(synd_rounds-1)) {
                             double L = -std::log(p_soft/(1-p_soft));
-                            pm::add_edge(matching, msmt, msmt + 2 * (distance-1), empty_set, L, 0.5, "replace");
+                            pm::add_edge(matching, msmt, msmt + 2 * (distance-1), empty_set, L, p_soft, "replace");
                         } else {
                             size_t neighbor_index = matching.nodes[msmt].index_of_neighbor(msmt + (distance-1));
                             if (neighbor_index != SIZE_MAX) {
@@ -65,6 +83,42 @@ pm::DetailedDecodeResult decodeConvertorSoft(
                             } else {
                                 throw std::runtime_error("Edge does not exist between:" + std::to_string(msmt) +  " and " + std::to_string(msmt + (distance-1)));
                             }
+                        }
+                    }
+                } else { // Final code readout
+                    if (msmt == (distance-1)*synd_rounds) { // Left boundary
+                        size_t neighbor_index = matching.nodes[msmt].index_of_neighbor(SIZE_MAX);
+                        if (neighbor_index != SIZE_MAX) {
+                            auto edge_it = matching.nodes[msmt].neighbors[neighbor_index].edge_it;
+                            double error_probability = edge_it->error_probability;
+                            auto observables_vector = edge_it->observable_indices;
+                            std::set<size_t> observables_set(observables_vector.begin(), observables_vector.end());
+                            double p_tot = p_soft*(1-error_probability) + (1-p_soft)*error_probability;
+                            pm::add_boundary_edge(matching, msmt, observables_set, -std::log(p_tot/(1-p_tot)), error_probability, "replace");
+                        } else {
+                            throw std::runtime_error("Edge does not exist between: " + std::to_string(msmt) + " and " + std::to_string(SIZE_MAX));
+                        }
+                    } else if (msmt == (distance-1)*synd_rounds + distance - 1) { // Right boundary
+                        size_t neighbor_index = matching.nodes[msmt-1].index_of_neighbor(SIZE_MAX);
+                        if (neighbor_index != SIZE_MAX) {
+                            auto edge_it = matching.nodes[msmt-1].neighbors[neighbor_index].edge_it;
+                            double error_probability = edge_it->error_probability;
+                            auto observables_vector = edge_it->observable_indices;
+                            std::set<size_t> observables_set(observables_vector.begin(), observables_vector.end());
+                            double p_tot = p_soft*(1-error_probability) + (1-p_soft)*error_probability;
+                            pm::add_boundary_edge(matching, msmt-1, observables_set, -std::log(p_tot/(1-p_tot)), error_probability, "replace");
+                        } else {
+                            throw std::runtime_error("Edge does not exist between: " + std::to_string(msmt) + " and " + std::to_string(SIZE_MAX));
+                        }
+                    } else {
+                        size_t neighbor_index = matching.nodes[msmt-1].index_of_neighbor(msmt);
+                        if (neighbor_index != SIZE_MAX) {
+                            auto edge_it = matching.nodes[msmt-1].neighbors[neighbor_index].edge_it;
+                            double error_probability = edge_it->error_probability;
+                            double p_tot = p_soft*(1-error_probability) + (1-p_soft)*error_probability;
+                            pm::add_edge(matching, msmt-1, msmt, empty_set, -std::log(p_tot/(1-p_tot)), error_probability, "replace");
+                        } else {
+                            throw std::runtime_error("Edge does not exist between:" + std::to_string(msmt-1) +  " and " + std::to_string(msmt));
                         }
                     }
                 }
@@ -93,30 +147,40 @@ pm::DetailedDecodeResult decodeConvertorSoft(
     return result;
 }
 
-std::tuple<pm::DetailedDecodeResult, pm::DetailedDecodeResult> decodeConvertorAll(
+
+//// Not needed soft version /////
+
+pm::DetailedDecodeResult decodeConvertorSoft(
     stim::DetectorErrorModel& detector_error_model,
     Eigen::MatrixXi comparisonMatrix,
     Eigen::MatrixXd pSoftMatrix,
     int synd_rounds,
     int logical,
-    bool _resets) {
+    bool _resets,
+    bool _detailed) {
+
+    if (_resets == true) {
+        throw std::runtime_error("RepCodes with resets not supported yet.");
+    }
+
+    if (comparisonMatrix.rows() != pSoftMatrix.rows() || comparisonMatrix.cols() != pSoftMatrix.cols()) {
+        throw std::runtime_error("comparisonMatrix and pSoftMatrix must have the same dimensions.");
+    }
         
-    pm::DetailedDecodeResult result_soft;
-    result_soft.num_errors = 0;
+    pm::DetailedDecodeResult result;
+    result.num_errors = 0;
+    result.error_details.resize(comparisonMatrix.rows());
 
-    pm::DetailedDecodeResult result_hard;
-    result_hard.num_errors = 0;
-
-    std::set<size_t> empty_set;        
+    std::set<size_t> empty_set;    
+    double epsilon = std::numeric_limits<double>::epsilon();    
     int distance = (comparisonMatrix.cols() + synd_rounds) / (synd_rounds + 1); // Adapted for RepCodes
 
-    pm::UserGraph matching;
-
+    pm::UserGraph matching;    
     #pragma omp parallel private(matching)
     {
         matching = pm::detector_error_model_to_user_graph_private(detector_error_model);
 
-        #pragma omp for nowait  
+        #pragma omp for
         for (int shot = 0; shot < comparisonMatrix.rows(); ++shot) {
             std::string count_key;
             for (int msmt = 0; msmt < comparisonMatrix.cols(); ++msmt) {
@@ -133,8 +197,11 @@ std::tuple<pm::DetailedDecodeResult, pm::DetailedDecodeResult> decodeConvertorAl
                 }  
 
                 // Reweighting
+                double p_soft = pSoftMatrix(shot, msmt);
+                    if (p_soft == 0) {
+                        p_soft = epsilon;
+                    }
                 if (msmt < (distance-1)*synd_rounds) {
-                    double p_soft = pSoftMatrix(shot, msmt);
                     if (_resets) {
                         size_t neighbor_index = matching.nodes[msmt].index_of_neighbor(msmt + (distance-1));
                         if (neighbor_index != SIZE_MAX) {
@@ -148,7 +215,7 @@ std::tuple<pm::DetailedDecodeResult, pm::DetailedDecodeResult> decodeConvertorAl
                     } else {
                         if (msmt < (distance-1)*(synd_rounds-1)) {
                             double L = -std::log(p_soft/(1-p_soft));
-                            pm::add_edge(matching, msmt, msmt + 2 * (distance-1), empty_set, L, 0.5, "replace");
+                            pm::add_edge(matching, msmt, msmt + 2 * (distance-1), empty_set, L, p_soft, "replace");
                         } else {
                             size_t neighbor_index = matching.nodes[msmt].index_of_neighbor(msmt + (distance-1));
                             if (neighbor_index != SIZE_MAX) {
@@ -161,37 +228,67 @@ std::tuple<pm::DetailedDecodeResult, pm::DetailedDecodeResult> decodeConvertorAl
                             }
                         }
                     }
+                } else { // Final code readout
+                    if (msmt == (distance-1)*synd_rounds) { // Left boundary
+                        size_t neighbor_index = matching.nodes[msmt].index_of_neighbor(SIZE_MAX);
+                        if (neighbor_index != SIZE_MAX) {
+                            auto edge_it = matching.nodes[msmt].neighbors[neighbor_index].edge_it;
+                            double error_probability = edge_it->error_probability;
+                            auto observables_vector = edge_it->observable_indices;
+                            std::set<size_t> observables_set(observables_vector.begin(), observables_vector.end());
+                            double p_tot = p_soft*(1-error_probability) + (1-p_soft)*error_probability;
+                            pm::add_boundary_edge(matching, msmt, observables_set, -std::log(p_tot/(1-p_tot)), error_probability, "replace");
+                        } else {
+                            throw std::runtime_error("Edge does not exist between: " + std::to_string(msmt) + " and " + std::to_string(SIZE_MAX));
+                        }
+                    } else if (msmt == (distance-1)*synd_rounds + distance - 1) { // Right boundary
+                        size_t neighbor_index = matching.nodes[msmt-1].index_of_neighbor(SIZE_MAX);
+                        if (neighbor_index != SIZE_MAX) {
+                            auto edge_it = matching.nodes[msmt-1].neighbors[neighbor_index].edge_it;
+                            double error_probability = edge_it->error_probability;
+                            auto observables_vector = edge_it->observable_indices;
+                            std::set<size_t> observables_set(observables_vector.begin(), observables_vector.end());
+                            double p_tot = p_soft*(1-error_probability) + (1-p_soft)*error_probability;
+                            pm::add_boundary_edge(matching, msmt-1, observables_set, -std::log(p_tot/(1-p_tot)), error_probability, "replace");
+                        } else {
+                            throw std::runtime_error("Edge does not exist between: " + std::to_string(msmt) + " and " + std::to_string(SIZE_MAX));
+                        }
+                    } else {
+                        size_t neighbor_index = matching.nodes[msmt-1].index_of_neighbor(msmt);
+                        if (neighbor_index != SIZE_MAX) {
+                            auto edge_it = matching.nodes[msmt-1].neighbors[neighbor_index].edge_it;
+                            double error_probability = edge_it->error_probability;
+                            double p_tot = p_soft*(1-error_probability) + (1-p_soft)*error_probability;
+                            pm::add_edge(matching, msmt-1, msmt, empty_set, -std::log(p_tot/(1-p_tot)), error_probability, "replace");
+                        } else {
+                            throw std::runtime_error("Edge does not exist between:" + std::to_string(msmt-1) +  " and " + std::to_string(msmt));
+                        }
+                    }
                 }
             }
 
             // Decoding
             auto det_syndromes = counts_to_det_syndr(count_key, _resets, false, false);
             auto detectionEvents = syndromeArrayToDetectionEvents(det_syndromes, matching.get_num_detectors(), matching.get_boundary().size());
-            auto [predicted_observables_soft, rescaled_weight] = decode(matching, detectionEvents);
-
-            // Reset the graph and redecode
-            matching = pm::detector_error_model_to_user_graph_private(detector_error_model); 
-            auto [predicted_observables_hard, rescaled_weight_hard] = decode(matching, detectionEvents);
-
+            auto [predicted_observables, rescaled_weight] = decode(matching, detectionEvents);
             int actual_observable = (static_cast<int>(count_key.back()) - logical) % 2;
 
             // Result saving
+            if (_detailed) {
+                pm::ShotErrorDetails errorDetail = createShotErrorDetails(matching, detectionEvents, det_syndromes);
+                result.error_details[shot] = errorDetail;
+            }
             #pragma omp critical
             {
-                if (!predicted_observables_soft.empty() && predicted_observables_soft[0] != actual_observable) {
-                    result_soft.num_errors++; // Increment error count if they don't match
-                    result_soft.indices.push_back(shot);
-                }
-                if (!predicted_observables_hard.empty() && predicted_observables_hard[0] != actual_observable) {
-                    result_hard.num_errors++; // Increment error count if they don't match
-                    result_hard.indices.push_back(shot);
+                if (!predicted_observables.empty() && predicted_observables[0] != actual_observable) {
+                    result.num_errors++; // Increment error count if they don't match
+                    result.indices.push_back(shot);
                 }
             }
         }
     }
-    return std::make_tuple(result_soft, result_hard);
+    return result;
 }
-
 
 
 ///////////// TIMED VERSION //////////////////
