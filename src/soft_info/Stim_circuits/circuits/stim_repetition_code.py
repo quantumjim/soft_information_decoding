@@ -10,7 +10,10 @@ class RepetitionCodeStimCircuit():
                  xbasis: bool = False,
                  resets: bool = True,
                  noise_list: list = None,
+                 msmt_err_dict: dict = None,
                  subsampling: bool = False,
+                 no_fin_soft: bool = False,
+                 layout: list = None,
                  ):
         """
         Creates the STIM circuits corresponding to a logical 0 and 1 encoded 
@@ -44,6 +47,22 @@ class RepetitionCodeStimCircuit():
         self.hard_err = noise_list[5]
         self.soft_err = noise_list[6]
         self.subsampling = subsampling
+        self.no_fin_soft = no_fin_soft  
+
+        self.link_layout = None
+        self.code_layout = None
+        # Qubitwise msmt errors 
+        if msmt_err_dict is not None:
+            self.msmt_err_dict = msmt_err_dict
+            if layout is not None:
+                assert len(layout) == 2*d-1, "Layout must be of length 2*d-1."
+                self.link_layout = layout[:d] # up to d-1 are link qubits
+                self.code_layout = layout[d-1:] # from d-1 onwards are code qubits
+            else:
+                raise ValueError("Layout must be provided if msmt errors are specified.")
+        else:
+            if layout is not None:
+                raise ValueError("Qubitwise msmt errors must be specified if layout is specified.") 
 
         # Qubit indices
         self.qubits = list(range(2*d-1))
@@ -69,6 +88,12 @@ class RepetitionCodeStimCircuit():
         self._subsequent_rounds()
         self._final_readout()
 
+    def measure(self, circuit: stim.Circuit, targets: list, p_soft: float, p_hard: float):
+        readout = 'MR' if self._resets else 'M'
+        circuit.append('X_ERROR', targets, arg=p_hard) if p_hard > 0 else None
+        circuit.append(readout, targets, arg=p_soft)
+        if self._resets: # reset errors ≈ readout_error for active resets
+            circuit.append('X_ERROR', targets, arg=(p_soft + p_hard)) if (p_soft + p_hard) > 0 else None 
 
     def _x(self, logs=("0", "1")):
         """Applies a logical X gate to the code qubits."""
@@ -112,10 +137,15 @@ class RepetitionCodeStimCircuit():
         rec = stim.target_rec
         for log in ["0", "1"]:
             self.circuits[log].append('H', self.code_qubits) if self._xbasis else None
-            readout = 'MR' if self._resets else 'M'
-            self.circuits[log].append('X_ERROR', self.code_qubits, arg=self.hard_err) if self.hard_err > 0 else None
-            self.circuits[log].append(readout, self.code_qubits, arg=self.soft_err)
-            self.circuits[log].append('X_ERROR', self.code_qubits, arg=self.readout_err) if self.readout_err > 0 and self._resets else None # Active reset error
+
+            for idx, qubit in enumerate(self.code_qubits):
+                if self.no_fin_soft: # for reweighting the data edges with pSoft
+                    p_soft = 0
+                else:
+                    p_soft = self.msmt_err_dict[self.code_layout[idx]]['p_soft'] if self.code_layout is not None else self.soft_err
+                p_hard = self.msmt_err_dict[self.code_layout[idx]]['p_hard'] if self.code_layout is not None else self.hard_err
+                self.measure(self.circuits[log], [qubit], p_soft, p_hard)
+
             for idx, _ in enumerate(self.link_qubits):
                 if not self._resets:
                     rec_list = [-self.d+idx, -self.d+idx+1, -self.d+idx-(self.d-1), -self.d+idx-2*(self.d-1)]  # [code_1, code_2, link T-1, link T-2]
@@ -156,11 +186,10 @@ class RepetitionCodeStimCircuit():
         self._Z_ent_block.append('DEPOLARIZE1', self.code_qubits[0], arg=self.twog_err) if self.twog_err > 0 and self.subsampling else None
         self._Z_ent_block.append('TICK')
         # Measure
-        readout = 'MR' if self._resets else 'M'
-        self._Z_ent_block.append('X_ERROR', self.link_qubits, arg=self.hard_err) if self.hard_err > 0 else None
-        self._Z_ent_block.append(readout, self.link_qubits, arg=self.soft_err)
-        self._Z_ent_block.append('X_ERROR', self.link_qubits, arg=self.readout_err) if self.readout_err > 0 and self._resets else None # Active reset error
-
+        for idx, qubit in enumerate(self.link_qubits):
+            p_soft = self.msmt_err_dict[self.link_layout[idx]]['p_soft'] if self.link_layout is not None else self.soft_err
+            p_hard = self.msmt_err_dict[self.link_layout[idx]]['p_hard'] if self.link_layout is not None else self.hard_err
+            self.measure(self._Z_ent_block, [qubit], p_soft, p_hard)
         # X Entanglement block
         self._X_ent_block.append('H', self.link_qubits)
         self._X_ent_block.append('DEPOLARIZE1', self.link_qubits, arg=self.sglg_err) if self.sglg_err > 0 else None
@@ -182,11 +211,10 @@ class RepetitionCodeStimCircuit():
         self._X_ent_block.append('H', self.link_qubits)
         self._X_ent_block.append('DEPOLARIZE1', self.link_qubits, arg=self.sglg_err) if self.sglg_err > 0 else None
         # Measure
-        readout = 'MR' if self._resets else 'M'
-        self._X_ent_block.append('X_ERROR', self.link_qubits, arg=self.hard_err) if self.hard_err > 0 else None
-        self._X_ent_block.append(readout, self.link_qubits, arg=self.soft_err)
-        self._X_ent_block.append('X_ERROR', self.link_qubits, arg=self.readout_err) if self.readout_err > 0 and self._resets else None
-
+        for idx, qubit in enumerate(self.link_qubits):
+            p_soft = self.msmt_err_dict[self.link_layout[idx]]['p_soft'] if self.link_layout is not None else self.soft_err
+            p_hard = self.msmt_err_dict[self.link_layout[idx]]['p_hard'] if self.link_layout is not None else self.hard_err
+            self.measure(self._X_ent_block, [qubit], p_soft, p_hard)
         # Detector block
         if self._resets:
             for idx, _ in enumerate(self.link_qubits):
