@@ -150,18 +150,17 @@ std::tuple<Eigen::MatrixXd, Eigen::MatrixXi> iqConvertor(
 
                     double d_m_sq = std::pow(mean_1, 2) - std::pow(mean_0, 2);
                     double d_m = mean_1 - mean_0;
-                    double threshold = d_m_sq / (2*d_m);
+                    // double threshold = d_m_sq / (2*d_m);
                     
                     double exponent = -1*d_m_sq/2*m_std + x*d_m/(2*m_std); 
+                    double pSoft = 1/(1 + std::exp(exponent));
 
-                    if (x > threshold) {
-                        comparisonMatrix(row, colIndex) = 0;
-                        pSoftMatrix(row, colIndex) = 1/(1 + std::exp(exponent));
-                        // std::cout << "pSoft: " << pSoftMatrix(row, colIndex) << "\n";
-                    } else {
+                    if (pSoft > 0.5) { // Set the outcome based on pSoft (instead of threshold for no > 0.5)
                         comparisonMatrix(row, colIndex) = 1;
-                        pSoftMatrix(row, colIndex) = 1/(1 + std::exp(-1*exponent));
-                        // std::cout << "pSoft: " << pSoftMatrix(row, colIndex) << "\n";
+                        pSoftMatrix(row, colIndex) = 1 - pSoft;
+                    } else {
+                        comparisonMatrix(row, colIndex) = 0;
+                        pSoftMatrix(row, colIndex) = pSoft;
                     }
 
                     // std::cout << "Outlier IQ point: ("
