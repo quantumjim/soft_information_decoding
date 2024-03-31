@@ -2,27 +2,57 @@ from typing import Tuple
 
 import numpy as np
 
-def gaussianIQConvertor(IQ_data: np.ndarray, inverted_q_map: dict, gmm_dict: dict) -> Tuple[np.ndarray, np.ndarray]:
+import numpy as np
+
+def gaussianIQConvertor(IQ_data: np.ndarray, inverted_q_map: dict, gmm_dict: dict):
     nb_shots = IQ_data.shape[0]
-    countMat = np.zeros_like(IQ_data.real, dtype=int)
-    pSoft = np.zeros_like(IQ_data.real, dtype=float)  # Initialize the misassignment matrix
+    # Initialize matrices with the correct dimensions
+    countMat = np.zeros((nb_shots, IQ_data.shape[1]), dtype=int)
+    pSoft = np.zeros((nb_shots, IQ_data.shape[1]), dtype=float)
 
-    for qubit_idx, phys_indices in inverted_q_map.items():
-        gmm = gmm_dict[qubit_idx]['gmm']
-        scaler = gmm_dict[qubit_idx]['scaler']
+    for phys_idx, col_indices in inverted_q_map.items():
+        gmm = gmm_dict[phys_idx]['gmm']
+        scaler = gmm_dict[phys_idx]['scaler']
 
-        iq_subset_scaled = scaler.transform(IQ_data[:, phys_indices].real.reshape(-1, 1))
-        probas = gmm.predict_proba(iq_subset_scaled)
+        if gmm.means_[0] > gmm.means_[1]:
+            gmm.means_ = gmm.means_[::-1]
+            gmm.weights_ = gmm.weights_[::-1]
+            print("Warning: GMM means were inverted to match the expected order of the classes (0, 1)")
 
-        class_1_greater = probas[:, 1] > probas[:, 0]
-        class_labels = class_1_greater.astype(int)
+        for col_idx in col_indices: # slower but better apparently
+            iq_real_data = IQ_data[:, col_idx].real.reshape(-1, 1)
+            iq_data_scaled = scaler.transform(iq_real_data)
+            probas = gmm.predict_proba(iq_data_scaled)
 
-        # Calculate misassignment probabilities (pSoft)
-        pSoftValues = 1 / (1 + np.max(probas, axis=1) / np.min(probas, axis=1))
-
-        # Assign the computed labels and misassignment probabilities into the matrices
-        for i, phys_idx in enumerate(phys_indices):
-            countMat[:, phys_idx] = class_labels[i*nb_shots:(i+1)*nb_shots]
-            pSoft[:, phys_idx] = pSoftValues[i*nb_shots:(i+1)*nb_shots]
+            class_labels = (probas[:, 1] > probas[:, 0]).astype(int)
+            pSoftValues = 1 / (1 + np.max(probas, axis=1) / np.min(probas, axis=1))
+            countMat[:, col_idx] = class_labels
+            pSoft[:, col_idx] = pSoftValues
 
     return countMat, pSoft
+
+
+# def gaussianIQConvertor(IQ_data: np.ndarray, inverted_q_map: dict, gmm_dict: dict) -> Tuple[np.ndarray, np.ndarray]:
+#     nb_shots = IQ_data.shape[0]
+#     countMat = np.zeros_like(IQ_data.real, dtype=int)
+#     pSoft = np.zeros_like(IQ_data.real, dtype=float)  # Initialize the misassignment matrix
+
+#     for qubit_idx, phys_indices in inverted_q_map.items():
+#         gmm = gmm_dict[qubit_idx]['gmm']
+#         scaler = gmm_dict[qubit_idx]['scaler']
+
+#         iq_subset_scaled = scaler.transform(IQ_data[:, phys_indices].real.reshape(-1, 1))
+#         probas = gmm.predict_proba(iq_subset_scaled)
+
+#         class_1_greater = probas[:, 1] > probas[:, 0]
+#         class_labels = class_1_greater.astype(int)
+
+#         # Calculate misassignment probabilities (pSoft)
+#         pSoftValues = 1 / (1 + np.max(probas, axis=1) / np.min(probas, axis=1))
+
+#         # Assign the computed labels and misassignment probabilities into the matrices
+#         for i, phys_idx in enumerate(phys_indices):
+#             countMat[:, phys_idx] = class_labels[i*nb_shots:(i+1)*nb_shots]
+#             pSoft[:, phys_idx] = pSoftValues[i*nb_shots:(i+1)*nb_shots]
+
+#     return countMat, pSoft
