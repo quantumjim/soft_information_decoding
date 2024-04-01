@@ -1,10 +1,14 @@
 from typing import Tuple
+from multiprocessing import Pool
 
 import numpy as np
+from tqdm import tqdm
 
-import numpy as np
 
-def gaussianIQConvertor(IQ_data: np.ndarray, inverted_q_map: dict, gmm_dict: dict):
+
+
+
+def gaussianIQConvertor(IQ_data: np.ndarray, inverted_q_map: dict, gmm_dict: dict) -> Tuple[np.ndarray, np.ndarray]:
     nb_shots = IQ_data.shape[0]
     # Initialize matrices with the correct dimensions
     countMat = np.zeros((nb_shots, IQ_data.shape[1]), dtype=int)
@@ -30,6 +34,39 @@ def gaussianIQConvertor(IQ_data: np.ndarray, inverted_q_map: dict, gmm_dict: dic
             pSoft[:, col_idx] = pSoftValues
 
     return countMat, pSoft
+
+
+
+
+def gaussianKDEIQconvertor(IQ_data: np.ndarray, inverted_q_map: dict, kde_dict: dict, scaler_dict: dict) -> Tuple[np.ndarray, np.ndarray]:
+    countMat = np.zeros(IQ_data.shape, dtype=int)
+    pSoft = np.zeros(IQ_data.shape, dtype=float)
+
+    for phys_idx, col_indices in tqdm(inverted_q_map.items()):
+        kde_0, kde_1 = kde_dict[phys_idx]
+        scaler = scaler_dict[phys_idx]
+
+        for col_idx in col_indices:
+            data = IQ_data[:, col_idx].flatten()
+            combined_data = np.column_stack((data.real, data.imag))
+            norm_data = scaler.transform(combined_data)
+
+            log_prob_0 = kde_0.score_samples(norm_data)
+            log_prob_1 = kde_1.score_samples(norm_data)
+            
+            class_labels = (log_prob_1 > log_prob_0).astype(int)
+
+            prob_0 = np.exp(log_prob_0)
+            prob_1 = np.exp(log_prob_1)
+
+            pSoftValues = 1 / (1 + np.max(np.column_stack((prob_0, prob_1)), axis=1) / (np.min(np.column_stack((prob_0, prob_1)), axis=1)+1e-12))
+
+            countMat[:, col_idx] = class_labels
+            pSoft[:, col_idx] = pSoftValues
+
+    return countMat, pSoft
+
+
 
 
 # def gaussianIQConvertor(IQ_data: np.ndarray, inverted_q_map: dict, gmm_dict: dict) -> Tuple[np.ndarray, np.ndarray]:
