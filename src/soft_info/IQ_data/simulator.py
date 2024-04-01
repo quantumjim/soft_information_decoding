@@ -7,59 +7,80 @@ from collections import OrderedDict
 
 import numpy as np
 from tqdm import tqdm
-from qiskit_qec.circuits import RepetitionCodeCircuit
-from qiskit_qec.noise import PauliNoiseModel
-from qiskit_qec.utils import get_counts_via_stim
 import stim
 
 from ..Hardware.transpile_rep_code import get_repcode_layout, get_repcode_IQ_map
+from ..Hardware.backend_noise import get_avgs_from_dict, get_noise_dict_from_backend
 from ..Probabilities.KDE import get_KDEs
+from ..Stim_circuits.circuits import RepetitionCodeStimCircuit
+from Scratch import load_calibration_memory
 
-from qiskit_aer import AerSimulator
-from qiskit_qec.utils.stim_tools import noisify_circuit
-
-from Scratch import create_or_load_kde_grid
 
 
 class RepCodeIQSimulator():
 
     _kde_cache = OrderedDict()
-    _grid_cache = OrderedDict()
-    _max_cache_size = 2
+    _max_cache_size = 4
 
-    def __init__(self, provider, distance: int, rounds: int, device: int, _is_hex: bool = True,
-                 _resets: bool = False, other_date = None) -> None:
+    def __init__(self, provider, d: int, T: int, device: int, _is_hex: bool = True, 
+                 other_date=None, double_msmt: bool = False) -> None:
         self.provider = provider
-        self.distance = distance
-        self.rounds = rounds
+
+        self.d = d
+        self.T = T
+
         self.device = device
         self.other_date = other_date
         self.backend = self.provider.get_backend(self.device)
-        self.layout = get_repcode_layout(self.distance, self.backend, _is_hex=_is_hex) if self.device != 'ibm_torino' else RepCodeIQSimulator.get_layout_torino(self.distance) # Hardcoded torino layout
-        self.qubit_mapping = get_repcode_IQ_map(self.layout, self.rounds)
-        self._resets = _resets
-        # self.code = RepetitionCodeCircuit(self.distance, self.rounds, resets=_resets)
+        self.layout = get_repcode_layout(self.d, self.backend, _is_hex=_is_hex) if self.device != 'ibm_torino' else RepCodeIQSimulator.get_layout_torino(self.d)
+        self.qubit_mapping = get_repcode_IQ_map(self.layout, self.T)
         self.stim_circ = None
 
-        kde_cache_key = (device, other_date)
-        grid_cache_key = (device, other_date)
+        kde_cache_key = (device, other_date, double_msmt)
 
+        # Attempt to retrieve from cache
         if kde_cache_key in RepCodeIQSimulator._kde_cache:
-            self.kde_dict, self.scaler_dict = RepCodeIQSimulator._kde_cache[kde_cache_key]
+            cached = RepCodeIQSimulator._kde_cache[kde_cache_key]
+            self.kde_dict, self.scaler_dict, self.all_memories, self.noise_dict= cached['kde'], cached['scaler'], cached['memories'], cached['noise']
+            self.msmt_err_dict = cached.get('msmt_error', {})
             RepCodeIQSimulator._kde_cache.move_to_end(kde_cache_key)
         else:
-            self.kde_dict, self.scaler_dict = get_KDEs(self.provider, tobecalib_backend=self.device, other_date=self.other_date)
-            RepCodeIQSimulator._update_cache(RepCodeIQSimulator._kde_cache, kde_cache_key, (self.kde_dict, self.scaler_dict))
+            # If not in cache, load or calculate the data
+            self.noise_dict = get_noise_dict_from_backend(provider, device, date=other_date)
+            if double_msmt:
+                self.all_memories, self.gmm_dict, self.msmt_err_dict = load_calibration_memory(provider, tobecalib_backend=device, 
+                                                                                               other_date=other_date, double_msmt=double_msmt,
+                                                                                               post_process=True)
+            else:
+                self.all_memories = load_calibration_memory(provider, tobecalib_backend=device, other_date=other_date)
+            self.kde_dict, self.scaler_dict = get_KDEs(self.all_memories)
 
-        if grid_cache_key in RepCodeIQSimulator._grid_cache:
-            self.grid_dict, self.processed_scaler_dict = RepCodeIQSimulator._grid_cache[grid_cache_key]
-            RepCodeIQSimulator._grid_cache.move_to_end(grid_cache_key)
+            # Update cache with new entry
+            RepCodeIQSimulator._update_cache(kde_cache_key, {
+                'kde': self.kde_dict, 'scaler': self.scaler_dict, 'memories': self.all_memories, 'noise': self.noise_dict,
+                'msmt_error': self.msmt_err_dict
+            })
+
+        # Prepare noise list based on the newly loaded or cached noise_dict
+        self._prepare_noise_list(double_msmt)
+
+    def _prepare_noise_list(self, double_msmt):
+        self.noise_avgs = get_avgs_from_dict(self.noise_dict, self.layout)
+        self.noise_list = [self.noise_avgs['two_gate'], self.noise_avgs['single_gate'], self.noise_avgs["t1_err"], 
+                           self.noise_avgs["t2_err"]]
+        if double_msmt:
+            p_soft, p_hard = 0, 0
+            for value in self.msmt_err_dict.values():
+                p_soft += value['p_soft']
+                p_hard += value['p_hard']
+            p_soft /= len(self.msmt_err_dict)
+            p_hard /= len(self.msmt_err_dict)
+            self.noise_list += [(p_soft+p_hard), p_hard, p_soft]
         else:
-            self.grid_dict, self.processed_scaler_dict = create_or_load_kde_grid(self.provider, tobecalib_backend=self.device, num_grid_points=300, num_std_dev=2, other_date=self.other_date)
-            RepCodeIQSimulator._update_cache(RepCodeIQSimulator._grid_cache, grid_cache_key, (self.grid_dict, self.processed_scaler_dict))
+            msmt_err = self.noise_avgs['readout']
+            self.noise_list += [msmt_err, msmt_err*2/3, msmt_err/3]
 
-
-    # Hardcoded torino layout (UGLY!)
+     # Hardcoded torino layout (UGLY!)
     @staticmethod
     def get_layout_torino(distance):
         import pickle
@@ -71,40 +92,24 @@ class RepCodeIQSimulator():
         return layout
 
     @staticmethod
-    def _update_cache(cache: OrderedDict, key, value):
+    def _update_cache(key, value):
+        cache = RepCodeIQSimulator._kde_cache
         if len(cache) >= RepCodeIQSimulator._max_cache_size:
             cache.popitem(last=False)  # Remove the oldest item
         cache[key] = value
 
-    @staticmethod
-    def get_noise_model(p1Q, p2Q, pXY, pZ, pRO, pRE) -> PauliNoiseModel:
-        error_dict = {'reset': {"chan": {'i':1-pRE, 'x':pRE}},
-                    'measure': {"chan": {'i':1-pRO, 'x':pRO}},
-                    'h': {"chan": {'i':1-p1Q} | {i:p1Q/3 for i in 'xyz'}},
-                    'idle_1': {"chan": {'i':1-pXY, 'x':pXY/2, 'y':pXY/2}},
-                    'idle_2': {"chan": {'i':1-pZ, 'z':pZ}},
-                    # 'cx': {"chan": {'ii':1-p2Q} | {i+j:p2Q/15 for i in 'ixyz' for j in 'ixyz' if i+j!='ii'}},
-                    'cx': {"chan": {'ii':1-p2Q} | {'i'+i:p2Q/3 for i in 'xyz' }},                    
-                    'swap': {"chan": {'ii':1-p2Q} | {i+j:p2Q/15 for i in 'ixyz' for j in 'ixyz' if i+j!='ii'}}}
-        return PauliNoiseModel(fromdict=error_dict)
-    
-    def get_stim_circuit(self, noise_list: list) -> stim.Circuit:
-        """Returns a stim circuit with the given noise parameters.        
-        Args:
-            noise_list (list): List of noise parameters [two-qubit-fidelity, reset error, measurement error, idle error].
-        """
-        circuit = stim.Circuit.generated("repetition_code:memory",
-                                distance=self.distance,
-                                rounds=self.rounds,
-                                after_clifford_depolarization=noise_list[0], #two-qubit-fidelity,
-                                after_reset_flip_probability=noise_list[1], #reset error,
-                                before_measure_flip_probability=noise_list[2], #measurement error,
-                                before_round_data_depolarization=noise_list[3]) #idle error)
-        self.stim_circ = circuit
 
-        return circuit
+    def get_stim_circuit(self, logical: str, xbasis: bool, resets: bool, individual: bool = False,):
+        if not individual:
+            code = RepetitionCodeStimCircuit(self.d, self.T, xbasis, resets, 
+                                             noise_list=self.noise_list)
+        else:
+            code = RepetitionCodeStimCircuit(self.d, self.T, xbasis, resets,
+                                             noise_list=self.noise_list, layout=self.layout,
+                                             msmt_err_dict=self.msmt_err_dict)
+        self.stim_circ = code.circuits[logical]
         
-    def get_counts(self, shots: int, stim_circuit: stim.Circuit, verbose=False) -> dict:
+    def get_counts(self, shots: int, stim_circuit: stim.Circuit, resets: bool, verbose=False) -> dict:
         meas_outcomes = stim_circuit.compile_sampler(seed=42).sample(shots)
         # print("generated stim counts")
         counts = {}
@@ -112,7 +117,7 @@ class RepCodeIQSimulator():
             count_str = ''
             for nb, bit in enumerate(row):
                 count_str += '0' if bit == False else '1'
-                if (nb+1) % (self.distance-1) == 0 and nb < self.rounds*(self.distance-1):
+                if (nb+1) % (self.d-1) == 0 and nb < self.T*(self.d-1):
                     count_str += ' ' 
             count_str = count_str[::-1]
             if count_str in counts:
@@ -120,10 +125,8 @@ class RepCodeIQSimulator():
             else:
                 counts[count_str] = 1
         
-        # print("correcting counts")
-        
         # correct samples to have no reset counts if _resets == False
-        if self._resets == False:
+        if resets == False:
             no_reset_counts = {}
             for count_key, shots in counts.items():
                 parts=count_key.split(" ")
@@ -163,19 +166,6 @@ class RepCodeIQSimulator():
         return counts
 
 
-
-        
-    # def get_counts(self, shots: int, noise_model: PauliNoiseModel, logical: int) -> dict:
-    #     warnings.warn("Getting counts via stim. This may take time...")
-    #     # qc = self.code.circuit[str(logical)]
-    #     # qc = noisify_circuit(qc, noise_model)
-    #     # counts = AerSimulator().run(qc, shots=shots).result().get_counts()
-    #     return get_counts_via_stim(self.code.circuit[str(logical)], shots=shots, noise_model=noise_model)
-    #     # return counts
-
-
-
-    
     def counts_to_IQ(self, counts: dict, verbose = False):
         total_shots = sum(counts.values())
         len_IQ_array = len(self.qubit_mapping)
@@ -227,141 +217,21 @@ class RepCodeIQSimulator():
         assert sample_counters == kde_samples_needed
     
         return IQ_memory
-    
-    def _rescale_coordinates(self, grid, coordinates, qubit_idx):
-        """Helper function to rescale coordinates."""
-        (mean_real, std_real), (mean_imag, std_imag) = self.processed_scaler_dict[qubit_idx]
-        x_rescaled = grid.grid_x[coordinates[0], coordinates[1]] * std_real + mean_real
-        y_rescaled = grid.grid_y[coordinates[0], coordinates[1]] * std_imag + mean_imag
-        return x_rescaled, y_rescaled
-        
-
-    def generate_IQ_dict(self) -> dict:
-        IQ_dict = {}
-        for qubit_idx, grid in self.grid_dict.items():
-            # print()
-            # print("qubit_idx", qubit_idx)
-            # Calculate the differences for both states
-            grid_diff_0 = grid.grid_density_0 - grid.grid_density_1  # Max diff for state '0'
-            grid_diff_1 = grid.grid_density_1 - grid.grid_density_0  # Max diff for state '1'
-
-            # Apply coordinate restriction
-            mask = (grid.grid_x > -1) & (grid.grid_x < 1) & (grid.grid_y > -1) & (grid.grid_y < 1)
-            restricted_diff_max_0 = np.where(mask, grid_diff_0, -np.inf)
-            restricted_diff_min_0 = np.where(mask, np.where(grid.grid_density_1 > grid.grid_density_0, grid_diff_1, np.inf), np.inf)
-            restricted_diff_max_1 = np.where(mask, grid_diff_1, -np.inf)
-            restricted_diff_min_1 = np.where(mask, np.where(grid.grid_density_0 > grid.grid_density_1, grid_diff_0, np.inf), np.inf)
-
-            # Get the coordinates of the maximum and minimum differences for both states
-            max_diff_coordinate_0 = np.unravel_index(np.argmax(restricted_diff_max_0), grid_diff_0.shape)
-            min_diff_coordinate_0 = np.unravel_index(np.argmin(restricted_diff_min_0), grid_diff_0.shape)
-            max_diff_coordinate_1 = np.unravel_index(np.argmax(restricted_diff_max_1), grid_diff_1.shape)
-            min_diff_coordinate_1 = np.unravel_index(np.argmin(restricted_diff_min_1), grid_diff_1.shape)
-
-            # print("density_diff at max_diff_coordinate_0", grid_diff_0[max_diff_coordinate_0])
-            # print("density_diff at min_diff_coordinate_0", grid_diff_0[min_diff_coordinate_0])
-            # print("density_diff_0 at max_diff_coordinate_1", grid_diff_0[max_diff_coordinate_1])
-            # print("density_diff_0 at min_diff_coordinate_1", grid_diff_0[min_diff_coordinate_1])
- 
-            # Get the scaler parameters
-            (mean_real, std_real), (mean_imag, std_imag) = self.processed_scaler_dict[qubit_idx]
-
-            # Inverse transform the coordinates
-            def rescale(x, y):
-                return x * std_real + mean_real, y * std_imag + mean_imag
-
-            # Create complex IQ points for both states
-            iq_point_safe_0 = complex(*rescale(grid.grid_x[max_diff_coordinate_0], grid.grid_y[max_diff_coordinate_0]))
-            # print("grid_point_safe_0", (grid.grid_x[max_diff_coordinate_0], grid.grid_y[max_diff_coordinate_0]))
-            iq_point_ambig_0 = complex(*rescale(grid.grid_x[min_diff_coordinate_0], grid.grid_y[min_diff_coordinate_0]))
-            # print("grid_point_ambig_0", (grid.grid_x[min_diff_coordinate_0], grid.grid_y[min_diff_coordinate_0]))
-            iq_point_safe_1 = complex(*rescale(grid.grid_x[max_diff_coordinate_1], grid.grid_y[max_diff_coordinate_1]))
-            # print("grid_point_safe_1", (grid.grid_x[max_diff_coordinate_1], grid.grid_y[max_diff_coordinate_1]))
-            iq_point_ambig_1 = complex(*rescale(grid.grid_x[min_diff_coordinate_1], grid.grid_y[min_diff_coordinate_1]))
-            # print("grid_point_ambig_1", (grid.grid_x[min_diff_coordinate_1], grid.grid_y[min_diff_coordinate_1]))
-
-            # Append to IQ_dict
-            IQ_dict[qubit_idx] = {
-                "iq_point_safe_0": iq_point_safe_0,
-                "iq_point_ambig_0": iq_point_ambig_0,
-                "iq_point_safe_1": iq_point_safe_1,
-                "iq_point_ambig_1": iq_point_ambig_1
-            }
-
-        return IQ_dict
-
-    
-
-    def counts_to_IQ_extreme(self, p_ambig: float, 
-                            IQ_dict: dict, counts: dict):
-        total_shots = sum(counts.values())
-        IQ_memory = np.zeros((total_shots, len(self.qubit_mapping)), dtype=np.complex128)
-
-        shot_idx = 0
-        for count_str, shots in tqdm(counts.items()):
-            for _ in (range(shots)):
-                num_spaces = 0
-                inverted_count_str = count_str[::-1]
-                for IQ_idx, bit in enumerate(inverted_count_str):
-                    if bit == ' ':
-                        num_spaces += 1
-                        continue
-                    cIQ_idx = IQ_idx - num_spaces
-                    qubit_idx = self.qubit_mapping[cIQ_idx]
-                    
-                    # sample with p_ambig
-                    _ambig = np.random.choice([False, True], p=[1-p_ambig, p_ambig])
-                    point_str = "safe" if not _ambig else "ambig"
-                    if num_spaces == self.rounds:
-                        point_str = "safe"
-                    sample = IQ_dict[qubit_idx]["iq_point_"+point_str+"_"+bit]
-
-                    IQ_memory[shot_idx, cIQ_idx] = sample
-                shot_idx += 1
-                
-        return IQ_memory
 
 
-    def generate_IQ(self, shots: int, noise_list: list, logical: int = None, verbose = False) -> list:
+    def generate_IQ(self, shots: int, logical: str, xbasis: bool, resets: bool, individual: bool = False, verbose = False) -> list:
         """Generates IQ data for the given logical state.
         Args:
             shots (int): Number of shots.
             noise_list (list): List of noise parameters [two-qubit-fidelity, reset error, measurement error, idle error].
             logical (int, optional): Logical state. Defaults to None.
         """
-        warnings.warn("Logical != 0 is currently not supported") if logical is not None else None
-        noise_list = [1e-8, 1e-8, 1e-8, 1e-8] if noise_list is None else noise_list
-        # print("generating stim circ")
-        self.get_stim_circuit(noise_list)
-        # print("generating counts")
-        counts = self.get_counts(shots, self.stim_circ, verbose)
-        # print the first k,v pair of the sorted counts
-        # sort the counts
-        # counts = dict(sorted(counts.items(), key=lambda item: item[1], reverse=True))
-        # print("first k,v pair of sorted counts:", list(counts.items())[0]) 
-        # print("generating IQ")
+        self.get_stim_circuit(logical, xbasis, resets, individual)
+        counts = self.get_counts(shots, self.stim_circ, resets, verbose)
         IQ_memory = self.counts_to_IQ(counts, verbose)
         
         return IQ_memory
     
-    
-    def generate_extreme_IQ(self, shots: int, p_ambig: float, 
-                            noise_list: list, verbose = False) -> list:
-        """Generates IQ data for the given logical state.
-        Args:
-            shots (int): Number of shots.
-            p_ambig (float): Probability of ambiguous measurement.
-            noise_list (list): List of noise parameters [two-qubit-fidelity, reset error, measurement error, idle error].
-            logical (int, optional): Logical state. Defaults to None.
-        """
-        noise_list = [1e-8, 1e-8, 1e-8, 1e-8] if noise_list is None else noise_list
-        IQ_dict = self.generate_IQ_dict()
-        self.get_stim_circuit(noise_list)
-        counts = self.get_counts(shots, self.stim_circ, verbose) # hardcoded for logical 0
-        IQ_memory = self.counts_to_IQ_extreme(p_ambig, IQ_dict, counts)
-        return IQ_memory
-
-
 
 
         
