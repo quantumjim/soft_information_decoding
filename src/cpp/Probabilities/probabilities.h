@@ -101,7 +101,7 @@ std::tuple<Eigen::MatrixXd, Eigen::MatrixXi> iqConvertor(
     const std::map<int, std::vector<int>> &inv_qubit_mapping,
     std::map<int, KDE_Result> &kde_dict,
     double relError = -1.0, double absError = -1.0,
-    bool handleOutliers = false);
+    bool handleOutliers = true);
 
 Eigen::MatrixXd quantizeMatrixVectorized(const Eigen::MatrixXd& matrix, unsigned int nBits);
 Eigen::MatrixXd quantizeMatrixEntrywise(const Eigen::MatrixXd& matrix, unsigned int nBits);

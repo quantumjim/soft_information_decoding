@@ -323,7 +323,7 @@ PYBIND11_MODULE(cpp_soft_info, m) {
       py::arg("kde_dict"), 
       py::arg("relError") = -1.0, 
       py::arg("absError") = -1.0,
-      py::arg("handleOutliers") = false);
+      py::arg("handleOutliers") = true);
 
     m.def("quantizeMatrixVectorized", &quantizeMatrixVectorized, 
       py::arg("matrix"), 
