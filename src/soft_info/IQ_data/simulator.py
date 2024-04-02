@@ -53,7 +53,9 @@ class RepCodeIQSimulator():
                                                                                                post_process=True)
             else:
                 self.all_memories = load_calibration_memory(provider, tobecalib_backend=device, other_date=other_date)
+                self.msmt_err_dict = {}
             self.kde_dict, self.scaler_dict = get_KDEs(self.all_memories)
+            
 
             # Update cache with new entry
             RepCodeIQSimulator._update_cache(kde_cache_key, {
@@ -76,9 +78,11 @@ class RepCodeIQSimulator():
             p_soft /= len(self.msmt_err_dict)
             p_hard /= len(self.msmt_err_dict)
             self.noise_list += [(p_soft+p_hard), p_hard, p_soft]
+            self.noise_list[-1] = 0 # for simulating because soft comes from IQ
         else:
             msmt_err = self.noise_avgs['readout']
             self.noise_list += [msmt_err, msmt_err*2/3, msmt_err/3]
+            self.noise_list[-1] = 0 # for simulating because soft comes from IQ
 
      # Hardcoded torino layout (UGLY!)
     @staticmethod

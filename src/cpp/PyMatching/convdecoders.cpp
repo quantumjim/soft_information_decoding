@@ -11,9 +11,9 @@ pm::DetailedDecodeResult decodeConvertorAll(
     bool _detailed,
     bool decode_hard) {
 
-    if (_resets == true) {
-        throw std::runtime_error("RepCodes with resets not supported yet.");
-    }
+    // if (_resets == true) {
+    //     throw std::runtime_error("RepCodes with resets not supported yet.");
+    // }
 
     if (comparisonMatrix.rows() != pSoftMatrix.rows() || comparisonMatrix.cols() != pSoftMatrix.cols()) {
         throw std::runtime_error("comparisonMatrix and pSoftMatrix must have the same dimensions.");

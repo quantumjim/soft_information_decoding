@@ -98,9 +98,12 @@ def fit_KDE(IQ_data, bandwidth=0.2, plot=False, qubit_index='', num_samples=1e5,
     return kde, scaler
 
 
-def get_KDEs(provider, tobecalib_job: Optional[str] = None, tobecalib_backend: Optional[str] = None, qubits: Optional[List[int]] = None,  
-             bandwidths: Union[float, list] = 0.2, plot: Union[bool, list] = False, 
-             plot_db=False, num_samples=1e5, other_date = None) -> Dict[int, List]:
+# def get_KDEs(provider, tobecalib_job: Optional[str] = None, tobecalib_backend: Optional[str] = None, qubits: Optional[List[int]] = None,  
+#              bandwidths: Union[float, list] = 0.2, plot: Union[bool, list] = False, 
+#              plot_db=False, num_samples=1e5, other_date = None) -> Dict[int, List]:
+def get_KDEs(all_memories: np.ndarray, qubits: Optional[List[int]] = None,  
+             bandwidths: Union[float, list] = 0.1, plot: Union[bool, list] = False, 
+             plot_db=False, num_samples=1e5) -> Dict[int, List]:
     """
     Retrieves Kernel Density Estimations (KDEs) for specified qubits using calibration data from a quantum computing service provider. This function is useful for analyzing the state distributions of qubits and understanding their behavior.
 
@@ -123,8 +126,8 @@ def get_KDEs(provider, tobecalib_job: Optional[str] = None, tobecalib_backend: O
         bandwidths, list) else bandwidths
     plot0, plot1 = (plot, plot) if not isinstance(plot, list) else plot
 
-    from Scratch import load_calibration_memory # lazy import to avoid circular import
-    all_memories = load_calibration_memory(provider, tobecalib_job=tobecalib_job, tobecalib_backend=tobecalib_backend, qubits=qubits, other_date=other_date)
+    # from Scratch import load_calibration_memory # lazy import to avoid circular import
+    # all_memories = load_calibration_memory(provider, tobecalib_job=tobecalib_job, tobecalib_backend=tobecalib_backend, qubits=qubits, other_date=other_date)
 
     if qubits is None:
         qubits = list(all_memories.keys())
@@ -144,6 +147,13 @@ def get_KDEs(provider, tobecalib_job: Optional[str] = None, tobecalib_backend: O
         scaler = StandardScaler()
         scaler.fit(stacked_data)
 
+        # if qubit != 20:
+        #     plot0 = False
+        #     plot1 = False
+        # else:
+        #     plot0 = True
+        #     plot1 = True
+        
         kde_0, _ = fit_KDE(
             memories.get("mmr_0", []), bandwidth=bw0, plot=plot0, qubit_index=qubit, num_samples=num_samples, scaler=scaler)
         kde_1, _ = fit_KDE(
