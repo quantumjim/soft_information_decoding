@@ -11,6 +11,7 @@ import stim
 
 from ..Hardware.transpile_rep_code import get_repcode_layout, get_repcode_IQ_map
 from ..Hardware.backend_noise import get_avgs_from_dict, get_noise_dict_from_backend
+from ..Hardware.qubit_selector import BackendEvaluator
 from ..Probabilities.KDE import get_KDEs
 from ..Stim_circuits.circuits import RepetitionCodeStimCircuit
 from Scratch import load_calibration_memory
@@ -23,7 +24,7 @@ class RepCodeIQSimulator():
     _max_cache_size = 4
 
     def __init__(self, provider, d: int, T: int, device: int, _is_hex: bool = True, 
-                 other_date=None, double_msmt: bool = False) -> None:
+                 other_date=None, double_msmt: bool = False, best_path: bool = False) -> None:
         self.provider = provider
 
         self.d = d
@@ -32,7 +33,15 @@ class RepCodeIQSimulator():
         self.device = device
         self.other_date = other_date
         self.backend = self.provider.get_backend(self.device)
-        self.layout = get_repcode_layout(self.d, self.backend, _is_hex=_is_hex) if self.device != 'ibm_torino' else RepCodeIQSimulator.get_layout_torino(self.d)
+        
+        if best_path:
+            evaluator = BackendEvaluator(self.backend)
+            longest_path, _, _, path_info = evaluator.find_longest_good_RepCode_string()
+            self.layout = longest_path[1::2] + longest_path[0::2]
+            self.path_info = path_info
+        else:
+            self.layout = get_repcode_layout(self.d, self.backend, _is_hex=_is_hex) if self.device != 'ibm_torino' else RepCodeIQSimulator.get_layout_torino(self.d)
+        
         self.qubit_mapping = get_repcode_IQ_map(self.layout, self.T)
         self.stim_circ = None
 
@@ -112,6 +121,8 @@ class RepCodeIQSimulator():
                                              noise_list=self.noise_list, layout=self.layout,
                                              msmt_err_dict=self.msmt_err_dict)
         self.stim_circ = code.circuits[logical]
+
+        return code.circuits[logical]
         
     def get_counts(self, shots: int, stim_circuit: stim.Circuit, resets: bool, verbose=False) -> dict:
         meas_outcomes = stim_circuit.compile_sampler(seed=42).sample(shots)
