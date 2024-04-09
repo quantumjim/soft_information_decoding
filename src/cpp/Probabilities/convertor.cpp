@@ -80,7 +80,7 @@ std::tuple<Eigen::MatrixXd, Eigen::MatrixXi> iqConvertor(
         keys.push_back(entry.first);
     }
 
-    #pragma omp parallel for schedule(static) 
+    #pragma omp parallel for //schedule(static) 
     for (size_t idx = 0; idx < keys.size(); ++idx) {
         int qubitIdx = keys[idx];
         const auto& columnIndices = inv_qubit_mapping.at(qubitIdx);

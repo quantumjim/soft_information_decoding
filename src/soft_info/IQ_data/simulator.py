@@ -33,10 +33,11 @@ class RepCodeIQSimulator():
         self.device = device
         self.other_date = other_date
         self.backend = self.provider.get_backend(self.device)
-        
+
         if best_path:
+            raise NotImplementedError("Best path not implemented yet, because of the date parameter")
             evaluator = BackendEvaluator(self.backend)
-            longest_path, _, _, path_info = evaluator.find_longest_good_RepCode_string()
+            longest_path, _, _, path_info = evaluator.find_longest_good_RepCode_string(Ancilla_threshold=0.3) # as the device runs!
             self.layout = longest_path[1::2] + longest_path[0::2]
             self.path_info = path_info
         else:
@@ -140,42 +141,44 @@ class RepCodeIQSimulator():
             else:
                 counts[count_str] = 1
         
-        # correct samples to have no reset counts if _resets == False
-        if resets == False:
-            no_reset_counts = {}
-            for count_key, shots in counts.items():
-                parts=count_key.split(" ")
-                print("parts:", parts) if verbose else None
-                count_part = parts[0]
-                print("count_part:", count_part) if verbose else None  
-                check_parts = parts[1:]
-                print("check_parts:", check_parts, "\n") if verbose else None
+        print("not correcting the counts for no resets")
+        # DO NOT CORRECT FOR NO RESETS BECAUSE STIM CIRCUIT ALREADY DOES THIS!
+        # # correct samples to have no reset counts if _resets == False
+        # if resets == False:
+        #     no_reset_counts = {}
+        #     for count_key, shots in counts.items():
+        #         parts=count_key.split(" ")
+        #         print("parts:", parts) if verbose else None
+        #         count_part = parts[0]
+        #         print("count_part:", count_part) if verbose else None  
+        #         check_parts = parts[1:]
+        #         print("check_parts:", check_parts, "\n") if verbose else None
 
-                for i in range(len(check_parts)):
-                    if i == 0:
-                        print("skipped last check part:", check_parts[-1], "\n") if verbose else None
-                        continue
-                    current_check_str = check_parts[-(i+1)]
-                    print("current_check_str:", current_check_str) if verbose else None
-                    prev_check_str = check_parts[-i]
-                    print("prev_check_str:", prev_check_str) if verbose else None
-                    new_check_str = ''
-                    for bit1, bit2 in zip(prev_check_str, current_check_str):
-                        new_check_str += str(int(bit1)^int(bit2))
-                    print("new_check_str:", new_check_str, "\n") if verbose else None
-                    check_parts[-(i+1)] = new_check_str
+        #         for i in range(len(check_parts)):
+        #             if i == 0:
+        #                 print("skipped last check part:", check_parts[-1], "\n") if verbose else None
+        #                 continue
+        #             current_check_str = check_parts[-(i+1)]
+        #             print("current_check_str:", current_check_str) if verbose else None
+        #             prev_check_str = check_parts[-i]
+        #             print("prev_check_str:", prev_check_str) if verbose else None
+        #             new_check_str = ''
+        #             for bit1, bit2 in zip(prev_check_str, current_check_str):
+        #                 new_check_str += str(int(bit1)^int(bit2))
+        #             print("new_check_str:", new_check_str, "\n") if verbose else None
+        #             check_parts[-(i+1)] = new_check_str
 
-                print("\ncheck_parts after modulo:", check_parts) if verbose else None
+        #         print("\ncheck_parts after modulo:", check_parts) if verbose else None
 
-                new_count_str = count_part + " " +  ' '.join(check_parts)
-                print("\nnew_count_str:", new_count_str) if verbose else None
+        #         new_count_str = count_part + " " +  ' '.join(check_parts)
+        #         print("\nnew_count_str:", new_count_str) if verbose else None
 
                 
-                if new_count_str in no_reset_counts:
-                    no_reset_counts[new_count_str] += shots
-                else:
-                    no_reset_counts[new_count_str] = shots
-            counts = no_reset_counts
+        #         if new_count_str in no_reset_counts:
+        #             no_reset_counts[new_count_str] += shots
+        #         else:
+        #             no_reset_counts[new_count_str] = shots
+        #     counts = no_reset_counts
         
         # print("finished correcting counts")
         return counts
