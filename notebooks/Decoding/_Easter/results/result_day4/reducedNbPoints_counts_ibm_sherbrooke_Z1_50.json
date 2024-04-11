@@ -748,6 +748,113 @@
                 "hard_switched": 318.25
             },
             "additional_info": {}
+        },
+        {
+            "decoding": "kde",
+            "d_new": "11",
+            "error_list_dict": {
+                "soft_mean": [
+                    807,
+                    1020,
+                    26,
+                    43,
+                    656,
+                    635
+                ],
+                "hard_mean": [
+                    967,
+                    1469,
+                    46,
+                    59,
+                    667,
+                    512
+                ],
+                "soft_switched": [
+                    820,
+                    1035,
+                    30,
+                    46,
+                    703,
+                    635
+                ],
+                "hard_switched": [
+                    983,
+                    1502,
+                    61,
+                    74,
+                    856,
+                    526
+                ],
+                "hard_naive": [
+                    954,
+                    1394,
+                    56,
+                    64,
+                    866,
+                    526
+                ]
+            },
+            "error_mean_dict": {
+                "soft_mean": 531.1666666666666,
+                "hard_mean": 620.0,
+                "soft_switched": 544.8333333333334,
+                "hard_switched": 667.0,
+                "hard_naive": 643.3333333333334
+            },
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.6,
+                    1.2,
+                    1
+                ],
+                "num_points_bandwidths": 20
+            }
+        },
+        {
+            "decoding": "kde_PS",
+            "d_new": "11",
+            "error_list_dict": {
+                "soft_mean": [
+                    952,
+                    1226,
+                    66,
+                    74,
+                    756,
+                    442
+                ],
+                "hard_mean": [
+                    983,
+                    1502,
+                    61,
+                    74,
+                    856,
+                    526
+                ],
+                "soft_switched": [
+                    943,
+                    1202,
+                    46,
+                    59,
+                    592,
+                    434
+                ],
+                "hard_switched": [
+                    967,
+                    1469,
+                    46,
+                    59,
+                    667,
+                    512
+                ]
+            },
+            "error_mean_dict": {
+                "soft_mean": 586.0,
+                "hard_mean": 667.0,
+                "soft_switched": 546.0,
+                "hard_switched": 620.0
+            },
+            "additional_info": {}
         }
     ]
 }
