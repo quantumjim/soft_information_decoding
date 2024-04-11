@@ -124,7 +124,7 @@ class RepetitionCodeStimCircuit():
             self.circuits[log] += self._X_ent_block if self._xbasis else self._Z_ent_block
             for idx, _ in enumerate(self.link_qubits):
                 self.circuits[log].append(
-                    'DETECTOR', [rec(-(self.d-1)+idx)], [1+idx*2+1, 0])
+                    'DETECTOR', [rec(-(self.d-1)+idx)], [1+idx*2, 0, 0])
             self.circuits[log].append('SHIFT_COORDS', [], (0, 1))
 
     def _subsequent_rounds(self):
@@ -150,11 +150,11 @@ class RepetitionCodeStimCircuit():
                 if not self._resets:
                     rec_list = [-self.d+idx, -self.d+idx+1, -self.d+idx-(self.d-1), -self.d+idx-2*(self.d-1)]  # [code_1, code_2, link T-1, link T-2]
                     self.circuits[log].append(
-                        'DETECTOR', [rec(idx) for idx in rec_list], [1+idx*2+1, 0])
+                        'DETECTOR', [rec(idx) for idx in rec_list], [1+idx*2, 0])
                 else:
                     rec_list = [-self.d+idx, -self.d+idx+1, -self.d+idx-(self.d-1)]  # [code_1, code_2, link T-1]
                     self.circuits[log].append(
-                        'DETECTOR', [rec(idx) for idx in rec_list], [1+idx*2+1, 0])
+                        'DETECTOR', [rec(idx) for idx in rec_list], [1+idx*2, 0])
                 
             self.circuits[log].append('OBSERVABLE_INCLUDE', [rec(-1)], 0)
 
@@ -162,11 +162,11 @@ class RepetitionCodeStimCircuit():
         rec = stim.target_rec  # For readability
 
         # Before round depolarization due to idling
-        self._Z_ent_block.append('X_ERROR', self.code_qubits, arg=self.t1_err/2) if self.t1_err > 0 else None
-        self._Z_ent_block.append('Y_ERROR', self.code_qubits, arg=self.t1_err/2) if self.t1_err > 0 else None
+        self._Z_ent_block.append('X_ERROR', self.code_qubits, arg=self.t1_err) if self.t1_err > 0 else None
+        self._Z_ent_block.append('Y_ERROR', self.code_qubits, arg=self.t1_err) if self.t1_err > 0 else None
         self._Z_ent_block.append('Z_ERROR', self.code_qubits, arg=self.t2_err) if self.t2_err > 0 else None
-        self._X_ent_block.append('X_ERROR', self.code_qubits, arg=self.t1_err/2) if self.t1_err > 0 else None
-        self._X_ent_block.append('Y_ERROR', self.code_qubits, arg=self.t1_err/2) if self.t1_err > 0 else None
+        self._X_ent_block.append('X_ERROR', self.code_qubits, arg=self.t1_err) if self.t1_err > 0 else None
+        self._X_ent_block.append('Y_ERROR', self.code_qubits, arg=self.t1_err) if self.t1_err > 0 else None
         self._X_ent_block.append('Z_ERROR', self.code_qubits, arg=self.t2_err) if self.t2_err > 0 else None
 
         # Z Entanglement block
