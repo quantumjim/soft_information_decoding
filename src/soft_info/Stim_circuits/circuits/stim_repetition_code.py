@@ -93,7 +93,9 @@ class RepetitionCodeStimCircuit():
         circuit.append('X_ERROR', targets, arg=p_hard) if p_hard > 0 else None
         circuit.append(readout, targets, arg=p_soft)
         if self._resets: # reset errors ≈ readout_error for active resets
-            circuit.append('X_ERROR', targets, arg=(p_soft + p_hard)) if (p_soft + p_hard) > 0 else None 
+            # circuit.append('X_ERROR', targets, arg=(p_soft + p_hard)) if (p_soft + p_hard) > 0 else None 
+            circuit.append('X_ERROR', targets, arg=self.readout_err) if self.readout_err > 0 else None  
+
 
     def _x(self, logs=("0", "1")):
         """Applies a logical X gate to the code qubits."""
