@@ -325,6 +325,13 @@ PYBIND11_MODULE(cpp_soft_info, m) {
       py::arg("absError") = -1.0,
       py::arg("handleOutliers") = true);
 
+    m.def("iqConvertorEstim", &iqConvertorEstim, 
+      py::arg("not_scaled_IQ_data"), 
+      py::arg("inv_qubit_mapping"), 
+      py::arg("kde_dict"), 
+      py::arg("relError") = -1.0, 
+      py::arg("absError") = -1.0);
+
     m.def("quantizeMatrixVectorized", &quantizeMatrixVectorized, 
       py::arg("matrix"), 
       py::arg("nBits"));
@@ -351,6 +358,28 @@ PYBIND11_MODULE(cpp_soft_info, m) {
       py::arg("_resets"),
       py::arg("_detailed")=false,
       py::arg("decode_hard")=false);
+
+    m.def("decodeConvertorDynamicAll", &decodeConvertorDynamicAll,
+      py::arg("detector_error_model"),
+      py::arg("comparisonMatrix"),
+      py::arg("pSoftMatrix"),
+      py::arg("msmt_err_dict"),
+      py::arg("qubit_mapping"),
+      py::arg("synd_rounds"),
+      py::arg("logical"),
+      py::arg("_resets"),
+      py::arg("_detailed") = false,
+      py::arg("decode_hard") = false);
+
+    m.def("decodeConvertorAllLeakage", &decodeConvertorAllLeakage,
+      py::arg("detector_error_model"),
+      py::arg("comparisonMatrix"),
+      py::arg("pSoftMatrix"),
+      py::arg("synd_rounds"),
+      py::arg("logical"),
+      py::arg("_resets"),
+      py::arg("_detailed") = false,
+      py::arg("decode_hard") = false);
 
     //////////// STIM ////////////
 

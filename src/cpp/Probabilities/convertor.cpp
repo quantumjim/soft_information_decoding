@@ -193,6 +193,127 @@ std::tuple<Eigen::MatrixXd, Eigen::MatrixXi> iqConvertor(
 }
 
 
+
+std::tuple<Eigen::MatrixXd, Eigen::MatrixXi, Eigen::MatrixXd, Eigen::MatrixXd> iqConvertorEstim(
+    const Eigen::MatrixXcd &not_scaled_IQ_data,
+    const std::map<int, std::vector<int>> &inv_qubit_mapping,
+    std::map<int, KDE_Result> &kde_dict,
+    double relError, double absError) {
+
+    Eigen::MatrixXd pSoftMatrix(not_scaled_IQ_data.rows(), not_scaled_IQ_data.cols());
+    Eigen::MatrixXi comparisonMatrix(not_scaled_IQ_data.rows(), not_scaled_IQ_data.cols());
+    Eigen::MatrixXd estim0Matrix(not_scaled_IQ_data.rows(), not_scaled_IQ_data.cols());
+    Eigen::MatrixXd estim1Matrix(not_scaled_IQ_data.rows(), not_scaled_IQ_data.cols());
+
+    double epsilon = std::numeric_limits<double>::epsilon();
+
+    // Extracting keys from inv_qubit_mapping to a vector for OpenMP compatibility
+    std::vector<int> keys;
+    for (const auto& entry : inv_qubit_mapping) {
+        keys.push_back(entry.first);
+    }
+
+    #pragma omp parallel for //schedule(static) 
+    for (size_t idx = 0; idx < keys.size(); ++idx) {
+        int qubitIdx = keys[idx];
+        const auto& columnIndices = inv_qubit_mapping.at(qubitIdx);
+        auto &kde_entry = kde_dict.at(qubitIdx);
+
+        // Initialize an Armadillo matrix to hold all query points for this qubit index
+        arma::mat all_query_points(2, not_scaled_IQ_data.rows() * columnIndices.size());
+
+        // Fill in all_query_points from the selected columns of not_scaled_IQ_data
+        for (size_t i = 0; i < columnIndices.size(); ++i) {
+            int colIndex = columnIndices[i];
+            for (int row = 0; row < not_scaled_IQ_data.rows(); ++row) {
+                all_query_points(0, row + i * not_scaled_IQ_data.rows()) = not_scaled_IQ_data(row, colIndex).real();
+                all_query_points(1, row + i * not_scaled_IQ_data.rows()) = not_scaled_IQ_data(row, colIndex).imag();
+            }
+        }
+
+        // Rescale all query points together
+        all_query_points.row(0) -= kde_entry.scaler_mean[0];
+        all_query_points.row(1) -= kde_entry.scaler_mean[1];
+        all_query_points.row(0) /= kde_entry.scaler_stddev[0];
+        all_query_points.row(1) /= kde_entry.scaler_stddev[1];
+
+        // Prepare for KDE evaluation
+        arma::vec estimations0(all_query_points.n_cols);
+        arma::vec estimations1(all_query_points.n_cols);
+
+        // Set error tolerances if specified
+        if (relError != -1.0) {
+            kde_entry.kde_0.RelativeError(relError);
+            kde_entry.kde_1.RelativeError(relError);
+        }
+        if (absError != -1.0) {
+            kde_entry.kde_0.AbsoluteError(absError);
+            kde_entry.kde_1.AbsoluteError(absError);
+        }
+
+        // Evaluate KDE on all rescaled query points at once
+        kde_entry.kde_0.Evaluate(all_query_points, estimations0);
+        kde_entry.kde_1.Evaluate(all_query_points, estimations1);
+
+        // Add small value to avoid division by zero
+        estimations0 += epsilon;
+        estimations1 += epsilon;
+        
+        for (size_t i = 0; i < columnIndices.size(); ++i) {
+            int colIndex = columnIndices[i];
+            for (int row = 0; row < not_scaled_IQ_data.rows(); ++row) {
+                // Directly access the KDE estimation results for this point
+                double estim0 = estimations0(row + i * not_scaled_IQ_data.rows());
+                double estim1 = estimations1(row + i * not_scaled_IQ_data.rows());
+
+                estim0Matrix(row, colIndex) = estim0;
+                estim1Matrix(row, colIndex) = estim1;
+
+                // Determine the smaller (p_small) and larger (p_big) of the two estimations
+                double p_small, p_big;
+
+                 if (estim0 == epsilon && estim1 == epsilon) { // Outlier point (works bcs estim is pos)
+                    double x = all_query_points(0, row + i * not_scaled_IQ_data.rows());
+                    double mean_0 = kde_entry.mean_mmr_0[0];
+                    double mean_1 = kde_entry.mean_mmr_1[0];
+                    double m_std = (kde_entry.stddev_mmr_0[0] + kde_entry.stddev_mmr_1[0])/2; // taking the mean of the std 
+
+                    double d_m_sq = std::pow(mean_1, 2) - std::pow(mean_0, 2);
+                    double d_m = mean_1 - mean_0;
+                    // double threshold = d_m_sq / (2*d_m);
+                    
+                    double exponent = -1*d_m_sq/2*m_std + x*d_m/(2*m_std); 
+                    double pSoft = 1/(1 + std::exp(exponent));
+
+                    if (pSoft > 0.5) { 
+                        comparisonMatrix(row, colIndex) = 1;
+                        pSoftMatrix(row, colIndex) = 1 - pSoft;
+                    } else {
+                        comparisonMatrix(row, colIndex) = 0;
+                        pSoftMatrix(row, colIndex) = pSoft;
+                    }
+                    continue;
+                }
+
+                if (estim1 > estim0) {
+                    p_small = estim0;
+                    p_big = estim1;
+                    comparisonMatrix(row, colIndex) = 1; // Estimation0 is greater, so assign 0
+                } else { // Defaults to setting the count to 0
+                    p_small = estim1;
+                    p_big = estim0;
+                    comparisonMatrix(row, colIndex) = 0; // Estimation1 is greater or equal, so assign 1
+                }
+
+                // Calculate p_soft using the smaller (p_small) and larger (p_big) values for every element
+                pSoftMatrix(row, colIndex) = 1.0 / (1.0 + p_big / p_small);
+            }
+        }
+    }
+    return std::make_tuple(pSoftMatrix, comparisonMatrix, estim0Matrix, estim1Matrix);
+}
+
+
 // std::tuple<Eigen::MatrixXd, Eigen::MatrixXi> iqConvertor(
 //     const Eigen::MatrixXcd &not_scaled_IQ_data,
 //     const std::map<int, std::vector<int>> &inv_qubit_mapping,
