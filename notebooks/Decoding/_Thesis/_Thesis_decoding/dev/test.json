@@ -1,0 +1,12 @@
+{
+    "cqzda58czq6g0081he8g": {
+        "additional_info": {
+            "threshold": 0.01,
+            "ratio_leaked": 0.04156136339409173,
+            "ratio_leaked_PS": 0.04440691071693613,
+            "pSoft_mean": 0.04664752219557383,
+            "pSoft_PS_mean": 0.030192330505666644
+        },
+        "distances": {}
+    }
+}
