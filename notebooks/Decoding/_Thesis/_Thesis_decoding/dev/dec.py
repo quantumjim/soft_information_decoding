@@ -1,7 +1,4 @@
 from result_saver import SaverProvider
-from Scratch import metadata_loader
-from Scratch import find_closest_calib_jobs
-from result_saver import SaverProvider
 from Scratch import metadata_loader, find_closest_calib_jobs, load_calibration_memory
 
 from soft_info import (get_noise_dict_from_backend, get_avgs_from_dict,
@@ -13,6 +10,7 @@ from soft_info import (get_noise_dict_from_backend, get_avgs_from_dict,
 import cpp_soft_info as csi
 
 import numpy as np
+import pandas as pd
 from tqdm import tqdm
 from time import sleep
 from datetime import datetime
@@ -25,7 +23,11 @@ def decoder(provider, DEVICE, LOGICAL, XBASIS, ROUNDS, file_name, threshold=0.01
     md = load_metadata(DEVICE, LOGICAL, XBASIS, ROUNDS)
     jobs_by_calib_date = organize_jobs_by_calibration_date(md)
 
+    idx = 0
     for calib_date, job_ids in jobs_by_calib_date.items():
+        idx += 1
+        if idx > 2:
+            break
         kde_dict, kde_dict_PS, msmt_error_dict, noise_dict = retrieve_calib_data(provider, DEVICE, calib_date)
         big_memory, d, T, link_qubits, code_qubits, shots_per_job = retrieve_memories_and_job_info(provider, jobs_by_calib_date[calib_date], md)
         inverted_q_map = inv_qubit_mapping(get_repcode_IQ_map(link_qubits+code_qubits, T))
@@ -35,7 +37,7 @@ def decoder(provider, DEVICE, LOGICAL, XBASIS, ROUNDS, file_name, threshold=0.01
         pSoft_PS_mean = np.mean(pSoft_PS)
 
         distances = np.arange(3, d+1, 2)[::-1]
-        for d_small in tqdm(distances, desc=f"distance {d_small}"):
+        for d_small in tqdm(distances, desc=f"distance"):
             pSoft_subset_big, countMat_subset_big, num_subsets, num_shots_subset_tot = get_big_subset_mats(d_small, T, d, pSoft, countMat)
             pSoft_subset_big_PS, countMat_subset_big_PS, num_subsets_PS, num_shots_PS_subset_tot = get_big_subset_mats(d_small, T, d, pSoft_PS, countMat_PS)
 
@@ -87,11 +89,11 @@ def decoder(provider, DEVICE, LOGICAL, XBASIS, ROUNDS, file_name, threshold=0.01
                     }, "distances": {}}
 
                 if str(d_small) not in data[job_id]['distances']:
-                    data[job_id]["distances"][str(d_small)] = {'tot_shots_with_all_subsets': str(int(num_shots_subset_tot))}
+                    data[job_id]["distances"][str(d_small)] = {'tot_shots_with_all_subsets': float(num_shots_subset_tot/len(job_ids))}
 
                 for method, res_dict in result_dict.items():
                     data[job_id]['distances'][str(d_small)][method[5:]] = {
-                        'err_rate': np.sum(res_dict[job_id])/ num_shots_subset_tot,
+                        'err_rate': np.sum(res_dict[job_id])/ (num_shots_subset_tot/len(job_ids)),
                         'sum_errs': float(np.sum(res_dict[job_id])),
                         'errs': res_dict[job_id],
                     }
@@ -102,6 +104,93 @@ def decoder(provider, DEVICE, LOGICAL, XBASIS, ROUNDS, file_name, threshold=0.01
 
 
 
+
+def decoderInfoPerfo(provider, DEVICE, LOGICAL, XBASIS, ROUNDS, file_name, threshold=0.01):
+    md = load_metadata(DEVICE, LOGICAL, XBASIS, ROUNDS)
+    jobs_by_calib_date = organize_jobs_by_calibration_date(md)
+
+    idx = 0
+    for calib_date, job_ids in jobs_by_calib_date.items():
+        idx += 1
+        if idx > 2:
+            break
+        
+        kde_dict, kde_dict_PS, msmt_error_dict, noise_dict = retrieve_calib_data(provider, DEVICE, calib_date)
+        big_memory, d, T, link_qubits, code_qubits, shots_per_job = retrieve_memories_and_job_info(provider, jobs_by_calib_date[calib_date], md)
+        inverted_q_map = inv_qubit_mapping(get_repcode_IQ_map(link_qubits+code_qubits, T))
+
+        pSoft, ratio, countMat, pSoft_PS, ratio_PS, countMat_PS = get_pSoft_and_countMat(big_memory, kde_dict, kde_dict_PS, inverted_q_map, threshold, plot = True)
+        pSoft_mean = np.mean(pSoft)
+        pSoft_PS_mean = np.mean(pSoft_PS)
+
+        # distances = np.arange(3, d+1, 6)[::-1] # 6 stepsize to have 3x lower 
+        distances = [3, 5, 7, 9, 15, 21, 27, 33, 39, 45, d]
+        for d_small in tqdm(distances, desc=f"distance"):
+            pSoft_subset_big, countMat_subset_big, num_subsets, num_shots_subset_tot = get_big_subset_mats(d_small, T, d, pSoft, countMat)
+            pSoft_subset_big_PS, countMat_subset_big_PS, num_subsets_PS, num_shots_PS_subset_tot = get_big_subset_mats(d_small, T, d, pSoft_PS, countMat_PS)
+
+            assert num_shots_subset_tot == num_shots_PS_subset_tot, "num_shots and num_shots_PS should be equal"
+            
+            _RESETS = False
+            model_mean_for_soft, model_mean_for_hard, model_mean_mean_for_hard, model_mean_mean_for_hard_PS, noise_list = get_stim_models(noise_dict, msmt_error_dict, pSoft_mean, pSoft_PS_mean, d_small,
+                                                                                                                      d, T, LOGICAL, XBASIS, _RESETS, link_qubits, code_qubits)
+            
+            nBits_res_dict = {}
+            nBits_range = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 15, -1]
+            # nBits_range = list(range(1, 12, 2))
+            for nBits in nBits_range:
+                if nBits == -1:
+                    pSoft_subset_big_quantized = pSoft_subset_big
+                    pSoft_subset_big_PS_quantized = pSoft_subset_big_PS
+                else:
+                    pSoft_subset_big_quantized = csi.quantizeMatrixVectorized(pSoft_subset_big, nBits)
+                    pSoft_subset_big_PS_quantized = csi.quantizeMatrixVectorized(pSoft_subset_big_PS, nBits)
+
+                res_s_K = csi.decodeConvertorAll(model_mean_for_soft, countMat_subset_big, pSoft_subset_big_quantized, T, 
+                                                    int(LOGICAL), _RESETS, decode_hard=False)
+
+                res_s_KPS = csi.decodeConvertorAll(model_mean_for_soft, countMat_subset_big_PS, pSoft_subset_big_PS_quantized, T,
+                                                                int(LOGICAL), _RESETS, decode_hard=False)
+
+                result_dict = {
+                    'dict_s_K': res_to_job_subset_res(res_s_K, shots_per_job, num_subsets, job_ids),
+                    'dict_s_KPS': res_to_job_subset_res(res_s_KPS, shots_per_job, num_subsets_PS, job_ids),
+                }
+                for method, job_ids_dict in result_dict.items():
+                    for job_id, err_per_subset_list in job_ids_dict.items():
+                        if method not in nBits_res_dict:
+                            nBits_res_dict[method] = {}
+                        if job_id not in nBits_res_dict[method]:
+                            nBits_res_dict[method][job_id] = []
+                        nBits_res_dict[method][job_id].append(sum(err_per_subset_list))
+                        
+
+            if not os.path.exists(file_name):
+                data = {}
+            else:
+                with open(file_name, "r") as f:
+                    data = json.load(f)
+
+            for job_id in job_ids:
+                if job_id not in data:
+                    data[job_id] = {"additional_info": {
+                        'threshold': threshold,
+                        'ratio_leaked': ratio,
+                        'ratio_leaked_PS': ratio_PS,
+                        'noise_list': [float(noise) for noise in noise_list],
+                        'nBits_list': nBits_range,
+                    }, "distances": {}}
+
+                if str(d_small) not in data[job_id]['distances']:
+                    data[job_id]["distances"][str(d_small)] = {'tot_shots_with_all_subsets': float(num_shots_subset_tot/len(job_ids))}
+
+                for method, res_dict in nBits_res_dict.items():
+                    data[job_id]['distances'][str(d_small)][method] = {
+                        'errs_per_bit': res_dict[job_id]
+                    }
+
+            with open(file_name, "w") as f:
+                json.dump(data, f, indent=4)
 
 
 
@@ -127,8 +216,11 @@ def load_metadata(DEVICE, LOGICAL, XBASIS, ROUNDS):
             (md["xbasis"] == XBASIS) &
             (md["rounds"] == ROUNDS) ]
     
-    md = md[:1]
-    # md = md[:21] # take the first 20 jobs for first weekend!
+    md = md[pd.isna(md["resets"])]
+    
+    # md = md[:1]
+    print(f"shape md before: {md.shape}")
+    # md = md[:20] # take the first 20 jobs for first weekend!
 
 
     state = 'X' if XBASIS else 'Z'
@@ -149,6 +241,7 @@ def organize_jobs_by_calibration_date(md):
             except:
                 sleep(5)
         jobs_by_calibration_date.setdefault(calib_creation_date, []).append(job_id)
+    print(f"Calibration dates: {jobs_by_calibration_date.keys()}")
     print(f"Num of calibrations: {len(jobs_by_calibration_date)}")
     print(f"Num of jobs per calibration: {[len(jobs) for jobs in jobs_by_calibration_date.values()]}\n")
     return jobs_by_calibration_date
@@ -216,6 +309,7 @@ def get_pSoft_and_countMat(big_memory, kde_dict, kde_dict_PS, inverted_q_map, th
 
 def get_big_subset_mats(d_small, T, d, pSoft, countMat):
     subsets = generate_subsets_pyramid(d, d_small)
+    # subsets = generate_subsets_with_center(d, d_small)
     pSoft_subset_big = np.vstack([pSoft[:, get_cols_to_keep(subset, T, d)] for subset in subsets]) 
     countMat_subset_big = np.vstack([countMat[:, get_cols_to_keep(subset, T, d)] for subset in subsets])
 
