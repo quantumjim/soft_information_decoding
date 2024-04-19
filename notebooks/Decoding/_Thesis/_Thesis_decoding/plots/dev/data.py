@@ -1,5 +1,6 @@
 from typing import Dict, Tuple
 import json
+import numpy as np
 
 def get_err_dicts(file_name) -> Tuple[Dict, Dict]:
     """ Returns two dictionaries:
@@ -49,3 +50,39 @@ def get_err_dicts(file_name) -> Tuple[Dict, Dict]:
 
     return err_per_job_dict, err_per_method_dict
     
+
+
+
+def get_err_dicts_infoPerfo(file_name) -> Dict:
+    """ Returns a dictionary:
+        - err_list_per_method: {'nBits_list': [], 'method1': {d: ndarray}, 'method2': {d: ndarray}}
+    """
+
+    with open(file_name, 'r') as f:
+        data = json.load(f)
+    print(f"Number of jobs: {len(data)}\n")
+
+    err_list_per_method = {}
+    for job_id, job_data in data.items():
+
+        nBits_list = job_data['additional_info']['nBits_list']
+        if 'nBits_list' not in err_list_per_method:
+            err_list_per_method['nBits_list'] = nBits_list
+        else:
+            assert err_list_per_method['nBits_list'] == nBits_list
+
+        for distance, distance_data in job_data['distances'].items():
+            for method, method_data in distance_data.items():
+
+                if method == 'tot_shots_with_all_subsets':
+                    continue
+                if method[5:] not in err_list_per_method:
+                    err_list_per_method[method[5:]] = {}
+                if int(distance) not in err_list_per_method[method[5:]]:
+                    err_list_per_method[method[5:]][int(distance)] = np.array(method_data['errs_per_bit'])
+                else:
+                    err_list_per_method[method[5:]][int(distance)] += np.array(method_data['errs_per_bit'])
+                    # No need to divide by the number of jobs because I'll use the final value to divide anyways!
+
+    return err_list_per_method
+

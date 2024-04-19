@@ -11,7 +11,7 @@ from scipy.optimize import curve_fit
 
 
 def plot_error_rates(distances_list: List, errs_list: List, shots_list: List, labels: Optional[List] = None, colors: Optional[List] = None,
-                     title: str = None, plot_e_L: bool = False, T = None, ignIdx = None) -> None:
+                     title: str = None, plot_e_L: bool = False, T = None) -> None:
     # Setup plot parameters for PRX style
     FIGURE_WIDTH_1COL = 3.404
     FIGURE_HEIGHT_1COL_GR = FIGURE_WIDTH_1COL * 2 / (1 + np.sqrt(5)) * 1.1
@@ -61,7 +61,8 @@ def plot_error_rates(distances_list: List, errs_list: List, shots_list: List, la
             uppers.append(upper)
 
         # Exclude zero points for fitting
-        valid_indices = np.where(np.array(ps) > 0)
+        # valid_indices = np.where(np.array(ps) > 0)
+        valid_indices = np.where(errs > 1)
         distances_fit = np.array(distances)[valid_indices]
         ps_fit = np.array(ps)[valid_indices]
 
@@ -87,7 +88,7 @@ def plot_error_rates(distances_list: List, errs_list: List, shots_list: List, la
 
     plt.yscale("log")
     plt.ylim(1e-6, 1) if not plot_e_L else plt.ylim(2e-8, 2e-2)
-    plt.ylabel('Logical Error Rate') if not plot_e_L else plt.ylabel('Logical Error Rate per Round')
+    plt.ylabel('Logical error probability') if not plot_e_L else plt.ylabel('Logical error per round')
     plt.xlabel('Distance')
     plt.title(title) if title is not None else None
     plt.grid(True, which="both", linestyle='--', linewidth=0.2)
@@ -115,6 +116,11 @@ def wilson_score_interval(p, n, z=1.96):
     term = z * np.sqrt(p * (1 - p) / n + z**2 / (4 * n**2))
     lower = (p + z**2 / (2 * n) - term) / denominator
     upper = (p + z**2 / (2 * n) + term) / denominator
+
+    # if p == 0: # For plots with log scale
+    #     lower = 0
+    #     upper = 0
+
     return max(lower, 0), min(upper, 1)
 
 
