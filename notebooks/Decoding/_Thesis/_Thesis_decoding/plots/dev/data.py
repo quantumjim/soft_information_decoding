@@ -14,8 +14,11 @@ def get_err_dicts(file_name) -> Tuple[Dict, Dict]:
 
     err_per_job_dict = {}
     for idx, (job_id, job_content) in enumerate(data.items()):
-        if idx > 17:
-            continue
+        # if idx == 19:
+        #     continue
+        # if idx == 18:
+        #     continue
+        # print(f"Job ID: {job_id}")
         for distance, methods in job_content.get("distances", {}).items():
             for method, info in methods.items():
                 if method == 'tot_shots_with_all_subsets':

@@ -124,7 +124,8 @@ def decoderInfoPerfo(provider, DEVICE, LOGICAL, XBASIS, ROUNDS, file_name, thres
         pSoft_PS_mean = np.mean(pSoft_PS)
 
         # distances = np.arange(3, d+1, 6)[::-1] # 6 stepsize to have 3x lower 
-        distances = [3, 5, 7, 9, 15, 21, 27, 33, 39, 45, d]
+        # distances = [3, 5, 7, 9, 15, 21, 27, 33, 39, 45, d]
+        distances = [11, 13, 17, 19]
         for d_small in tqdm(distances, desc=f"distance"):
             pSoft_subset_big, countMat_subset_big, num_subsets, num_shots_subset_tot = get_big_subset_mats(d_small, T, d, pSoft, countMat)
             pSoft_subset_big_PS, countMat_subset_big_PS, num_subsets_PS, num_shots_PS_subset_tot = get_big_subset_mats(d_small, T, d, pSoft_PS, countMat_PS)
@@ -220,7 +221,7 @@ def load_metadata(DEVICE, LOGICAL, XBASIS, ROUNDS):
     
     # md = md[:1]
     print(f"shape md before: {md.shape}")
-    # md = md[:20] # take the first 20 jobs for first weekend!
+    md = md[:20] # take the first 20 jobs for first weekend!
 
 
     state = 'X' if XBASIS else 'Z'
@@ -248,6 +249,8 @@ def organize_jobs_by_calibration_date(md):
 
 
 def retrieve_calib_data(provider, DEVICE, calib_date, bandwidths=[0.6], rel_error=1, num_points=20):
+    if rel_error != 1:
+        print(f"\nWARNING: rel_error: {rel_error}\n")
     noise_dict = get_noise_dict_from_backend(provider, DEVICE, date = calib_date)
     while True:
         try:
@@ -282,6 +285,8 @@ def retrieve_memories_and_job_info(provider, job_ids, md):
 
 
 def get_pSoft_and_countMat(big_memory, kde_dict, kde_dict_PS, inverted_q_map, threshold=0.01, rel_error=1, plot = False):
+    if rel_error != 1:
+        print(f"\nWARNING: rel_error: {rel_error}\n")
 
     print(f"\nStarting to get pSoft at {datetime.now()}")
     pSoft, countMat, estim0Mat, estim1Mat = csi.iqConvertorEstim(big_memory, inverted_q_map, kde_dict, rel_error, -1)

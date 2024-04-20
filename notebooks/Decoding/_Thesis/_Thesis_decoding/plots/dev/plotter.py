@@ -11,7 +11,7 @@ from scipy.optimize import curve_fit
 
 
 def plot_error_rates(distances_list: List, errs_list: List, shots_list: List, labels: Optional[List] = None, colors: Optional[List] = None,
-                     title: str = None, plot_e_L: bool = False, T = None) -> None:
+                     title: str = None, plot_e_L: bool = False, T = None, mark_outliers = True) -> None:
     # Setup plot parameters for PRX style
     FIGURE_WIDTH_1COL = 3.404
     FIGURE_HEIGHT_1COL_GR = FIGURE_WIDTH_1COL * 2 / (1 + np.sqrt(5)) * 1.1
@@ -61,14 +61,37 @@ def plot_error_rates(distances_list: List, errs_list: List, shots_list: List, la
             uppers.append(upper)
 
         # Exclude zero points for fitting
-        # valid_indices = np.where(np.array(ps) > 0)
-        valid_indices = np.where(errs > 1)
+        outlier_nb = 5
+        valid_indices = np.where(errs > outlier_nb)
         distances_fit = np.array(distances)[valid_indices]
         ps_fit = np.array(ps)[valid_indices]
+        lower_fit = np.array(lowers)[valid_indices]
+        upper_fit = np.array(uppers)[valid_indices]
 
         # Plot error rates and confidence intervals
-        plt.plot(distances, ps, label=label, marker='o', color=color, markersize=2, linewidth=1)
-        plt.fill_between(distances, lowers, uppers, color='black', alpha=0.1)
+        plt.plot(distances_fit, ps_fit, label=label, marker='o', color=color, markersize=2, linewidth=1)
+        plt.fill_between(distances_fit, lower_fit, upper_fit, color='black', alpha=0.1, edgecolor='none', label='68% CI')
+
+        # Identify outliers
+        outlier_indices = np.where(errs <= outlier_nb)
+        outlier_distances = np.array(distances)[outlier_indices]
+        outlier_ps = np.array(ps)[outlier_indices]
+        outlier_lowers = np.array(lowers)[outlier_indices]
+        outlier_uppers = np.array(uppers)[outlier_indices]
+
+        # Connect the last non-outlier point to the first outlier if outliers exist
+        if outlier_distances.size > 0 and distances_fit.size > 0:
+            # Append the last non-outlier point to the beginning of the outlier data
+            outlier_distances = np.append(outlier_distances, distances_fit[0])
+            outlier_ps = np.append(outlier_ps, ps_fit[0])   
+            outlier_lowers = np.append(outlier_lowers, lower_fit[0])
+            outlier_uppers = np.append(outlier_uppers, upper_fit[0])
+
+            # Plot outliers with a dashed line starting from the last non-outlier
+            plt.plot(outlier_distances, outlier_ps, linestyle=':', color=color, linewidth=0.6)
+            plt.plot(outlier_distances[:-1], outlier_ps[:-1], marker='o', color=color, markersize=3, linewidth=0, fillstyle='none', markeredgewidth=0.5)
+            plt.fill_between(outlier_distances, outlier_lowers, outlier_uppers, color='black', alpha=0.1, edgecolor='none')
+
 
         if plot_e_L and len(distances_fit) > 1:
             log_ps_fit = np.log10(ps_fit)
@@ -93,6 +116,9 @@ def plot_error_rates(distances_list: List, errs_list: List, shots_list: List, la
     plt.title(title) if title is not None else None
     plt.grid(True, which="both", linestyle='--', linewidth=0.2)
     plt.xticks(distances_list[0][::2])  # Assuming all lists have similar step, adjust if needed
+
+
+
     plt.legend(fontsize=3, loc='upper right')
     plt.show()
 
@@ -103,12 +129,12 @@ label_dict = {
     'h_K': 'hard decoding (not PS)',
     'h_KPS': 'hard decoding (PS)',
     'h_K_mean': 'Data-informed hard decoding (not PS)',
-    'h_KPS_mean': 'Data-informed hard decoding (PS)',
+    'h_K_meanPS': 'Data-informed hard decoding (PS)',
 }
 
 
 
-def wilson_score_interval(p, n, z=1.96):
+def wilson_score_interval(p, n, z=1): # z=1.96 for 95% confidence
     """
     Calculate Wilson score interval for a given success probability (p), number of trials (n), and z-score (z).
     """
