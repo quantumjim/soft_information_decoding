@@ -2,6 +2,7 @@ from typing import Dict, Tuple
 import json
 import numpy as np
 
+
 def get_err_dicts(file_name) -> Tuple[Dict, Dict]:
     """ Returns two dictionaries:
         - err_per_job_dict: {method: {distance: {tot_shots: [], sum_errs: [], err_rates: [], sum_tot_shots: int, sum_err_rate: float, sum_sum_errs: int}}}
@@ -10,7 +11,7 @@ def get_err_dicts(file_name) -> Tuple[Dict, Dict]:
 
     with open(file_name, 'r') as f:
         data = json.load(f)
-    print(f"Number of jobs: {len(data)}\n")
+    # print(f"Number of jobs: {len(data)}")
 
     err_per_job_dict = {}
     for idx, (job_id, job_content) in enumerate(data.items()):

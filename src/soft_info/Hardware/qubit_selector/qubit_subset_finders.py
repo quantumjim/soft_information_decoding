@@ -10,6 +10,17 @@ from qiskit.transpiler import CouplingMap
 from typing import List
 from qiskit.providers import BackendV2
 
+from numba import jit
+
+# @jit(nopython=True)
+# def flatten_paths(all_paths):
+#     paths = []
+#     for a in all_paths:
+#         for b in a:
+#             for c in a[b]:
+#                 paths.append(list(c))
+#     return paths
+
 
 # TODO: backend typehint. Currently, only BackendV1 is supported
 #       Might make sense to extend to BackendV2 for generality
@@ -39,6 +50,10 @@ def find_lines(
 
     paths = [list(c) for a in all_paths for b in a for c in a[b]]
     return paths
+
+    # # Use the JIT-compiled function to flatten the path list
+    # paths = flatten_paths(all_paths)
+    # return paths
 
     # # TODO This list comprehension is slow. Improve its performance.
     # paths = np.asarray(

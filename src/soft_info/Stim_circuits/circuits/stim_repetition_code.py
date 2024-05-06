@@ -24,7 +24,7 @@ class RepetitionCodeStimCircuit():
             T (int): Number of rounds of ancilla-assisted syndrome measurement.
             xbasis (bool): Whether to use the X basis to use for encoding (Z basis used by default).
             resets (bool): Whether to include a reset gate after mid-circuit measurements.
-            noise_list (list): [twog_err, sglg_err, t1_err, t2_err, readout_err, hard_err, soft_err]
+            noise_list (list): [twog_err, sglg_err, t1_err, t2_err, readout_err (=reset_err), hard_err, soft_err]
         """
         
 

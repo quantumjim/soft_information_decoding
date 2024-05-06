@@ -91,7 +91,11 @@ def postselect_calib_data(qubit_data_dict: dict) -> Tuple[dict, dict]:
 
         msmt_err_probs[qubit_idx] = {
             'p_hard': (hard_prob_0 + hard_prob_1) / 2,
-            'p_soft': (soft_prob_0 + soft_prb_1) / 2
+            'p_soft': (soft_prob_0 + soft_prb_1) / 2,
+            'p_hard_0': hard_prob_0,
+            'p_hard_1': hard_prob_1,
+            'p_soft_0': soft_prob_0,
+            'p_soft_1': soft_prb_1
         }
              
     

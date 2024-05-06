@@ -11,6 +11,8 @@ import matplotlib.patches as mpatches
 from ..Hardware import get_repcode_IQ_map
 from ..UnionFind import llh_ratio
 
+from ..Plotting.general import apply_formatting
+
 
 #TODO add correct error rates on the edges
 def soft_reweight_pymatching(matching: pymatching.Matching,  d: int, T: int, IQ_data,
@@ -204,12 +206,13 @@ def draw_matching_graph(matching=None, d=3, T=3, syndromes=None, matched_edges=N
     # Scale node positions
     pos = {node: (x * scale_factor, y * scale_factor) for node, (x, y) in pos.items()}
 
-    
+    apply_formatting()
+    fig = plt.figure()
     # Draw the graph
-    if dpi is not None:
-        plt.figure(figsize=figsize, dpi=dpi)
-    else:
-        plt.figure(figsize=figsize)
+    # if dpi is not None:
+    #     plt.figure(figsize=figsize, dpi=dpi)
+    # else:
+    #     plt.figure(figsize=figsize)
     
     nx.draw(G, pos, labels={node: node for node in G.nodes()}, with_labels=True, 
             node_color=node_colors,
@@ -315,3 +318,4 @@ def draw_matching_graph(matching=None, d=3, T=3, syndromes=None, matched_edges=N
     plt.axis('scaled')
     plt.subplots_adjust(right=0.7)
     plt.show()
+    return fig

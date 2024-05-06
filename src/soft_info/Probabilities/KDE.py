@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 from sklearn.neighbors import KernelDensity
 from sklearn.preprocessing import StandardScaler
 
-from ..IQ_data.plotter import plot_IQ_data
+from ..Plotting.IQ_plotter import plot_IQ_data
 
 
 def plot_KDE(data, kde, scaler):

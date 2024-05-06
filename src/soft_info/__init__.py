@@ -7,6 +7,7 @@ from .Hardware import *
 from .PyMatching import *
 from .Probabilities import *
 from .Stim_circuits import *
+from .Plotting import *
 
 
 def custom_showwarning(message, category, filename, lineno, file=None, line=None):

@@ -24,7 +24,8 @@ class RepCodeIQSimulator():
     _max_cache_size = 4
 
     def __init__(self, provider, d: int, T: int, device: int, _is_hex: bool = True, 
-                 other_date=None, double_msmt: bool = False, best_path: bool = False) -> None:
+                 other_date=None, double_msmt: bool = False, best_path: bool = False,
+                 multiplier = 1.0) -> None:
         self.provider = provider
 
         self.d = d
@@ -74,9 +75,9 @@ class RepCodeIQSimulator():
             })
 
         # Prepare noise list based on the newly loaded or cached noise_dict
-        self._prepare_noise_list(double_msmt)
+        self._prepare_noise_list(double_msmt, multiplier=multiplier)
 
-    def _prepare_noise_list(self, double_msmt):
+    def _prepare_noise_list(self, double_msmt, multiplier=1.0):
         self.noise_avgs = get_avgs_from_dict(self.noise_dict, self.layout)
         self.noise_list = [self.noise_avgs['two_gate'], self.noise_avgs['single_gate'], self.noise_avgs["t1_err"], 
                            self.noise_avgs["t2_err"]]
@@ -93,6 +94,8 @@ class RepCodeIQSimulator():
             msmt_err = self.noise_avgs['readout']
             self.noise_list += [msmt_err, msmt_err*2/3, msmt_err/3]
             self.noise_list[-1] = 0 # for simulating because soft comes from IQ
+
+        self.noise_list = [multiplier * noise for noise in self.noise_list]
 
      # Hardcoded torino layout (UGLY!)
     @staticmethod

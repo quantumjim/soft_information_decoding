@@ -190,7 +190,7 @@ def decoderSimul(provider, DEVICE, LOGICAL, XBASIS, ROUNDS, file_name, threshold
 
 
 
-def decoderSimulInfoPerfo(provider, DEVICE, LOGICAL, XBASIS, ROUNDS, file_name, threshold=0, shots_mult = 20, multiplier=1.0, distances=None):
+def decoderSimulInfoPerfo(provider, DEVICE, LOGICAL, XBASIS, ROUNDS, file_name, threshold=0, shots_mult = 20, multiplier=1.0):
 
     calib_date = '2024-03-24'
  
@@ -217,9 +217,8 @@ def decoderSimulInfoPerfo(provider, DEVICE, LOGICAL, XBASIS, ROUNDS, file_name, 
     pSoft_PS, ratio_PS, countMat_PS = get_pSoft_and_countMat(big_memory, None, kde_dict_PS, inverted_q_map, threshold, plot = False)
     pSoft_PS_mean = np.mean(pSoft_PS)
 
-    distances = [3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 27, 33, 39] if distances is None else distances
-    print(distances)
-    # distances = [17, 19, 21, 27, 33, 39] 
+    distances = np.arange(3, d+1, 2)[::-1]
+    distances = [3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 27, 33, 39]
     for d_small in tqdm(distances, desc=f"distance"):
         pSoft_subset_big_PS, countMat_subset_big_PS, num_subsets_PS, num_shots_PS_subset_tot = get_big_subset_mats(d_small, T, d, pSoft_PS, countMat_PS)
 
@@ -637,10 +636,14 @@ def res_to_job_subset_res(result, shots_per_job, num_subsets, job_ids):
     return num_errs_per_job
 
 
-def process_pSoft(pSoft, estim0Mat, estim1Mat, threshold):
+def process_pSoft(pSoft, estim0Mat, estim1Mat, threshold, special_value=None):
     pSoft_copy = pSoft.copy()
     mask = ((estim0Mat < threshold) & (estim1Mat < threshold))
-    pSoft_copy[mask] = 0.5-1e-8
+    pSoft_copy[mask] = 0.5-1e-8 
+    if special_value is not None:
+        print(f"special_value: {special_value}")
+        pSoft_copy[mask] = special_value
+    
 
     # calculate the filtered ratio
     ratio = np.sum(mask) / (pSoft.shape[0]*pSoft.shape[1])

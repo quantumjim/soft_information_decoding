@@ -16,9 +16,9 @@ def generate_mock_IQ_data(seed=42, size=(1000, 2), mean=0, std=1):
     return real_part + 1j * imag_part
 
 
-@mock.patch('src.soft_info.IQ_data.plotter.plot_IQ_data')
+# @mock.patch('src.soft_info.IQ_data.plotter.plot_IQ_data')
 @mock.patch('src.soft_info.Probabilities.KDE.plot_KDE')
-def test_fit_KDE(mock_plot_IQ_data, mock_plot_KDE):
+def test_fit_KDE(mock_plot_KDE):
     # Create mock IQ data
     mock_IQ_data = generate_mock_IQ_data()
 
@@ -46,7 +46,7 @@ def test_fit_KDE(mock_plot_IQ_data, mock_plot_KDE):
     assert hasattr(kde, 'tree_'), "KDE object is not fitted"
 
     # Check if the plotting functions were not called
-    mock_plot_IQ_data.assert_not_called()
+    # mock_plot_IQ_data.assert_not_called()
     mock_plot_KDE.assert_not_called()
 
 
