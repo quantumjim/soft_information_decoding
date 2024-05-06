@@ -1,0 +1,103 @@
+%% Creator: Inkscape 1.2 (dc2aeda, 2022-05-15), www.inkscape.org
+%% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
+%% Accompanies image file 'circuit_diagonal.pdf' (pdf, eps, ps)
+%%
+%% To include the image in your LaTeX document, write
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics{<filename>.pdf}
+%% To scale the image, write
+%%   \def\svgwidth{<desired width>}
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics[width=<desired width>]{<filename>.pdf}
+%%
+%% Images with a different path to the parent latex file can
+%% be accessed with the `import' package (which may need to be
+%% installed) using
+%%   \usepackage{import}
+%% in the preamble, and then including the image with
+%%   \import{<path to file>}{<filename>.pdf_tex}
+%% Alternatively, one can specify
+%%   \graphicspath{{<path to file>/}}
+%% 
+%% For more information, please see info/svg-inkscape on CTAN:
+%%   http://tug.ctan.org/tex-archive/info/svg-inkscape
+%%
+\begingroup%
+  \makeatletter%
+  \providecommand\color[2][]{%
+    \errmessage{(Inkscape) Color is used for the text in Inkscape, but the package 'color.sty' is not loaded}%
+    \renewcommand\color[2][]{}%
+  }%
+  \providecommand\transparent[1]{%
+    \errmessage{(Inkscape) Transparency is used (non-zero) for the text in Inkscape, but the package 'transparent.sty' is not loaded}%
+    \renewcommand\transparent[1]{}%
+  }%
+  \providecommand\rotatebox[2]{#2}%
+  \newcommand*\fsize{\dimexpr\f@size pt\relax}%
+  \newcommand*\lineheight[1]{\fontsize{\fsize}{#1\fsize}\selectfont}%
+  \ifx\svgwidth\undefined%
+    \setlength{\unitlength}{245.73300934bp}%
+    \ifx\svgscale\undefined%
+      \relax%
+    \else%
+      \setlength{\unitlength}{\unitlength * \real{\svgscale}}%
+    \fi%
+  \else%
+    \setlength{\unitlength}{\svgwidth}%
+  \fi%
+  \global\let\svgwidth\undefined%
+  \global\let\svgscale\undefined%
+  \makeatother%
+  \begin{picture}(1,0.64063025)%
+    \lineheight{1}%
+    \setlength\tabcolsep{0pt}%
+    \put(0.08246755,0.53851534){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}q\end{tabular}}}}%
+    \put(0.10056443,0.5324315){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}0\end{tabular}}}}%
+    \put(0.13001509,0.53851534){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}:\end{tabular}}}}%
+    \put(0.20857596,0.53327794){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}•\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=1]{circuit_diagonal.pdf}}%
+    \put(0.48953536,0.53327794){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}•\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=2]{circuit_diagonal.pdf}}%
+    \put(0.08246755,0.44932097){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}q\end{tabular}}}}%
+    \put(0.10056443,0.44323713){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}1\end{tabular}}}}%
+    \put(0.13001509,0.44932097){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}:\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=3]{circuit_diagonal.pdf}}%
+    \put(0.08246755,0.36012661){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}q\end{tabular}}}}%
+    \put(0.10056443,0.35404684){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}2\end{tabular}}}}%
+    \put(0.13001509,0.36012661){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}:\end{tabular}}}}%
+    \put(0.20857596,0.35488922){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}•\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=4]{circuit_diagonal.pdf}}%
+    \put(0.28236336,0.35488922){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}•\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=5]{circuit_diagonal.pdf}}%
+    \put(0.58318985,0.35488922){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}•\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=6]{circuit_diagonal.pdf}}%
+    \put(0.65697725,0.35488922){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}•\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=7]{circuit_diagonal.pdf}}%
+    \put(0.08246755,0.27093224){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}q\end{tabular}}}}%
+    \put(0.10056443,0.26485247){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}3\end{tabular}}}}%
+    \put(0.13001509,0.27093224){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}:\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=8]{circuit_diagonal.pdf}}%
+    \put(0.08246755,0.18173788){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}q\end{tabular}}}}%
+    \put(0.10056443,0.17565811){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}4\end{tabular}}}}%
+    \put(0.13001509,0.18173788){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}:\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=9]{circuit_diagonal.pdf}}%
+    \put(0.28236336,0.17650456){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}•\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=10]{circuit_diagonal.pdf}}%
+    \put(0.65697725,0.17650456){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}•\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=11]{circuit_diagonal.pdf}}%
+    \put(0.10073534,0.08860428){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}c:\end{tabular}}}}%
+    \put(0.16032034,0.08719625){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}/\end{tabular}}}}%
+    \put(0.1805903,0.07705923){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}4\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=12]{circuit_diagonal.pdf}}%
+    \put(0.37722648,0.06399627){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}0\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=13]{circuit_diagonal.pdf}}%
+    \put(0.49074806,0.06399627){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}1\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=14]{circuit_diagonal.pdf}}%
+    \put(0.75184036,0.06399627){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}2\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=15]{circuit_diagonal.pdf}}%
+    \put(0.86536194,0.06399627){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}3\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=16]{circuit_diagonal.pdf}}%
+  \end{picture}%
+\endgroup%

@@ -123,7 +123,15 @@
         "format": "cpp",
         "__availability": "cpp",
         "sparsecore": "cpp",
-        "filesystem": "cpp"
+        "filesystem": "cpp",
+        "execution": "cpp",
+        "strstream": "cpp",
+        "codecvt": "cpp",
+        "csignal": "cpp",
+        "source_location": "cpp",
+        "numbers": "cpp",
+        "semaphore": "cpp",
+        "shared_mutex": "cpp"
     },
     "cmake.sourceDirectory": "${workspaceFolder}"
 }

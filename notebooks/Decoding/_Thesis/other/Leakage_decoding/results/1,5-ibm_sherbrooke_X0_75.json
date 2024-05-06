@@ -1,0 +1,1651 @@
+{
+    "cqzf4vvczq6g0081hgng": [
+        {
+            "totshots": 11198
+        },
+        {
+            "decoding": "kde",
+            "d_new": "51",
+            "error_list_dict": {
+                "soft_mean_thresh_1": [
+                    2,
+                    2
+                ],
+                "soft_mean_thresh_2": [
+                    2,
+                    2
+                ],
+                "soft_indiv_thresh_1": [
+                    1,
+                    1
+                ],
+                "soft_indiv_thresh_2": [
+                    2,
+                    3
+                ],
+                "hard_indiv": [
+                    18,
+                    16
+                ],
+                "hard_mean": [
+                    14,
+                    15
+                ],
+                "hard_mean_thresh_1": [
+                    8,
+                    8
+                ],
+                "hard_mean_thresh_2": [
+                    6,
+                    5
+                ]
+            },
+            "error_mean_dict": {
+                "soft_mean_thresh_1": 2.0,
+                "soft_mean_thresh_2": 2.0,
+                "soft_indiv_thresh_1": 1.0,
+                "soft_indiv_thresh_2": 2.5,
+                "hard_indiv": 17.0,
+                "hard_mean": 14.5,
+                "hard_mean_thresh_1": 8.0,
+                "hard_mean_thresh_2": 5.5
+            },
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.6,
+                    1.2,
+                    1
+                ],
+                "num_points_bandwidths": 20,
+                "threshold_1": 0.01,
+                "threshold_2": 0.05,
+                "pSoft_mean_thresh_1": 0.047785961438537645,
+                "pSoft_mean_thresh_2": 0.10872816193818657,
+                "ratio_leaked_1": 0.04578277570200619,
+                "ratio_leaked_2": 0.183857793059052
+            }
+        },
+        {
+            "decoding": "kde_PS",
+            "d_new": "51",
+            "error_list_dict": {
+                "soft_mean_thresh_1": [
+                    0,
+                    1
+                ],
+                "soft_mean_thresh_2": [
+                    3,
+                    3
+                ],
+                "soft_indiv_thresh_1": [
+                    1,
+                    2
+                ],
+                "soft_indiv_thresh_2": [
+                    5,
+                    5
+                ],
+                "hard_indiv": [
+                    21,
+                    23
+                ],
+                "hard_mean": [
+                    20,
+                    22
+                ],
+                "hard_mean_thresh_1": [
+                    10,
+                    14
+                ],
+                "hard_mean_thresh_2": [
+                    11,
+                    16
+                ]
+            },
+            "error_mean_dict": {
+                "soft_mean_thresh_1": 0.5,
+                "soft_mean_thresh_2": 3.0,
+                "soft_indiv_thresh_1": 1.5,
+                "soft_indiv_thresh_2": 5.0,
+                "hard_indiv": 22.0,
+                "hard_mean": 21.0,
+                "hard_mean_thresh_1": 12.0,
+                "hard_mean_thresh_2": 13.5
+            },
+            "additional_info": {
+                "pSoft_mean_thresh_1": 0.032278270194866406,
+                "pSoft_mean_thresh_2": 0.0953217048335962,
+                "ratio_leaked_1": 0.044815751808732936,
+                "ratio_leaked_2": 0.18080000007370783
+            }
+        },
+        {
+            "decoding": "kde",
+            "d_new": "47",
+            "error_list_dict": {
+                "soft_mean_thresh_1": [
+                    1,
+                    3
+                ],
+                "soft_mean_thresh_2": [
+                    3,
+                    3
+                ],
+                "soft_indiv_thresh_1": [
+                    2,
+                    1
+                ],
+                "soft_indiv_thresh_2": [
+                    2,
+                    3
+                ],
+                "hard_indiv": [
+                    21,
+                    31
+                ],
+                "hard_mean": [
+                    12,
+                    28
+                ],
+                "hard_mean_thresh_1": [
+                    6,
+                    19
+                ],
+                "hard_mean_thresh_2": [
+                    8,
+                    14
+                ]
+            },
+            "error_mean_dict": {
+                "soft_mean_thresh_1": 2.0,
+                "soft_mean_thresh_2": 3.0,
+                "soft_indiv_thresh_1": 1.5,
+                "soft_indiv_thresh_2": 2.5,
+                "hard_indiv": 26.0,
+                "hard_mean": 20.0,
+                "hard_mean_thresh_1": 12.5,
+                "hard_mean_thresh_2": 11.0
+            },
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.6,
+                    1.2,
+                    1
+                ],
+                "num_points_bandwidths": 20,
+                "threshold_1": 0.01,
+                "threshold_2": 0.05,
+                "pSoft_mean_thresh_1": 0.04795761515987816,
+                "pSoft_mean_thresh_2": 0.10967090478194023,
+                "ratio_leaked_1": 0.04578277570200619,
+                "ratio_leaked_2": 0.183857793059052
+            }
+        },
+        {
+            "decoding": "kde_PS",
+            "d_new": "47",
+            "error_list_dict": {
+                "soft_mean_thresh_1": [
+                    1,
+                    0
+                ],
+                "soft_mean_thresh_2": [
+                    4,
+                    5
+                ],
+                "soft_indiv_thresh_1": [
+                    3,
+                    1
+                ],
+                "soft_indiv_thresh_2": [
+                    5,
+                    6
+                ],
+                "hard_indiv": [
+                    16,
+                    32
+                ],
+                "hard_mean": [
+                    18,
+                    34
+                ],
+                "hard_mean_thresh_1": [
+                    10,
+                    22
+                ],
+                "hard_mean_thresh_2": [
+                    11,
+                    18
+                ]
+            },
+            "error_mean_dict": {
+                "soft_mean_thresh_1": 0.5,
+                "soft_mean_thresh_2": 4.5,
+                "soft_indiv_thresh_1": 2.0,
+                "soft_indiv_thresh_2": 5.5,
+                "hard_indiv": 24.0,
+                "hard_mean": 26.0,
+                "hard_mean_thresh_1": 16.0,
+                "hard_mean_thresh_2": 14.5
+            },
+            "additional_info": {
+                "pSoft_mean_thresh_1": 0.03186459966779283,
+                "pSoft_mean_thresh_2": 0.09575501793898052,
+                "ratio_leaked_1": 0.044815751808732936,
+                "ratio_leaked_2": 0.18080000007370783
+            }
+        },
+        {
+            "decoding": "kde",
+            "d_new": "43",
+            "error_list_dict": {
+                "soft_mean_thresh_1": [
+                    1,
+                    3
+                ],
+                "soft_mean_thresh_2": [
+                    4,
+                    4
+                ],
+                "soft_indiv_thresh_1": [
+                    3,
+                    3
+                ],
+                "soft_indiv_thresh_2": [
+                    3,
+                    3
+                ],
+                "hard_indiv": [
+                    15,
+                    44
+                ],
+                "hard_mean": [
+                    16,
+                    60
+                ],
+                "hard_mean_thresh_1": [
+                    7,
+                    27
+                ],
+                "hard_mean_thresh_2": [
+                    7,
+                    26
+                ]
+            },
+            "error_mean_dict": {
+                "soft_mean_thresh_1": 2.0,
+                "soft_mean_thresh_2": 4.0,
+                "soft_indiv_thresh_1": 3.0,
+                "soft_indiv_thresh_2": 3.0,
+                "hard_indiv": 29.5,
+                "hard_mean": 38.0,
+                "hard_mean_thresh_1": 17.0,
+                "hard_mean_thresh_2": 16.5
+            },
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.6,
+                    1.2,
+                    1
+                ],
+                "num_points_bandwidths": 20,
+                "threshold_1": 0.01,
+                "threshold_2": 0.05,
+                "pSoft_mean_thresh_1": 0.04329437217645574,
+                "pSoft_mean_thresh_2": 0.10437577331154728,
+                "ratio_leaked_1": 0.04578277570200619,
+                "ratio_leaked_2": 0.183857793059052
+            }
+        },
+        {
+            "decoding": "kde_PS",
+            "d_new": "43",
+            "error_list_dict": {
+                "soft_mean_thresh_1": [
+                    0,
+                    3
+                ],
+                "soft_mean_thresh_2": [
+                    4,
+                    6
+                ],
+                "soft_indiv_thresh_1": [
+                    1,
+                    4
+                ],
+                "soft_indiv_thresh_2": [
+                    7,
+                    8
+                ],
+                "hard_indiv": [
+                    13,
+                    52
+                ],
+                "hard_mean": [
+                    21,
+                    62
+                ],
+                "hard_mean_thresh_1": [
+                    8,
+                    36
+                ],
+                "hard_mean_thresh_2": [
+                    11,
+                    29
+                ]
+            },
+            "error_mean_dict": {
+                "soft_mean_thresh_1": 1.5,
+                "soft_mean_thresh_2": 5.0,
+                "soft_indiv_thresh_1": 2.5,
+                "soft_indiv_thresh_2": 7.5,
+                "hard_indiv": 32.5,
+                "hard_mean": 41.5,
+                "hard_mean_thresh_1": 22.0,
+                "hard_mean_thresh_2": 20.0
+            },
+            "additional_info": {
+                "pSoft_mean_thresh_1": 0.03218456122216753,
+                "pSoft_mean_thresh_2": 0.09498248384213251,
+                "ratio_leaked_1": 0.044815751808732936,
+                "ratio_leaked_2": 0.18080000007370783
+            }
+        },
+        {
+            "decoding": "kde",
+            "d_new": "39",
+            "error_list_dict": {
+                "soft_mean_thresh_1": [
+                    5,
+                    21
+                ],
+                "soft_mean_thresh_2": [
+                    13,
+                    13
+                ],
+                "soft_indiv_thresh_1": [
+                    7,
+                    15
+                ],
+                "soft_indiv_thresh_2": [
+                    13,
+                    15
+                ],
+                "hard_indiv": [
+                    21,
+                    82
+                ],
+                "hard_mean": [
+                    23,
+                    111
+                ],
+                "hard_mean_thresh_1": [
+                    20,
+                    68
+                ],
+                "hard_mean_thresh_2": [
+                    37,
+                    61
+                ]
+            },
+            "error_mean_dict": {
+                "soft_mean_thresh_1": 13.0,
+                "soft_mean_thresh_2": 13.0,
+                "soft_indiv_thresh_1": 11.0,
+                "soft_indiv_thresh_2": 14.0,
+                "hard_indiv": 51.5,
+                "hard_mean": 67.0,
+                "hard_mean_thresh_1": 44.0,
+                "hard_mean_thresh_2": 49.0
+            },
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.6,
+                    1.2,
+                    1
+                ],
+                "num_points_bandwidths": 20,
+                "threshold_1": 0.01,
+                "threshold_2": 0.05,
+                "pSoft_mean_thresh_1": 0.045134704778955904,
+                "pSoft_mean_thresh_2": 0.10705692763994204,
+                "ratio_leaked_1": 0.04578277570200619,
+                "ratio_leaked_2": 0.183857793059052
+            }
+        },
+        {
+            "decoding": "kde_PS",
+            "d_new": "39",
+            "error_list_dict": {
+                "soft_mean_thresh_1": [
+                    3,
+                    16
+                ],
+                "soft_mean_thresh_2": [
+                    8,
+                    15
+                ],
+                "soft_indiv_thresh_1": [
+                    5,
+                    24
+                ],
+                "soft_indiv_thresh_2": [
+                    16,
+                    25
+                ],
+                "hard_indiv": [
+                    37,
+                    89
+                ],
+                "hard_mean": [
+                    29,
+                    112
+                ],
+                "hard_mean_thresh_1": [
+                    25,
+                    77
+                ],
+                "hard_mean_thresh_2": [
+                    32,
+                    61
+                ]
+            },
+            "error_mean_dict": {
+                "soft_mean_thresh_1": 9.5,
+                "soft_mean_thresh_2": 11.5,
+                "soft_indiv_thresh_1": 14.5,
+                "soft_indiv_thresh_2": 20.5,
+                "hard_indiv": 63.0,
+                "hard_mean": 70.5,
+                "hard_mean_thresh_1": 51.0,
+                "hard_mean_thresh_2": 46.5
+            },
+            "additional_info": {
+                "pSoft_mean_thresh_1": 0.03424569134400117,
+                "pSoft_mean_thresh_2": 0.09792508752092051,
+                "ratio_leaked_1": 0.044815751808732936,
+                "ratio_leaked_2": 0.18080000007370783
+            }
+        },
+        {
+            "decoding": "kde",
+            "d_new": "35",
+            "error_list_dict": {
+                "soft_mean_thresh_1": [
+                    7,
+                    32
+                ],
+                "soft_mean_thresh_2": [
+                    31,
+                    27
+                ],
+                "soft_indiv_thresh_1": [
+                    6,
+                    31
+                ],
+                "soft_indiv_thresh_2": [
+                    31,
+                    35
+                ],
+                "hard_indiv": [
+                    33,
+                    164
+                ],
+                "hard_mean": [
+                    15,
+                    223
+                ],
+                "hard_mean_thresh_1": [
+                    18,
+                    124
+                ],
+                "hard_mean_thresh_2": [
+                    38,
+                    106
+                ]
+            },
+            "error_mean_dict": {
+                "soft_mean_thresh_1": 19.5,
+                "soft_mean_thresh_2": 29.0,
+                "soft_indiv_thresh_1": 18.5,
+                "soft_indiv_thresh_2": 33.0,
+                "hard_indiv": 98.5,
+                "hard_mean": 119.0,
+                "hard_mean_thresh_1": 71.0,
+                "hard_mean_thresh_2": 72.0
+            },
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.6,
+                    1.2,
+                    1
+                ],
+                "num_points_bandwidths": 20,
+                "threshold_1": 0.01,
+                "threshold_2": 0.05,
+                "pSoft_mean_thresh_1": 0.04565288906505212,
+                "pSoft_mean_thresh_2": 0.110391818811423,
+                "ratio_leaked_1": 0.04578277570200619,
+                "ratio_leaked_2": 0.183857793059052
+            }
+        },
+        {
+            "decoding": "kde_PS",
+            "d_new": "35",
+            "error_list_dict": {
+                "soft_mean_thresh_1": [
+                    2,
+                    45
+                ],
+                "soft_mean_thresh_2": [
+                    19,
+                    30
+                ],
+                "soft_indiv_thresh_1": [
+                    3,
+                    45
+                ],
+                "soft_indiv_thresh_2": [
+                    25,
+                    31
+                ],
+                "hard_indiv": [
+                    48,
+                    159
+                ],
+                "hard_mean": [
+                    31,
+                    230
+                ],
+                "hard_mean_thresh_1": [
+                    22,
+                    135
+                ],
+                "hard_mean_thresh_2": [
+                    34,
+                    95
+                ]
+            },
+            "error_mean_dict": {
+                "soft_mean_thresh_1": 23.5,
+                "soft_mean_thresh_2": 24.5,
+                "soft_indiv_thresh_1": 24.0,
+                "soft_indiv_thresh_2": 28.0,
+                "hard_indiv": 103.5,
+                "hard_mean": 130.5,
+                "hard_mean_thresh_1": 78.5,
+                "hard_mean_thresh_2": 64.5
+            },
+            "additional_info": {
+                "pSoft_mean_thresh_1": 0.03483240015749179,
+                "pSoft_mean_thresh_2": 0.10139014563960365,
+                "ratio_leaked_1": 0.044815751808732936,
+                "ratio_leaked_2": 0.18080000007370783
+            }
+        },
+        {
+            "decoding": "kde",
+            "d_new": "31",
+            "error_list_dict": {
+                "soft_mean_thresh_1": [
+                    31,
+                    41
+                ],
+                "soft_mean_thresh_2": [
+                    80,
+                    36
+                ],
+                "soft_indiv_thresh_1": [
+                    23,
+                    36
+                ],
+                "soft_indiv_thresh_2": [
+                    70,
+                    36
+                ],
+                "hard_indiv": [
+                    96,
+                    230
+                ],
+                "hard_mean": [
+                    55,
+                    295
+                ],
+                "hard_mean_thresh_1": [
+                    45,
+                    151
+                ],
+                "hard_mean_thresh_2": [
+                    90,
+                    115
+                ]
+            },
+            "error_mean_dict": {
+                "soft_mean_thresh_1": 36.0,
+                "soft_mean_thresh_2": 58.0,
+                "soft_indiv_thresh_1": 29.5,
+                "soft_indiv_thresh_2": 53.0,
+                "hard_indiv": 163.0,
+                "hard_mean": 175.0,
+                "hard_mean_thresh_1": 98.0,
+                "hard_mean_thresh_2": 102.5
+            },
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.6,
+                    1.2,
+                    1
+                ],
+                "num_points_bandwidths": 20,
+                "threshold_1": 0.01,
+                "threshold_2": 0.05,
+                "pSoft_mean_thresh_1": 0.04618450643385148,
+                "pSoft_mean_thresh_2": 0.11106207903849658,
+                "ratio_leaked_1": 0.04578277570200619,
+                "ratio_leaked_2": 0.183857793059052
+            }
+        },
+        {
+            "decoding": "kde_PS",
+            "d_new": "31",
+            "error_list_dict": {
+                "soft_mean_thresh_1": [
+                    20,
+                    64
+                ],
+                "soft_mean_thresh_2": [
+                    61,
+                    43
+                ],
+                "soft_indiv_thresh_1": [
+                    21,
+                    72
+                ],
+                "soft_indiv_thresh_2": [
+                    59,
+                    49
+                ],
+                "hard_indiv": [
+                    121,
+                    221
+                ],
+                "hard_mean": [
+                    76,
+                    287
+                ],
+                "hard_mean_thresh_1": [
+                    61,
+                    167
+                ],
+                "hard_mean_thresh_2": [
+                    81,
+                    107
+                ]
+            },
+            "error_mean_dict": {
+                "soft_mean_thresh_1": 42.0,
+                "soft_mean_thresh_2": 52.0,
+                "soft_indiv_thresh_1": 46.5,
+                "soft_indiv_thresh_2": 54.0,
+                "hard_indiv": 171.0,
+                "hard_mean": 181.5,
+                "hard_mean_thresh_1": 114.0,
+                "hard_mean_thresh_2": 94.0
+            },
+            "additional_info": {
+                "pSoft_mean_thresh_1": 0.03611460199344448,
+                "pSoft_mean_thresh_2": 0.10245684333061791,
+                "ratio_leaked_1": 0.044815751808732936,
+                "ratio_leaked_2": 0.18080000007370783
+            }
+        },
+        {
+            "decoding": "kde",
+            "d_new": "27",
+            "error_list_dict": {
+                "soft_mean_thresh_1": [
+                    60,
+                    61
+                ],
+                "soft_mean_thresh_2": [
+                    174,
+                    43
+                ],
+                "soft_indiv_thresh_1": [
+                    73,
+                    64
+                ],
+                "soft_indiv_thresh_2": [
+                    170,
+                    50
+                ],
+                "hard_indiv": [
+                    169,
+                    279
+                ],
+                "hard_mean": [
+                    110,
+                    364
+                ],
+                "hard_mean_thresh_1": [
+                    100,
+                    201
+                ],
+                "hard_mean_thresh_2": [
+                    180,
+                    160
+                ]
+            },
+            "error_mean_dict": {
+                "soft_mean_thresh_1": 60.5,
+                "soft_mean_thresh_2": 108.5,
+                "soft_indiv_thresh_1": 68.5,
+                "soft_indiv_thresh_2": 110.0,
+                "hard_indiv": 224.0,
+                "hard_mean": 237.0,
+                "hard_mean_thresh_1": 150.5,
+                "hard_mean_thresh_2": 170.0
+            },
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.6,
+                    1.2,
+                    1
+                ],
+                "num_points_bandwidths": 20,
+                "threshold_1": 0.01,
+                "threshold_2": 0.05,
+                "pSoft_mean_thresh_1": 0.04468978085271189,
+                "pSoft_mean_thresh_2": 0.10909165002486594,
+                "ratio_leaked_1": 0.04578277570200619,
+                "ratio_leaked_2": 0.183857793059052
+            }
+        },
+        {
+            "decoding": "kde_PS",
+            "d_new": "27",
+            "error_list_dict": {
+                "soft_mean_thresh_1": [
+                    60,
+                    87
+                ],
+                "soft_mean_thresh_2": [
+                    128,
+                    51
+                ],
+                "soft_indiv_thresh_1": [
+                    77,
+                    93
+                ],
+                "soft_indiv_thresh_2": [
+                    148,
+                    63
+                ],
+                "hard_indiv": [
+                    216,
+                    269
+                ],
+                "hard_mean": [
+                    137,
+                    347
+                ],
+                "hard_mean_thresh_1": [
+                    128,
+                    216
+                ],
+                "hard_mean_thresh_2": [
+                    175,
+                    158
+                ]
+            },
+            "error_mean_dict": {
+                "soft_mean_thresh_1": 73.5,
+                "soft_mean_thresh_2": 89.5,
+                "soft_indiv_thresh_1": 85.0,
+                "soft_indiv_thresh_2": 105.5,
+                "hard_indiv": 242.5,
+                "hard_mean": 242.0,
+                "hard_mean_thresh_1": 172.0,
+                "hard_mean_thresh_2": 166.5
+            },
+            "additional_info": {
+                "pSoft_mean_thresh_1": 0.034960471882794344,
+                "pSoft_mean_thresh_2": 0.1010586594519237,
+                "ratio_leaked_1": 0.044815751808732936,
+                "ratio_leaked_2": 0.18080000007370783
+            }
+        },
+        {
+            "decoding": "kde",
+            "d_new": "23",
+            "error_list_dict": {
+                "soft_mean_thresh_1": [
+                    106,
+                    39,
+                    193
+                ],
+                "soft_mean_thresh_2": [
+                    218,
+                    119,
+                    110
+                ],
+                "soft_indiv_thresh_1": [
+                    101,
+                    45,
+                    182
+                ],
+                "soft_indiv_thresh_2": [
+                    227,
+                    122,
+                    120
+                ],
+                "hard_indiv": [
+                    240,
+                    90,
+                    558
+                ],
+                "hard_mean": [
+                    163,
+                    122,
+                    605
+                ],
+                "hard_mean_thresh_1": [
+                    148,
+                    98,
+                    346
+                ],
+                "hard_mean_thresh_2": [
+                    278,
+                    187,
+                    299
+                ]
+            },
+            "error_mean_dict": {
+                "soft_mean_thresh_1": 112.66666666666667,
+                "soft_mean_thresh_2": 149.0,
+                "soft_indiv_thresh_1": 109.33333333333333,
+                "soft_indiv_thresh_2": 156.33333333333334,
+                "hard_indiv": 296.0,
+                "hard_mean": 296.6666666666667,
+                "hard_mean_thresh_1": 197.33333333333334,
+                "hard_mean_thresh_2": 254.66666666666666
+            },
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.6,
+                    1.2,
+                    1
+                ],
+                "num_points_bandwidths": 20,
+                "threshold_1": 0.01,
+                "threshold_2": 0.05,
+                "pSoft_mean_thresh_1": 0.04856042833169294,
+                "pSoft_mean_thresh_2": 0.1142683045502455,
+                "ratio_leaked_1": 0.04578277570200619,
+                "ratio_leaked_2": 0.183857793059052
+            }
+        },
+        {
+            "decoding": "kde_PS",
+            "d_new": "23",
+            "error_list_dict": {
+                "soft_mean_thresh_1": [
+                    107,
+                    33,
+                    257
+                ],
+                "soft_mean_thresh_2": [
+                    182,
+                    105,
+                    143
+                ],
+                "soft_indiv_thresh_1": [
+                    130,
+                    41,
+                    266
+                ],
+                "soft_indiv_thresh_2": [
+                    221,
+                    113,
+                    158
+                ],
+                "hard_indiv": [
+                    262,
+                    106,
+                    569
+                ],
+                "hard_mean": [
+                    182,
+                    137,
+                    584
+                ],
+                "hard_mean_thresh_1": [
+                    174,
+                    113,
+                    357
+                ],
+                "hard_mean_thresh_2": [
+                    248,
+                    192,
+                    291
+                ]
+            },
+            "error_mean_dict": {
+                "soft_mean_thresh_1": 132.33333333333334,
+                "soft_mean_thresh_2": 143.33333333333334,
+                "soft_indiv_thresh_1": 145.66666666666666,
+                "soft_indiv_thresh_2": 164.0,
+                "hard_indiv": 312.3333333333333,
+                "hard_mean": 301.0,
+                "hard_mean_thresh_1": 214.66666666666666,
+                "hard_mean_thresh_2": 243.66666666666666
+            },
+            "additional_info": {
+                "pSoft_mean_thresh_1": 0.038126510425847845,
+                "pSoft_mean_thresh_2": 0.10535944811938125,
+                "ratio_leaked_1": 0.044815751808732936,
+                "ratio_leaked_2": 0.18080000007370783
+            }
+        },
+        {
+            "decoding": "kde",
+            "d_new": "19",
+            "error_list_dict": {
+                "soft_mean_thresh_1": [
+                    143,
+                    100,
+                    383
+                ],
+                "soft_mean_thresh_2": [
+                    276,
+                    234,
+                    309
+                ],
+                "soft_indiv_thresh_1": [
+                    146,
+                    96,
+                    398
+                ],
+                "soft_indiv_thresh_2": [
+                    297,
+                    243,
+                    316
+                ],
+                "hard_indiv": [
+                    268,
+                    148,
+                    865
+                ],
+                "hard_mean": [
+                    182,
+                    170,
+                    744
+                ],
+                "hard_mean_thresh_1": [
+                    185,
+                    199,
+                    514
+                ],
+                "hard_mean_thresh_2": [
+                    324,
+                    333,
+                    479
+                ]
+            },
+            "error_mean_dict": {
+                "soft_mean_thresh_1": 208.66666666666666,
+                "soft_mean_thresh_2": 273.0,
+                "soft_indiv_thresh_1": 213.33333333333334,
+                "soft_indiv_thresh_2": 285.3333333333333,
+                "hard_indiv": 427.0,
+                "hard_mean": 365.3333333333333,
+                "hard_mean_thresh_1": 299.3333333333333,
+                "hard_mean_thresh_2": 378.6666666666667
+            },
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.6,
+                    1.2,
+                    1
+                ],
+                "num_points_bandwidths": 20,
+                "threshold_1": 0.01,
+                "threshold_2": 0.05,
+                "pSoft_mean_thresh_1": 0.051882722910080045,
+                "pSoft_mean_thresh_2": 0.11979292180771882,
+                "ratio_leaked_1": 0.04578277570200619,
+                "ratio_leaked_2": 0.183857793059052
+            }
+        },
+        {
+            "decoding": "kde_PS",
+            "d_new": "19",
+            "error_list_dict": {
+                "soft_mean_thresh_1": [
+                    129,
+                    85,
+                    488
+                ],
+                "soft_mean_thresh_2": [
+                    227,
+                    197,
+                    363
+                ],
+                "soft_indiv_thresh_1": [
+                    169,
+                    92,
+                    502
+                ],
+                "soft_indiv_thresh_2": [
+                    252,
+                    209,
+                    410
+                ],
+                "hard_indiv": [
+                    274,
+                    149,
+                    908
+                ],
+                "hard_mean": [
+                    202,
+                    210,
+                    778
+                ],
+                "hard_mean_thresh_1": [
+                    207,
+                    211,
+                    549
+                ],
+                "hard_mean_thresh_2": [
+                    287,
+                    321,
+                    506
+                ]
+            },
+            "error_mean_dict": {
+                "soft_mean_thresh_1": 234.0,
+                "soft_mean_thresh_2": 262.3333333333333,
+                "soft_indiv_thresh_1": 254.33333333333334,
+                "soft_indiv_thresh_2": 290.3333333333333,
+                "hard_indiv": 443.6666666666667,
+                "hard_mean": 396.6666666666667,
+                "hard_mean_thresh_1": 322.3333333333333,
+                "hard_mean_thresh_2": 371.3333333333333
+            },
+            "additional_info": {
+                "pSoft_mean_thresh_1": 0.040974314935063594,
+                "pSoft_mean_thresh_2": 0.11038489071325319,
+                "ratio_leaked_1": 0.044815751808732936,
+                "ratio_leaked_2": 0.18080000007370783
+            }
+        },
+        {
+            "decoding": "kde",
+            "d_new": "15",
+            "error_list_dict": {
+                "soft_mean_thresh_1": [
+                    457,
+                    513,
+                    159,
+                    762
+                ],
+                "soft_mean_thresh_2": [
+                    831,
+                    936,
+                    277,
+                    625
+                ],
+                "soft_indiv_thresh_1": [
+                    470,
+                    545,
+                    151,
+                    805
+                ],
+                "soft_indiv_thresh_2": [
+                    846,
+                    938,
+                    264,
+                    689
+                ],
+                "hard_indiv": [
+                    435,
+                    664,
+                    262,
+                    1457
+                ],
+                "hard_mean": [
+                    411,
+                    646,
+                    337,
+                    1232
+                ],
+                "hard_mean_thresh_1": [
+                    564,
+                    697,
+                    320,
+                    923
+                ],
+                "hard_mean_thresh_2": [
+                    831,
+                    922,
+                    435,
+                    889
+                ]
+            },
+            "error_mean_dict": {
+                "soft_mean_thresh_1": 472.75,
+                "soft_mean_thresh_2": 667.25,
+                "soft_indiv_thresh_1": 492.75,
+                "soft_indiv_thresh_2": 684.25,
+                "hard_indiv": 704.5,
+                "hard_mean": 656.5,
+                "hard_mean_thresh_1": 626.0,
+                "hard_mean_thresh_2": 769.25
+            },
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.6,
+                    1.2,
+                    1
+                ],
+                "num_points_bandwidths": 20,
+                "threshold_1": 0.01,
+                "threshold_2": 0.05,
+                "pSoft_mean_thresh_1": 0.049644249888712966,
+                "pSoft_mean_thresh_2": 0.11635974154063776,
+                "ratio_leaked_1": 0.04578277570200619,
+                "ratio_leaked_2": 0.183857793059052
+            }
+        },
+        {
+            "decoding": "kde_PS",
+            "d_new": "15",
+            "error_list_dict": {
+                "soft_mean_thresh_1": [
+                    337,
+                    474,
+                    137,
+                    934
+                ],
+                "soft_mean_thresh_2": [
+                    605,
+                    899,
+                    222,
+                    863
+                ],
+                "soft_indiv_thresh_1": [
+                    378,
+                    491,
+                    139,
+                    986
+                ],
+                "soft_indiv_thresh_2": [
+                    692,
+                    915,
+                    214,
+                    923
+                ],
+                "hard_indiv": [
+                    442,
+                    711,
+                    270,
+                    1526
+                ],
+                "hard_mean": [
+                    416,
+                    730,
+                    329,
+                    1302
+                ],
+                "hard_mean_thresh_1": [
+                    471,
+                    776,
+                    323,
+                    1032
+                ],
+                "hard_mean_thresh_2": [
+                    692,
+                    935,
+                    432,
+                    951
+                ]
+            },
+            "error_mean_dict": {
+                "soft_mean_thresh_1": 470.5,
+                "soft_mean_thresh_2": 647.25,
+                "soft_indiv_thresh_1": 498.5,
+                "soft_indiv_thresh_2": 686.0,
+                "hard_indiv": 737.25,
+                "hard_mean": 694.25,
+                "hard_mean_thresh_1": 650.5,
+                "hard_mean_thresh_2": 752.5
+            },
+            "additional_info": {
+                "pSoft_mean_thresh_1": 0.039709539706137546,
+                "pSoft_mean_thresh_2": 0.10808474494579007,
+                "ratio_leaked_1": 0.044815751808732936,
+                "ratio_leaked_2": 0.18080000007370783
+            }
+        },
+        {
+            "decoding": "kde",
+            "d_new": "11",
+            "error_list_dict": {
+                "soft_mean_thresh_1": [
+                    1718,
+                    452,
+                    707,
+                    345,
+                    295,
+                    2401
+                ],
+                "soft_mean_thresh_2": [
+                    2437,
+                    630,
+                    1145,
+                    629,
+                    296,
+                    2773
+                ],
+                "soft_indiv_thresh_1": [
+                    1696,
+                    478,
+                    697,
+                    354,
+                    282,
+                    2653
+                ],
+                "soft_indiv_thresh_2": [
+                    2426,
+                    667,
+                    1179,
+                    647,
+                    306,
+                    2900
+                ],
+                "hard_indiv": [
+                    1492,
+                    908,
+                    718,
+                    370,
+                    535,
+                    3308
+                ],
+                "hard_mean": [
+                    1432,
+                    735,
+                    806,
+                    431,
+                    625,
+                    2991
+                ],
+                "hard_mean_thresh_1": [
+                    1958,
+                    696,
+                    885,
+                    456,
+                    419,
+                    2786
+                ],
+                "hard_mean_thresh_2": [
+                    2393,
+                    832,
+                    1141,
+                    653,
+                    427,
+                    2839
+                ]
+            },
+            "error_mean_dict": {
+                "soft_mean_thresh_1": 986.3333333333334,
+                "soft_mean_thresh_2": 1318.3333333333333,
+                "soft_indiv_thresh_1": 1026.6666666666667,
+                "soft_indiv_thresh_2": 1354.1666666666667,
+                "hard_indiv": 1221.8333333333333,
+                "hard_mean": 1170.0,
+                "hard_mean_thresh_1": 1200.0,
+                "hard_mean_thresh_2": 1380.8333333333333
+            },
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.6,
+                    1.2,
+                    1
+                ],
+                "num_points_bandwidths": 20,
+                "threshold_1": 0.01,
+                "threshold_2": 0.05,
+                "pSoft_mean_thresh_1": 0.04699434891058248,
+                "pSoft_mean_thresh_2": 0.1086261682367341,
+                "ratio_leaked_1": 0.04578277570200619,
+                "ratio_leaked_2": 0.183857793059052
+            }
+        },
+        {
+            "decoding": "kde_PS",
+            "d_new": "11",
+            "error_list_dict": {
+                "soft_mean_thresh_1": [
+                    1240,
+                    459,
+                    652,
+                    347,
+                    333,
+                    2461
+                ],
+                "soft_mean_thresh_2": [
+                    1872,
+                    636,
+                    1127,
+                    603,
+                    281,
+                    3014
+                ],
+                "soft_indiv_thresh_1": [
+                    1418,
+                    490,
+                    649,
+                    371,
+                    346,
+                    2695
+                ],
+                "soft_indiv_thresh_2": [
+                    2118,
+                    689,
+                    1184,
+                    671,
+                    316,
+                    3254
+                ],
+                "hard_indiv": [
+                    1537,
+                    950,
+                    760,
+                    411,
+                    554,
+                    3367
+                ],
+                "hard_mean": [
+                    1462,
+                    788,
+                    843,
+                    463,
+                    638,
+                    3117
+                ],
+                "hard_mean_thresh_1": [
+                    1637,
+                    750,
+                    935,
+                    498,
+                    444,
+                    2972
+                ],
+                "hard_mean_thresh_2": [
+                    2202,
+                    824,
+                    1168,
+                    650,
+                    432,
+                    2959
+                ]
+            },
+            "error_mean_dict": {
+                "soft_mean_thresh_1": 915.3333333333334,
+                "soft_mean_thresh_2": 1255.5,
+                "soft_indiv_thresh_1": 994.8333333333334,
+                "soft_indiv_thresh_2": 1372.0,
+                "hard_indiv": 1263.1666666666667,
+                "hard_mean": 1218.5,
+                "hard_mean_thresh_1": 1206.0,
+                "hard_mean_thresh_2": 1372.5
+            },
+            "additional_info": {
+                "pSoft_mean_thresh_1": 0.03871175319762353,
+                "pSoft_mean_thresh_2": 0.10202261133644348,
+                "ratio_leaked_1": 0.044815751808732936,
+                "ratio_leaked_2": 0.18080000007370783
+            }
+        },
+        {
+            "decoding": "kde",
+            "d_new": "7",
+            "error_list_dict": {
+                "soft_mean_thresh_1": [
+                    3388,
+                    1359,
+                    1163,
+                    4070,
+                    1375,
+                    968,
+                    854,
+                    2038,
+                    2434
+                ],
+                "soft_mean_thresh_2": [
+                    3771,
+                    1711,
+                    1326,
+                    4496,
+                    1786,
+                    1249,
+                    959,
+                    1980,
+                    2900
+                ],
+                "soft_indiv_thresh_1": [
+                    3306,
+                    1440,
+                    1161,
+                    4103,
+                    1348,
+                    955,
+                    863,
+                    2051,
+                    2586
+                ],
+                "soft_indiv_thresh_2": [
+                    3690,
+                    1820,
+                    1353,
+                    4476,
+                    1744,
+                    1258,
+                    947,
+                    2079,
+                    2981
+                ],
+                "hard_indiv": [
+                    3235,
+                    1307,
+                    1472,
+                    3874,
+                    1325,
+                    934,
+                    1100,
+                    2442,
+                    2736
+                ],
+                "hard_mean": [
+                    3353,
+                    1138,
+                    1282,
+                    3823,
+                    1547,
+                    1046,
+                    1209,
+                    2331,
+                    2684
+                ],
+                "hard_mean_thresh_1": [
+                    3500,
+                    1418,
+                    1348,
+                    3870,
+                    1630,
+                    1169,
+                    1082,
+                    2147,
+                    2679
+                ],
+                "hard_mean_thresh_2": [
+                    3813,
+                    1698,
+                    1564,
+                    3949,
+                    1875,
+                    1425,
+                    1142,
+                    2213,
+                    2689
+                ]
+            },
+            "error_mean_dict": {
+                "soft_mean_thresh_1": 1961.0,
+                "soft_mean_thresh_2": 2242.0,
+                "soft_indiv_thresh_1": 1979.2222222222222,
+                "soft_indiv_thresh_2": 2260.8888888888887,
+                "hard_indiv": 2047.2222222222222,
+                "hard_mean": 2045.888888888889,
+                "hard_mean_thresh_1": 2093.6666666666665,
+                "hard_mean_thresh_2": 2263.1111111111113
+            },
+            "additional_info": {
+                "rel_error": 1,
+                "bandwidth_linspace": [
+                    0.6,
+                    1.2,
+                    1
+                ],
+                "num_points_bandwidths": 20,
+                "threshold_1": 0.01,
+                "threshold_2": 0.05,
+                "pSoft_mean_thresh_1": 0.03219047833329732,
+                "pSoft_mean_thresh_2": 0.09718332590024632,
+                "ratio_leaked_1": 0.04578277570200619,
+                "ratio_leaked_2": 0.183857793059052
+            }
+        },
+        {
+            "decoding": "kde_PS",
+            "d_new": "7",
+            "error_list_dict": {
+                "soft_mean_thresh_1": [
+                    3327,
+                    1138,
+                    1097,
+                    3938,
+                    1314,
+                    913,
+                    852,
+                    2133,
+                    2686
+                ],
+                "soft_mean_thresh_2": [
+                    3735,
+                    1425,
+                    1338,
+                    4518,
+                    1755,
+                    1243,
+                    916,
+                    2140,
+                    3341
+                ],
+                "soft_indiv_thresh_1": [
+                    3279,
+                    1324,
+                    1159,
+                    3968,
+                    1329,
+                    872,
+                    885,
+                    2172,
+                    2771
+                ],
+                "soft_indiv_thresh_2": [
+                    3753,
+                    1626,
+                    1398,
+                    4555,
+                    1794,
+                    1226,
+                    940,
+                    2273,
+                    3483
+                ],
+                "hard_indiv": [
+                    3283,
+                    1321,
+                    1468,
+                    3849,
+                    1398,
+                    932,
+                    1097,
+                    2494,
+                    2729
+                ],
+                "hard_mean": [
+                    3384,
+                    1157,
+                    1322,
+                    3887,
+                    1610,
+                    1058,
+                    1200,
+                    2443,
+                    2682
+                ],
+                "hard_mean_thresh_1": [
+                    3476,
+                    1176,
+                    1375,
+                    3978,
+                    1607,
+                    1128,
+                    1094,
+                    2220,
+                    2820
+                ],
+                "hard_mean_thresh_2": [
+                    3806,
+                    1508,
+                    1528,
+                    3877,
+                    1943,
+                    1391,
+                    1151,
+                    2226,
+                    2644
+                ]
+            },
+            "error_mean_dict": {
+                "soft_mean_thresh_1": 1933.111111111111,
+                "soft_mean_thresh_2": 2267.8888888888887,
+                "soft_indiv_thresh_1": 1973.2222222222222,
+                "soft_indiv_thresh_2": 2338.6666666666665,
+                "hard_indiv": 2063.4444444444443,
+                "hard_mean": 2082.5555555555557,
+                "hard_mean_thresh_1": 2097.1111111111113,
+                "hard_mean_thresh_2": 2230.4444444444443
+            },
+            "additional_info": {
+                "pSoft_mean_thresh_1": 0.025352078439322356,
+                "pSoft_mean_thresh_2": 0.09143491084785242,
+                "ratio_leaked_1": 0.044815751808732936,
+                "ratio_leaked_2": 0.18080000007370783
+            }
+        }
+    ]
+}
