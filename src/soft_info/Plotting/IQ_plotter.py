@@ -239,9 +239,9 @@ def plot_IQ_data_with_countMat(data, countMat, n_bins=250, twod_nbins=100, figsi
 
 
 
-def plot_multiple_IQ_data(datasets, legend_labels=None, figsize = (140/25.4*2, 140/25.4*2/(1 + np.sqrt(5))), alpha = None, n_bins=250, title=None):
+def plot_multiple_IQ_data(datasets, legend_labels=None, figsize = (140/25.4*2, 140/25.4*2/(1 + np.sqrt(5))), alpha = None, n_bins=250, title=None, dpi=100):
     
-    apply_formatting(one_column=True)
+    apply_formatting(one_column=True, dpi=dpi)
     # if figsize:
     #     fig = plt.figure()
     # else:

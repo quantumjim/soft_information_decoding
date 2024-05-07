@@ -23,8 +23,8 @@ def apply_formatting(dpi=1000, one_column=True, font_size=10, third_height=False
     figsize = (FIGURE_WIDTH_1COL, FIGURE_HEIGHT_1COL_GR) if one_column else (FIGURE_WIDTH_2COL, FIGURE_HEIGHT_2COL_GR)
 
     plt.rcParams.update({
-        'text.usetex'         : True,
-        'text.latex.preamble' : r'\usepackage{mathpazo}',
+        # 'text.usetex'         : True,
+        # 'text.latex.preamble' : r'\usepackage{mathpazo}',
         'font.family'         : 'serif',
         # 'font.serif'          : ['Computer Modern'],
         'font.size'           : font_size,  

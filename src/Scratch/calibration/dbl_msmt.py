@@ -5,7 +5,7 @@ from sklearn.preprocessing import StandardScaler
 import numpy as np
 
 
-def postselect_calib_data(qubit_data_dict: dict) -> Tuple[dict, dict]:
+def postselect_calib_data(qubit_data_dict: dict, x_between_meas: bool = False) -> Tuple[dict, dict]:
     """
     Processes and postselects qubit calibration data based on Gaussian Mixture Model (GMM) predictions,
     excluding instances where both initial and final measurements are incorrect. The function fits a GMM
@@ -64,6 +64,12 @@ def postselect_calib_data(qubit_data_dict: dict) -> Tuple[dict, dict]:
         # This excludes cases where both initial and final measurements are wrong
         correct_or_mixed_0 = ~((labels_0 == 1) & (labels_0_scnd == 1))
         correct_or_mixed_1 = ~((labels_1 == 0) & (labels_1_scnd == 0))
+        if x_between_meas is True:
+            leaked_0 = (labels_0 == 1) & (labels_0_scnd == 1) # Assuming leakage gets classified as 1
+            correct_or_mixed_0 = ~((labels_0 == 1) & (labels_0_scnd == 0)) & ~leaked_0
+            leaked_1 = (labels_1 == 1) & (labels_1_scnd == 1)
+            correct_or_mixed_1 = ~((labels_1 == 0) & (labels_1_scnd == 1)) & ~leaked_1
+            # Remove everything that is in 1 in the first but still 1 after the X in the second (=>leakage)
 
         # Apply postselection
         mmr_0 = data['mmr_0'][correct_or_mixed_0]
@@ -77,6 +83,9 @@ def postselect_calib_data(qubit_data_dict: dict) -> Tuple[dict, dict]:
             'mmr_1_scnd': data['mmr_1_scnd'],
         }
 
+        if x_between_meas is True:
+            processed_data[qubit_idx]['mmr_2'] = np.hstack([data['mmr_0'][leaked_0], data['mmr_1'][leaked_1]])
+
         # store the gmm object
         gmm_dict[qubit_idx] = {
             'gmm': gmm,
@@ -88,6 +97,12 @@ def postselect_calib_data(qubit_data_dict: dict) -> Tuple[dict, dict]:
         hard_prob_1 = ((labels_1 == 0) & (labels_1_scnd == 0)).sum() / len(labels_1)
         soft_prob_0 = ((labels_0 == 1) & (labels_0_scnd == 0)).sum() / len(labels_0)
         soft_prb_1 = ((labels_1 == 0) & (labels_1_scnd == 1)).sum() / len(labels_1)
+
+        if x_between_meas is True:
+            hard_prob_0 = ((labels_0 == 1) & (labels_0_scnd == 0) & ~leaked_0).sum() / len(labels_0)
+            hard_prob_1 = ((labels_1 == 0) & (labels_1_scnd == 1) & ~leaked_1).sum() / len(labels_1)
+            soft_prob_0 = ((labels_0 == 1) & (labels_0_scnd == 1)).sum() / len(labels_0)
+            soft_prb_1 = ((labels_1 == 0) & (labels_1_scnd == 0)).sum() / len(labels_1)
 
         msmt_err_probs[qubit_idx] = {
             'p_hard': (hard_prob_0 + hard_prob_1) / 2,
