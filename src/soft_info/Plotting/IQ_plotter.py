@@ -73,12 +73,12 @@ def plot_IQ_data(data, n_bins=250, twod_nbins=100, figsize=(8,4), title=None, dp
 
 
 
-def plot_IQ_data_pSoft_cmap(data, pSoft, n_bins=250, twod_nbins=100, figsize=(8,4), title=None, dpi=100, alpha=0.7):
+def plot_IQ_data_pSoft_cmap(data, pSoft, n_bins=250, title=None, dpi=100, alpha=0.7):
 
     real_parts = np.real(data).flatten()
     imag_parts = np.imag(data).flatten()
 
-    apply_formatting()
+    apply_formatting(dpi=dpi)
     fig = plt.figure()
 
     # Main scatter plot
@@ -194,11 +194,12 @@ def plot_double_IQ_scatter(data, pSoft, pSoft_trunc, nBits, dpi=2000):
 
 
 
-def plot_IQ_data_with_countMat(data, countMat, n_bins=250, twod_nbins=100, figsize=(8,4), title=None, dpi=100):
+def plot_IQ_data_with_countMat(data, countMat, n_bins=250, title=None, dpi=100):
     apply_formatting()
     real_parts = np.real(data).flatten()
     imag_parts = np.imag(data).flatten()
-    colors = ['red' if value == 0 else 'red' for value in countMat.flatten()]
+    colors = ['steelblue' if value == 0 else 'purple' for value in countMat.flatten()]
+    colors = ['steelblue' if value == 0 else 'purple' if value == 1 else 'red' if value == 2 else 'black' for value in countMat.flatten()]
 
     # fig = plt.figure(figsize=figsize, dpi=dpi)
     apply_formatting(dpi=dpi)
