@@ -1,9 +1,7 @@
 .ipynb_checkpoints
 __pycache__
 .DS_Store
-# .vscode/ Lets not ignore the settings file
 src/soft_information.egg-info/
-# .vscode/settings.json
 .Scratch/jobs/
 .Scratch/calibration_grids/
 .Scratch/.DS_Store
@@ -18,4 +16,4 @@ build
 notebooks/Decoding/_Thesis/_Thesis_decoding/results/Leakage/
 notebooks/Simulator/IQ_data_extreme.pkl
 notebooks/Simulator/IQ_data.pkl
-notebooks/Bence/IQ_ARC/
+notebooks/Bence/IQ_ARC/data
