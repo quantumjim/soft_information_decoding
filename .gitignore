@@ -17,3 +17,5 @@ notebooks/Decoding/_Thesis/_Thesis_decoding/results/Leakage/
 notebooks/Simulator/IQ_data_extreme.pkl
 notebooks/Simulator/IQ_data.pkl
 notebooks/Bence/IQ_ARC/data
+notebooks/C++/cpp_dev/Predecoder/Time_NN_dev/simulator.pkl
+notebooks/Decoding/qiskit_qec/ArcCircuits/ibm_sherbrooke-20-False.p
