@@ -206,7 +206,7 @@ def draw_matching_graph(matching=None, d=3, T=3, syndromes=None, matched_edges=N
     # Scale node positions
     pos = {node: (x * scale_factor, y * scale_factor) for node, (x, y) in pos.items()}
 
-    apply_formatting()
+    apply_formatting(dpi=dpi)
     fig = plt.figure()
     # Draw the graph
     # if dpi is not None:

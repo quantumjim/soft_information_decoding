@@ -168,7 +168,8 @@ def plot_error_rates(distances_list: List,
 
 
     # Create the legend by combining all handles
-    plt.legend(handles=plot_handles + [ci_patch, outlier_handle], loc='best') if small_legend is False else plt.legend(handles=plot_handles, loc='best')
+    # plt.legend(handles=plot_handles + [ci_patch, outlier_handle], loc='best') if small_legend is False else plt.legend(handles=plot_handles, loc='best')
+    plt.legend(handles=plot_handles + [ci_patch, outlier_handle], loc='lower left') if small_legend is False else plt.legend(handles=plot_handles, loc='lower left')
 
     plt.yscale("log")
     plt.ylim(5e-6, 0.7) if not plot_e_L else plt.ylim(1e-7, 2e-2)

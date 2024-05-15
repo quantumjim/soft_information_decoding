@@ -71,55 +71,83 @@ def plot_IQ_data(data, n_bins=250, twod_nbins=100, figsize=(8,4), title=None, dp
 
 
 
-
-
-def plot_IQ_data_pSoft_cmap(data, pSoft, n_bins=250, title=None, dpi=100, alpha=0.7):
-
+def plot_IQ_data_pSoft_cmap(data, pSoft, title=None, dpi=100, alpha=0.7):
     real_parts = np.real(data).flatten()
     imag_parts = np.imag(data).flatten()
 
     apply_formatting(dpi=dpi)
-    fig = plt.figure()
+    fig, ax_scatter = plt.subplots()
 
     # Main scatter plot
-    # alpha = min(1, max(4e4 / len(data), 2e-3))
-    alpha = alpha
-    ax_scatter = plt.subplot2grid((4, 8), (1, 0), rowspan=3, colspan=6)
     sc = ax_scatter.scatter(real_parts, imag_parts,
                             alpha=alpha, marker='.', s=0.1, c=pSoft, cmap='viridis')
     ax_scatter.set_xlabel("In-Phase [arb.]")
     ax_scatter.set_ylabel("Quadrature [arb.]")
     ax_scatter.grid(True)
+    # ax_scatter.set_ylim(-2.7e6, 7.5e6,)
+    # ax_scatter.set_xlim(-7.5e6, 7.5e6)
 
     # Color bar for the scatter plot
-    # cbar_ax = fig.add_axes([-0.05, 0.05, 0.02, 0.6])  # Adjust these parameters to move and resize the color bar
-    cbar_ax = fig.add_axes([0.85, 0.175, 0.02, 0.6])  # Adjust these parameters to move and resize the color bar
-    cbar = plt.colorbar(sc, cax=cbar_ax)
+    cbar = plt.colorbar(sc)
     cbar.set_label('$p_s(\mu)$')
+    cbar.ax.yaxis.set_label_position('right')
+    cbar.ax.yaxis.set_ticks_position('right')
+    # cbar.ax.set_alpha(1.0)  # Set colorbar alpha to 100%
+    cbar.solids.set_edgecolor("face")  # This fixes the alpha issue on some backends
+    
 
-    cbar.ax.yaxis.set_label_position('right')  
-    cbar.ax.yaxis.set_ticks_position('right')  
-
-    # Histogram for the real parts (on the side of scatter plot)
-    ax_hist_x = plt.subplot2grid((4, 8), (0, 0), colspan=6, rowspan=1)
-    ax_hist_x.hist(real_parts, bins=n_bins, align='mid', color='blue', alpha=0.3)
-    ax_hist_x.set_ylabel("Counts")
-    ax_hist_x.xaxis.set_ticklabels([])  # Remove x tick labels
-    ax_hist_x.grid(True)
-
-    # Histogram for the imaginary parts (above the scatter plot)
-    ax_hist_y = plt.subplot2grid((4, 8), (1, 6), rowspan=3, colspan=1)
-    ax_hist_y.hist(imag_parts, bins=n_bins, orientation='horizontal',
-                   align='mid', color='red', alpha=0.3)
-    ax_hist_y.set_xlabel("Counts")
-    ax_hist_y.yaxis.set_ticklabels([])  # Remove y tick labels
-    ax_hist_y.grid(True)
-
-    fig.subplots_adjust(hspace=0.4, wspace=0.3)
     if title:
         plt.suptitle(title)
     plt.show()
     return fig
+
+# def plot_IQ_data_pSoft_cmap(data, pSoft, n_bins=250, title=None, dpi=100, alpha=0.7):
+
+#     real_parts = np.real(data).flatten()
+#     imag_parts = np.imag(data).flatten()
+
+#     apply_formatting(dpi=dpi)
+#     fig = plt.figure()
+
+#     # Main scatter plot
+#     # alpha = min(1, max(4e4 / len(data), 2e-3))
+#     alpha = alpha
+#     ax_scatter = plt.subplot2grid((4, 8), (1, 0), rowspan=3, colspan=6)
+#     sc = ax_scatter.scatter(real_parts, imag_parts,
+#                             alpha=alpha, marker='.', s=0.1, c=pSoft, cmap='viridis')
+#     ax_scatter.set_xlabel("In-Phase [arb.]")
+#     ax_scatter.set_ylabel("Quadrature [arb.]")
+#     ax_scatter.grid(True)
+
+#     # Color bar for the scatter plot
+#     # cbar_ax = fig.add_axes([-0.05, 0.05, 0.02, 0.6])  # Adjust these parameters to move and resize the color bar
+#     cbar_ax = fig.add_axes([0.85, 0.175, 0.02, 0.6])  # Adjust these parameters to move and resize the color bar
+#     cbar = plt.colorbar(sc, cax=cbar_ax)
+#     cbar.set_label('$p_s(\mu)$')
+
+#     cbar.ax.yaxis.set_label_position('right')  
+#     cbar.ax.yaxis.set_ticks_position('right')  
+
+#     # Histogram for the real parts (on the side of scatter plot)
+#     ax_hist_x = plt.subplot2grid((4, 8), (0, 0), colspan=6, rowspan=1)
+#     ax_hist_x.hist(real_parts, bins=n_bins, align='mid', color='grey', alpha=0.3)
+#     ax_hist_x.set_ylabel("Counts")
+#     ax_hist_x.xaxis.set_ticklabels([])  # Remove x tick labels
+#     ax_hist_x.grid(True)
+
+#     # Histogram for the imaginary parts (above the scatter plot)
+#     ax_hist_y = plt.subplot2grid((4, 8), (1, 6), rowspan=3, colspan=1)
+#     ax_hist_y.hist(imag_parts, bins=n_bins, orientation='horizontal',
+#                    align='mid', color='grey', alpha=0.3)
+#     ax_hist_y.set_xlabel("Counts")
+#     ax_hist_y.yaxis.set_ticklabels([])  # Remove y tick labels
+#     ax_hist_y.grid(True)
+
+#     fig.subplots_adjust(hspace=0.4, wspace=0.3)
+#     if title:
+#         plt.suptitle(title)
+#     plt.show()
+#     return fig
 
 
 
@@ -150,6 +178,7 @@ def plot_double_IQ_scatter_outlier(data, pSoft, pSoft_trunc, dpi=1000):
     cbar_ax = fig.add_axes([0.92, 0.11, 0.02, 0.77])  # Adjust these parameters to properly place and size the color bar
     cbar = plt.colorbar(sc1, cax=cbar_ax)
     cbar.set_label('Soft flip probability $p_s(\mu)$')
+    cbar.ax.set_alpha(1.0)  # Set colorbar alpha to 100%
 
     # Adjust layout
     fig.subplots_adjust(hspace=0.2)  # Adjust the horizontal spacing if needed
@@ -284,7 +313,8 @@ def plot_multiple_IQ_data(datasets, legend_labels=None, figsize = (140/25.4*2, 1
     ax_hist_x.grid(True)
     ax_hist_x.set_title(title if title else "Scatter Plot")
     # ax_hist_x.legend(loc="upper right", bbox_to_anchor=(1.5,1.2), fontsize='small')
-    ax_hist_x.legend(loc="upper right", bbox_to_anchor=(1.35,1), fontsize='small')
+    # ax_hist_x.legend(loc="upper right", bbox_to_anchor=(1.35,1), fontsize='small')
+    ax_hist_x.legend(loc="upper right", bbox_to_anchor=(1.4,1), fontsize='small')
 
     ax_hist_y.set_xlabel("Counts")
     ax_hist_y.yaxis.set_ticklabels([])  # Remove y tick labels
