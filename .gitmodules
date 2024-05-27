@@ -16,3 +16,6 @@
 [submodule "libs/3CX-BaconShor"]
 	path = libs/3CX-BaconShor
 	url = https://github.com/IBM/logical-Bell-states-in-3CX-BaconShor-codes.git
+[submodule "libs/vcpkg"]
+	path = libs/vcpkg
+	url = https://github.com/microsoft/vcpkg.git
