@@ -1,9 +1,6 @@
 [submodule "libs/qiskit-saver-provider"]
 	path = libs/qiskit-saver-provider
 	url = https://github.com/MauriceDHanisch/saver_provider.git
-[submodule "libs/qiskit-qec"]
-	path = libs/qiskit-qec
-	url = https://github.com/MauriceDHanisch/qiskit-qec.git
 [submodule "libs/pybind11"]
 	path = libs/pybind11
 	url = https://github.com/pybind/pybind11.git
