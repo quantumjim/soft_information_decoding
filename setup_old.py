@@ -3,7 +3,6 @@ from setuptools.command.build_ext import build_ext
 import os
 import sys
 import subprocess
-import sysconfig
 
 class CMakeExtension(Extension):
     def __init__(self, name, sourcedir=''):
@@ -37,44 +36,36 @@ class CMakeBuild(build_ext):
         else:
             print("Skipping Bazel build due to SKIP_BAZEL_BUILD flag.")
 
+
         for ext in self.extensions:
             self.build_extension(ext, num_cores)
 
     def build_pymatching_with_bazel(self, num_cores):
         pymatching_dir = os.path.abspath('libs/PyMatching')
-        env = os.environ.copy()
-        env['BAZEL_SH'] = r'C:\Program Files\Git\bin\bash.exe'
-        # Set up environment variables for Clang
-        env['CC'] = 'clang-cl'
-        env['CXX'] = 'clang-cl'
-        # Use Clang with Bazel
-        subprocess.check_call(['bazel', 'build', '--jobs', str(num_cores), '--cxxopt=/std:c++20', '--crosstool_top=@bazel_tools//tools/cpp:default-clang-cl', '//:pymatching', '//:libpymatching', '@stim//:stim_dev_wheel'], cwd=pymatching_dir, env=env)
+        # subprocess.check_call(['bazel', 'build', '--jobs', str(num_cores), '//:pymatching', '//:libpymatching', '@stim//:stim_lib'], cwd=pymatching_dir)
+        subprocess.check_call(['bazel', 'build', '--jobs', str(num_cores), '//:pymatching', '//:libpymatching', '@stim//:stim_dev_wheel'], cwd=pymatching_dir)
 
+        
     def build_extension(self, ext, num_cores):
         extdir = os.path.abspath(os.path.dirname(self.get_ext_fullpath(ext.name)))
         cmake_args = [
-            '-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=' + extdir,
-            '-DPYTHON_EXECUTABLE=' + sys.executable,
-            '-DCMAKE_CXX_COMPILER=clang++',  # Use Clang for the extension
-            '-DCMAKE_CXX_FLAGS=-fopenmp'  # Enable OpenMP support
-        ]
+        '-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=' + extdir,
+        '-DPYTHON_EXECUTABLE=' + sys.executable,
+        '-DCMAKE_C_COMPILER=/opt/homebrew/opt/llvm/bin/clang',  # Path to C compiler
+        '-DCMAKE_CXX_COMPILER=/opt/homebrew/opt/llvm/bin/clang++',
+        '-DCMAKE_CXX_FLAGS=-fopenmp'  # for omp compiling
+    ] # for omp compiling
+
 
         cfg = 'Debug' if self.debug else 'Release'
-        build_args = ['--config', cfg, '--verbose']
-
-        # Detect if MSBuild or make is being used
-        compiler_type = sysconfig.get_platform()
-        if 'win32' in compiler_type or 'win-amd64' in compiler_type:
-            build_args += ['--', '/p:CL_MPCount=' + str(num_cores)]  # Use /p:CL_MPCount for MSBuild to enable multi-core builds
-        else:
-            build_args += ['--', f'-j{num_cores}']  # Use -j for make to enable multi-core builds
+        build_args = ['--config', cfg, '--verbose', '--', '-j' + str(num_cores)]
 
         if not os.path.exists(self.build_temp):
             os.makedirs(self.build_temp)
 
-        print(f"Running CMake with arguments: {cmake_args}")
         subprocess.check_call(['cmake', ext.sourcedir] + cmake_args, cwd=self.build_temp)
         subprocess.check_call(['cmake', '--build', '.'] + build_args, cwd=self.build_temp)
+
 
 with open("README.md", encoding="utf-8") as f:
     long_description = f.read()

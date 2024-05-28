@@ -81,7 +81,7 @@ std::tuple<Eigen::MatrixXd, Eigen::MatrixXi> iqConvertor(
     }
 
     #pragma omp parallel for //schedule(static) 
-    for (size_t idx = 0; idx < keys.size(); ++idx) {
+    for (int idx = 0; idx < keys.size(); ++idx) {
         int qubitIdx = keys[idx];
         const auto& columnIndices = inv_qubit_mapping.at(qubitIdx);
         auto &kde_entry = kde_dict.at(qubitIdx);
@@ -214,7 +214,7 @@ std::tuple<Eigen::MatrixXd, Eigen::MatrixXi, Eigen::MatrixXd, Eigen::MatrixXd> i
     }
 
     #pragma omp parallel for //schedule(static) 
-    for (size_t idx = 0; idx < keys.size(); ++idx) {
+    for (int idx = 0; idx < keys.size(); ++idx) {
         int qubitIdx = keys[idx];
         const auto& columnIndices = inv_qubit_mapping.at(qubitIdx);
         auto &kde_entry = kde_dict.at(qubitIdx);

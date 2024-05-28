@@ -65,7 +65,7 @@ std::map<int, KDE_Result> get_KDEs(const std::map<int, std::map<std::string, std
     }
 
     #pragma omp parallel for
-    for (size_t i = 0; i < all_memories.size(); ++i) {
+    for (int i = 0; i < all_memories.size(); ++i) {
         auto it = all_memories.begin();
         std::advance(it, i);
         const auto& qubit_entry = *it;
