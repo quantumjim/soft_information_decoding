@@ -15,7 +15,7 @@ import pandas as pd
 from sklearn.preprocessing import StandardScaler
 
 from cpp.Probabilities import process_scaler_dict
-from src import cpp_soft_info
+import cpp_soft_info
 
 from ..core import find_and_create_scratch
 from .calibration_data import find_closest_calib_jobs

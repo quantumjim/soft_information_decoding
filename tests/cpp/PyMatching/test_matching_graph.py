@@ -1,4 +1,4 @@
-from src import cpp_soft_info
+import cpp_soft_info
 
 import stim
 import pymatching

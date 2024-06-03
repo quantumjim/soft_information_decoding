@@ -7,7 +7,7 @@ from soft_info import (get_noise_dict_from_backend, get_avgs_from_dict,
                        generate_subsets_with_center, get_subsample_layout,
                        plot_IQ_data_with_countMat, RepCodeIQSimulator)
 
-from src import cpp_soft_info as csi
+import cpp_soft_info as csi
 
 import numpy as np
 import pandas as pd

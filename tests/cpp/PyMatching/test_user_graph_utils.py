@@ -3,8 +3,8 @@ import stim
 import numpy as np
 import json
 
-from src import cpp_soft_info
-from src.cpp_soft_info import counts_to_det_syndr
+import cpp_soft_info
+from cpp_soft_info import counts_to_det_syndr
 
 def get_matching():
     circuit = stim.Circuit.generated("repetition_code:memory",

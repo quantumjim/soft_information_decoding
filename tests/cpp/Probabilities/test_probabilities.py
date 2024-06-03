@@ -5,7 +5,7 @@ from sklearn.preprocessing import StandardScaler
 from scipy.stats import norm
 import pytest
 
-from src import cpp_soft_info
+import cpp_soft_info
 from cpp.Probabilities import process_scaler_dict
 
 
