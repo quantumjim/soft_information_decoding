@@ -9,7 +9,7 @@ import os
 
 from result_saver import SaverProvider
 from Scratch import metadata_loader, find_closest_calib_jobs, load_calibration_memory
-import cpp_soft_info as csi
+from src import cpp_soft_info as csi
 
 from ..Hardware.backend_noise import get_noise_dict_from_backend, get_avgs_from_dict
 from ..Hardware.transpile_rep_code import get_repcode_IQ_map, inv_qubit_mapping
