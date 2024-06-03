@@ -75,6 +75,28 @@ class CMakeBuild(build_ext):
         print(f"Running CMake with arguments: {cmake_args}")
         subprocess.check_call(['cmake', ext.sourcedir] + cmake_args, cwd=self.build_temp)
         subprocess.check_call(['cmake', '--build', '.'] + build_args, cwd=self.build_temp)
+        
+        if 'win3d' in compiler_type or 'win-amd64' in compiler_type:
+            release_dir = os.path.join(extdir, cfg)
+            print(f"Looking for .pyd files in {release_dir}")
+            for filename in os.listdir(release_dir):
+                if filename.endswith('.pyd'):
+                    full_file_name = os.path.join(release_dir, filename)
+                    print(f"Found .pyd file: {full_file_name}")
+                    if os.path.isfile(full_file_name):
+                        dest_file_name = os.path.join('src', filename)
+                        print(f"Moving {full_file_name} to {dest_file_name}")
+                        if os.path.isfile(dest_file_name):
+                            os.remove(dest_file_name)
+                        os.rename(full_file_name, dest_file_name)
+                        # Verify the file has been moved
+                        if os.path.isfile(dest_file_name):
+                            print(f"Successfully moved {filename} to src directory")
+                        else:
+                            print(f"Failed to move {filename} to src directory")
+                else:
+                    print(f"Skipping {filename} as it is not a .pyd file")
+
 
 with open("README.md", encoding="utf-8") as f:
     long_description = f.read()
