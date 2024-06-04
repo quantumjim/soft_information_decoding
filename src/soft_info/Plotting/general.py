@@ -6,6 +6,8 @@ def apply_formatting(dpi=1000, one_column=True, font_size=10, third_height=False
     FIGURE_WIDTH_2COL = 7.057  # For PRX style, change for according to journal
 
     FIGURE_WIDTH_1COL = 140/25.4 # For Thesis style
+    # NEW STYLE FOR POSTER
+    # FIGURE_WIDTH_1COL = FIGURE_WIDTH_1COL / 1.5
     FIGURE_WIDTH_2COL = 140/25.4 / 2 # For Thesis style
     FIGURE_HEIGHT_1COL_GR = FIGURE_WIDTH_1COL*2/(1 + np.sqrt(5)) # Golden ratio
     FIGURE_HEIGHT_2COL_GR = FIGURE_WIDTH_2COL*2/(1 + np.sqrt(5)) # Golden ratio
@@ -24,9 +26,10 @@ def apply_formatting(dpi=1000, one_column=True, font_size=10, third_height=False
 
     plt.rcParams.update({
         'text.usetex'         : True,
-        'text.latex.preamble' : r'\usepackage{mathpazo}',
-        'font.family'         : 'serif',
+        # 'text.latex.preamble' : r'\usepackage{mathpazo}',
+        # 'font.family'         : 'serif',
         # 'font.serif'          : ['IBM Plex Sans'],
+        'font.serif'          : ['Calibri Light'],
         'font.size'           : font_size,  
         'figure.titlesize'    : 'medium',
         'figure.dpi'          : dpi,
@@ -38,8 +41,8 @@ def apply_formatting(dpi=1000, one_column=True, font_size=10, third_height=False
         'ytick.direction'     : 'in',
         'ytick.labelsize'     : 'small',
         'image.interpolation' : 'none',
-        # 'legend.fontsize'     : legend_font_size,
-        'legend.fontsize'     : font_size,
+        'legend.fontsize'     : legend_font_size,
+        # 'legend.fontsize'     : font_size,
         'axes.labelsize'      : font_size,
         'axes.titlesize'      : font_size,
         'xtick.labelsize'     : font_size,
