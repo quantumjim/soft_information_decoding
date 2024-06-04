@@ -62,6 +62,7 @@ pybind11_add_module(cpp_soft_info
 
 # Link the PyMatching library
 set(PYMATCHING_LIB "${CMAKE_SOURCE_DIR}/libs/PyMatching/bazel-bin")
+# TODO: Needed?
 
 # Link the library to your modules as needed
 target_link_libraries(cpp_soft_info

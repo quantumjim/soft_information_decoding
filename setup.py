@@ -1,5 +1,6 @@
 from setuptools import setup, Extension, find_packages
 from setuptools.command.build_ext import build_ext
+from setuptools.command.install import install
 import os
 import subprocess
 import sys
@@ -13,8 +14,8 @@ class CMakeExtension(Extension):
 class CMakeBuild(build_ext):
     def run(self):
         try:
-            out = subprocess.check_output(['cmake', '--version'])
-            out = subprocess.check_output(['bazel', '--version'])
+            subprocess.check_output(['cmake', '--version'])
+            subprocess.check_output(['bazel', '--version'])
         except OSError:
             raise RuntimeError(
                 "CMake and Bazel must be installed to build the following extensions: " +
@@ -37,6 +38,8 @@ class CMakeBuild(build_ext):
         env['CC'] = 'clang-cl'
         env['CXX'] = 'clang-cl'
         subprocess.check_call(['bazel', 'build', '--jobs', str(num_cores), '--cxxopt=/std:c++20', '--crosstool_top=@bazel_tools//tools/cpp:default-clang-cl', '//:pymatching', '//:libpymatching', '@stim//:stim_dev_wheel'], cwd=pymatching_dir, env=env)
+        # subprocess.check_call(['bazel', 'build', '--jobs', str(num_cores), '--cxxopt=/std:c++20', '--crosstool_top=@bazel_tools//tools/cpp:default-clang-cl', '//:libpymatching'], cwd=pymatching_dir, env=env)
+        # TODO: remove building stim and just build pymatching
 
     def build_extension(self, ext):
         num_cores = os.cpu_count()
@@ -60,21 +63,16 @@ class CMakeBuild(build_ext):
 
         subprocess.check_call(['cmake', ext.sourcedir] + cmake_args, cwd=self.build_temp)
         subprocess.check_call(['cmake', '--build', '.'] + build_args, cwd=self.build_temp)
-        self.move_pyd_files(extdir, cfg)
 
-    def move_pyd_files(self, extdir, cfg):
-        release_dir = os.path.join(extdir, cfg)
-        target_dir = os.path.join('src', 'cpp_soft_info')
-        if not os.path.exists(target_dir):
-            os.makedirs(target_dir)
-        for filename in os.listdir(release_dir):
-            if filename.endswith('.pyd'):
-                src_file = os.path.join(release_dir, filename)
-                dest_file = os.path.join(target_dir, filename)
-                if os.path.isfile(dest_file):
-                    os.remove(dest_file)
-                os.rename(src_file, dest_file)
-                print(f"Moved {filename} to {dest_file}")
+class CustomInstallCommand(install):
+    def run(self):
+        install.run(self)
+        self.create_init_py()
+
+    def create_init_py(self):
+        init_file_path = os.path.join(self.install_lib, 'cpp_soft_info', '__init__.py')
+        with open(init_file_path, 'w') as f:
+            f.write("from .cpp_soft_info import *\n")
 
 with open("README.md", encoding="utf-8") as f:
     long_description = f.read()
@@ -89,7 +87,10 @@ setup(
     package_dir={"": "src"},
     packages=find_packages(where="src"),
     ext_modules=[CMakeExtension('cpp_soft_info')],
-    cmdclass=dict(build_ext=CMakeBuild),
+    cmdclass={
+        'build_ext': CMakeBuild,
+        'install': CustomInstallCommand,
+    },
     python_requires=">=3.11",
     setup_requires=["setuptools_scm"],
     use_scm_version=True,
