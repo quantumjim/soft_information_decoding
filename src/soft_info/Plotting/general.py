@@ -26,10 +26,10 @@ def apply_formatting(dpi=1000, one_column=True, font_size=10, third_height=False
 
     plt.rcParams.update({
         'text.usetex'         : True,
-        # 'text.latex.preamble' : r'\usepackage{mathpazo}',
-        # 'font.family'         : 'serif',
+        'text.latex.preamble' : r'\usepackage{mathpazo}',
+        'font.family'         : 'serif',
         # 'font.serif'          : ['IBM Plex Sans'],
-        'font.serif'          : ['Calibri Light'],
+        # 'font.serif'          : ['Calibri Light'],
         'font.size'           : font_size,  
         'figure.titlesize'    : 'medium',
         'figure.dpi'          : dpi,
