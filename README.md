@@ -4,6 +4,8 @@ Soft information decoding of repetition codes on superconducting hardware, as in
 M. D. Hanisch, B. Hetényi, J. R. Wootton, *Soft information decoding with superconducting qubits*,
 [APS Open Science (2026)](https://doi.org/10.1103/y9fh-4x6n), [arXiv:2411.16228](https://arxiv.org/abs/2411.16228).
 
+[![Soft information decoding: the repetition-code chain on IBM Sherbrooke, soft readout in the IQ plane, readout without reset, and the soft-weighted decoding graph](docs/soft_information_decoding.png)](docs/soft_information_decoding.pdf)
+
 This is a cleaned up and simplified version of the code behind the paper, in pure Python on stim and
 PyMatching. The original C++ implementation is in the git history (commit `fba86b4`).
 
