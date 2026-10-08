@@ -1,14 +1,26 @@
-[build-system]
-requires = ["setuptools", "wheel", "cmake", "pybind11"]
-build-backend = "setuptools.build_meta"
-
 [project]
-name = "soft_information_decoding"
+name = "softinfo"
 version = "0.1.0"
-description = "A short description of your project"
-authors = [{name = "Maurice D. Hanisch"}]
+description = "Soft information decoding of repetition codes (arXiv:2411.16228)"
 readme = "README.md"
-requires-python = ">=3.11"
+license = { file = "LICENSE" }
+authors = [{ name = "MauriceDHanisch", email = "maurhanisch@gmail.com" }]
+requires-python = ">=3.12"
+dependencies = ["matplotlib>=3.11.2", "numpy>=2.5.3", "pandas>=3.0.6", "pymatching>=2.4.0", "scipy>=1.18.1", "stim>=1.16.0"]
 
-[project.license]
-file = "LICENSE"
+[dependency-groups]
+dev = [
+    "ipykernel>=7.4.0",
+    "nbclient>=0.11.0",
+    "pytest>=8",
+]
+
+[build-system]
+requires = ["uv_build>=0.9.9,<0.10.0"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-root = ""
+
+[tool.pytest.ini_options]
+addopts = "--tb=short"
